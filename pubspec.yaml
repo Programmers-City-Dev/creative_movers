@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^0.23.0+1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,6 +39,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -51,6 +53,16 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  fonts:
+    - family: Segoe
+      fonts:
+        - asset: assets/fonts/segoe/segoe_regular.ttf
+        - asset: assets/fonts/segoe/segoe_bold.ttf
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/poppins/poppins_regular.ttf
+        - asset: assets/fonts/poppins/poppins_bold.ttf
+        - asset: assets/fonts/poppins/poppins_medium.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -58,9 +70,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/svgs/
+    - assets/images/
+    - assets/pngs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -73,11 +86,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+#    fonts:
+#       - family: Segoe
+#         fonts:
+#          - asset: fonts/segoe_regular.ttf
+#          - asset: fonts/Segoe-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
