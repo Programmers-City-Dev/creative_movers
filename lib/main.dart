@@ -1,5 +1,5 @@
 import 'package:creative_movers/screens/onboarding/views/onboarding_screen.dart';
-import 'package:creative_movers/theme/colors.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+
         primaryColor: AppColors.primaryColor,
         fontFamily: 'Poppins',
         // This is the theme of your application.
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
+  // This widget is the main page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
 

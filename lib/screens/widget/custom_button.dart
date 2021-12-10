@@ -1,36 +1,22 @@
-import 'package:creative_movers/theme/colors.dart';
+import 'package:creative_movers/theme/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({Key? key}) : super(key: key);
+  const CustomButton({Key? key,   this.child,  this.onTap,  this.isEnabled = true}) : super(key: key);
+ final VoidCallback? onTap;
+  final bool isEnabled ;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(gradient: LinearGradient(colors: [
+    return ElevatedButton(
 
-        AppColors.primaryColor
-      ])),
-      child: ElevatedButton(
-
-          style: ElevatedButton.styleFrom(
-
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 10),
-            primary: AppColors.primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30))),
-          onPressed: () {},
-          child: Center(
-            child: Row(
-                        mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(
-                  Icons.logout_outlined,
-                ),
-                Text(' SignUp')],
-            ),
-          )),
-    );
+        style: ElevatedButton.styleFrom(
+            primary: AppColors.primaryColor, padding: EdgeInsets.all(16)),
+        onPressed:isEnabled?onTap:null,
+        child: Center(
+          child:child,
+        ));
   }
 }

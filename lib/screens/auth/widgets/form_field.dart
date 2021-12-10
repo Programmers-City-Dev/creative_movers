@@ -1,4 +1,5 @@
-import 'package:creative_movers/theme/colors.dart';
+import 'package:creative_movers/theme/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -7,9 +8,10 @@ class CustomTextField extends StatelessWidget {
       required this.icon,
       this.obscure = false,
       this.controller,
-      this.validator, required this.hint})
+      this.validator, required this.hint,  this.toggle_icon = const SizedBox()})
       : super(key: key);
   final IconData icon;
+  final Widget toggle_icon;
   final bool obscure;
   final String hint;
   final TextEditingController? controller;
@@ -20,20 +22,27 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       obscureText: obscure,
       controller: controller,
+      cursorColor: AppColors.primaryColor,
       validator:validator,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(16),
+        contentPadding: EdgeInsets.all(17),
         focusedBorder:const OutlineInputBorder(
-            borderSide:  BorderSide(color:AppColors.primaryColor )),
-          // label: Text(),
-        labelText: hint,
+            borderSide:  BorderSide()),
+          label: Text(hint,style: TextStyle(color: AppColors.textColor),),
 
+        // hintText: hint,
+
+focusColor: AppColors.primaryColor,
         border: const OutlineInputBorder(borderSide: BorderSide()),
           alignLabelWithHint: false,
           prefixIcon: Icon(
             icon,
-            color: Colors.black,
-          )),
+            color: AppColors.textColor,
+          ),
+          suffixIcon: toggle_icon
+      ),
+
+
     );
   }
 }

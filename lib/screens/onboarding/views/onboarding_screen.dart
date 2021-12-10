@@ -2,7 +2,7 @@ import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/onboarding/views/onboarding_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
-import 'package:creative_movers/theme/colors.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -149,9 +149,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     alignment: Alignment.center,
                     height: 100,
                     width: 100,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(AppIcons.icSplashLogo))),
+
+                    child:  SvgPicture.asset(AppIcons.svgSplashLogo,color: AppColors.primaryColor,),
+
                   ),
                 ),
               ),
@@ -161,7 +161,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         Align(
           alignment: Alignment.bottomCenter,
           child: AnimatedContainer(
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.3,
               child: Column(
@@ -193,16 +193,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: Visibility(
-                      maintainAnimation: true,
-                      maintainState: true,
-                      visible: _currentIndex == 3,
-                      child: AnimatedOpacity(
-                        opacity: _currentIndex ==3 ? 1.0 : 0.0,
-                        duration: const Duration(milliseconds: 600),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: ElevatedButton(
+                    child: Stack(
+                      children: [
+                        Visibility(
+                            visible: _currentIndex != 3,
+                            child: Container(height: 50,)),
+                        Visibility(
+                        maintainAnimation: true,
+                        maintainState: true,
+                        visible: _currentIndex == 3,
+                        child: AnimatedOpacity(
+                          opacity: _currentIndex ==3 ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 600),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.white,
                                 onPrimary: AppColors.primaryColor,
@@ -221,8 +226,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   Icon(Icons.arrow_forward,color: AppColors.primaryColor,)
                                 ],
                               )),
+                          ),
                         ),
-                      ),
+                      )],
                     ),
                   )
                 ],

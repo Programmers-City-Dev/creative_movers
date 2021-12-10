@@ -15,6 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bottom_navy_bar:
+    dependency: "direct main"
+    description:
+      name: bottom_navy_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.6.0"
   characters:
     dependency: transitive
     description:
@@ -29,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.1"
+  chips_choice:
+    dependency: "direct main"
+    description:
+      name: chips_choice
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   clock:
     dependency: transitive
     description:
@@ -50,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  dotted_border:
+    dependency: "direct main"
+    description:
+      name: dotted_border
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+1"
   fake_async:
     dependency: transitive
     description:
@@ -81,6 +102,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  group_radio_button:
+    dependency: "direct main"
+    description:
+      name: group_radio_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   lints:
     dependency: transitive
     description:
@@ -102,6 +130,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+  modal_bottom_sheet:
+    dependency: "direct main"
+    description:
+      name: modal_bottom_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   path:
     dependency: transitive
     description:
@@ -130,6 +165,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+  pin_code_fields:
+    dependency: "direct main"
+    description:
+      name: pin_code_fields
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.3.0"
   sky_engine:
     dependency: transitive
     description: flutter
