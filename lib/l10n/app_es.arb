@@ -1,0 +1,360 @@
+{
+    "ok": "Ok",
+    "@ok": {
+      "description": "Good to go"
+    },
+    "save": "Save",
+    "@save": {
+      "description": "Save"
+    },
+    "profileUpdated": "Profile updated successfully",
+    "@profileUpdated": {
+      "description": "Update profile"
+    },
+    "add":"Add",
+    "@add":{
+        "description":"To add something"
+    },
+    "open":"Open",
+    "@open":{
+        "description":"Open up something"
+    },
+    "close":"Close",
+    "@close":{
+        "description":"Close up something"
+    },
+    "cancel":"Cancel",
+    "@cancel":{
+        "description":"A description text for Cancel"
+    },
+    "inputEmail":"Input Email",
+    "@inputEmail":{
+        "description":"A hint text for entering e-mail"
+    },
+    "incorrectEmailPrompt":"Check email format",
+    "@incorrectEmailPrompt":{
+        "description":"A warning text for incorrect e-mail address input"
+    },
+    "inputFirstName":"Input First Name",
+    "@inputFirstName":{
+        "description":"A hint text to enter first name"
+    },
+    "inputLastName":"Input Last Name",
+    "@inputLastName":{
+        "description":"A hint text to enter last name"
+    },
+    "inputNewEmail":"Input New Email",
+    "@inputNewEmail":{
+        "description":"A hint text to enter a new email address"
+    },
+    "invalidPasswordWarning":"Password must be 8 characters long",
+    "@invalidPasswordWarning":{
+        "description":"A warning for invalid password format"
+    },
+    "requiredEmailVerification":"Email verification required",
+    "@requiredEmailVerification":{
+        "description":"Email verification required warning text"
+    },
+    "verifyEmailAccountText":"Please check your inbox and click in the received link to verify your account",
+    "@verifyEmailAccountText":{
+        "description":"A decsription to check email inbox to verify email or login"
+    },
+    "didNotRecieveEmailLinkPrompt":"Didn’t receive the link?",
+    "@didNotRecieveEmailLinkPrompt":{
+        "description":"A prompt asking user if email link was not recieved by them"
+    },
+    "resend":"Resend",
+    "@resend":{
+        "description":"Resend email text"
+    },
+    "delete":"Delete",
+    "@delete":{
+        "description":"Delete text"
+    },
+    "edit":"Edit",
+    "@edit":{
+        "description":"Edit text"
+    },
+    "alreadyHasAnAccountText":"Don't have an account?",
+    "@alreadyHasAnAccountText":{
+        "description":"Account already exists text"
+    },
+    "createNewAccountPrompt":"Would you like to create a new account?",
+    "@createNewAccountPrompt":{
+        "description":"A prompt text to create a new account"
+    },
+    "createAccount":"Create Account",
+    "@createAccount":{
+        "description":"Create account text"
+    },
+    "accountNotFound":"Account not found",
+    "@accountNotFound":{
+        "description":"Account not found text"
+    },
+    "yes":"Yes",
+    "@yes":{
+        "description":"Yes text"
+    },
+    "typing":"Typing...",
+    "@typing":{
+        "description":"Typing text"
+    },
+    "online":"Online",
+    "@online":{
+        "description":"A text indication if a user is currently active"
+    },
+    "lastSeen":"Last Seen",
+    "@lastSeen":{
+        "description":"A text indication if a user is currently active"
+    },
+    "sending":"Sending...",
+    "@sending":{
+        "description":"A text indicating a message being processed"
+    },
+    "sent":"Sent",
+    "@sent":{
+        "description":"A text indicating a sent message"
+    },
+    "writeMessageHint":"Write a message...",
+    "@writeMessageHint":{
+        "description":"A text hint to compose or write a message"
+    },
+    "enterEmailVerificationText":"Enter the verification code we just sent you on your email address.",
+    "@enterEmailVerificationText":{
+        "description":"A text description to enter email verification text"
+    },
+    "verify":"Verify",
+    "@verify":{
+        "description":"A verify email text"
+    },
+    "send":"Send",
+    "@send":{
+        "description":"A send text"
+    },
+    "rememberPassword":"Remember Password?",
+    "@rememberPassword":{
+        "description":"A send text"
+    },
+    "enterResetPasswordEmail":"Enter your Registered Email below to create Password reset Instructions.",
+    "@enterResetPasswordEmail":{
+        "description":"A prompt to enter reset password email"
+    },
+    "emailSentText":"Email has been sent!",
+    "@emailSentText":{
+        "description":"An email sent text"
+    },
+    "checkContinueEmailText":"Please check your inbox and click on the received sign in link to continue.",
+    "@checkContinueEmailText":{
+        "description":"An description text to check your inbox and click on the received sign in link to continue."
+    },
+    "resetPasswordEmailLink":"Please check your inbox and click in the received link to reset a Password",
+    "@resetPasswordEmailLink":{
+        "description":"An description text to check your inbox and click on the received sign to reset password."
+    },
+    "takeMeToEmail":"TAKE ME TO EMAIL",
+    "@takeMeToEmail":{
+        "description":"A text description to take a user to email app"
+    },
+    "incorrectConfirmPassword":"Password and Confirm Password should be same",
+    "@incorrectConfirmPassword":{
+        "description":"A text description for incorrect confirm password match"
+    },
+    "inputName":"Input name",
+    "@inputName":{
+        "description":"A text description to Input name"
+    },
+    "confirmPassword":"Confirm Password",
+    "@confirmPassword":{
+        "description":"A text description to confirm password"
+    },
+    "enterEmailToContinue":"Enter your email to Continue!",
+    "@enterEmailToContinue":{
+        "description":"A text description to enter email to continue login"
+    },
+    "welcome":"Welcome",
+    "@welcome":{
+        "description":"A text description for welcome"
+    },
+    "start":"Start",
+    "@start":{
+        "description":"A text description for start"
+    },
+    "login":"Login",
+    "@login":{
+        "description":"A text description for login"
+    },
+    "events":"Events",
+    "@events":{
+        "description":"A text description for events"
+    },
+    "didNotReceiveEmailText":"Didn't receive the link?",
+    "@didNotReceiveEmailText":{
+        "description":"A text description asking user if email link was not received"
+    },
+    "openEmailApp":"Open Mail App",
+    "@openEmailApp":{
+        "description":"A button text description to oepn available email apps"
+    },
+    "emailAppNotFound":"No mail apps installed",
+    "@emailAppNotFound":{
+        "description":"A message telling user that no email app found on the device"
+    },
+    "letsHaveYourEmailText":"Let's Have Your Email",
+    "@letsHaveYourEmailText":{
+        "description":"A message telling user to enter thir email"
+    },
+    "enterSignupEmailRegistrationLink":"Enter your email to receive a link to complete your registration",
+    "@enterSignupEmailRegistrationLink":{
+        "description":"A message telling user to enter thier email for sending a registration link"
+    },
+    "emailAccountExistText":"Oops! This email has an account already, do you want to login with it?",
+    "@emailAccountExistText":{
+        "description":"A message telling user that entered email is already registered"
+    },
+    "loginAccount":"Login Account",
+    "@loginAccount":{
+        "description":"A description text to login"
+    },
+    "searchWorkplaceName":"Search workplace name",
+    "@searchWorkplaceName":{
+        "description":"A description text to Search workplace name"
+    },
+    "or":"OR",
+    "@or":{
+        "description":"A description text for or"
+    },
+    "message":"Message",
+    "@mesage":{
+        "description":"A description text for message"
+    },
+    "regular":"Regular",
+    "@regular":{
+        "description":"A description text for regular"
+    },
+    "termsAndConditions":"Terms and Conditions",
+    "@termsAndConditions":{
+        "description":"A description text for erms and Conditions"
+    },
+    "anonymous":"Anonymous",
+    "@anonymous":{
+        "description":"A description text for regular"
+    },
+    "continueText":"Continue",
+    "@continueText":{
+        "description":"A description text for continue"
+    },
+    "whatDoYouWorkWith":"What do you work with?",
+    "@whatDoYouWorkWith":{
+        "description":"A description text for What do you work with?"
+    },
+    "alreadyAMember":"Already a member",
+    "@alreadyAMember":{
+        "description":"A description text for an existing user"
+    },
+    "pleaseWait":"Pleast Wait",
+    "@pleaseWait":{
+        "description":"A description text indicating an ongping process"
+    },
+    "settings":"Settings",
+    "@settings":{
+        "description":"A description text for settings"
+    },
+    "notification":"Notification",
+    "@notification":{
+        "description":"A description text for notification"
+    },
+    "changePassword":"Change Password",
+    "@changePassword":{
+        "description":"A description text for change password"
+    },
+    "faqAndContact":"FAQ & Contact",
+    "@faqAndContact":{
+        "description":"A description text for FAQ & Contact"
+    },
+    "integrity":"Integrity",
+    "@integrity":{
+        "description":"A description text for Integrity"
+    },
+    "logout":"Logout",
+    "@logout":{
+        "description":"A description text for Logout"
+    },
+    "next":"Next",
+    "@next":{
+        "description":"A description text for next"
+    },
+    "skip":"Skip",
+    "@skip":{
+        "description":"A description text for skip"
+    },
+    "back":"Add",
+    "@back":{
+        "description":"A description text for back"
+    },
+    "yesterday":"Yesterday",
+    "@yesterday":{
+        "description":"A description text for yesterday"
+    },
+    "minutesAgo":"mins ago",
+    "@minutesAgo":{
+        "description":"A description text for minutes ago"
+    },
+    "hoursAgo":"hrs ago",
+    "@hoursAgo":{
+        "description":"A description text for hours ago"
+    },
+    "userNotExist":"User Does Not Exist",
+    "@userNotExist":{
+        "description":"A description text for not existing user"
+    },
+    "successfulSigninMessage":"Successfully signed in",
+    "@successfulSigninMessage":{
+        "description":"A description for successful Sign in"
+    },
+    "emailAccountAlreadyExist":"An account with this email already exists",
+    "@emailAccountAlreadyExist":{
+        "description":"A description for an already existing email account"
+    },
+    "emailLinkSent":"Link sent successfully",
+    "@emailLinkSent":{
+        "description":"A message text for a successfully sign in link"
+    },
+    "emailDoesNotHaveAccount":"This email does not have an account",
+    "@emailDoesNotHaveAccount":{
+        "description":"A message text for an email that is not linked to an account"
+    },
+    "userSavedMessage":"User successfully saved",
+    "@userSavedMessage":{
+        "description":"A message text for a successfully saved user"
+    },
+    "unexpectedErrorText":"Unexpected error, please try again",
+    "@unexpectedErrorText":{
+        "description":"A message text for an unexpected error"
+    },
+    "emptyTipsText":"No active tips created yet",
+    "@emptyTipsText":{
+        "description":"A description text for empty tips"
+    },
+    "updating":"Updating",
+    "@updating":{
+        "description":"A description text for an updating task"
+    },
+    "no":"No",
+        "@no":{
+            "description":"No text"
+    },
+    "hi":"Hi",
+         "@hi":{
+            "description":"Hi greeting text"
+    },
+    "editProfile": "Edit Profile",
+          "@editProfile":{
+          "description": "Title on Edit profile screen"
+    },
+    "unknownErrorText":"An unknown error occurred",
+    "@unknownErrorText":{
+        "description":"A error message for an An unknown error"
+    }
+
+
+}
