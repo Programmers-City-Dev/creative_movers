@@ -1,4 +1,17 @@
 {
+    "intro1Title": "Movimentadores criativos",
+    "intro2Title": "Os Criativos",
+    "intro3Title": "The Movers",
+    "intro1Text": "O único verdadeiro aplicativo social de rede de negócios",
+    "intro2Text": "Criativos são empreendedores que têm uma ideia, um produto, uma invenção etc. em busca de ajuda para colocá-la no mercado",
+    "intro3Text": "O único verdadeiro aplicativo social de rede de negócios",
+    "intro4Title": "Qual és tu?",
+    "intro4Text": "Você pode escolher ser criativo ou motivador, depende de você e do seu interesse pessoal",
+    "singUp":"Inscrever-se",
+    "password": "Senha",
+    "email":"E-mail",
+    "username":"Nome do usuário",
+
     "ok": "Ok",
     "save": "Save",
     "profileUpdated": "Profile updated successfully",

@@ -5,6 +5,8 @@ import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SignupForm extends StatefulWidget {
   const SignupForm({Key? key}) : super(key: key);
 
@@ -22,11 +24,11 @@ class _SignupFormState extends State<SignupForm> {
       children:  [
         const SizedBox(height: 30,),
 
-        const CustomTextField(icon: Icons.person, hint: 'Username',),
+        CustomTextField(icon: Icons.person, hint: AppLocalizations.of(context)!.username,),
         const SizedBox(height: 16,),
 
 
-         CustomTextField(validator:(d){},icon: Icons.mail_rounded, hint: 'Email',),
+         CustomTextField(validator:(d){},icon: Icons.mail_rounded, hint: AppLocalizations.of(context)!.email,),
         const SizedBox(height: 16,),
 
 
@@ -40,28 +42,28 @@ class _SignupFormState extends State<SignupForm> {
           const Icon( Icons.visibility_off_outlined,color: AppColors.textColor,):const Icon(Icons.visibility_outlined,color: AppColors.textColor,),
           ),
           obscure: obscure,
-          icon: Icons.lock, hint: 'Password',),
+          icon: Icons.lock, hint: AppLocalizations.of(context)!.password,),
         const SizedBox(height: 30,),
          Center(child: CustomButton( onTap: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreDetailsScreen(),));
          },
          child:  Row(
           mainAxisSize: MainAxisSize.min,
-          children:  const [
-            Icon(
+          children:  [
+            const Icon(
               Icons.logout_outlined,
             ),
-            SizedBox(width: 5,),
-            Text('Sign Up')
+            const SizedBox(width: 5,),
+            Text(AppLocalizations.of(context)!.signUp)
           ],
         ),)),
         const SizedBox(height: 30,),
         Center(
           child: RichText(
               text: TextSpan(children: [
-                const TextSpan(
-                    text: 'Already have an account  ?  ',
-                    style: TextStyle(
+                TextSpan(
+                    text: AppLocalizations.of(context)!.alreadyHasAnAccountText,
+                    style: const TextStyle(
                       color: Colors.black
                         )),
                 TextSpan(
@@ -72,7 +74,7 @@ class _SignupFormState extends State<SignupForm> {
                         builder: (context) => LoginScreen(),
                       ));
                     },
-                  text: 'Login',
+                  text: AppLocalizations.of(context)!.login,
                   style: const TextStyle(
                       color:AppColors.primaryColor,
                       decoration: TextDecoration.underline),

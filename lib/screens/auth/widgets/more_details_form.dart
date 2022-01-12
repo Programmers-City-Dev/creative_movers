@@ -83,7 +83,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
           height: MediaQuery.of(context).size.height * 0.8,
           decoration: const BoxDecoration(
               color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.blue,blurRadius: 30,blurStyle: BlurStyle.solid,)],
+              boxShadow: [BoxShadow(color: Colors.blue,blurRadius: 30)],
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(44), topLeft: Radius.circular(44))),
         ),

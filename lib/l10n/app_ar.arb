@@ -1,4 +1,17 @@
 {
+    "intro1Title": "المحركون المبدعون",
+    "intro2Title": "المبدعين",
+    "intro3Title": "المحركون",
+    "intro1Text": "\nلشبكات الأعمالالتطبيق الاجتماعي الوحيد الحقيقي",
+    "intro2Text": "المبدعون هم رواد الأعمال الذين لديهم فكرة أو منتج أو اختراع وما إلى ذلك يبحثون عن المساعدة في إدخالها إلى السوق\n",
+    "intro3Text": "التطبيق الاجتماعي الوحيد الحقيقي لشبكات الأعمال\n",
+    "intro4Title": "أيهم أنت؟",
+    "intro4Text": "يمكنك أن تختار أن تكون مبدعًا أو متحركًا ، الأمر متروك لك ولمصالحك الشخصية\n",
+    "signUp":"اشتراك",
+    "password":"كلمة المرور",
+    "email":"بريد الالكتروني",
+    "username":"اسم المستخدم",
+
     "ok": "Ok",
     "save": "Save",
     "profileUpdated": "Profile updated successfully",
@@ -46,6 +59,7 @@
     "start":"Start",
     "login":"Login",
     "events":"Events",
+
     "didNotReceiveEmailText":"Didn't receive the link?",
     "openEmailApp":"Open Mail App",
     "emailAppNotFound":"No mail apps installed",

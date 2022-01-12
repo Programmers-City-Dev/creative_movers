@@ -1,4 +1,17 @@
 {
+    "intro1Title": "Kreative Macher",
+    "intro2Title": "Die Kreativen",
+    "intro3Title": "Die Umzugshelfer",
+    "intro1Text": "Die einzig wahre Social-Business-Networking-Anwendung",
+    "intro2Text": "Kreative sind Unternehmer, die eine Idee, ein Produkt, eine Erfindung usw. haben, die Hilfe suchen, um sie auf den Markt zu bringen",
+    "intro3Text": "Die einzig wahre Social-Business-Networking-Anwendung",
+    "intro4Title": "Welcher bist du?",
+    "intro4Text": "Sie können wählen, ob Sie ein Kreativer oder ein Macher werden möchten, es liegt an Ihnen und Ihrem persönlichen Interesse",
+    "signUp": "Anmeldung",
+    "password": "Passwort",
+    "email": "E-Mail",
+    "username":"Nutzername",
+
     "ok": "Ok",
     "save": "Save",
     "profileUpdated": "Profile updated successfully",

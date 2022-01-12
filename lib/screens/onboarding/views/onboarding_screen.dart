@@ -3,8 +3,10 @@ import 'package:creative_movers/screens/onboarding/views/onboarding_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -29,106 +31,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           controller: PageController(viewportFraction: 1),
           children: [
             OnboardingItem(
-              header: 'Creative Movers',
-              text: Text.rich(
-                const TextSpan(style: TextStyle(fontSize: 13), children: [
-                  TextSpan(
-                    text: 'The only true ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: 'Buisness Networking',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: ' Social Application',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  )
-                ]),
+              header: AppLocalizations.of(context)!.intro1Title,
+              text: Text(
+                    AppLocalizations.of(context)!.intro1Text,
                 textAlign: TextAlign.center,
-                style: DefaultTextStyle.of(context).style,
-              ), img: AppIcons.imgSlide1,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.normal, color: Colors.white),
+                  ), img: AppIcons.imgSlide1,
             ),
             OnboardingItem(
-              header: ' The Creatives',
-              text: Text.rich(
-                const TextSpan(style: TextStyle(fontSize: 13), children: [
-                  TextSpan(
-                    text: 'Creatives are Entreprenuers  ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: 'that have an idea, product ,invention etc looking for help to take it into the market',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
-                ]),
+              header: AppLocalizations.of(context)!.intro2Title,
+              text: Text(
+                AppLocalizations.of(context)!.intro2Text,
                 textAlign: TextAlign.center,
-                style: DefaultTextStyle.of(context).style,
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal, color: Colors.white),
               ), img: AppIcons.imgSlide2,
             ),
             OnboardingItem(
-              header: 'The Movers',
-              text: Text.rich(
-                const TextSpan(style: TextStyle(fontSize: 13), children: [
-                  TextSpan(
-                    text: 'Movers ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: 'are individuals who help entreprenuers take their ideas to the ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: ' next level',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  )
-                ]),
+              header: AppLocalizations.of(context)!.intro3Title,
+              text: Text(
+                AppLocalizations.of(context)!.intro3Text,
                 textAlign: TextAlign.center,
-                style: DefaultTextStyle.of(context).style,
-              ), img: AppIcons.imgSlide3,
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal, color: Colors.white),
+              ), img: AppIcons.imgSlide2,
             ),
             OnboardingItem(
-              header: 'Which are You ?',
-              text: Text.rich(
-                const TextSpan(style: TextStyle(fontSize: 13), children: [
-                  TextSpan(
-                    text: 'You can choose to be a  ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: 'creative',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: ' or a',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: ' mover',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: ' it is up to you and your personnal interest',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
-                ]),
+              header: AppLocalizations.of(context)!.intro4Title,
+              text: Text(
+                AppLocalizations.of(context)!.intro4Text,
                 textAlign: TextAlign.center,
-                style: DefaultTextStyle.of(context).style,
-              ), img: AppIcons.imgSlide4,
-            )
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal, color: Colors.white),
+              ), img: AppIcons.imgSlide2,
+            ),
           ],
         ),
         Align(

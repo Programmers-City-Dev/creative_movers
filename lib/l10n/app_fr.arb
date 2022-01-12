@@ -1,4 +1,17 @@
 {
+    "intro1Title": "Déménageurs créatifs",
+    "intro2Title": "Les créatifs",
+    "intro3Title": "Les déménageurs",
+    "intro1Text": "La seule véritable application sociale de réseautage d'affaires",
+    "intro2Text": "Les créatifs sont des entrepreneurs qui ont une idée, un produit, une invention, etc. cherchant de l'aide pour le mettre sur le marché",
+    "intro3Text": "La seule véritable application sociale de réseautage d'affaires",
+    "intro4Title": "Lequel est-tu?",
+    "intro4Text": "Vous pouvez choisir d'être un créatif ou un déménageur, cela dépend de vous et de votre intérêt personnel",
+    "signUp": "S'inscrire",
+    "password": "Mot de passe",
+    "email": "E-mail",
+    "username":"Nom d'utilisateur",
+
     "ok": "Ok",
     "save": "Save",
     "profileUpdated": "Profile updated successfully",

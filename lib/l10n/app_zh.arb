@@ -1,4 +1,17 @@
 {
+    "intro1Title": "创意推动者",
+    "intro2Title": "创意人",
+    "intro3Title": "搬运工",
+    "intro1Text": "唯一真正的商务网络社交应用",
+    "intro2Text": "创意者是拥有想法、产品、发明等的企业家，他们寻求帮助以将其推向市场",
+    "intro3Text": "唯一真正的商务网络社交应用",
+    "intro4Title": "你是哪个？",
+    "intro4Text": "您可以选择成为创意者或推动者，这取决于您和您的个人兴趣",
+    "singUp":"报名",
+    "password": "密码",
+    "email":"电子邮件",
+    "username":"用户名",
+
     "ok": "Ok",
     "save": "Save",
     "profileUpdated": "Profile updated successfully",

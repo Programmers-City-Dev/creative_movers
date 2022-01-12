@@ -2,6 +2,8 @@ import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/auth/widgets/signup_form.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
@@ -17,17 +19,29 @@ class _SignupScreenState extends State<SignupScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-
             padding: const EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: const [
-                Center(child: Image(image: AssetImage(AppIcons.icSplashLogo,),height: 150,width: 150,)),
-                SizedBox(height: 16,),
-                Text('Create Account..',style: TextStyle(fontSize: 25,fontWeight: FontWeight.w700),),
-                SignupForm()
+              children: [
+                const Center(
+                    child: Image(
+                  image: AssetImage(
+                    AppIcons.icSplashLogo,
+                  ),
+                  height: 150,
+                  width: 150,
+                )),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.createAccount,
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.w700),
+                ),
+                const SignupForm()
               ],
             ),
           ),

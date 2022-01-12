@@ -1,4 +1,17 @@
 {
+    "intro1Title": "クリエイティブムーバー",
+    "intro2Title": "クリエイティブ",
+    "intro3Title": "発動機",
+    "intro1Text": "唯一の真のビジネスネットワーキングソーシャルアプリケーション",
+    "intro2Text": "クリエイティブとは、アイデア、製品、発明などを市場に投入するための支援を求めている起業家です。",
+    "intro3Text": "唯一の真のビジネスネットワーキングソーシャルアプリケーション",
+    "intro4Title": "あなたはどっち？",
+    "intro4Text": "あなたは創造的または引っ越し業者になることを選ぶことができます、それはあなたとあなたの個人的な興味次第です",
+    "signUp": "サインアップ",
+    "password": "パスワード",
+    "email": "Eメール",
+    "username":"ユーザー名",
+
     "ok": "Ok",
     "save": "Save",
     "profileUpdated": "Profile updated successfully",
