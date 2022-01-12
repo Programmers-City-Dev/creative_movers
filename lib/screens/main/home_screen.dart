@@ -18,70 +18,66 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final screens = [
-    FeedScreen(),
-    BuisnessScreen(),
-    ContactScreen(),
-    ChatScreen()
+    const FeedScreen(),
+    const BuisnessScreen(),
+    const ContactScreen(),
+    const ChatScreen()
   ];
   int _screenIndex = 0;
 
   final bottomNavItems = [
     BottomNavigationBarItem(
-      icon: SvgPicture.asset(
-        AppIcons.svgFeed,
-        color: AppColors.primaryColor,
-      ),
-      // activeColor: AppColors.primaryColor,
-      // title: const Text(''),
+        icon: SvgPicture.asset(AppIcons.svgFeed, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
 
-      activeIcon: const NavSelectedIcon(
-        label: 'FEED',
-        strIcon: AppIcons.svgFeed,
-      ),
-      label: 'FEED',
-    ),
+        activeIcon: const NavSelectedIcon(
+          label: 'Feed',
+          strIcon: AppIcons.svgFeed,
+        ),
+        label: 'Feed'),
     BottomNavigationBarItem(
-      icon: SvgPicture.asset(
-        AppIcons.svgFeed,
-        color: AppColors.primaryColor,
-      ),
-      // activeColor: AppColors.primaryColor,
-      // title: const Text(''),
+        icon: SvgPicture.asset(AppIcons.svgStore, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
 
-      activeIcon: const NavSelectedIcon(
-        label: 'FEED',
-        strIcon: AppIcons.svgFeed,
-      ),
-      label: 'FEED',
-    ),
+        activeIcon: const NavSelectedIcon(
+          label: 'Biz',
+          strIcon: AppIcons.svgStore,
+        ),
+        label: 'Biz'),
     BottomNavigationBarItem(
-      icon: SvgPicture.asset(
-        AppIcons.svgFeed,
-        color: AppColors.primaryColor,
-      ),
-      // activeColor: AppColors.primaryColor,
-      // title: const Text(''),
+        icon: SvgPicture.asset(AppIcons.svgPeople, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
 
-      activeIcon: const NavSelectedIcon(
-        label: 'FEED',
-        strIcon: AppIcons.svgFeed,
-      ),
-      label: 'FEED',
-    ),
+        activeIcon: const NavSelectedIcon(
+          label: 'List',
+          strIcon: AppIcons.svgPeople,
+        ),
+        label: 'Contact'),
     BottomNavigationBarItem(
-      icon: SvgPicture.asset(
-        AppIcons.svgFeed,
-        color: AppColors.primaryColor,
-      ),
-      // activeColor: AppColors.primaryColor,
-      // title: const Text(''),
+        icon: SvgPicture.asset(AppIcons.svgMessage, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
 
-      activeIcon: const NavSelectedIcon(
-        label: 'FEED',
-        strIcon: AppIcons.svgFeed,
-      ),
-      label: 'FEED',
-    ),
+        activeIcon: const NavSelectedIcon(
+          label: 'Chat',
+          strIcon: AppIcons.svgMessage,
+        ),
+        label: 'Chat'),
+    const BottomNavigationBarItem(
+        icon: CircleAvatar(
+          backgroundColor: AppColors.lightBlue,
+          radius: 22,
+          child: CircleAvatar(
+            radius: 20,
+          ),
+        ),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
+
+        label: 'Profile'),
   ];
 
   // final bottomNavItems = [
@@ -110,17 +106,47 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.smokeWhite,
       appBar: AppBar(
         primary: true,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.search,
+              color: AppColors.textColor,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.notifications,
+              color: AppColors.textColor,
+
+            ),
+          ),
+        ],
+        leading: const Icon(
+          Icons.menu_outlined,
+          color: AppColors.textColor,
+        ),
+        title: const Text('Creative Movers',style: TextStyle(color: AppColors.textColor),),
         backgroundColor: Colors.white,
       ),
       body: screens[_screenIndex],
-      bottomNavigationBar: Container(
-        height: 50,
-        width: 45,
-        padding: const EdgeInsets.symmetric(vertical: 0),
+      bottomNavigationBar: SizedBox(
+        height: 55,
+        width: 55,
         child: BottomNavigationBar(
-
+          selectedFontSize: 0.0,
+          unselectedFontSize: 0.0,
+          selectedIconTheme: const IconThemeData(size: 1),
+          unselectedIconTheme: const IconThemeData(size: 2),
+          elevation: 25,
+          iconSize: 0,
+          type: BottomNavigationBarType.shifting,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
           items: bottomNavItems,
           currentIndex: _screenIndex,
           onTap: (index) {

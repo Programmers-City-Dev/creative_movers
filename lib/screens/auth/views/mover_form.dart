@@ -1,5 +1,6 @@
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 
@@ -65,7 +66,7 @@ class _MoverFormState extends State<MoverForm> {
                   ),
                   FormField<String>(
                     initialValue: _groupValue,
-                    autovalidate: true,
+                    autovalidateMode: AutovalidateMode.always,
                     validator: (value) {
                       // return 'selext';
                       if (_groupValue.isEmpty) {
@@ -115,18 +116,18 @@ class _MoverFormState extends State<MoverForm> {
                     'What categories of investment \nare you interested in ?',
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
-                  Column(
-                    children: [
-                      FormField<List<String>>(
-                          autovalidateMode: AutovalidateMode.always,
-                          initialValue: selectedCategories,
-                          validator: (val) {
-                            if (selectedCategories.isEmpty) {
-                              return 'Select atleast on category';
-                            }
-                          },
-                          builder: (state) {
-                            return Column(
+                  Column(children: [
+                    FormField<List<String>>(
+                        autovalidateMode: AutovalidateMode.always,
+                        initialValue: selectedCategories,
+                        validator: (val) {
+                          if (selectedCategories.isEmpty) {
+                            return 'Select at least on category';
+                          }
+                        },
+                        builder: (state) {
+                          return
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // ChipsChoice<String>.multiple(

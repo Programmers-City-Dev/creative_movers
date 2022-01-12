@@ -13,7 +13,7 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 44,
       child: TextField(
         onSubmitted: onSubmitted,
@@ -22,10 +22,10 @@ class SearchField extends StatelessWidget {
         maxLines: 1,
         decoration: InputDecoration(
           hintText: hint,
-          contentPadding: EdgeInsets.all(7),
+          contentPadding: const EdgeInsets.all(7),
           filled: true,
           fillColor: AppColors.lightGrey,
-          suffixIcon: Icon(
+          suffixIcon: const Icon(
             Icons.search,
             color: AppColors.textColor,
           ),
