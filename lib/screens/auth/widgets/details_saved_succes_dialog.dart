@@ -76,8 +76,8 @@ class _DetailsSavedDialogState extends State<DetailsSavedDialog> {
 
                         style: OutlinedButton.styleFrom(
                           primary: AppColors.primaryColor,
-                            side:BorderSide(color: AppColors.primaryColor) ,
-                            padding: EdgeInsets.all(16)),
+                            side:const BorderSide(color: AppColors.primaryColor) ,
+                            padding: const EdgeInsets.all(16)),
                         onPressed: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(),));
                         }, child:const Text("Finalize Your Profile",style: TextStyle(color: AppColors.primaryColor),),)),
