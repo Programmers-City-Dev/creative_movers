@@ -16,18 +16,22 @@ class NavSelectedIcon extends StatefulWidget {
 class _NavSelectedIconState extends State<NavSelectedIcon> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 7),
-      // margin: const EdgeInsets.symmetric(horizontal:2 ),
-      decoration: BoxDecoration(color: AppColors.primaryColor,borderRadius: BorderRadius.circular(16)),
-      // alignment: Alignment.center,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-        SvgPicture.asset(widget.strIcon,width: 16,color: AppColors.smokeWhite,),
-        const SizedBox(width: 5,),
-         Text(widget.label,style: const TextStyle(fontSize: 10,color: AppColors.smokeWhite,fontWeight: FontWeight.bold),)
-      ],),
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 2000),
+      opacity: 1,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15,horizontal:12 ),
+        // margin: const EdgeInsets.symmetric(horizontal:2 ),
+        decoration: BoxDecoration(color: AppColors.primaryColor,borderRadius: BorderRadius.circular(5)),
+        // alignment: Alignment.center,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+          SvgPicture.asset(widget.strIcon,width: 16,color: AppColors.smokeWhite,),
+          const SizedBox(width: 5,),
+           Text(widget.label,style: const TextStyle(fontSize: 10,color: AppColors.smokeWhite,fontWeight: FontWeight.bold),)
+        ],),
+      ),
     );
   }
 }
