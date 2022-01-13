@@ -106,56 +106,96 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.smokeWhite,
-      appBar: AppBar(
-        primary: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.search,
-              color: AppColors.textColor,
+        backgroundColor: AppColors.smokeWhite,
+        appBar: AppBar(
+          elevation: 0,
+          primary: true,
+          actions: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.search,
+                color: AppColors.textColor,
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.notifications,
-              color: AppColors.textColor,
-
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.notifications,
+                color: AppColors.textColor,
+              ),
             ),
+          ],
+          leading: const Icon(
+            Icons.menu_outlined,
+            color: AppColors.textColor,
           ),
-        ],
-        leading: const Icon(
-          Icons.menu_outlined,
-          color: AppColors.textColor,
+          title: const Text(
+            'Creative Movers',
+            style: TextStyle(color: AppColors.textColor),
+          ),
+          backgroundColor: Colors.white,
         ),
-        title: const Text('Creative Movers',style: TextStyle(color: AppColors.textColor),),
-        backgroundColor: Colors.white,
-      ),
-      body: screens[_screenIndex],
-      bottomNavigationBar: SizedBox(
-        height: 55,
-        width: 55,
-        child: BottomNavigationBar(
-          selectedFontSize: 0.0,
-          unselectedFontSize: 0.0,
-          selectedIconTheme: const IconThemeData(size: 1),
-          unselectedIconTheme: const IconThemeData(size: 2),
-          elevation: 25,
-          iconSize: 0,
-          type: BottomNavigationBarType.shifting,
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
-          items: bottomNavItems,
-          currentIndex: _screenIndex,
-          onTap: (index) {
-            setState(() {
-              _screenIndex = index;
-            });
-          },
-        ),
-      ),
-    );
+        body: screens[_screenIndex],
+        bottomNavigationBar: BottomNavyBar(
+          selectedIndex: _screenIndex,
+          showElevation: true, // use this to remove appBar's elevation
+          itemCornerRadius: 4,
+          containerHeight: kToolbarHeight,
+          onItemSelected: (index) => setState(() {
+            _screenIndex = index;
+            // _pageController.animateToPage(index,
+            //     duration: Duration(milliseconds: 300), curve: Curves.ease);
+          }),
+          items: [
+            BottomNavyBarItem(
+                icon: const Icon(Icons.rss_feed_outlined),
+                title: const Text('Feed'),
+                // textAlign: TextAlign.center,
+                activeColor: AppColors.primaryColor,
+                inactiveColor: Colors.blueGrey),
+            BottomNavyBarItem(
+                icon: const Icon(Icons.work_outline),
+                title: const Text('Biz'),
+                activeColor: AppColors.primaryColor,
+                inactiveColor: Colors.blueGrey),
+            BottomNavyBarItem(
+                icon: const Icon(Icons.chat_bubble_outline_outlined),
+                title: const Text('Chats'),
+                activeColor: AppColors.primaryColor,
+                inactiveColor: AppColors.primaryColor),
+            BottomNavyBarItem(
+                icon: const CircleAvatar(
+                  radius: 17,
+                  backgroundImage: AssetImage('assets/images/slide_i.png'),
+                ),
+                title: const Text('Profile'),
+                activeColor: AppColors.primaryColor,
+                inactiveColor: Colors.blueGrey),
+          ],
+        ));
   }
 }
+
+// SizedBox(
+//         height: 55,
+//         width: 55,
+//         child: BottomNavigationBar(
+//           selectedFontSize: 0.0,
+//           unselectedFontSize: 0.0,
+//           selectedIconTheme: const IconThemeData(size: 1),
+//           unselectedIconTheme: const IconThemeData(size: 2),
+//           elevation: 25,
+//           iconSize: 0,
+//           type: BottomNavigationBarType.shifting,
+//           showUnselectedLabels: false,
+//           showSelectedLabels: false,
+//           items: bottomNavItems,
+//           currentIndex: _screenIndex,
+//           onTap: (index) {
+//             setState(() {
+//               _screenIndex = index;
+//             });
+//           },
+//         ),
+//       ),
