@@ -25,84 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   int _screenIndex = 0;
 
-  final bottomNavItems = [
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgFeed, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'Feed',
-          strIcon: AppIcons.svgFeed,
-        ),
-        label: 'Feed'),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgStore, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'Biz',
-          strIcon: AppIcons.svgStore,
-        ),
-        label: 'Biz'),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgPeople, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'List',
-          strIcon: AppIcons.svgPeople,
-        ),
-        label: 'Contact'),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgMessage, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'Chat',
-          strIcon: AppIcons.svgMessage,
-        ),
-        label: 'Chat'),
-    const BottomNavigationBarItem(
-        icon: CircleAvatar(
-          backgroundColor: AppColors.lightBlue,
-          radius: 22,
-          child: CircleAvatar(
-            radius: 20,
-          ),
-        ),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        label: 'Profile'),
-  ];
-
-  // final bottomNavItems = [
-  //   BottomNavigationBarItem(
-  //
-  //     icon: SvgPicture.asset(AppIcons.svgFeed,color: AppColors.primaryColor,),
-  //     activeIcon:  const NavSelectedIcon(label: 'FEED', strIcon: AppIcons.svgFeed,),
-  //     label: 'FEED',
-  //   ),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgStore,color: AppColors.primaryColor,),
-  //       activeIcon:  const NavSelectedIcon(label: 'BIZ PAGE', strIcon: AppIcons.svgStore,),
-  //       label: 'BUISNESS PAGE'),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgPeople,color: AppColors.primaryColor,),
-  //
-  //       activeIcon:  const NavSelectedIcon(label: 'CONTACT',strIcon: AppIcons.svgPeople,),
-  //       label: 'CONTACT'),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgMessage,color: AppColors.primaryColor,),
-  //
-  //       activeIcon:  const NavSelectedIcon(label: 'CHAT', strIcon: AppIcons.svgMessage,),
-  //       label: 'CHAT'),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,8 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: BottomNavyBar(
           selectedIndex: _screenIndex,
           showElevation: true, // use this to remove appBar's elevation
-          itemCornerRadius: 4,
-          containerHeight: kToolbarHeight,
+          itemCornerRadius: 8,
+          containerHeight: kToolbarHeight + 8,
           onItemSelected: (index) => setState(() {
             _screenIndex = index;
             // _pageController.animateToPage(index,
@@ -149,21 +71,48 @@ class _HomeScreenState extends State<HomeScreen> {
           }),
           items: [
             BottomNavyBarItem(
-                icon: const Icon(Icons.rss_feed_outlined),
-                title: const Text('Feed'),
-                // textAlign: TextAlign.center,
+                // icon: const Icon(Icons.work_outline),
+                icon: SvgPicture.asset(
+                  'assets/svgs/feed.svg',
+                  color: AppColors.primaryColor,
+                ),
+                title: const Text(
+                  'Feeds',
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                  ),
+                ),
                 activeColor: AppColors.primaryColor,
-                inactiveColor: Colors.blueGrey),
+                inactiveColor: Colors.transparent),
             BottomNavyBarItem(
-                icon: const Icon(Icons.work_outline),
-                title: const Text('Biz'),
-                activeColor: AppColors.primaryColor,
-                inactiveColor: Colors.blueGrey),
+                // icon: const Icon(Icons.work_outline),
+                icon: SvgPicture.asset(
+                  'assets/svgs/biz.svg',
+                  color: AppColors.primaryColor,
+                ),
+                title: const Text(
+                  'Biz Page',
+                  style: TextStyle(color: AppColors.primaryColor),
+                ),
+                activeColor:
+                    _screenIndex == 1 ? AppColors.primaryColor : Colors.white,
+                inactiveColor: Colors.transparent),
             BottomNavyBarItem(
-                icon: const Icon(Icons.chat_bubble_outline_outlined),
-                title: const Text('Chats'),
+                // icon: const Icon(Icons.work_outline),
+                icon: SvgPicture.asset(
+                  'assets/svgs/chats.svg',
+                  color: AppColors.primaryColor,
+                ),
+                title: Text(
+                  'Chats',
+                  style: TextStyle(
+                    color: _screenIndex == 2
+                        ? AppColors.primaryColor
+                        : Colors.white,
+                  ),
+                ),
                 activeColor: AppColors.primaryColor,
-                inactiveColor: AppColors.primaryColor),
+                inactiveColor: Colors.transparent),
             BottomNavyBarItem(
                 icon: const CircleAvatar(
                   radius: 17,
