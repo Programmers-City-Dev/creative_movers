@@ -29,35 +29,35 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.smokeWhite,
-        appBar: AppBar(
-          elevation: 0,
-          primary: true,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.search,
-                color: AppColors.textColor,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.notifications,
-                color: AppColors.textColor,
-              ),
-            ),
-          ],
-          leading: const Icon(
-            Icons.menu_outlined,
-            color: AppColors.textColor,
-          ),
-          title: const Text(
-            'Creative Movers',
-            style: TextStyle(color: AppColors.textColor),
-          ),
-          backgroundColor: Colors.white,
-        ),
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   primary: true,
+        //   actions: const [
+        //     Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Icon(
+        //         Icons.search,
+        //         color: AppColors.textColor,
+        //       ),
+        //     ),
+        //     Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Icon(
+        //         Icons.notifications,
+        //         color: AppColors.textColor,
+        //       ),
+        //     ),
+        //   ],
+        //   leading: const Icon(
+        //     Icons.menu_outlined,
+        //     color: AppColors.textColor,
+        //   ),
+        //   title: const Text(
+        //     'Creative Movers',
+        //     style: TextStyle(color: AppColors.textColor),
+        //   ),
+        //   backgroundColor: Colors.white,
+        // ),
         body: screens[_screenIndex],
         bottomNavigationBar: BottomNavyBar(
           selectedIndex: _screenIndex,
