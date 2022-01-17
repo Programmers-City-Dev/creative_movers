@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 class StatusViews extends StatefulWidget {
-  const StatusViews({Key? key}) : super(key: key);
+  final bool? curvedBottom;
+
+  const StatusViews({Key? key, this.curvedBottom = false}) : super(key: key);
 
   @override
   _StatusViewsState createState() => _StatusViewsState();
@@ -14,11 +16,18 @@ class _StatusViewsState extends State<StatusViews> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 8),
-      decoration:  const BoxDecoration(
-        border: Border(bottom: BorderSide( width:10,color: Colors.red,style: BorderStyle.none)) ,
-          color: Colors.white,
-         ),
+      decoration: BoxDecoration(
+        borderRadius: widget.curvedBottom!
+            ? const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              )
+            : BorderRadius.zero,
+        // border: const Border(
+        //     bottom: BorderSide(
+        //         width: 10, color: Colors.red, style: BorderStyle.none)),
+        color: Colors.white,
+      ),
       alignment: Alignment.center,
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -29,29 +38,30 @@ class _StatusViewsState extends State<StatusViews> {
             height: 90,
             padding: const EdgeInsets.all(8.0),
             child: Stack(
-              children:  [
+              children: [
                 CircleAvatar(
                   radius: 25,
                   foregroundColor: Colors.red,
                   backgroundImage: const NetworkImage(
                     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
                   ),
-                  child:CircleAvatar(
+                  child: CircleAvatar(
                     radius: 25,
                     backgroundColor: AppColors.lightGrey.withOpacity(0.5),
-                    child:  Center(
-                    child: Container(
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Icon(
-                        Icons.add,
-                        size: 12,
-                        color: Colors.white,
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Icon(
+                          Icons.add,
+                          size: 12,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),),
+                  ),
                 )
               ],
             ),
@@ -78,7 +88,6 @@ class _StatusViewsState extends State<StatusViews> {
                         backgroundImage: NetworkImage(
                           'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
                         ),
-
                       ),
                     ),
                     Padding(

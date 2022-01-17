@@ -13,19 +13,18 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top:10),
+      margin: const EdgeInsets.only(top: 10),
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: EdgeInsets.all(10),
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
                 Text(
-                  'Hello  Destinty',
+                  'Tell us about it',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
@@ -42,7 +41,7 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10,vertical:8 ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -53,8 +52,13 @@ class _PostCardState extends State<PostCard> {
                         Icons.photo_size_select_actual,
                         color: AppColors.primaryColor,
                       ),
-                      SizedBox(width: 5,),
-                      Text('Photo',style: TextStyle(fontSize: 13),)
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Photo',
+                        style: TextStyle(fontSize: 13),
+                      )
                     ],
                   ),
                 ),
@@ -65,8 +69,13 @@ class _PostCardState extends State<PostCard> {
                         Icons.videocam_rounded,
                         color: Colors.purple,
                       ),
-                      SizedBox(width: 5,),
-                      Text('Video',style: TextStyle(fontSize: 13),)
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Video',
+                        style: TextStyle(fontSize: 13),
+                      )
                     ],
                   ),
                 ),
@@ -77,12 +86,16 @@ class _PostCardState extends State<PostCard> {
                         Icons.video_call_rounded,
                         color: Colors.red,
                       ),
-                      SizedBox(width: 5,),
-                      Text('Go Live',style: TextStyle(fontSize: 13),)
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Go Live',
+                        style: TextStyle(fontSize: 13),
+                      )
                     ],
                   ),
                 ),
-
               ],
             ),
           )

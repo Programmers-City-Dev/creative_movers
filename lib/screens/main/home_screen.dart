@@ -4,8 +4,6 @@ import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
-import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
-import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const FeedScreen(),
     const BuisnessScreen(),
     const ContactScreen(),
-    const ChatScreen(),
-    const ProfileScreen(),
+    const ChatScreen()
   ];
   int _screenIndex = 0;
 
@@ -113,26 +110,19 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           elevation: 0,
           primary: true,
-          actions: [
-            const Padding(
+          actions: const [
+            Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
                 Icons.search,
                 color: AppColors.textColor,
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const NotificationScreen(),
-                ));
-              },
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.notifications,
-                  color: AppColors.textColor,
-                ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.notifications,
+                color: AppColors.textColor,
               ),
             ),
           ],
@@ -149,8 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: screens[_screenIndex],
         bottomNavigationBar: BottomNavyBar(
           selectedIndex: _screenIndex,
-          showElevation: true,
-          // use this to remove appBar's elevation
+          showElevation: true, // use this to remove appBar's elevation
           itemCornerRadius: 4,
           containerHeight: kToolbarHeight,
           onItemSelected: (index) => setState(() {
@@ -170,11 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: const Text('Biz'),
                 activeColor: AppColors.primaryColor,
                 inactiveColor: Colors.blueGrey),
-            BottomNavyBarItem(
-                icon: const Icon(Icons.people),
-                title: const Text('Connects'),
-                activeColor: AppColors.primaryColor,
-                inactiveColor: AppColors.primaryColor),
             BottomNavyBarItem(
                 icon: const Icon(Icons.chat_bubble_outline_outlined),
                 title: const Text('Chats'),
