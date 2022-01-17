@@ -36,6 +36,9 @@ dependencies:
   dotted_border: ^2.0.0+1
   bottom_navy_bar: ^6.0.0
   intl: ^0.17.0
+  dropdown_search: ^2.0.1
+  dropdown_plus: ^0.0.9
+  image_stack: ^2.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

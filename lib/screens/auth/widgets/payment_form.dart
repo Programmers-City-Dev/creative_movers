@@ -18,8 +18,8 @@ class _PaymentFormState extends State<PaymentForm> {
 
   bool saveDetails = true;
   List<String> options = [
-    'Start Free Trial For 14 days',
-    'Pay NGN14,00 now (Monthly Reoccuring Fee)'
+    'Start Free Trial For 9 days',
+    'Pay \$7.0 now (Monthly Reoccuring Fee)'
   ];
   String selectedPaymentMode = 'free';
 

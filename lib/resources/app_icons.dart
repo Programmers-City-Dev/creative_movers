@@ -11,6 +11,7 @@ class AppIcons{
   static const String  svgPeople = '$svgBasePath/people.svg';
   static const String  svgFeed = '$svgBasePath/feed.svg';
   static const String  svgStore = '$svgBasePath/store.svg';
+  static const String  svgLogo = '$svgBasePath/creativelogo.svg';
 
 
 //  PNGS

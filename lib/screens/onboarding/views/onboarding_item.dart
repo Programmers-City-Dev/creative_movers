@@ -23,9 +23,9 @@ class _OnboardingItemState extends State<OnboardingItem> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColors.primaryColor.withOpacity(0.2),
-                AppColors.primaryColor.withOpacity(0.5),
-                AppColors.primaryColor.withOpacity(0.8),
+                    AppColors.OnboardingColor.withOpacity(0.2),
+                AppColors.OnboardingColor.withOpacity(0.5),
+                AppColors.OnboardingColor.withOpacity(1)
 
               ])),
         ),

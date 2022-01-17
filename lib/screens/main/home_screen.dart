@@ -26,39 +26,117 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   int _screenIndex = 0;
 
+  final bottomNavItems = [
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset(AppIcons.svgFeed, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
+
+        activeIcon: const NavSelectedIcon(
+          label: 'Feed',
+          strIcon: AppIcons.svgFeed,
+        ),
+        label: 'Feed'),
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset(AppIcons.svgStore, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
+
+        activeIcon: const NavSelectedIcon(
+          label: 'Biz',
+          strIcon: AppIcons.svgStore,
+        ),
+        label: 'Biz'),
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset(AppIcons.svgPeople, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
+
+        activeIcon: const NavSelectedIcon(
+          label: 'List',
+          strIcon: AppIcons.svgPeople,
+        ),
+        label: 'Contact'),
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset(AppIcons.svgMessage, color: Colors.grey),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
+
+        activeIcon: const NavSelectedIcon(
+          label: 'Chat',
+          strIcon: AppIcons.svgMessage,
+        ),
+        label: 'Chat'),
+    const BottomNavigationBarItem(
+        icon: CircleAvatar(
+          backgroundColor: AppColors.lightBlue,
+          radius: 22,
+          child: CircleAvatar(
+            radius: 20,
+          ),
+        ),
+        // activeColor: AppColors.primaryColor,
+        // title: const Text(''),
+
+        label: 'Profile'),
+  ];
+
+  // final bottomNavItems = [
+  //   BottomNavigationBarItem(
+  //
+  //     icon: SvgPicture.asset(AppIcons.svgFeed,color: AppColors.primaryColor,),
+  //     activeIcon:  const NavSelectedIcon(label: 'FEED', strIcon: AppIcons.svgFeed,),
+  //     label: 'FEED',
+  //   ),
+  //   BottomNavigationBarItem(
+  //       icon: SvgPicture.asset(AppIcons.svgStore,color: AppColors.primaryColor,),
+  //       activeIcon:  const NavSelectedIcon(label: 'BIZ PAGE', strIcon: AppIcons.svgStore,),
+  //       label: 'BUISNESS PAGE'),
+  //   BottomNavigationBarItem(
+  //       icon: SvgPicture.asset(AppIcons.svgPeople,color: AppColors.primaryColor,),
+  //
+  //       activeIcon:  const NavSelectedIcon(label: 'CONTACT',strIcon: AppIcons.svgPeople,),
+  //       label: 'CONTACT'),
+  //   BottomNavigationBarItem(
+  //       icon: SvgPicture.asset(AppIcons.svgMessage,color: AppColors.primaryColor,),
+  //
+  //       activeIcon:  const NavSelectedIcon(label: 'CHAT', strIcon: AppIcons.svgMessage,),
+  //       label: 'CHAT'),
+  // ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.smokeWhite,
-        // appBar: AppBar(
-        //   elevation: 0,
-        //   primary: true,
-        //   actions: const [
-        //     Padding(
-        //       padding: EdgeInsets.all(8.0),
-        //       child: Icon(
-        //         Icons.search,
-        //         color: AppColors.textColor,
-        //       ),
-        //     ),
-        //     Padding(
-        //       padding: EdgeInsets.all(8.0),
-        //       child: Icon(
-        //         Icons.notifications,
-        //         color: AppColors.textColor,
-        //       ),
-        //     ),
-        //   ],
-        //   leading: const Icon(
-        //     Icons.menu_outlined,
-        //     color: AppColors.textColor,
-        //   ),
-        //   title: const Text(
-        //     'Creative Movers',
-        //     style: TextStyle(color: AppColors.textColor),
-        //   ),
-        //   backgroundColor: Colors.white,
-        // ),
+        appBar: AppBar(
+          elevation: 0,
+          primary: true,
+          actions: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.search,
+                color: AppColors.textColor,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.notifications,
+                color: AppColors.textColor,
+              ),
+            ),
+          ],
+          leading: const Icon(
+            Icons.menu_outlined,
+            color: AppColors.textColor,
+          ),
+          title: const Text(
+            'Creative Movers',
+            style: TextStyle(color: AppColors.textColor),
+          ),
+          backgroundColor: Colors.white,
+        ),
         body: screens[_screenIndex],
         bottomNavigationBar: GNav(
             haptic: true, // haptic feedback
