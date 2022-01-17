@@ -48,7 +48,7 @@ class _DetailsSavedDialogState extends State<DetailsSavedDialog> {
                 height: 10,
               ),
               const Text(
-                '\$700,0',
+                '\$7.0',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Container(

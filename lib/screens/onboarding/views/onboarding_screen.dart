@@ -55,7 +55,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
-              ), img: AppIcons.imgSlide2,
+              ), img: AppIcons.imgSlide3,
             ),
             OnboardingItem(
               header: AppLocalizations.of(context)!.intro4Title,
@@ -64,7 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
-              ), img: AppIcons.imgSlide2,
+              ), img: AppIcons.imgSlide4,
             ),
           ],
         ),
@@ -87,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 100,
                     width: 100,
 
-                    child:  SvgPicture.asset(AppIcons.svgSplashLogo,color: AppColors.primaryColor,),
+                    child:  SvgPicture.asset(AppIcons.svgLogo,color: AppColors.primaryColor,),
 
                   ),
                 ),

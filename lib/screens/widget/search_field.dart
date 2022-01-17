@@ -25,7 +25,7 @@ class SearchField extends StatelessWidget {
           contentPadding: const EdgeInsets.all(7),
           filled: true,
           fillColor: AppColors.lightGrey,
-          suffixIcon: const Icon(
+          prefixIcon: const Icon(
             Icons.search,
             color: AppColors.textColor,
           ),

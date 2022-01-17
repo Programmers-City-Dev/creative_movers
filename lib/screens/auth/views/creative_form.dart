@@ -1,4 +1,5 @@
 import 'package:creative_movers/resources/app_icons.dart';
+import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
@@ -17,10 +18,6 @@ class CreativeForm extends StatefulWidget {
 
 class _CreativeFormState extends State<CreativeForm> {
   List<String> categories = [
-    'Agriculture',
-    'Education',
-    'Oil and Gas',
-    'Information Technology'
   ];
   String cat = '';
 
@@ -44,22 +41,73 @@ class _CreativeFormState extends State<CreativeForm> {
               const SizedBox(
                 height: 16,
               ),
-              DropdownButtonFormField<String>(
-                  onChanged: (value) {
-                    // cat = value!;
-                  },
-                  decoration: const InputDecoration(
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.textColor)),
-                      labelStyle: TextStyle(color: AppColors.textColor),
-                      labelText: 'Select Buisness Category',
-                      contentPadding: EdgeInsets.all(16),
-                      border: OutlineInputBorder()),
-                  value: null,
-                  items: categories
-                      .map((e) =>
-                          DropdownMenuItem<String>(value: e, child: Text(e)))
-                      .toList()),
-              SizedBox(
+              // DropdownButtonFormField<String>(
+              //     onChanged: (value) {
+              //       // cat = value!;
+              //     },
+              //     decoration: const InputDecoration(
+              //         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.textColor)),
+              //         labelStyle: TextStyle(color: AppColors.textColor),
+              //         labelText: 'Select Buisness Category',
+              //         contentPadding: EdgeInsets.all(16),
+              //         border: OutlineInputBorder()),
+              //     value: null,
+              //     items: categories
+              //         .map((e) =>
+              //             DropdownMenuItem<String>(value: e, child: Text(e)))
+              //         .toList()),
+
+              InkWell(
+                  child: Container(
+
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: AppColors.textColor),
+                    ),
+
+                    child: const Padding(
+                      padding: EdgeInsets.all(18.0),
+                      child: Text('Select Category'),
+                    ),
+
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                  ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) =>
+                          SearchDropdown(onSaved: (list) {
+                            setState(() {
+                              categories = list;
+                            });
+                          },),
+                    );
+                  }),
+              Wrap(
+                alignment: WrapAlignment.start,
+                runAlignment: WrapAlignment.start,
+                direction: Axis.horizontal,
+                spacing: 5,
+                children: List<Widget>.generate(
+                    categories.length,
+                        (index) =>
+                        Chip(
+                          label: Text(categories[index]),
+                          deleteIcon: const Icon(
+                              Icons.close),
+                          onDeleted: () {
+                            setState(() {
+                              categories.remove(
+                                  categories[index]);
+                            });
+                          },
+                        )),
+              ),
+
+              const SizedBox(
                 height: 10,
               ),
               TextFormField(
@@ -67,7 +115,7 @@ class _CreativeFormState extends State<CreativeForm> {
                   decoration:  AppStyles.labeledFieldDecoration(label: 'Brief description of your buisness',hintText: 'Brief description of your buisness')
 
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               TextFormField(
