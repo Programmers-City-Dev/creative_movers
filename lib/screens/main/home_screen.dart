@@ -8,6 +8,7 @@ import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -59,70 +60,80 @@ class _HomeScreenState extends State<HomeScreen> {
         //   backgroundColor: Colors.white,
         // ),
         body: screens[_screenIndex],
-        bottomNavigationBar: BottomNavyBar(
-          selectedIndex: _screenIndex,
-          showElevation: true, // use this to remove appBar's elevation
-          itemCornerRadius: 8,
-          containerHeight: kToolbarHeight + 8,
-          onItemSelected: (index) => setState(() {
-            _screenIndex = index;
-            // _pageController.animateToPage(index,
-            //     duration: Duration(milliseconds: 300), curve: Curves.ease);
-          }),
-          items: [
-            BottomNavyBarItem(
-                // icon: const Icon(Icons.work_outline),
-                icon: SvgPicture.asset(
+        bottomNavigationBar: GNav(
+            haptic: true, // haptic feedback
+            tabBorderRadius: 15,
+            // tabActiveBorder:
+            //     Border.all(color: Colors.black, width: 1), // tab button border
+            // tabBorder:
+            //     Border.all(color: Colors.grey, width: 1), // tab button border
+            // tabShadow: [
+            //   BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
+            // ], // tab button shadow
+            curve: Curves.linear, // tab animation curves
+            duration: Duration(milliseconds: 200), // tab animation duration
+            gap: 8, // the tab button gap between icon and text
+            color: AppColors.primaryColor, // unselected icon color
+            activeColor: AppColors.primaryColor, // selected icon and text color
+            iconSize: 24,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            backgroundColor: Colors.white,
+            onTabChange: (value) {
+              setState(() {
+                _screenIndex = value;
+              });
+            },
+            tabMargin: EdgeInsets.symmetric(
+                vertical: 12, horizontal: 0), // tab button icon size
+            tabBackgroundColor: AppColors.primaryColor
+                .withOpacity(0.3), // selected tab background color
+            padding: EdgeInsets.symmetric(
+                horizontal: 20, vertical: 16), // navigation bar padding
+            tabs: [
+              GButton(
+                icon: Icons.home,
+                text: 'Feeds',
+                leading: SvgPicture.asset(
                   'assets/svgs/feed.svg',
                   color: AppColors.primaryColor,
+                  width: 24,
                 ),
-                title: const Text(
-                  'Feeds',
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                activeColor: AppColors.primaryColor,
-                inactiveColor: Colors.transparent),
-            BottomNavyBarItem(
-                // icon: const Icon(Icons.work_outline),
-                icon: SvgPicture.asset(
+              ),
+              GButton(
+                icon: Icons.business,
+                text: 'Biz Page',
+                leading: SvgPicture.asset(
                   'assets/svgs/biz.svg',
                   color: AppColors.primaryColor,
+                  width: 24,
                 ),
-                title: const Text(
-                  'Biz Page',
-                  style: TextStyle(color: AppColors.primaryColor),
-                ),
-                activeColor:
-                    _screenIndex == 1 ? AppColors.primaryColor : Colors.white,
-                inactiveColor: Colors.transparent),
-            BottomNavyBarItem(
-                // icon: const Icon(Icons.work_outline),
-                icon: SvgPicture.asset(
+              ),
+              GButton(
+                icon: Icons.chat_sharp,
+                text: 'Chats',
+                leading: SvgPicture.asset(
                   'assets/svgs/chats.svg',
                   color: AppColors.primaryColor,
+                  width: 24,
                 ),
-                title: Text(
-                  'Chats',
-                  style: TextStyle(
-                    color: _screenIndex == 2
-                        ? AppColors.primaryColor
-                        : Colors.white,
-                  ),
-                ),
-                activeColor: AppColors.primaryColor,
-                inactiveColor: Colors.transparent),
-            BottomNavyBarItem(
-                icon: const CircleAvatar(
-                  radius: 17,
+              ),
+              // GButton(
+              //   icon: Icons.group_outlined,
+              //   text: 'People',
+              //   leading: SvgPicture.asset(
+              //     'assets/svgs/group.svg',
+              //     color: AppColors.primaryColor,
+              //   ),
+              // ),
+              GButton(
+                icon: Icons.person,
+                text: 'Profile',
+                leading: const CircleAvatar(
+                  radius: 14,
                   backgroundImage: AssetImage('assets/images/slide_i.png'),
                 ),
-                title: const Text('Profile'),
-                activeColor: AppColors.primaryColor,
-                inactiveColor: Colors.blueGrey),
-          ],
-        ));
+              )
+            ]));
   }
 }
 
@@ -148,3 +159,68 @@ class _HomeScreenState extends State<HomeScreen> {
 //           },
 //         ),
 //       ),
+
+// BottomNavyBar(
+//           selectedIndex: _screenIndex,
+//           showElevation: true, // use this to remove appBar's elevation
+//           itemCornerRadius: 8,
+//           containerHeight: kToolbarHeight + 8,
+//           onItemSelected: (index) => setState(() {
+//             _screenIndex = index;
+//             // _pageController.animateToPage(index,
+//             //     duration: Duration(milliseconds: 300), curve: Curves.ease);
+//           }),
+//           items: [
+//             BottomNavyBarItem(
+//                 // icon: const Icon(Icons.work_outline),
+//                 icon: SvgPicture.asset(
+//                   'assets/svgs/feed.svg',
+//                   color: AppColors.primaryColor,
+//                 ),
+//                 title: const Text(
+//                   'Feeds',
+//                   style: TextStyle(
+//                     color: AppColors.primaryColor,
+//                   ),
+//                 ),
+//                 activeColor: AppColors.primaryColor,
+//                 inactiveColor: Colors.transparent),
+//             BottomNavyBarItem(
+//                 // icon: const Icon(Icons.work_outline),
+//                 icon: SvgPicture.asset(
+//                   'assets/svgs/biz.svg',
+//                   color: AppColors.primaryColor,
+//                 ),
+//                 title: const Text(
+//                   'Biz Page',
+//                   style: TextStyle(color: AppColors.primaryColor),
+//                 ),
+//                 activeColor:
+//                     _screenIndex == 1 ? AppColors.primaryColor : Colors.white,
+//                 inactiveColor: Colors.transparent),
+//             BottomNavyBarItem(
+//                 // icon: const Icon(Icons.work_outline),
+//                 icon: SvgPicture.asset(
+//                   'assets/svgs/chats.svg',
+//                   color: AppColors.primaryColor,
+//                 ),
+//                 title: Text(
+//                   'Chats',
+//                   style: TextStyle(
+//                     color: _screenIndex == 2
+//                         ? AppColors.primaryColor
+//                         : Colors.white,
+//                   ),
+//                 ),
+//                 activeColor: AppColors.primaryColor,
+//                 inactiveColor: Colors.transparent),
+//             BottomNavyBarItem(
+//                 icon: const CircleAvatar(
+//                   radius: 17,
+//                   backgroundImage: AssetImage('assets/images/slide_i.png'),
+//                 ),
+//                 title: const Text('Profile'),
+//                 activeColor: AppColors.primaryColor,
+//                 inactiveColor: Colors.blueGrey),
+//           ],
+//         )
