@@ -1,10 +1,8 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
-import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
+import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,64 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
     const FeedScreen(),
     const BuisnessScreen(),
     const ContactScreen(),
-    const ChatScreen()
+    const ChatScreen(),
+    const ProfileScreen()
   ];
   int _screenIndex = 0;
-
-  final bottomNavItems = [
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgFeed, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'Feed',
-          strIcon: AppIcons.svgFeed,
-        ),
-        label: 'Feed'),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgStore, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'Biz',
-          strIcon: AppIcons.svgStore,
-        ),
-        label: 'Biz'),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgPeople, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'List',
-          strIcon: AppIcons.svgPeople,
-        ),
-        label: 'Contact'),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(AppIcons.svgMessage, color: Colors.grey),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        activeIcon: const NavSelectedIcon(
-          label: 'Chat',
-          strIcon: AppIcons.svgMessage,
-        ),
-        label: 'Chat'),
-    const BottomNavigationBarItem(
-        icon: CircleAvatar(
-          backgroundColor: AppColors.lightBlue,
-          radius: 22,
-          child: CircleAvatar(
-            radius: 20,
-          ),
-        ),
-        // activeColor: AppColors.primaryColor,
-        // title: const Text(''),
-
-        label: 'Profile'),
-  ];
 
   // final bottomNavItems = [
   //   BottomNavigationBarItem(
@@ -108,35 +52,35 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.smokeWhite,
-        appBar: AppBar(
-          elevation: 0,
-          primary: true,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.search,
-                color: AppColors.textColor,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.notifications,
-                color: AppColors.textColor,
-              ),
-            ),
-          ],
-          leading: const Icon(
-            Icons.menu_outlined,
-            color: AppColors.textColor,
-          ),
-          title: const Text(
-            'Creative Movers',
-            style: TextStyle(color: AppColors.textColor),
-          ),
-          backgroundColor: Colors.white,
-        ),
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   primary: true,
+        //   actions: const [
+        //     Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Icon(
+        //         Icons.search,
+        //         color: AppColors.textColor,
+        //       ),
+        //     ),
+        //     Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Icon(
+        //         Icons.notifications,
+        //         color: AppColors.textColor,
+        //       ),
+        //     ),
+        //   ],
+        //   leading: const Icon(
+        //     Icons.menu_outlined,
+        //     color: AppColors.textColor,
+        //   ),
+        //   title: const Text(
+        //     'Creative Movers',
+        //     style: TextStyle(color: AppColors.textColor),
+        //   ),
+        //   backgroundColor: Colors.white,
+        // ),
         body: screens[_screenIndex],
         bottomNavigationBar: GNav(
             haptic: true, // haptic feedback
@@ -149,11 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
             //   BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
             // ], // tab button shadow
             curve: Curves.linear, // tab animation curves
-            duration: Duration(milliseconds: 200), // tab animation duration
+            duration:
+                const Duration(milliseconds: 200), // tab animation duration
             gap: 8, // the tab button gap between icon and text
             color: AppColors.primaryColor, // unselected icon color
             activeColor: AppColors.primaryColor, // selected icon and text color
-            iconSize: 24,
+            iconSize: 18,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             backgroundColor: Colors.white,
             onTabChange: (value) {
@@ -161,12 +106,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 _screenIndex = value;
               });
             },
-            tabMargin: EdgeInsets.symmetric(
-                vertical: 12, horizontal: 0), // tab button icon size
+            tabMargin: const EdgeInsets.symmetric(
+                vertical: 8, horizontal: 0), // tab button icon size
             tabBackgroundColor: AppColors.primaryColor
                 .withOpacity(0.3), // selected tab background color
-            padding: EdgeInsets.symmetric(
-                horizontal: 20, vertical: 16), // navigation bar padding
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8, vertical: 8), // navigation bar padding
             tabs: [
               GButton(
                 icon: Icons.home,
@@ -176,6 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: AppColors.primaryColor,
                   width: 24,
                 ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                borderRadius: BorderRadius.circular(4),
               ),
               GButton(
                 icon: Icons.business,
@@ -185,6 +133,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: AppColors.primaryColor,
                   width: 24,
                 ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              GButton(
+                icon: Icons.group_outlined,
+                text: 'Connects',
+                leading: SvgPicture.asset(
+                  'assets/svgs/group.svg',
+                  color: AppColors.primaryColor,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                borderRadius: BorderRadius.circular(4),
               ),
               GButton(
                 icon: Icons.chat_sharp,
@@ -194,19 +156,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: AppColors.primaryColor,
                   width: 24,
                 ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                borderRadius: BorderRadius.circular(4),
               ),
-              // GButton(
-              //   icon: Icons.group_outlined,
-              //   text: 'People',
-              //   leading: SvgPicture.asset(
-              //     'assets/svgs/group.svg',
-              //     color: AppColors.primaryColor,
-              //   ),
-              // ),
-              GButton(
+              const GButton(
                 icon: Icons.person,
                 text: 'Profile',
-                leading: const CircleAvatar(
+                leading: CircleAvatar(
                   radius: 14,
                   backgroundImage: AssetImage('assets/images/slide_i.png'),
                 ),

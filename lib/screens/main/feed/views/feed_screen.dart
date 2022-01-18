@@ -61,12 +61,15 @@ class _FeedScreenState extends State<FeedScreen> {
                   ),
                 )),
             const SliverToBoxAdapter(child: PostCard()),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return const PostItem();
-                },
-                childCount: 5,
+            SliverPadding(
+              padding: const EdgeInsets.all(8),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return const PostItem();
+                  },
+                  childCount: 5,
+                ),
               ),
             ),
           ],
