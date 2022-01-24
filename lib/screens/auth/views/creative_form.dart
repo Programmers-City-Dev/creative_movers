@@ -19,6 +19,12 @@ class CreativeForm extends StatefulWidget {
 class _CreativeFormState extends State<CreativeForm> {
   List<String> categories = [
   ];
+  List<String> stages = [
+    'Pre-seed(idea)',
+    'Seed',
+    'Early Start up',
+    'Expansion'
+  ];
   String cat = '';
 
   @override
@@ -41,21 +47,22 @@ class _CreativeFormState extends State<CreativeForm> {
               const SizedBox(
                 height: 16,
               ),
-              // DropdownButtonFormField<String>(
-              //     onChanged: (value) {
-              //       // cat = value!;
-              //     },
-              //     decoration: const InputDecoration(
-              //         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.textColor)),
-              //         labelStyle: TextStyle(color: AppColors.textColor),
-              //         labelText: 'Select Buisness Category',
-              //         contentPadding: EdgeInsets.all(16),
-              //         border: OutlineInputBorder()),
-              //     value: null,
-              //     items: categories
-              //         .map((e) =>
-              //             DropdownMenuItem<String>(value: e, child: Text(e)))
-              //         .toList()),
+              DropdownButtonFormField<String>(
+                  onChanged: (value) {
+                    // cat = value!;
+                  },
+                  decoration: const InputDecoration(
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.textColor)),
+                      labelStyle: TextStyle(color: AppColors.textColor),
+                      labelText: 'Select stage of investment',
+                      contentPadding: EdgeInsets.all(16),
+                      border: OutlineInputBorder()),
+                  value: null,
+                  items: stages
+                      .map((e) =>
+                          DropdownMenuItem<String>(value: e, child: Text(e)))
+                      .toList()),
+              const SizedBox(height: 10,),
 
               InkWell(
                   child: Container(
@@ -144,7 +151,7 @@ class _CreativeFormState extends State<CreativeForm> {
                                   color: AppColors.textColor,
                                   size: 55,
                                 ),
-                                Text('Add Cover Immage On YOur Buisness Page'),
+                                Text('Add Cover Image On YOur Buisness Page'),
                               ],
                               mainAxisAlignment: MainAxisAlignment.center,
                             ),

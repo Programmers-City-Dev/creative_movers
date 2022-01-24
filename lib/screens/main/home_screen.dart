@@ -160,10 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                 borderRadius: BorderRadius.circular(4),
               ),
-              const GButton(
+               GButton(
                 icon: Icons.person,
                 text: 'Profile',
-                leading: CircleAvatar(
+                borderRadius: BorderRadius.circular(4),
+                leading: const CircleAvatar(
                   radius: 14,
                   backgroundImage: AssetImage('assets/images/slide_i.png'),
                 ),

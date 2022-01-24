@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 class AppColors{
 static const primaryColor = Color(0xFF4285f4);
 static const OnboardingColor = Color(0xCD203CDD);
+static const gradient = Color(0xFF0e0ba0);
+static const gradient2 = Color(0xFF02156B);
 static const textColor = Color(0xFF5f6368);
+static const PtextColor = Color(0xFF000000);
 static const chipsColor = Color(0xFF77a1ff);
 static const lightGrey = Color(0xFFebebf7);
 static const smokeWhite = Color(0xFFf1f7f8);

@@ -1,5 +1,6 @@
 import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/form_field.dart';
+import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
@@ -85,21 +86,13 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
               color: Colors.white,
               boxShadow: [BoxShadow(color: Colors.blue,blurRadius: 30)],
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(44), topLeft: Radius.circular(44))),
+                  )),
         ),
-         Positioned(
+         const Positioned(
             top: -50,
             left: 0,
             right: 0,
-            child: Center(
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  backgroundColor: AppColors.primaryColor.withOpacity(0.5),
-                  radius: 53,),
-                radius: 55,
-              ),
-            ))
+            child:Center(child: AddImageWidget()))
       ],
     );
   }

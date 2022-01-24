@@ -1,3 +1,4 @@
+import 'package:creative_movers/screens/main/profile/views/profile_details.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
@@ -20,8 +21,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 clipBehavior: Clip.none,
                 children: [
                   Container(
-                    height: 150,
+                    height: 250,
                     color: AppColors.primaryColor,
+                    // decoration: BoxDecoration(image: ()),
                   ),
                   Positioned(
                       bottom: -50,
@@ -29,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       right: 0,
                       child: Center(
                           child: Stack(
-                            clipBehavior: Clip.none,
+                        clipBehavior: Clip.none,
                         children: const [
                           CircleAvatar(
                             radius: 65,
@@ -90,33 +92,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Icon(Icons.person,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ProfileDetails(),
+                      ));
+                    },
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Icon(Icons.person,
+                                  size: 25, color: AppColors.textColor),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Text(
+                                'Profile',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textColor),
+                              ),
+                            ],
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Icon(Icons.chevron_right_rounded,
                                 size: 30, color: AppColors.textColor),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Text(
-                              'Profile',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textColor),
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 16),
-                          child: Icon(Icons.chevron_right_rounded,
-                              size: 30, color: AppColors.textColor),
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -130,14 +139,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
                             Icon(Icons.notifications,
-                                size: 30, color: AppColors.textColor),
+                                size: 25, color: AppColors.textColor),
                             SizedBox(
                               width: 16,
                             ),
                             Text(
                               'Notification',
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textColor),
                             ),
@@ -162,14 +171,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
                             Icon(Icons.settings,
-                                size: 30, color: AppColors.textColor),
+                                size: 25, color: AppColors.textColor),
                             SizedBox(
                               width: 16,
                             ),
                             Text(
                               'Transation History',
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textColor),
                             ),
@@ -194,14 +203,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
                             Icon(Icons.auto_fix_high,
-                                size: 30, color: AppColors.textColor),
+                                size: 25, color: AppColors.textColor),
                             SizedBox(
                               width: 16,
                             ),
                             Text(
                               'My SubScriptions',
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textColor),
                             ),
@@ -226,14 +235,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
                             Icon(Icons.settings,
-                                size: 30, color: AppColors.textColor),
+                                size: 25, color: AppColors.textColor),
                             SizedBox(
                               width: 16,
                             ),
                             Text(
                               'Setting',
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textColor),
                             ),
@@ -258,14 +267,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
                             Icon(Icons.contact_support,
-                                size: 30, color: AppColors.textColor),
+                                size: 25, color: AppColors.textColor),
                             SizedBox(
                               width: 16,
                             ),
                             Text(
                               'Help and Support',
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textColor),
                             ),

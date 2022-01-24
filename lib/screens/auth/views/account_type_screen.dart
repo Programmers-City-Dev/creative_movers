@@ -22,20 +22,14 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        // primary: false,
 
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.textColor,
-          ),
-        ),
+        iconTheme: IconThemeData(color: AppColors.textColor, ),
+        toolbarTextStyle: const TextStyle(color: AppColors.textColor,),
         backgroundColor: Colors.white,
         title: const Text(
           'Select Account Type',
-          style: TextStyle(color: AppColors.textColor),
+
+          style: TextStyle(color: AppColors.textColor,fontSize: 16),
         ),
       ),
       body: Container(
@@ -81,7 +75,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 // scrollDirection: Axis.vertical,
                 controller: pageController,
-                children: const [MoverForm(), CreativeForm()],
+                children: const [ CreativeForm(),MoverForm(),],
               )),
               // Expanded(
               //     child: account_type == 'Mover'

@@ -49,7 +49,7 @@ class _PaymentFormState extends State<PaymentForm> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             const Text(
-              'You will be charged N14 to enjoy all the services as well as all benefits of creative s or movers  ',
+              'You will be charged \$7 to enjoy all the services as well as all benefits of creative s or movers  ',
               style: TextStyle(fontSize: 14),
             ),
             const SizedBox(

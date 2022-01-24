@@ -20,7 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: SearchField(
                     hint: 'Search Chats',
                   ),

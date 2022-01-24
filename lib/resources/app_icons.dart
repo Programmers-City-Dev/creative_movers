@@ -12,6 +12,13 @@ class AppIcons{
   static const String  svgFeed = '$svgBasePath/feed.svg';
   static const String  svgStore = '$svgBasePath/store.svg';
   static const String  svgLogo = '$svgBasePath/creativelogo.svg';
+  static const String  svgIdea = '$svgBasePath/idea.svg';
+  static const String  svgCreate = '$svgBasePath/create_page.svg';
+  static const String  svgAppName = '$svgBasePath/app_name.svg';
+
+  static const String  svgProjects = '$svgBasePath/project.svg';
+  static const String  svgConnects = '$svgBasePath/connect.svg';
+  static const String  svgFollowing = '$svgBasePath/follow.svg';
 
 
 //  PNGS

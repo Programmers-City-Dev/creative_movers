@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(20)),
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
@@ -95,7 +96,7 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                     ),
                     const Text(
                       ' I am  senior developer focused on mobile apps and website '
-                      'development. i am not only competent in delivering the effective deliverable ... ',
+                          'development. i am not only competent in delivering the effective deliverable ... ',
                       style: TextStyle(fontSize: 13),
                     ),
                     const SizedBox(
@@ -109,9 +110,10 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                       spacing: 5,
                       children: List<Widget>.generate(
                           6,
-                          (index) => const Chip(
-                                label: Text('Information  '),
-                              )),
+                              (index) =>
+                          const Chip(
+                            label: Text('Information  '),
+                          )),
                     ),
                     const Text(
                       'Buisness Pages',
@@ -139,7 +141,7 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                           SizedBox(
                             width: 10,
                           ),
-                          Text(
+                          const Text(
                             'JAVIE NETWORK',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 12),
@@ -147,37 +149,43 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      color: Colors.grey.shade200,
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Container(
-                            child: const Icon(
-                              Icons.add_circle_outline_rounded,
-                              color: Colors.white,
-                            ),
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'CREATE A BUISNESS PAGE',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const CreatePageOnboarding(),));
+                      },
+                      child: Container(
+                        color: Colors.grey.shade200,
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Container(
+                              child: const Icon(
+                                Icons.add_circle_outline_rounded,
+                                color: Colors.white,
+                              ),
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
                                 color: AppColors.primaryColor,
-                                fontSize: 12),
-                          )
-                        ],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              'CREATE A BUISNESS PAGE',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primaryColor,
+                                  fontSize: 12),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(

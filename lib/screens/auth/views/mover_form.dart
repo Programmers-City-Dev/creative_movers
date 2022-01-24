@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 
+import 'connection_screen.dart';
+
 class MoverForm extends StatefulWidget {
   const MoverForm({Key? key}) : super(key: key);
 
@@ -53,7 +55,7 @@ class _MoverFormState extends State<MoverForm> {
                         height: 20,
                       ),
                       const Text(
-                        'Select Preffered Investment Range',
+                        'Select Preferred Investment Range',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500),
                       ),
@@ -150,7 +152,7 @@ class _MoverFormState extends State<MoverForm> {
                               initialValue: categories,
                               validator: (val) {
                                 if (categories.isEmpty) {
-                                  return 'Select at least on category';
+                                  return 'Select at least one category';
                                 }
                               },
                               builder: (state) {
@@ -167,8 +169,8 @@ class _MoverFormState extends State<MoverForm> {
                                                 color: AppColors.textColor),
                                           ),
 
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(18.0),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(18.0),
                                             child: Text('Select Category'),
                                           ),
 
@@ -226,7 +228,7 @@ class _MoverFormState extends State<MoverForm> {
                         height: 16,
                       ),
                       const Text(
-                        'Preffered stage of investment',
+                        'Preferred stage of investment',
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
@@ -269,7 +271,7 @@ class _MoverFormState extends State<MoverForm> {
                           );
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       )
                     ],
@@ -277,6 +279,8 @@ class _MoverFormState extends State<MoverForm> {
                 )),
             CustomButton(
               onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ConnectionScreen(),));
+
                 if (myFormKey.currentState!.validate()) {
                   print('validated');
                 }

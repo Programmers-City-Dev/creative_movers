@@ -1,6 +1,8 @@
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
+import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
+import 'package:creative_movers/screens/main/search/views/search__screen.dart';
 import 'package:creative_movers/screens/widget/sliver_persistent_delegate.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -121,14 +123,18 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         Icons.search,
                         color: Colors.black,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen(),));
+                      },
                     ),
                     IconButton(
                       icon: const Icon(
                         Icons.notifications_rounded,
                         color: Colors.black,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(),));
+                      },
                     ),
                   ],
                 ),

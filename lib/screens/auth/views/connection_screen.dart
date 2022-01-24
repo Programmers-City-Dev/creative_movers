@@ -47,7 +47,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                     ],
                   ),
                   const Text(
-                    'We found some Creatives and Movwers you might like to connect with',
+                    'We found some Creatives and Movers you might like to connect with',
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                   ),
                   Align(
