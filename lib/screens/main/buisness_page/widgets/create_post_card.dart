@@ -1,37 +1,50 @@
-import 'package:creative_movers/screens/main/views/live_stream_screen.dart';
+import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PostCard extends StatefulWidget {
-  const PostCard({Key? key}) : super(key: key);
+class CreatePostCard extends StatefulWidget {
+  const CreatePostCard({Key? key}) : super(key: key);
 
   @override
-  _PostCardState createState() => _PostCardState();
+  _CreatePostCardState createState() => _CreatePostCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class _CreatePostCardState extends State<CreatePostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
-      margin: const EdgeInsets.only(top: 10),
+
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+           padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Tell us about it',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Do you have anything to share ?',
-                  style: TextStyle(fontSize: 13),
+              children: [
+                SizedBox(height: 16,),
+                Row(
+                  children: [
+                    const AddImageWidget(
+                      ImageBgradius: 20,
+                      Imageradius: 18,
+                      IconBgradius: 7,
+                      Iconradius: 6,
+                      iconSize: 0,
+                      iconBgCOlor: Colors.green,
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
+                        child: const Text('Whats on your mind ?'),
+                        decoration: BoxDecoration(
+                            color: AppColors.lightGrey,
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
@@ -43,7 +56,7 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -81,26 +94,21 @@ class _PostCardState extends State<PostCard> {
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => LiveStreamScreen(),));
-                  },
-                  child: Container(
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Icons.video_call_rounded,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          'Go Live',
-                          style: TextStyle(fontSize: 13),
-                        )
-                      ],
-                    ),
+                Container(
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.video_call_rounded,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Go Live',
+                        style: TextStyle(fontSize: 13),
+                      )
+                    ],
                   ),
                 ),
               ],

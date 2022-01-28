@@ -23,21 +23,26 @@ class _CreatePageOnboardingState extends State<CreatePageOnboarding> {
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Row(
-                  children: const [
-                    CircleAvatar(
-                      backgroundColor: AppColors.lightGrey,
-                      radius: 20,
-                      child: Center(
-                        child: Icon(
-                          Icons.chevron_left_rounded,
-                          color: AppColors.textColor,
+                  children:  [
+                    InkWell(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: const CircleAvatar(
+                        backgroundColor: AppColors.lightGrey,
+                        radius: 20,
+                        child: Center(
+                          child: Icon(
+                            Icons.chevron_left_rounded,
+                            color: AppColors.textColor,
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 25,
                     ),
-                    Text(
+                    const Text(
                       'Create Page',
                       style: TextStyle(
                           fontSize: 16,

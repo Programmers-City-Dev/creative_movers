@@ -4,7 +4,7 @@
       <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="creative_movers"
+        android:label="creative movers"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

@@ -1,3 +1,4 @@
+import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
 import 'package:creative_movers/screens/widget/filled_form_field.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _CreatePageFormState extends State<CreatePageForm> {
     'Early Start up',
     'Expansion'
   ];
+  List<String> categories = [];
   @override
   Widget build(BuildContext context) {
     return Form(child: Column(children:  [
@@ -24,6 +26,56 @@ class _CreatePageFormState extends State<CreatePageForm> {
       const FilledFormField( hint: 'Website Address (optional)'),
       const SizedBox(height: 10,),
       const FilledFormField( hint: 'Contact Info'),
+      const SizedBox(height: 10,),
+      InkWell(
+          child: Container(
+
+            decoration: const BoxDecoration(
+              color: Colors.white
+            ),
+
+            child: const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text('Select Category Of Investment'),
+            ),
+
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+          ),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) =>
+                  SearchDropdown(onSaved: (list) {
+                    setState(() {
+                      categories = list;
+                    });
+                  },),
+            );
+          }),
+      SizedBox(height: 10,),
+      Wrap(
+        alignment: WrapAlignment.start,
+        runAlignment: WrapAlignment.start,
+        direction: Axis.horizontal,
+        spacing: 5,
+        children: List<Widget>.generate(
+            categories.length,
+                (index) =>
+                Chip(
+                  label: Text(categories[index]),
+                  deleteIcon: const Icon(
+                      Icons.close),
+                  onDeleted: () {
+                    setState(() {
+                      categories.remove(
+                          categories[index]);
+                    });
+                  },
+                )),
+      ),
       const SizedBox(height: 10,),
       DropdownButtonFormField<String>(
           onChanged: (value) {
@@ -45,13 +97,11 @@ class _CreatePageFormState extends State<CreatePageForm> {
       const SizedBox(height: 10,),
       const FilledFormField( hint: 'Whats this page all about',maxlines: 5,),
 
-
       Container(
         margin: const EdgeInsets.symmetric(vertical: 18),
 
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
-
             style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12)),
 
             onPressed: () {

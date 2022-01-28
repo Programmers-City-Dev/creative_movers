@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:creative_movers/screens/main/buisness_page/views/buisness_page_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(20)),
                   padding:
-                  const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
@@ -96,7 +97,7 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                     ),
                     const Text(
                       ' I am  senior developer focused on mobile apps and website '
-                          'development. i am not only competent in delivering the effective deliverable ... ',
+                      'development. i am not only competent in delivering the effective deliverable ... ',
                       style: TextStyle(fontSize: 13),
                     ),
                     const SizedBox(
@@ -110,10 +111,9 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                       spacing: 5,
                       children: List<Widget>.generate(
                           6,
-                              (index) =>
-                          const Chip(
-                            label: Text('Information  '),
-                          )),
+                          (index) => const Chip(
+                                label: Text('Information  '),
+                              )),
                     ),
                     const Text(
                       'Buisness Pages',
@@ -122,31 +122,38 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      color: Colors.white,
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                                    ))),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'JAVIE NETWORK',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          )
-                        ],
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => BuisnessPageScreen(),
+                        ));
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: const DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
+                                      ))),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              'JAVIE NETWORK',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 12),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -155,7 +162,8 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const CreatePageOnboarding(),));
+                          builder: (context) => const CreatePageOnboarding(),
+                        ));
                       },
                       child: Container(
                         color: Colors.grey.shade200,

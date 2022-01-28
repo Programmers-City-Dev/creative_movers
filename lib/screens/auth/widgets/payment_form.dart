@@ -19,7 +19,7 @@ class _PaymentFormState extends State<PaymentForm> {
   bool saveDetails = true;
   List<String> options = [
     'Start Free Trial For 9 days',
-    'Pay \$7.0 now (Monthly Reoccuring Fee)'
+    'Pay \$7.00 now (Monthly Reoccuring Fee)'
   ];
   String selectedPaymentMode = 'free';
 
@@ -49,7 +49,7 @@ class _PaymentFormState extends State<PaymentForm> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             const Text(
-              'You will be charged \$7 to enjoy all the services as well as all benefits of creative s or movers  ',
+              'You will be charged \$7.00 to enjoy all the services as well as all benefits of creatives  or movers  ',
               style: TextStyle(fontSize: 14),
             ),
             const SizedBox(

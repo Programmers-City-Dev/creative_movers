@@ -23,6 +23,10 @@ class AppIcons{
 
 //  PNGS
   static const String  icSplashLogo = '$pngBasePath/ic_app_logo.png';
+  static const String  icPlaceHolder1 = '$pngBasePath/placeholder1.png';
+  static const String  icPlaceHolder2 = '$pngBasePath/placeholder2.png';
+  static const String  icPlaceHolder3 = '$pngBasePath/placeholder3.png';
+  static const String  icPlaceHolder4 = '$pngBasePath/placeholder4.png';
 
 //  JPGS
   static const String  icAppLogo = '$jpgBasePath/app_logo.jpg';

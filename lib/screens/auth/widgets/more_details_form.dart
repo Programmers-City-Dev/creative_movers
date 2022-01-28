@@ -38,39 +38,40 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
                     height: 16,
                   ),
                   TextFormField(
-
                     cursorColor: AppColors.textColor,
-                    decoration:  AppStyles.labeledFieldDecoration(label: 'First Name',hintText: 'First Name'),
+                    decoration: AppStyles.labeledFieldDecoration(
+                        label: 'First Name', hintText: 'First Name'),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
                   TextFormField(
-                    cursorColor: AppColors.textColor,
-                      decoration:  AppStyles.labeledFieldDecoration(label: 'Last Name',hintText: 'Last Name')
-                  ),
+                      cursorColor: AppColors.textColor,
+                      decoration: AppStyles.labeledFieldDecoration(
+                          label: 'Last Name', hintText: 'Last Name')),
                   const SizedBox(
                     height: 15,
                   ),
                   TextFormField(
-                    cursorColor: AppColors.textColor,
-                      decoration:  AppStyles.labeledFieldDecoration(label: 'Phone Number',hintText: 'Phone Number')
-                  ),
+                      cursorColor: AppColors.textColor,
+                      decoration: AppStyles.labeledFieldDecoration(
+                          label: 'Phone Number', hintText: 'Phone Number')),
                   const SizedBox(
                     height: 15,
                   ),
                   TextFormField(
-                    cursorColor: AppColors.textColor,
-                    maxLines: 4,
-                      decoration:  AppStyles.labeledFieldDecoration(label: 'Bio Data',hintText: 'Bio Data')
-
-                  ),
+                      cursorColor: AppColors.textColor,
+                      maxLines: 4,
+                      decoration: AppStyles.labeledFieldDecoration(
+                          label: 'Bio Data', hintText: 'Bio Data')),
                   const SizedBox(
                     height: 15,
                   ),
                   CustomButton(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AccountTypeScreen(),));
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AccountTypeScreen(),
+                      ));
                     },
                     child: const Text('Continue'),
                   )
@@ -84,15 +85,11 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
           height: MediaQuery.of(context).size.height * 0.8,
           decoration: const BoxDecoration(
               color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.blue,blurRadius: 30)],
-              borderRadius: BorderRadius.only(
-                  )),
+              boxShadow: [BoxShadow(color: Colors.blue, blurRadius: 30)],
+              borderRadius: BorderRadius.only()),
         ),
-         const Positioned(
-            top: -50,
-            left: 0,
-            right: 0,
-            child:Center(child: AddImageWidget()))
+        const Positioned(
+            top: -50, left: 0, right: 0, child: Center(child: AddImageWidget()))
       ],
     );
   }

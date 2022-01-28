@@ -15,5 +15,6 @@ static const tomato = Color(0xFFfe4337);
 static const red = Color(0xFFff0000);
 static const lightred = Color(0x2aff0000);
 static const lightBlue = Color(0xFFe2f8fc);
+static const commentBg = Color(0xd826292f);
 // static const smokeWhite = Color(0xFFf1f7f8);
 }

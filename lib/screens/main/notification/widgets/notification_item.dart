@@ -42,7 +42,7 @@ class _NotificationItemState extends State<NotificationItem> {
                   child: Text(
                 'Emmason their is a user with the same idea with you and can invest'
                 ' in your ideas, you can reach up with him',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 13),
               ))
             ],
           )

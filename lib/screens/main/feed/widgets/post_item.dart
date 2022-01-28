@@ -52,8 +52,74 @@ class _PostItemState extends State<PostItem> {
                   ],
                 ),
               ),
-              const Icon(
-                Icons.more_vert_rounded,
+              PopupMenuButton<String>(
+                shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                itemBuilder: (context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    padding: const EdgeInsets.all(10),
+                      value: 'Edit',
+                      child: Container(
+                        child: Row(
+                          children:  const [
+                            Icon(Icons.edit_rounded),
+                            SizedBox(width: 8,),
+                            Text('Edit'),
+                          ],
+                        ),
+                      )),
+                  PopupMenuItem<String>(
+                    padding: EdgeInsets.all(10),
+                      value: 'Notification',
+                      child: Container(
+
+                        child: Row(
+                          children:  const [
+                            Icon(Icons.notifications_rounded),
+                            SizedBox(width: 8,),
+                            Text('Notification'),
+                          ],
+                        ),
+                      )),
+                  PopupMenuItem<String>(
+                    padding: EdgeInsets.all(10),
+                      value: 'Delete',
+                      child: Container(
+                        width: 100,
+                        child: Row(
+                          children:  const [
+                            Icon(Icons.delete_rounded),
+                            SizedBox(width: 8,),
+                            Text('Delete'),
+                          ],
+                        ),
+                      )),
+                  PopupMenuItem<String>(
+                    padding: const EdgeInsets.all(10),
+                      value: 'Copy Link',
+                      child: Container(
+
+                        child: Row(
+                          children:  const [
+                            Icon(Icons.content_copy_rounded),
+                            SizedBox(width: 8,),
+                            Text('Copy Link'),
+                          ],
+                        ),
+                      )),
+                  PopupMenuItem<String>(
+                    padding: const EdgeInsets.all(10),
+                      value: 'Share',
+                      child: Container(
+
+                        child: Row(
+                          children:  const [
+                            Icon(Icons.share_rounded),
+                            SizedBox(width: 8,),
+                            Text('Share'),
+                          ],
+                        ),
+                      )),
+                ],
               )
             ],
           ),
@@ -66,7 +132,6 @@ class _PostItemState extends State<PostItem> {
           ),
           Container(
             height: 200,
-
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 image: const DecorationImage(
@@ -75,7 +140,9 @@ class _PostItemState extends State<PostItem> {
                       'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
                     ))),
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -90,7 +157,8 @@ class _PostItemState extends State<PostItem> {
                 imageBorderWidth: 3, // Border width around the images
               ),
               const Text('1,000 commented'),
-            ],),
+            ],
+          ),
           Divider(
             height: 5,
           ),
@@ -105,10 +173,14 @@ class _PostItemState extends State<PostItem> {
                       Icon(
                         Icons.thumb_up_rounded,
                         color: AppColors.textColor,
-
                       ),
-                      SizedBox(width: 5,),
-                      Text('Like', style: TextStyle(fontSize: 13),)
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Like',
+                        style: TextStyle(fontSize: 13),
+                      )
                     ],
                   ),
                 ),
@@ -119,8 +191,13 @@ class _PostItemState extends State<PostItem> {
                         Icons.chat_bubble_rounded,
                         color: AppColors.textColor,
                       ),
-                      SizedBox(width: 5,),
-                      Text('Comment', style: TextStyle(fontSize: 13),)
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Comment',
+                        style: TextStyle(fontSize: 13),
+                      )
                     ],
                   ),
                 ),
@@ -130,14 +207,17 @@ class _PostItemState extends State<PostItem> {
                       Icon(
                         Icons.share_rounded,
                         color: AppColors.textColor,
-
                       ),
-                      SizedBox(width: 5,),
-                      Text('Share', style: TextStyle(fontSize: 13),)
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Share',
+                        style: TextStyle(fontSize: 13),
+                      )
                     ],
                   ),
                 ),
-
               ],
             ),
           )
