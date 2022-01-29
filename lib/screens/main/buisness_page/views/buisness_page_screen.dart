@@ -1,4 +1,5 @@
 import 'package:creative_movers/resources/app_icons.dart';
+import 'package:creative_movers/screens/main/buisness_page/views/create_page_form.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/following_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/page_home.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/page_notification.dart';
@@ -26,7 +27,10 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
     PageHome(),
     FollowingScreen(),
     PageNotifications(),
-    PageHome(),
+    const Padding(
+      padding: EdgeInsets.all(18),
+      child: CreatePageForm(),
+    )
   ];
 
   int selectedIndex = 0;
@@ -35,7 +39,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Jave Network',style: TextStyle(fontSize: 16),),),
+      appBar: AppBar(title: Text('Jave Network',style: const TextStyle(fontSize: 16),),),
       backgroundColor: AppColors.smokeWhite,
       body: SafeArea(
           child: Container(

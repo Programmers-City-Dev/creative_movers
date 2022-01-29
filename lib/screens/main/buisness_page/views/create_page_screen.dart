@@ -59,34 +59,11 @@ class _CreatePageScreenState extends State<CreatePageScreen> {
               height: 10,
             ),
             Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    AddImageWidget(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Add Image to this page ',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Use Images that represent what he page is all about '
-                      'like logo , This will appear in the search result',
-                      style: TextStyle(fontSize: 13),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    CreatePageForm()
-                  ],
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CreatePageForm()
+                ],
               ),
             ),
           ],
