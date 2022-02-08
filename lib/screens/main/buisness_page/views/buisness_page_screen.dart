@@ -189,7 +189,6 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                     selectedIndex =index;
                   });
                 },
-                scrollBehavior:ScrollBehavior(androidOverscrollIndicator: AndroidOverscrollIndicator.stretch) ,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: pages.length,
                 itemBuilder: (context, index) => pages[selectedIndex],

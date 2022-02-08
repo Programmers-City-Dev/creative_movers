@@ -1,4 +1,5 @@
-import 'package:creative_movers/screens/auth/views/splash_screen.dart';
+import 'dart:developer';
+
 import 'package:creative_movers/screens/onboarding/views/onboarding_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -6,15 +7,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-void main() {
+import 'helpers/app_utils.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized;
+  var firstScreen = await AppUtils.getFirstScreen();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const MyApp());
+  runApp(MyApp(firstScreen));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Widget firstScreen;
+
+  const MyApp(this.firstScreen, {Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -43,7 +49,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: firstScreen,
     );
   }
 }
@@ -75,6 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return const Scaffold(body: SplashScreen());
+    return const Scaffold(body: OnboardingScreen());
   }
 }

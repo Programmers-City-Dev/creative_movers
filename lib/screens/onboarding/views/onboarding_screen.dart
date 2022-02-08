@@ -1,3 +1,6 @@
+import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/onboarding/views/onboarding_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
@@ -33,11 +36,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             OnboardingItem(
               header: AppLocalizations.of(context)!.intro1Title,
               text: Text(
-                    AppLocalizations.of(context)!.intro1Text,
+                AppLocalizations.of(context)!.intro1Text,
                 textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ), img: AppIcons.imgSlide1,
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal, color: Colors.white),
+              ),
+              img: AppIcons.imgSlide1,
             ),
             OnboardingItem(
               header: AppLocalizations.of(context)!.intro2Title,
@@ -46,7 +50,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
-              ), img: AppIcons.imgSlide2,
+              ),
+              img: AppIcons.imgSlide2,
             ),
             OnboardingItem(
               header: AppLocalizations.of(context)!.intro3Title,
@@ -55,7 +60,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
-              ), img: AppIcons.imgSlide3,
+              ),
+              img: AppIcons.imgSlide3,
             ),
             OnboardingItem(
               header: AppLocalizations.of(context)!.intro4Title,
@@ -64,7 +70,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
-              ), img: AppIcons.imgSlide4,
+              ),
+              img: AppIcons.imgSlide4,
             ),
           ],
         ),
@@ -81,14 +88,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 visible: _currentIndex == 3,
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 700),
-                  opacity: _currentIndex ==3?1.0:0.0,
+                  opacity: _currentIndex == 3 ? 1.0 : 0.0,
                   child: Container(
                     alignment: Alignment.center,
                     height: 100,
                     width: 100,
-
-                    child:  SvgPicture.asset(AppIcons.svgLogo,color: AppColors.primaryColor,),
-
+                    child: SvgPicture.asset(
+                      AppIcons.svgLogo,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -134,38 +142,55 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         Visibility(
                             visible: _currentIndex != 3,
-                            child: Container(height: 50,)),
+                            child: Container(
+                              height: 50,
+                            )),
                         Visibility(
-                        maintainAnimation: true,
-                        maintainState: true,
-                        visible: _currentIndex == 3,
-                        child: AnimatedOpacity(
-                          opacity: _currentIndex ==3 ? 1.0 : 0.0,
-                          duration: const Duration(milliseconds: 600),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.white,
-                                onPrimary: AppColors.primaryColor,
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20))),
-                              onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupScreen(),));
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Text('Get Started'),
-                                  SizedBox(width: 5,),
-                                  Icon(Icons.arrow_forward,color: AppColors.primaryColor,)
-                                ],
-                              )),
+                          maintainAnimation: true,
+                          maintainState: true,
+                          visible: _currentIndex == 3,
+                          child: AnimatedOpacity(
+                            opacity: _currentIndex == 3 ? 1.0 : 0.0,
+                            duration: const Duration(milliseconds: 600),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      onPrimary: AppColors.primaryColor,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20))),
+                                  onPressed: () {
+                                    StorageHelper.setBoolean(
+                                        StorageKeys.firsTimeUser, false);
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => SignupScreen(),
+                                    ));
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      Text('Get Started'),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward,
+                                        color: AppColors.primaryColor,
+                                      )
+                                    ],
+                                  )),
+                            ),
                           ),
-                        ),
-                      )],
+                        )
+                      ],
                     ),
                   )
                 ],
