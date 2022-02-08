@@ -33,11 +33,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             OnboardingItem(
               header: AppLocalizations.of(context)!.intro1Title,
               text: Text(
-                    AppLocalizations.of(context)!.intro1Text,
+                AppLocalizations.of(context)!.intro1Text,
                 textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.normal, color: Colors.white),
-                  ), img: AppIcons.imgSlide1,
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal, color: Colors.white),
+              ), img: AppIcons.imgSlide1,
             ),
             OnboardingItem(
               header: AppLocalizations.of(context)!.intro2Title,
@@ -81,13 +81,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 visible: _currentIndex == 3,
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 700),
-                  opacity: _currentIndex ==3?1.0:0.0,
+                  opacity: _currentIndex == 3 ? 1.0 : 0.0,
                   child: Container(
                     alignment: Alignment.center,
                     height: 100,
                     width: 100,
 
-                    child:  SvgPicture.asset(AppIcons.svgLogo,color: AppColors.primaryColor,),
+                    child: SvgPicture.asset(
+                      AppIcons.svgLogo, color: AppColors.primaryColor,),
 
                   ),
                 ),
@@ -100,7 +101,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -111,15 +115,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 10,
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: DotIndicator(
-                          inActiveColor: Colors.grey,
-                          active_color: Colors.white,
-                          size: 10,
-                          isActive: _currentIndex == index ? true : false,
-                        ),
-                      ),
+                      itemBuilder: (context, index) =>
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: DotIndicator(
+                              inActiveColor: Colors.grey,
+                              active_color: Colors.white,
+                              size: 10,
+                              isActive: _currentIndex == index ? true : false,
+                            ),
+                          ),
                       shrinkWrap: true,
                       itemCount: 4,
                       scrollDirection: Axis.horizontal,
@@ -136,36 +141,44 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             visible: _currentIndex != 3,
                             child: Container(height: 50,)),
                         Visibility(
-                        maintainAnimation: true,
-                        maintainState: true,
-                        visible: _currentIndex == 3,
-                        child: AnimatedOpacity(
-                          opacity: _currentIndex ==3 ? 1.0 : 0.0,
-                          duration: const Duration(milliseconds: 600),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.white,
-                                onPrimary: AppColors.primaryColor,
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20))),
-                              onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupScreen(),));
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Text('Get Started'),
-                                  SizedBox(width: 5,),
-                                  Icon(Icons.arrow_forward,color: AppColors.primaryColor,)
-                                ],
-                              )),
+                          maintainAnimation: true,
+                          maintainState: true,
+                          visible: _currentIndex == 3,
+                          child: AnimatedOpacity(
+                            opacity: _currentIndex == 3 ? 1.0 : 0.0,
+                            duration: const Duration(milliseconds: 600),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      onPrimary: AppColors.primaryColor,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 8),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              20))),
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) =>
+                                            SignupScreen(),));
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      Text('Get Started'),
+                                      SizedBox(width: 5,),
+                                      Icon(Icons.arrow_forward,
+                                        color: AppColors.primaryColor,)
+                                    ],
+                                  )),
+                            ),
                           ),
-                        ),
-                      )],
+                        )
+                      ],
                     ),
                   )
                 ],

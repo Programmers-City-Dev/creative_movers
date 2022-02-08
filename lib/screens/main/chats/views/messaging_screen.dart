@@ -164,7 +164,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                           Icons.mic_rounded,
                         ),
                       ):AnimatedContainer(
-                        duration: Duration(milliseconds: 2000),
+                        duration: const Duration(milliseconds: 2000),
                         child: const Icon(
                           Icons.send_rounded,
                         ),

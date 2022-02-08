@@ -154,7 +154,7 @@ class _PostItemState extends State<PostItem> {
                 // Radius of each images
                 imageCount: 3,
                 // Maximum number of images to be shown in stack
-                imageBorderWidth: 3, // Border width around the images
+                imageBorderWidth: 0, // Border width around the images
               ),
               const Text('1,000 commented'),
             ],
