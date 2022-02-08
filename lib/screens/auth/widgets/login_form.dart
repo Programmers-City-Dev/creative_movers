@@ -1,3 +1,5 @@
+import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/auth/views/forgot_password_modal.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
@@ -6,6 +8,8 @@ import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'form_field.dart';
@@ -20,112 +24,164 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool obscure = true;
 
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  final AuthBloc _authBloc = AuthBloc();
+
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomTextField(
-            validator: (d) {},
-            icon: Icons.mail_rounded,
-            hint: 'Email Address',
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          CustomTextField(
-            toggle_icon: IconButton(
-              onPressed: () {
-                setState(() {
-                  obscure = !obscure;
-                });
-              },
-              icon: obscure
-                  ? const Icon(
-                      Icons.visibility_off_outlined,
-                      color: AppColors.textColor,
-                    )
-                  : const Icon(
-                      Icons.visibility_outlined,
-                      color: AppColors.textColor,
-                    ),
+    return BlocListener<AuthBloc, AuthState>(
+      bloc: _authBloc,
+      listener: (context, state) {
+        _listenToAuthState(context, state);
+      },
+      child: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.disabled,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomTextField(
+              validator: MultiValidator([
+                RequiredValidator(errorText: 'Email is required'),
+                EmailValidator(errorText: 'Enter a valid email'),
+              ]),
+              inputAction: TextInputAction.next,
+              controller: _emailController,
+              icon: Icons.mail_rounded,
+              hint: 'Email Address',
             ),
-            obscure: obscure,
-            icon: Icons.lock,
-            hint: 'Password',
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          CustomButton(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
-              ));
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(
-                  Icons.logout_outlined,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text('Login')
-              ],
+            const SizedBox(
+              height: 16,
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(30),
+            CustomTextField(
+              controller: _passwordController,
+              validator: MultiValidator([
+                RequiredValidator(errorText: 'Password is required'),
+                MinLengthValidator(6,
+                    errorText: 'Password must be at least 6 characters'),
+              ]),
+              inputAction: TextInputAction.done,
+              onFieldSubmitted: (p0) => _submitLoginForm(),
+              toggle_icon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    obscure = !obscure;
+                  });
+                },
+                icon: obscure
+                    ? const Icon(
+                        Icons.visibility_off_outlined,
+                        color: AppColors.textColor,
+                      )
+                    : const Icon(
+                        Icons.visibility_outlined,
+                        color: AppColors.textColor,
                       ),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (_) => const ForgotPasswordModal());
+              ),
+              obscure: obscure,
+              icon: Icons.lock,
+              hint: 'Password',
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomButton(
+              onTap: () {
+                _submitLoginForm();
               },
-              child: const Text(
-                'Forgot Password',
-                textAlign: TextAlign.end,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.logout_outlined,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text('Login')
+                ],
               ),
             ),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Center(
-            child: RichText(
-                text: TextSpan(children: [
-              const TextSpan(
-                  text: 'I dont have an account  ?  ',
-                  style: TextStyle(color: Colors.black)),
-              TextSpan(
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignupScreen(),
-                    ));
-                  },
-                text: 'SignUp',
-                style: const TextStyle(
-                    color: AppColors.primaryColor,
-                    decoration: TextDecoration.underline),
+            const SizedBox(
+              height: 10,
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(30),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (_) => const ForgotPasswordModal());
+                },
+                child: const Text(
+                  'Forgot Password',
+                  textAlign: TextAlign.end,
+                ),
               ),
-            ])),
-          )
-        ],
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Center(
+              child: RichText(
+                  text: TextSpan(children: [
+                const TextSpan(
+                    text: 'I dont have an account  ?  ',
+                    style: TextStyle(color: Colors.black)),
+                TextSpan(
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SignupScreen(),
+                      ));
+                    },
+                  text: 'SignUp',
+                  style: const TextStyle(
+                      color: AppColors.primaryColor,
+                      decoration: TextDecoration.underline),
+                ),
+              ])),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  void _listenToAuthState(BuildContext context, AuthState state) {
+    if (state is LoginLoadingState) {
+      AppUtils.showAnimatedProgressDialog(context);
+    }
+    if (state is LoginFailureState) {
+      Navigator.of(context).pop();
+      CustomSnackBar.showError(context, message: state.error);
+    }
+    if (state is LoginSuccessState) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+          (route) => false);
+    }
+  }
+
+  void _submitLoginForm() {
+    if (_formKey.currentState!.validate()) {
+      _authBloc.add(LoginEvent(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ));
+    }
   }
 }

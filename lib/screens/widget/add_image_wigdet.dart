@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 class AddImageWidget extends StatefulWidget {
