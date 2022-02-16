@@ -165,11 +165,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                           borderRadius:
                                               BorderRadius.circular(20))),
                                   onPressed: () {
+                                    // print();
                                     StorageHelper.setBoolean(
                                         StorageKeys.firsTimeUser, false);
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (context) => SignupScreen(),
+                                      builder: (context) => const SignupScreen(),
                                     ));
                                   },
                                   child: Row(

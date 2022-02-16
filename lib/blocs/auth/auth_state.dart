@@ -1,7 +1,7 @@
 part of 'auth_bloc.dart';
 
 @immutable
-abstract class AuthState extends Equatable{}
+abstract class AuthState extends Equatable {}
 
 class AuthInitial extends AuthState {
   @override
@@ -52,5 +52,87 @@ class LoginFailureState extends AuthState {
   LoginFailureState({required this.error});
 
   @override
+  List<Object?> get props => [error];
+}
+
+//Bio-Data State
+class BioDataLoadingState extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class BioDataSuccesState extends AuthState {
+  final BioDataResponse bioDataResponse;
+
+  BioDataSuccesState({required this.bioDataResponse});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [bioDataResponse];
+}
+
+class BioDataFailureState extends AuthState {
+  final String error;
+
+  BioDataFailureState(this.error);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+//Account Type State
+class AccounTypeLoadingState extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class AccountTypeSuccesState extends AuthState {
+  final AccountTypeResponse accountTypeResponse;
+
+  AccountTypeSuccesState({required this.accountTypeResponse});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [accountTypeResponse];
+}
+
+class AccountTypeFailureState extends AuthState {
+  final String error;
+
+  AccountTypeFailureState({required this.error});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [error];
+}
+
+
+//AddConnections  State
+class AddConnectionLoadingState extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class AddConnectionSuccesState extends AuthState {
+  final AddConnectionResponse addConnectionResponse;
+
+  AddConnectionSuccesState({required this.addConnectionResponse});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [addConnectionResponse];
+}
+
+class AddConnectionFailureState extends AuthState {
+  final String error;
+
+  AddConnectionFailureState({required this.error});
+
+  @override
+  // TODO: implement props
   List<Object?> get props => [error];
 }

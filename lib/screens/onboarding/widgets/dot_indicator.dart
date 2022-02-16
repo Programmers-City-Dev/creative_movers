@@ -17,7 +17,7 @@ class DotIndicator extends StatelessWidget {
       decoration: BoxDecoration(
           color: isActive ? active_color : inActiveColor,
           borderRadius: BorderRadius.circular(size * 0.50)),
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
   }
 }
