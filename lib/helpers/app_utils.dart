@@ -2,10 +2,15 @@ import 'dart:developer';
 
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
+import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
+import 'package:creative_movers/screens/auth/views/payment_screen.dart';
+import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/onboarding/views/onboarding_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,11 +21,29 @@ class AppUtils {
   static Future<Widget> getFirstScreen() async {
     bool isFirstTimeUser =
         await StorageHelper.getBoolean(StorageKeys.firsTimeUser, true);
+    bool isLoggedIn =
+        await StorageHelper.getBoolean(StorageKeys.stayLoggedIn, false);
+    String? regStatus =
+        await StorageHelper.getString(StorageKeys.registrationStage);
+
+    // String? token =
+    // await StorageHelper.getString(StorageKeys.token);
     log("IS FIRST TIME USER: $isFirstTimeUser");
+    log("IS LOGGED IN: $isLoggedIn");
     if (isFirstTimeUser) {
       return const OnboardingScreen();
+    } else {
+      //-----------Login Check--------------
+      if (isLoggedIn) {
+        return const HomeScreen();
+      } else {
+        return const LoginScreen();
+      }
     }
-    return const LoginScreen();
+  }
+  static Future<String?> getUserName() async {
+  String? username = await StorageHelper.getString(StorageKeys.username);
+  return username;
   }
 
   static void showAnimatedProgressDialog(BuildContext context,
@@ -115,6 +138,9 @@ class AppUtils {
               children: [
                 CustomButton(
                     child: Text(confirmButtonText), onTap: onConfirmed),
+                SizedBox(
+                  width: 10,
+                ),
                 CustomButton(child: Text(cancelButtonText), onTap: onCancel),
               ],
             )
@@ -230,6 +256,73 @@ class AppUtils {
       ),
     );
   }
+
+  static void showMessageDialog(BuildContext context,
+      {String? title, String? message,required VoidCallback onClose}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/pngs/sorry.png',
+              width: 150,
+              height: 150,
+            ),
+            const SizedBox(
+              height: 18.0,
+            ),
+            if (title != null)
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            if (title != null)
+              const SizedBox(
+                height: 32.0,
+              ),
+            Text(
+              '$message',
+              textAlign: TextAlign.center,
+              style: const TextStyle(),
+            ),
+            const SizedBox(
+              height: 32.0,
+            ),
+            CustomButton(
+              child: const Text('CONTINUE'),
+              onTap: onClose,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Future<List<String>> fetchImages({bool allowMultiple = false}) async {
+    try {
+      FilePicker filePicker = FilePicker.platform;
+      FilePickerResult? result = await filePicker.pickFiles(
+        type: FileType.custom,
+        allowCompression: true,
+        allowMultiple: allowMultiple,
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+      );
+      if (result != null) {
+        return result.files.map((file) => file.path!).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
 class CustomSnackBar {
@@ -285,7 +378,6 @@ class CustomSnackBar {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-    
       backgroundColor: backgroundColor ?? backgroundColor ?? Colors.red,
       content: Text(
         message,

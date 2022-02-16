@@ -1,11 +1,20 @@
+import 'dart:math';
+
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:creative_movers/models/register_response.dart';
+import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/auth/views/forgot_password_modal.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
+import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
+import 'package:creative_movers/screens/auth/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -167,12 +176,30 @@ class _LoginFormState extends State<LoginForm> {
       CustomSnackBar.showError(context, message: state.error);
     }
     if (state is LoginSuccessState) {
+      cacheToken(state.response);
       Navigator.of(context).pop();
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-          (route) => false);
+      if (state.response.user.regStatus != 'account_type') {
+        AppUtils.showMessageDialog(
+          context,
+          message:
+              'Welcome ${state.response.user.username}, We noticed you havent completed your registration, Press CONTINUE to finish up ',
+          onClose: () {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      currentPage(context, state.response.user.regStatus),
+                ),
+                (route) => false);
+          },
+        );
+      } else {
+        StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+            (route) => false);
+      }
     }
   }
 
@@ -182,6 +209,30 @@ class _LoginFormState extends State<LoginForm> {
         email: _emailController.text,
         password: _passwordController.text,
       ));
+    }
+  }
+
+  void cacheToken(AuthResponse response) {
+    StorageHelper.setString(
+        StorageKeys.username, response.user.username);
+    StorageHelper.setString(
+        StorageKeys.token, response.user.apiToken.toString());
+
+    // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
+  }
+
+  Widget currentPage(BuildContext context, String? stage) {
+    // --------------Status Check--------------
+    if (stage == 'new') {
+      return const MoreDetailsScreen();
+    } else if (stage == 'biodata') {
+      return const AccountTypeScreen();
+    } else if (stage == 'account_type') {
+      return const HomeScreen();
+    } else if (stage == 'payment') {
+      return HomeScreen();
+    } else {
+      return HomeScreen();
     }
   }
 }

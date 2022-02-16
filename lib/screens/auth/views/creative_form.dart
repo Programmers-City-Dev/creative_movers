@@ -1,11 +1,21 @@
+import 'dart:io';
+
+import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/resources/app_icons.dart';
+import 'package:creative_movers/screens/auth/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
+import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 import 'connection_screen.dart';
 
@@ -17,174 +27,285 @@ class CreativeForm extends StatefulWidget {
 }
 
 class _CreativeFormState extends State<CreativeForm> {
-  List<String> categories = [
-  ];
-  List<String> stages = [
-    'Pre-seed(idea)',
-    'Seed',
-    'Early Start up',
-    'Expansion'
-  ];
+  List<String> categories = [];
+  List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
   String cat = '';
+  String stage = '';
+  String image = '';
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final _capitalController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _pagenameController = TextEditingController();
+
+  // final _bioDataController = TextEditingController();
+  final AuthBloc _authBloc = AuthBloc();
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        child: Column(
-      children: [
-        Expanded(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                  decoration:  AppStyles.labeledFieldDecoration(label: 'Create your first buisness page',hintText: 'Create your first buisness page')
-
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              DropdownButtonFormField<String>(
-                  onChanged: (value) {
-                    // cat = value!;
-                  },
-                  decoration: const InputDecoration(
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.textColor)),
-                      labelStyle: TextStyle(color: AppColors.textColor),
-                      labelText: 'Select stage of investment',
-                      contentPadding: EdgeInsets.all(16),
-                      border: OutlineInputBorder()),
-                  value: null,
-                  items: stages
-                      .map((e) =>
-                          DropdownMenuItem<String>(value: e, child: Text(e)))
-                      .toList()),
-              const SizedBox(height: 10,),
-
-              InkWell(
-                  child: Container(
-
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: AppColors.textColor),
-                    ),
-
-                    child: const Padding(
-                      padding: EdgeInsets.all(18.0),
-                      child: Text('Select Category'),
-                    ),
-
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+    return BlocListener<AuthBloc, AuthState>(
+      bloc: _authBloc,
+      listener: (context, state) {
+        _listenToAccountTypeState(context, state);
+        // TODO: implement listener
+      },
+      child: Column(
+        children: [
+          Expanded(
+              child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.disabled,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
                   ),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) =>
-                          SearchDropdown(onSaved: (list) {
-                            setState(() {
-                              categories = list;
-                            });
-                          },),
-                    );
-                  }),
-              Wrap(
-                alignment: WrapAlignment.start,
-                runAlignment: WrapAlignment.start,
-                direction: Axis.horizontal,
-                spacing: 5,
-                children: List<Widget>.generate(
-                    categories.length,
-                        (index) =>
-                        Chip(
-                          label: Text(categories[index]),
-                          deleteIcon: const Icon(
-                              Icons.close),
-                          onDeleted: () {
-                            setState(() {
-                              categories.remove(
-                                  categories[index]);
-                            });
-                          },
-                        )),
-              ),
-
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                maxLines: 5,
-                  decoration:  AppStyles.labeledFieldDecoration(label: 'Brief description of your buisness',hintText: 'Brief description of your buisness')
-
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                  decoration:  AppStyles.labeledFieldDecoration(label: 'Estimated capital needed',hintText: 'Estimated capital needed')
-
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              DottedBorder(
-                radius: const Radius.circular(5),
-                strokeWidth: 1,
-                borderType: BorderType.RRect,
-                child: Container(
-                  height: 170,
-                  child: Stack(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          child: Center(
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Icons.add_photo_alternate_outlined,
-                                  color: AppColors.textColor,
-                                  size: 55,
+                  TextFormField(
+                      controller: _pagenameController,
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText: 'Please enter your first buisness page'),
+                      ]),
+                      decoration: AppStyles.labeledFieldDecoration(
+                          label: 'Create your first buisness page',
+                          hintText: 'Create your first buisness page')),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  DropdownButtonFormField<String>(
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText:
+                                'Please select the stage of your investment'),
+                      ]),
+                      onChanged: (value) {
+                        stage = value!;
+                      },
+                      decoration: const InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppColors.textColor)),
+                          labelStyle: TextStyle(color: AppColors.textColor),
+                          labelText: 'Select stage of investment',
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder()),
+                      value: 'Seed',
+                      items: stages
+                          .map((e) => DropdownMenuItem<String>(
+                              value: e, child: Text(e)))
+                          .toList()),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FormField<List<String>>(
+                    initialValue: categories,
+                    validator: ((value) {
+                      if (categories.isEmpty) {
+                        return 'Please select your category of investment';
+                      }
+                    }),
+                    builder: (field) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.textColor),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(18.0),
+                                child: Text('Select Category'),
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => SearchDropdown(
+                                  onSaved: (list) {
+                                    setState(() {
+                                      categories = list;
+                                    });
+                                  },
                                 ),
-                                Text('Add Cover Image On YOur Buisness Page'),
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              );
+                            }),
+                        Wrap(
+                          alignment: WrapAlignment.start,
+                          runAlignment: WrapAlignment.start,
+                          direction: Axis.horizontal,
+                          spacing: 5,
+                          children: List<Widget>.generate(
+                              categories.length,
+                              (index) => Chip(
+                                    label: Text(categories[index]),
+                                    deleteIcon: const Icon(Icons.close),
+                                    onDeleted: () {
+                                      setState(() {
+                                        categories.remove(categories[index]);
+                                      });
+                                    },
+                                  )),
+                        ),
+                        Text(
+                          field.hasError ? field.errorText! : '',
+                          // ?? state.value?.length.toString()! + '/5 selected',
+                          style: TextStyle(
+                              color: field.hasError
+                                  ? Colors.redAccent
+                                  : Colors.green),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                      controller: _descriptionController,
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText:
+                                'Please write breif description of your buisness'),
+                      ]),
+                      maxLines: 5,
+                      decoration: AppStyles.labeledFieldDecoration(
+                          label: 'Brief description of your buisness',
+                          hintText: 'Brief description of your buisness')),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText:
+                                'Please select estimated capital needed for your investment'),
+                      ]),
+                      controller: _capitalController,
+                      keyboardType: TextInputType.number,
+                      decoration: AppStyles.labeledFieldDecoration(
+                              label: 'Estimated capital needed',
+                              hintText: 'Estimated capital needed')
+                          .copyWith(
+                              prefix: const Text(
+                        '\$ ',
+                        style: TextStyle(fontSize: 16),
+                      ))),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  DottedBorder(
+                    radius: const Radius.circular(5),
+                    strokeWidth: 1,
+                    borderType: BorderType.RRect,
+                    child: Container(
+                      height: 170,
+                      child: Stack(
+                        children: [
+                          InkWell(
+                            onTap: _fetchImage,
+                            child: Container(
+                              child: Center(
+                                child: Column(
+                                  children: const [
+                                    Icon(
+                                      Icons.add_photo_alternate_outlined,
+                                      color: AppColors.textColor,
+                                      size: 55,
+                                    ),
+                                    Text(
+                                        'Add Cover Image On YOur Buisness Page'),
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          InkWell(
+                            onTap: _fetchImage,
+                            child: ClipRRect(
+                              child: Image.file(
+                                File(image),
+                                width: AppUtils.getDeviceSize(context).width,
+                                height: 170,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      InkWell(
-                        onTap: (){},
-                        child: Container(
-                          decoration: BoxDecoration(
-                              // image: const DecorationImage(
-                              //     fit: BoxFit.cover,
-                              //     image: AssetImage(AppIcons.imgSlide1))
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 16,
+                  )
+                ],
               ),
-              SizedBox(height: 16,)
-            ],
+            ),
+          )),
+          Center(
+            child: CustomButton(
+              onTap: () {
+                postAccountType();
+
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => const ConnectionScreen(),
+                // ));
+              },
+              child: const Text('Complete Registration'),
+            ),
           ),
-        )),
-        Center(
-          child: CustomButton(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ConnectionScreen(),));
-            },
-            child: const Text('Complete Registration'),
+        ],
+      ),
+    );
+  }
+
+  void postAccountType() {
+    if (_formKey.currentState!.validate()) {
+      _authBloc.add(AccountTypeEvent(
+          role: 'creative',
+          name: _pagenameController.text,
+          stage: stage,
+          category: categories[0],
+          est_capital: _capitalController.text,
+          photo: image,
+          description: _descriptionController.text));
+    }
+  }
+
+  void _listenToAccountTypeState(BuildContext context, AuthState state) {
+    if (state is AccounTypeLoadingState) {
+      AppUtils.showAnimatedProgressDialog(context);
+    }
+
+    if (state is AccountTypeFailureState) {
+      Navigator.pop(context);
+      CustomSnackBar.showError(context, message: state.error);
+    }
+
+    if (state is AccountTypeSuccesState) {
+      Navigator.pop(context);
+      StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => state.accountTypeResponse.connect.isNotEmpty
+                ? ConnectionScreen(
+                    connections: state.accountTypeResponse.connect,
+                    role: state.accountTypeResponse.userRole?.role,
+                  )
+                : const PaymentScreen(),
           ),
-        ),
-      ],
-    ));
+          (route) => false);
+    }
+  }
+
+  void _fetchImage() async {
+    var images = await AppUtils.fetchImages(allowMultiple: false);
+    if (images.isNotEmpty) {
+      setState(() {
+        image = images[0];
+      });
+    }
   }
 }

@@ -1,3 +1,6 @@
+import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
@@ -16,11 +19,16 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   final ScrollController _scrollController = ScrollController();
+  String? username;
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomFeedAppBar(),
+      appBar: CustomFeedAppBar(
+        username: username,
+      ),
       body: NestedScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(),
@@ -82,7 +90,8 @@ class _FeedScreenState extends State<FeedScreen> {
 }
 
 class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomFeedAppBar({Key? key}) : super(key: key);
+  const CustomFeedAppBar({Key? key, this.username}) : super(key: key);
+  final String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +112,14 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text('Hello Destiny!',
-                        style: TextStyle(
+                  children: [
+                    Text('Hello $username!',
+                        style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.black)),
-                    Text('Good Morning 🌞',
-                        style: TextStyle(
+                    Text('${greeting()} 🌞',
+                        style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                             color: Colors.black)),
@@ -124,7 +133,9 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen(),));
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SearchScreen(),
+                        ));
                       },
                     ),
                     IconButton(
@@ -133,7 +144,9 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(),));
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => NotificationScreen(),
+                        ));
                       },
                     ),
                   ],
@@ -148,4 +161,15 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(110);
+
+  String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return ' Good Morning';
+    }
+    if (hour < 17) {
+      return ' Good Afternoon';
+    }
+    return ' Good Evening';
+  }
 }

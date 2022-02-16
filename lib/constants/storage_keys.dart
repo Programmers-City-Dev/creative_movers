@@ -1,6 +1,8 @@
 class StorageKeys {
   static final String token = "TOKEN";
   static final String cookie = "COOKIE";
+  static final String registrationStage = "REGISTRATION_STAGE";
+  static final String username = "USERNAME";
 
   static final String login = "LOGIN";
   static final String hasOnBoarded = "HAS_ON_BOARDED";

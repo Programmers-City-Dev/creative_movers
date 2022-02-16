@@ -9,4 +9,5 @@ class MessageModel {
   final bool isForme;
   final String message;
   final String messageType;
+
 }

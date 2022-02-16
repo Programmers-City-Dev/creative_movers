@@ -1,7 +1,10 @@
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/extension.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/main.dart';
+import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/form_field.dart';
@@ -29,6 +32,8 @@ class _SignupFormState extends State<SignupForm> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -170,10 +175,11 @@ class _SignupFormState extends State<SignupForm> {
       _showErrorToast(state.error);
     }
     if (state is RegistrationSuccessState) {
+      cacheToken(state.response);
       Navigator.of(context).pop();
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const MoreDetailsScreen(),
           ),
           (route) => false);
     }
@@ -194,5 +200,22 @@ class _SignupFormState extends State<SignupForm> {
           email: _emailController.text,
           password: _passwordController.text));
     }
+  }
+
+  void cacheToken(AuthResponse response) {
+    StorageHelper.setString(
+        StorageKeys.registrationStage, response.user.regStatus.toString());
+    StorageHelper.setString(StorageKeys.token, response.user.apiToken);
+    // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
+  }
+
+  void showDialog() {
+    AppUtils.showShowConfirmDialog(context,
+        message: ' Welcome',
+        cancelButtonText: 'cancelButtonText',
+        confirmButtonText: '',
+        onConfirmed: () {},
+        onCancel: () {});
+
   }
 }
