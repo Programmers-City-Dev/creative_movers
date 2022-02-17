@@ -53,4 +53,11 @@ class StorageHelper {
       preferences.remove(key);
     }
   }
+
+  static void clear() async {
+    final SharedPreferences preferences = await _getInstance();
+      preferences.clear();
+
+  }
+
 }

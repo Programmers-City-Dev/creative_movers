@@ -3,6 +3,7 @@ import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:creative_movers/screens/main/feed/views/create_post.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
@@ -61,7 +62,7 @@ class _FeedScreenState extends State<FeedScreen> {
           physics: const BouncingScrollPhysics(),
           slivers: [
             SliverPersistentHeader(
-                // pinned: true,
+              // pinned: true,
                 floating: true,
                 delegate: SliverAppBarDelegate(
                   const PreferredSize(
@@ -71,12 +72,14 @@ class _FeedScreenState extends State<FeedScreen> {
                     ),
                   ),
                 )),
-            const SliverToBoxAdapter(child: PostCard()),
+             SliverToBoxAdapter(child: PostCard(onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CreatePostScreen(),));
+            },)),
             SliverPadding(
               padding: const EdgeInsets.all(8),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+                      (BuildContext context, int index) {
                     return const PostItem();
                   },
                   childCount: 5,
@@ -99,7 +102,10 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       // padding: const EdgeInsets.only(top: 45, left: 10, right: 10),
       color: Colors.white,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       child: Column(
         children: [
           const SizedBox(
@@ -119,7 +125,9 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: BlocBuilder<ProfileBloc, ProfileState>(
                         builder: (context, state) {
                           return Text(
-                              'Hello ${context.watch<ProfileBloc>().username}!',
+                              'Hello ${context
+                                  .watch<ProfileBloc>()
+                                  .firstname}!',
                               style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -172,7 +180,9 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(110);
 
   String greeting() {
-    var hour = DateTime.now().hour;
+    var hour = DateTime
+        .now()
+        .hour;
     if (hour < 12) {
       return ' Good Morning';
     }
