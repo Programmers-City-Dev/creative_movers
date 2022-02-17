@@ -1,11 +1,8 @@
-import 'package:creative_movers/screens/auth/views/mover_form.dart';
 import 'package:creative_movers/screens/auth/widgets/details_saved_succes_dialog.dart';
 import 'package:creative_movers/screens/auth/widgets/payment_succes_dialog.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:group_radio_button/group_radio_button.dart';
 
 class PaymentForm extends StatefulWidget {
   const PaymentForm({Key? key}) : super(key: key);
@@ -27,7 +24,7 @@ class _PaymentFormState extends State<PaymentForm> {
   Widget build(BuildContext context) {
     return Form(
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         height: MediaQuery
             .of(context)
             .size

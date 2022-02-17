@@ -2,10 +2,7 @@ import 'dart:developer';
 
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
-import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
-import 'package:creative_movers/screens/auth/views/payment_screen.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/onboarding/views/onboarding_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';

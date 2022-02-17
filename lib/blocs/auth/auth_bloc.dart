@@ -10,7 +10,7 @@ import 'package:creative_movers/models/biodata_response.dart';
 import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/models/server_error_model.dart';
 import 'package:creative_movers/models/state.dart';
-import 'package:creative_movers/repository/auth_repository.dart';
+import 'package:creative_movers/repository/remote/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

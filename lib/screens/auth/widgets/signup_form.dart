@@ -206,6 +206,7 @@ class _SignupFormState extends State<SignupForm> {
     StorageHelper.setString(
         StorageKeys.registrationStage, response.user.regStatus.toString());
     StorageHelper.setString(StorageKeys.token, response.user.apiToken);
+    StorageHelper.setString(StorageKeys.username, response.user.username);
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
 

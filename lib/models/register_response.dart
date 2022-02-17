@@ -63,7 +63,7 @@ class User {
     required this.createdAt,
     required this.updatedAt,
     required this.apiToken,
-    required this.profilePhotoUrl,
+    this.profilePhotoUrl,
   });
 
   final int id;
@@ -82,7 +82,7 @@ class User {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String apiToken;
-  final String profilePhotoUrl;
+  final String? profilePhotoUrl;
 
   User copyWith({
     int? id,
