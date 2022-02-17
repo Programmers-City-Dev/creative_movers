@@ -177,7 +177,6 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
   void _fetchImage() async {
     var images = await AppUtils.fetchImages(allowMultiple: false);
     if (images.isNotEmpty) {
-
       setState(() {
         image = images[0];
       });

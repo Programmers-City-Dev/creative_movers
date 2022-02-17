@@ -11,6 +11,7 @@ import 'package:creative_movers/models/biodata_response.dart';
 import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/models/server_error_model.dart';
 import 'package:creative_movers/models/state.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthRepository {
@@ -96,14 +97,18 @@ class AuthRepository {
       required String biodata,
          String? image
       }) async {
+
+    var formData = FormData.fromMap({
+      "firstname": firstname,
+      "lastname": lastname,
+      "phone": phoneNumber,
+      "biodata": biodata,
+      if(image != null)"image":
+      await MultipartFile.fromFile(image, filename:image.split('/').last),
+    });
+
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.biodata_endpoint, body: {
-        "firstname": firstname,
-        "lastname": lastname,
-        "phone": phoneNumber,
-        "biodata": biodata,
-        "image": image,
-      }),
+      () => httpClient.post(Endpoints.biodata_endpoint, body: formData),
       successResponse: (data) {
         return State<BioDataResponse?>.success(
             data != null ? BioDataResponse.fromJson(data) : null);
