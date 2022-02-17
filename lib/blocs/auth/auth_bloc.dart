@@ -7,6 +7,7 @@ import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:creative_movers/models/account_type_response.dart';
 import 'package:creative_movers/models/addconnection_response.dart';
 import 'package:creative_movers/models/biodata_response.dart';
+import 'package:creative_movers/models/logout_response.dart';
 import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/models/server_error_model.dart';
 import 'package:creative_movers/models/state.dart';
@@ -27,10 +28,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<BioDataEvent>(_mapBioDataEventToState);
     on<AccountTypeEvent>(_mapAccountTypeEventToState);
     on<AddConnectionsEvent>(_mapAddConnectionsEventToState);
+    on<LogoutEvent>(_mapLogoutEventToState);
   }
 
-  FutureOr<void> _mapRegisterEventToState(
-      RegisterEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> _mapRegisterEventToState(RegisterEvent event,
+      Emitter<AuthState> emit) async {
     try {
       emit(RegistrationLoadingState());
       var state = await authRepository.register(
@@ -48,8 +50,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  FutureOr<void> _mapLoginEventToState(
-      LoginEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> _mapLoginEventToState(LoginEvent event,
+      Emitter<AuthState> emit) async {
     try {
       emit(LoginLoadingState());
       var state = await authRepository.login(
@@ -65,8 +67,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  FutureOr<void> _mapBioDataEventToState(
-      BioDataEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> _mapBioDataEventToState(BioDataEvent event,
+      Emitter<AuthState> emit) async {
     emit(BioDataLoadingState());
     try {
       var state = await authRepository.post_biodata(
@@ -87,8 +89,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<FutureOr<void>> _mapAccountTypeEventToState(
-      AccountTypeEvent event, Emitter<AuthState> emit) async {
+  Future<FutureOr<void>> _mapAccountTypeEventToState(AccountTypeEvent event,
+      Emitter<AuthState> emit) async {
     emit(AccounTypeLoadingState());
     try {
       var state = await authRepository.post_account_type(
@@ -115,22 +117,41 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  FutureOr<void> _mapAddConnectionsEventToState(
-      AddConnectionsEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> _mapAddConnectionsEventToState(AddConnectionsEvent event,
+      Emitter<AuthState> emit) async {
     emit(AddConnectionLoadingState());
     // try {
-      var state =
-          await authRepository.add_connections(user_id: event.user_id, connections: event.connection);
-      if (state is SuccessState) {
-        emit(AddConnectionSuccesState(
-          addConnectionResponse: state.value,
-        ));
-      } else if (state is ErrorState) {
-        ServerErrorModel errorModel = state.value;
-        emit(AddConnectionFailureState(error: errorModel.errorMessage));
-      }
+    var state =
+    await authRepository.add_connections(
+        user_id: event.user_id, connections: event.connection);
+    if (state is SuccessState) {
+      emit(AddConnectionSuccesState(
+        addConnectionResponse: state.value,
+      ));
+    } else if (state is ErrorState) {
+      ServerErrorModel errorModel = state.value;
+      emit(AddConnectionFailureState(error: errorModel.errorMessage));
+    }
     // } catch (e) {
     //   emit(AddConnectionFailureState(error: "Oops! Something went wrong."));
     // }
+  }
+
+  FutureOr<void> _mapLogoutEventToState(LogoutEvent event,
+      Emitter<AuthState> emit) async{
+    emit(LogoutLoadingState());
+    try {
+      var state = await authRepository.logout();
+      if (state is SuccessState){
+        emit(LogoutSuccessState(logoutResponse: state.value));
+      }else if (state is ErrorState){
+        ServerErrorModel errorModel = state.value;
+        emit(LogoutFaliureState(error: errorModel.errorMessage));
+      }
+    }  catch (e) {
+
+      emit(LogoutFaliureState(error: 'Oops Something went wrong'));
+      // TODO
+    }
   }
 }

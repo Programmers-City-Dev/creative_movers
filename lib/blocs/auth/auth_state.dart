@@ -136,3 +136,27 @@ class AddConnectionFailureState extends AuthState {
   // TODO: implement props
   List<Object?> get props => [error];
 }
+
+class LogoutLoadingState extends AuthState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}
+class LogoutSuccessState extends AuthState{
+final  LogoutResponse logoutResponse;
+
+LogoutSuccessState({required this.logoutResponse});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [logoutResponse];
+}
+class LogoutFaliureState extends AuthState{
+  String error;
+  @override
+  // TODO: implement props
+  List<Object?> get props => [error];
+
+  LogoutFaliureState({required this.error});
+}

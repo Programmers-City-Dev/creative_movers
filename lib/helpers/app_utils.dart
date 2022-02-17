@@ -38,9 +38,10 @@ class AppUtils {
       }
     }
   }
+
   static Future<String?> getUserName() async {
-  String? username = await StorageHelper.getString(StorageKeys.username);
-  return username;
+    String? username = await StorageHelper.getString(StorageKeys.username);
+    return username;
   }
 
   static void showAnimatedProgressDialog(BuildContext context,
@@ -133,12 +134,14 @@ class AppUtils {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                CustomButton(
-                    child: Text(confirmButtonText), onTap: onConfirmed),
-                SizedBox(
-                  width: 10,
+                Expanded(
+                  child: CustomButton(
+                      child: Text(confirmButtonText), onTap: onConfirmed),
                 ),
-                CustomButton(child: Text(cancelButtonText), onTap: onCancel),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(child: CustomButton(child: Text(cancelButtonText), onTap: onCancel)),
               ],
             )
           ],
@@ -255,7 +258,7 @@ class AppUtils {
   }
 
   static void showMessageDialog(BuildContext context,
-      {String? title, String? message,required VoidCallback onClose}) {
+      {String? title, String? message, required VoidCallback onClose}) {
     showDialog(
       context: context,
       barrierDismissible: false,

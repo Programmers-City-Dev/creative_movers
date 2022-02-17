@@ -8,6 +8,7 @@ import 'package:creative_movers/models/account_type_response.dart';
 import 'package:creative_movers/models/account_type_response.dart';
 import 'package:creative_movers/models/addconnection_response.dart';
 import 'package:creative_movers/models/biodata_response.dart';
+import 'package:creative_movers/models/logout_response.dart';
 import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/models/server_error_model.dart';
 import 'package:creative_movers/models/state.dart';
@@ -201,6 +202,35 @@ class AuthRepository {
       successResponse: (data) {
         return State<AddConnectionResponse?>.success(
             data != null ? AddConnectionResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> logout() async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpClient.post(Endpoints.logout_endpoint),
+      successResponse: (data) {
+        return State<LogoutResponse?>.success(
+            data != null ? LogoutResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

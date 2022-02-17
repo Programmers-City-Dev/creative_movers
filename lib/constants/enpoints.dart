@@ -9,4 +9,5 @@ class Endpoints {
 
   static const acount_type_endpoint = '${ApiConstants.BASE_URL}api/user/account-type';
   static const add_connection_endpoint = '${ApiConstants.BASE_URL}api/user/choose-connection';
+  static const logout_endpoint = '${ApiConstants.BASE_URL}api/user/logout';
 }

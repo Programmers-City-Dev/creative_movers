@@ -10,6 +10,7 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   String username = '';
+  String firstname = '';
 
   ProfileBloc() : super(ProfileInitial()) {
     on<GetUsernameEvent>(_mapGetUsernameToState);
@@ -19,6 +20,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       GetUsernameEvent event, Emitter<ProfileState> emit) async {
     var s = await StorageHelper.getString(StorageKeys.username);
     username = s!;
+    var firstName = await StorageHelper.getString(StorageKeys.firstname);
+    firstname = firstName!;
     emit(UsernameFetchedState(username));
   }
 }
