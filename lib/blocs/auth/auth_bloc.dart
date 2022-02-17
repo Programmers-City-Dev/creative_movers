@@ -75,7 +75,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           firstname: event.firstname,
           lastname: event.lastname,
           phoneNumber: event.phoneNumber,
-          biodata: event.biodata);
+          biodata: event.biodata,
+        image: event.image
+      );
       if (state is SuccessState) {
         emit(BioDataSuccesState(
           bioDataResponse: state.value,
