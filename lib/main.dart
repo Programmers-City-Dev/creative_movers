@@ -1,6 +1,4 @@
-import 'dart:developer';
-
-import 'package:creative_movers/screens/onboarding/views/onboarding_screen.dart';
+import 'package:creative_movers/di/injector.dart' as di;
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +9,7 @@ import 'helpers/app_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await di.setup();
   var firstScreen = await AppUtils.getFirstScreen();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));

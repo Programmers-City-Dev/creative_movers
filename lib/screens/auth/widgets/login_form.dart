@@ -182,7 +182,7 @@ class _LoginFormState extends State<LoginForm> {
         AppUtils.showMessageDialog(
           context,
           message:
-              'Welcome ${state.response.user.username}, We noticed you havent completed your registration, Press CONTINUE to finish up ',
+              "Welcome ${state.response.user.username}, We noticed you haven't completed your registration, Press CONTINUE to finish up ",
           onClose: () {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(

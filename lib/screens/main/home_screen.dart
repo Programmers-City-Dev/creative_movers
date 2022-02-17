@@ -1,3 +1,5 @@
+import 'package:creative_movers/blocs/profile/profile_bloc.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
@@ -47,6 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
   //       activeIcon:  const NavSelectedIcon(label: 'CHAT', strIcon: AppIcons.svgMessage,),
   //       label: 'CHAT'),
   // ];
+
+  @override
+  void initState() {
+   injector.get<ProfileBloc>().add(GetUsernameEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
