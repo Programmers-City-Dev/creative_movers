@@ -214,7 +214,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void cacheToken(AuthResponse response) {
     StorageHelper.setString(
-        StorageKeys.username, response.user.username);
+        StorageKeys.username, response.user.username.toString());
     StorageHelper.setString(
         StorageKeys.token, response.user.apiToken.toString());
 

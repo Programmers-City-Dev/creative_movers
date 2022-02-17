@@ -1,5 +1,4 @@
 import 'package:creative_movers/constants/storage_keys.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
@@ -13,22 +12,20 @@ import 'package:flutter/material.dart';
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
+
+
   @override
   _FeedScreenState createState() => _FeedScreenState();
 }
-
 class _FeedScreenState extends State<FeedScreen> {
   final ScrollController _scrollController = ScrollController();
-  String? username;
 
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomFeedAppBar(
-        username: username,
-      ),
+      appBar:  CustomFeedAppBar(username: '',),
       body: NestedScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(),
@@ -91,7 +88,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
 class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomFeedAppBar({Key? key, this.username}) : super(key: key);
-  final String? username;
+ final String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +109,8 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Hello $username!',
+                  children:  [
+                     Text('Hello $username!',
                         style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -133,9 +130,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const SearchScreen(),
-                        ));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen(),));
                       },
                     ),
                     IconButton(
@@ -144,9 +139,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => NotificationScreen(),
-                        ));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(),));
                       },
                     ),
                   ],
