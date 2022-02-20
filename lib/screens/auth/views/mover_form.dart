@@ -23,7 +23,7 @@ class MoverForm extends StatefulWidget {
   _MoverFormState createState() => _MoverFormState();
 }
 
-class _MoverFormState extends State<MoverForm> {
+class _MoverFormState extends State<MoverForm> with AutomaticKeepAliveClientMixin{
   GlobalKey<FormState> myFormKey = GlobalKey<FormState>();
   List<String> selectedCategories = [];
   List<String> categories = [];
@@ -391,4 +391,7 @@ class _MoverFormState extends State<MoverForm> {
               (route) => false);
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

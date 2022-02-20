@@ -26,7 +26,7 @@ class CreativeForm extends StatefulWidget {
   _CreativeFormState createState() => _CreativeFormState();
 }
 
-class _CreativeFormState extends State<CreativeForm> {
+class _CreativeFormState extends State<CreativeForm> with AutomaticKeepAliveClientMixin {
   List<String> categories = [];
   List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
   String cat = '';
@@ -308,4 +308,7 @@ class _CreativeFormState extends State<CreativeForm> {
       });
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
