@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -292,35 +293,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(
                                 width: 16,
                               ),
+                              BlocListener<PaymentBloc, PaymentState>(
+                                bloc: injector.get<PaymentBloc>(),
+                                listener: (context, state) {
+                                  if(state is PaymentProcessingState){
+                                    AppUtils.showAnimatedProgressDialog(context, title: "Processing");
+                                  }
+                                  if(state is PaymentFailureState){
+                                    Navigator.of(context).pop();
+                                    AppUtils.showCustomToast(state.error);
+                                  }
+                                  if(state is PaymentIntentGottenState){
+                                    Navigator.of(context).pop();
+                                    injector.get<PaymentBloc>().add(MakePaymentEvent(state.intent['client_secret']));
+                                  }
 
-                              GestureDetector(
-                                onTap: () async {
-                                  await makePayment();
-                                  // await confirmPayment();
-                                  // final paymentMethod = await Stripe.instance
-                                  //     .createPaymentMethod(
-                                  //         const PaymentMethodParams.card(setupFutureUsage: 'OffSession',
-                                  //           billingDetails: BillingDetails(
-                                  //             address: Address(
-                                  //               city: "Owerri",
-                                  //               country: "Nigeria",
-                                  //               state: "Imo",
-                                  //               postalCode: "4420043",
-                                  //               line1: "+2449035980061",
-                                  //                 line2: '+2347038283454'
-                                  //             ),
-                                  //             email: "zubitex40@gmail.com",
-                                  //             name: "Anyanwu Nzubechi",
-                                  //             phone: "+2349035980061"
-                                  //           )
-                                  //         ));
+                                  if(state is PaymentConfirmedState){
+                                    Navigator.of(context).pop();
+                                    AppUtils.showCustomToast(state.message);
+                                  }
                                 },
-                                child: const Text(
-                                  'Help and Support',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textColor),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    injector.get<PaymentBloc>().add(const CreatePaymentIntentEvent(20, "USD"));
+                                  },
+                                  child: const Text(
+                                    'Help and Support',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.textColor),
+                                  ),
                                 ),
                               ),
                             ],
@@ -398,55 +401,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Future<void> makePayment() async{
-    try{
-      Map<String, dynamic> paymentIntent = await _createPaymentIntent(20, "USD");
-      await Stripe.instance.initPaymentSheet(paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: paymentIntent['client_secret'],
-        applePay: true,
-        googlePay: true,
-        style: ThemeMode.light,
-         merchantCountryCode: "US",
-        merchantDisplayName: "Creative Movers Pay",
-
-      ));
-
-      displayPaymentSheet(paymentIntent['client_secrete']);
-
-    }catch(e){
-      print("Payment error: $e");
-    }
-  }
-
-  void displayPaymentSheet(paymentIntent) async{
-    try{
-      await Stripe.instance.presentPaymentSheet(parameters: paymentIntent);
-    }catch(e){
-      print("SHEET ERROR");
-    }
-  }
-
-  _createPaymentIntent(int amount, String currency) async{
-    try{
-      Map<String, dynamic> body = {
-        "amount": (amount * 100).toString(),
-        "currency" : currency,
-        "payment_method_types[]" : "card"
-      };
-      var res = await PaymentRepository(injector.get()).createPaymentIntent(body);
-      if(res is st.SuccessState){
-        log("PAYMENT CREATED: ${res.value}");
-        return res.value;
-      }else{
-        log("ERROR OCCURRED");
-        return {};
-      }
-    }catch(e){
-      print("Intent error: $e");
-      return {};
-    }
-  }
-
   void _listenToAuthState(BuildContext context, AuthState state) {
     if (state is LogoutLoadingState) {
       AppUtils.showAnimatedProgressDialog(context);
@@ -473,5 +427,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
-
 }
