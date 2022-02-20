@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
@@ -69,8 +70,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _mapBioDataEventToState(BioDataEvent event,
       Emitter<AuthState> emit) async {
-    emit(BioDataLoadingState());
+
     try {
+      emit(BioDataLoadingState());
       var state = await authRepository.post_biodata(
           firstname: event.firstname,
           lastname: event.lastname,
@@ -78,16 +80,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           biodata: event.biodata,
         image: event.image
       );
+
       if (state is SuccessState) {
         emit(BioDataSuccesState(
           bioDataResponse: state.value,
         ));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
-        emit(LoginFailureState(error: errorModel.errorMessage));
+        emit(BioDataFailureState(errorModel.errorMessage));
       }
     } catch (e) {
-      emit(LoginFailureState(error: "Oops! Something went wrong."));
+      emit(BioDataFailureState("Oops! Something went wrong."));
     }
   }
 
