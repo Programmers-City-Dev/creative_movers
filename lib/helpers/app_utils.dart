@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
@@ -309,10 +310,12 @@ class AppUtils {
     try {
       FilePicker filePicker = FilePicker.platform;
       FilePickerResult? result = await filePicker.pickFiles(
-        type: FileType.custom,
+        type: FileType.image,
         allowCompression: true,
+        dialogTitle:'SELECT IMAGE' ,
+        withData: true,
         allowMultiple: allowMultiple,
-        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        // allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
       );
       if (result != null) {
         return result.files.map((file) => file.path!).toList();
@@ -323,7 +326,51 @@ class AppUtils {
       return [];
     }
   }
+
+  static Future<List<Map<String,String?>>> fetchVideos({bool allowMultiple = false}) async {
+    try {
+      FilePicker filePicker = FilePicker.platform;
+      FilePickerResult? result = await filePicker.pickFiles(
+        type: FileType.video,
+        allowCompression: true,
+
+        allowMultiple: allowMultiple,
+        // allowedExtensions: ['mp4'],
+
+      );
+      if (result != null) {
+        return result.files.map((file) => {'path':file.path,'size':file.size.toString()}).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+  }
+  static Future<List<PlatformFile>> fetchMedia({bool allowMultiple = false}) async {
+    try {
+      FilePicker filePicker = FilePicker.platform;
+      FilePickerResult? result = await filePicker.pickFiles(
+        type: FileType.custom,
+        allowCompression: true,
+
+        allowMultiple: allowMultiple,
+        allowedExtensions: ['mp4','mov', 'jpg','jpeg','png'],
+
+      );
+      if (result != null) {
+        return result.files;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+  }
+
 }
+
+
 
 class CustomSnackBar {
   final BuildContext context;

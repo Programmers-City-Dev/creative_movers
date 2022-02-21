@@ -51,7 +51,7 @@ class AccountTypeEvent extends AuthEvent {
   final String? user_id;
   final String? name;
   final String? stage;
-  final String? category;
+  final List<String>? category;
   final String? est_capital;
   final String? description;
   final String? photo;
@@ -99,6 +99,11 @@ class AddConnectionsEvent extends AuthEvent {
 }
 
 class LogoutEvent extends AuthEvent{
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+class CategoriesEvent extends AuthEvent{
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();

@@ -1,7 +1,10 @@
 import 'dart:ffi';
 
+import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchDropdown extends StatefulWidget {
   final void Function(List<String>)? onSaved;
@@ -40,6 +43,7 @@ class _SearchDropdownState extends State<SearchDropdown> {
   ];
   List<String> filterlist = List.empty();
   List<String> selectedList = [];
+  AuthBloc _authBloc = AuthBloc();
 
   // List<String> filterlist = [];
   final TextEditingController _controller = TextEditingController();
@@ -173,29 +177,61 @@ class _SearchDropdownState extends State<SearchDropdown> {
               const SizedBox(
                 height: 16,
               ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedList.add(filterlist[index]);
-                        filterlist.remove(filterlist[index]);
-                        print(selectedList);
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: Text(
-                        filterlist[index],
-                        style: TextStyle(fontSize: 16),
+              BlocBuilder<AuthBloc, AuthState>(
+                bloc: _authBloc,
+                builder: (context, state) {
+                  if (state is CategoryLoadingState) {
+                    return Container(
+                      child: Column(
+                        children: const [
+                          SizedBox(height: 100,),
+                          Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          SizedBox(height: 20,),
+
+                          Text('Fetching Categories..')
+                        ],
                       ),
-                    ),
-                  ),
-                ),
-                itemCount: filterlist.length,
-                shrinkWrap: true,
+                    );
+                  } else if (state is CategorySuccessState) {
+                    filterlist = state.categoriesReponse.category!;
+
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedList.add(filterlist[index]);
+                              filterlist.remove(filterlist[index]);
+                              print(selectedList);
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              filterlist[index],
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      itemCount: filterlist.length,
+                      shrinkWrap: true,
+                    );
+                  } else  {
+                    return Column(
+                      children:  [
+                        SizedBox(height: 100,),
+                        const Text('Ooops an error occured '),
+                        SizedBox(height: 10,),
+                        CustomButton(onTap: (){_authBloc.add(CategoriesEvent());}, child: Text('Retry'),)
+                      ],
+                    );
+                  }
+                },
               )
             ],
           ),
@@ -206,11 +242,9 @@ class _SearchDropdownState extends State<SearchDropdown> {
 
   @override
   void initState() {
-    filterlist = categories;
+    _authBloc.add(CategoriesEvent());
   }
 }
-
-
 
 // Icon(
 // Icons.done_rounded,

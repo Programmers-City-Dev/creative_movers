@@ -17,7 +17,9 @@ import 'package:group_radio_button/group_radio_button.dart';
 import 'connection_screen.dart';
 
 class MoverForm extends StatefulWidget {
-  const MoverForm({Key? key}) : super(key: key);
+  const MoverForm({Key? key, required this.categories}) : super(key: key);
+  final List<String> categories;
+
 
   @override
   _MoverFormState createState() => _MoverFormState();
@@ -360,7 +362,7 @@ class _MoverFormState extends State<MoverForm> {
         role: 'mover',
         min_range: min,
         max_range: max,
-        category: categories[0],
+        category: categories,
         stage: _preferedStage
 
           ));

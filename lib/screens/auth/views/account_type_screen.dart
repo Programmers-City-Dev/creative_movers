@@ -5,7 +5,8 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AccountTypeScreen extends StatefulWidget {
-  const AccountTypeScreen({Key? key}) : super(key: key);
+  const AccountTypeScreen({Key? key, required this.categories, }) : super(key: key);
+ final List<String> categories;
 
   @override
   _AccountTypeScreenState createState() => _AccountTypeScreenState();
@@ -75,7 +76,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 // scrollDirection: Axis.vertical,
                 controller: pageController,
-                children: const [ CreativeForm(),MoverForm(),],
+                children:  [ CreativeForm(categories:widget.categories ,),MoverForm(categories: widget.categories,),],
               )),
               // Expanded(
               //     child: account_type == 'Mover'

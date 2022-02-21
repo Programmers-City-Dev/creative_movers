@@ -1,26 +1,48 @@
+import 'package:creative_movers/models/media.dart';
+import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
+import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_stack/image_stack.dart';
+import 'package:readmore/readmore.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class PostItem extends StatefulWidget {
-  const PostItem({Key? key}) : super(key: key);
+class NewPostItem extends StatefulWidget {
+  const NewPostItem({Key? key}) : super(key: key);
 
   @override
-  _PostItemState createState() => _PostItemState();
+  _NewPostItemState createState() => _NewPostItemState();
 }
 
-class _PostItemState extends State<PostItem> {
+class _NewPostItemState extends State<NewPostItem> {
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
   List<String> images = [
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
   ];
+  List<Media> mediaList = [
+    Media(type: 'image'),
+    Media(type: 'video'),
+    Media(type: 'image'),
+    Media(type: 'image'),
+    Media(type: 'image'),
+    Media(type: 'image'),
+    Media(type: 'image'),
+    Media(type: 'image'),
+    Media(type: 'image'),
+    Media(type: 'image')
+  ];
+  int pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: const BoxDecoration(color: Colors.white),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Row(
@@ -133,23 +155,82 @@ class _PostItemState extends State<PostItem> {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              'This is a simple post in the social media platform please like and comment if you can',
-              style: TextStyle(fontSize: 13),
+            child: AnimatedSize(
+              duration: Duration(milliseconds: 2),
+              child: ReadMoreText(
+                'This is a simple post in the social media platform please like and comment if you can  in the social media platform please like and comment if you can',
+                style: TextStyle(color: AppColors.textColor),
+                trimLines: 2,
+
+                trimMode: TrimMode.Line,
+                trimCollapsedText: 'Show more',
+                trimExpandedText: 'Show less',
+                moreStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           Container(
-            height: 300,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                    ))),
+            child: Stack(children: [
+              Container(
+                height: 300,
+                child: PageView.builder(
+                  controller: PageController(keepPage: true, initialPage: 0),
+                  pageSnapping: true,
+                  onPageChanged: (currentindex) {
+                    setState(() {
+                      pageIndex = currentindex;
+                      itemScrollController.scrollTo(
+                          index: pageIndex,
+                          duration: Duration(seconds: 2),
+                          curve: Curves.easeInOutCubic);
+                    });
+                  },
+                  scrollDirection: Axis.horizontal,
+                  itemCount: mediaList.length,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) =>
+                      MediaDisplayItem(media: mediaList[index]),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Chip(
+                        backgroundColor: Colors.black.withOpacity(0.8),
+                        padding: EdgeInsets.zero,
+                        label: Text(
+                          '${pageIndex + 1}/${mediaList.length} ',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 10,
+                              color: AppColors.smokeWhite,
+                              fontWeight: FontWeight.w600),
+                        )),
+                  ),
+                ],
+              )
+            ]),
           ),
           const SizedBox(
             height: 10,
+          ),
+          Container(
+            height: 8,
+            width: 58,
+            child: ScrollablePositionedList.builder(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: mediaList.length,
+              itemScrollController: itemScrollController,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: DotIndicator(
+                  isActive: pageIndex == index,
+                ),
+              ),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

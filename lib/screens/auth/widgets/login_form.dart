@@ -231,7 +231,7 @@ class _LoginFormState extends State<LoginForm> {
     if (stage == 'new') {
       return const MoreDetailsScreen();
     } else if (stage == 'biodata') {
-      return const AccountTypeScreen();
+      return const AccountTypeScreen(categories: [],);
     } else if (stage == 'account_type') {
       return const HomeScreen();
     } else if (stage == 'payment') {

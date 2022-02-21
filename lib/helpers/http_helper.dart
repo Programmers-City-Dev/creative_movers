@@ -13,6 +13,7 @@ class HttpHelper {
 
     Map<String, dynamic> headers = {};
     headers['Content-Type'] = 'application/json';
+    headers['Accept'] = 'application/json';
     if (storageToken != null) headers['Authorization'] = 'Bearer $storageToken';
 
     _client!.options.headers = headers;

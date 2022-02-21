@@ -1,41 +1,66 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/account_type_response.dart';
-import 'package:creative_movers/models/account_type_response.dart';
-import 'package:creative_movers/models/account_type_response.dart';
-import 'package:creative_movers/models/addconnection_response.dart';
-import 'package:creative_movers/models/biodata_response.dart';
-import 'package:creative_movers/models/categories.dart';
 import 'package:creative_movers/models/feed_response.dart';
-import 'package:creative_movers/models/logout_response.dart';
-import 'package:creative_movers/models/register_response.dart';
+import 'package:creative_movers/models/media.dart';
 import 'package:creative_movers/models/server_error_model.dart';
 import 'package:creative_movers/models/state.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-class AuthRepository {
-  final HttpHelper httpClient;
+class FeedRepository {
+  final HttpHelper httpHelper;
 
-  AuthRepository(this.httpClient);
+  FeedRepository(this.httpHelper);
 
-  // Register Request
-  Future<State> register(
-      {required String email,
-      required String password,
-      required String username}) async {
+  Future<State> adFeed({
+    required String type,
+     String? page_id,
+    required String content,
+    required List<String> media,
+  }) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.register_endpoint, body: {
-        "email": email,
-        "password": password,
-        "username": username,
-      }),
+      () => httpHelper.post(Endpoints.add_feed_endpoint, body:FormData.fromMap({
+        "type" :type,
+        "page_id" :page_id,
+        "content" :content,
+        "media" : media.map((e) => MultipartFile.fromFileSync(e) ),
+      })),
       successResponse: (data) {
-        return State<AuthResponse?>.success(
-            data != null ? AuthResponse.fromMap(data) : null);
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: response.data['message']),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> getFeeds() async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      successResponse: (data) {
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -59,16 +84,12 @@ class AuthRepository {
     );
   }
 
-  //Login Request
-  Future<State> login({required String email, required String password}) async {
+  Future<State> postLike() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.login_endpoint, body: {
-        "email": email,
-        "password": password,
-      }),
+      () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<AuthResponse?>.success(
-            data != null ? AuthResponse.fromMap(data) : null);
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -92,29 +113,12 @@ class AuthRepository {
     );
   }
 
-  //Post Bio Data Request
-  Future<State> post_biodata(
-      {required String firstname,
-      required String lastname,
-      required String phoneNumber,
-      required String biodata,
-         String? image
-      }) async {
-
-    var formData = FormData.fromMap({
-      "firstname": firstname,
-      "lastname": lastname,
-      "phone": phoneNumber,
-      "biodata": biodata,
-      if(image != null)"image":
-      await MultipartFile.fromFile(image, filename:image.split('/').last),
-    });
-
+  Future<State> getLike() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.biodata_endpoint, body: formData),
+      () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<BioDataResponse?>.success(
-            data != null ? BioDataResponse.fromJson(data) : null);
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -138,77 +142,12 @@ class AuthRepository {
     );
   }
 
-
-  //Account Type Request
-  Future<State> post_account_type(
-      { String? role,
-        String? user_id,
-        String? name,
-        String? stage,
-        List<String>? category,
-        String? est_capital,
-        String? description,
-        String? photo,
-        String? max_range,
-        String? min_range,
-
-      }) async {
+  Future<State> postComments() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.acount_type_endpoint, body: {
-        "role": role,
-        "user_id": user_id,
-        "name": name,
-        "stage": stage,
-        "category": jsonEncode(category),
-        "est_capital": est_capital,
-        "description": description,
-        "photo": photo,
-        "max_range": max_range,
-        "min_range": min_range,
-      }),
+      () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<AccountTypeResponse?>.success(
-            data != null ? AccountTypeResponse.fromJson(data) : null);
-      },
-      statusCodeSuccess: 200,
-      errorResponse: (response) {
-        debugPrint('ERROR SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data.toString(),
-              data: null),
-        );
-      },
-      dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
-              data: response.data),
-        );
-      },
-
-    );
-  }
-
-
-  //Add Connections Request
-  Future<State> add_connections(
-      {required String? user_id,
-      required List<Connect> connections,
-
-      }) async {
-    return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.add_connection_endpoint, body: {
-        "user_id": user_id,
-        "connection": jsonEncode(connections),
-
-      }),
-      successResponse: (data) {
-        return State<AddConnectionResponse?>.success(
-            data != null ? AddConnectionResponse.fromJson(data) : null);
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -232,12 +171,12 @@ class AuthRepository {
     );
   }
 
-  Future<State> logout() async {
+  Future<State> getComments() async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpClient.post(Endpoints.logout_endpoint),
+      () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<LogoutResponse?>.success(
-            data != null ? LogoutResponse.fromJson(data) : null);
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -261,12 +200,41 @@ class AuthRepository {
     );
   }
 
-  Future<State> fetch_categories() async {
+  Future<State> getReplies() async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpClient.post(Endpoints.categories_endpoint),
+      () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<CategoriesResponse?>.success(
-            data != null ? CategoriesResponse.fromJson(data) : null);
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> replyComment() async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      successResponse: (data) {
+        return State<FeedResponse?>.success(
+            data != null ? FeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

@@ -20,14 +20,16 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'connection_screen.dart';
 
 class CreativeForm extends StatefulWidget {
-  const CreativeForm({Key? key}) : super(key: key);
+ final List<String> categories;
+  const CreativeForm({Key? key, required this.categories}) : super(key: key);
 
   @override
   _CreativeFormState createState() => _CreativeFormState();
 }
 
 class _CreativeFormState extends State<CreativeForm> {
-  List<String> categories = [];
+  List<String> selectedCategories = [];
+
   List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
   String cat = '';
   String stage = '';
@@ -99,9 +101,9 @@ class _CreativeFormState extends State<CreativeForm> {
                     height: 10,
                   ),
                   FormField<List<String>>(
-                    initialValue: categories,
+                    initialValue: selectedCategories,
                     validator: ((value) {
-                      if (categories.isEmpty) {
+                      if (selectedCategories.isEmpty) {
                         return 'Please select your category of investment';
                       }
                     }),
@@ -125,7 +127,7 @@ class _CreativeFormState extends State<CreativeForm> {
                                 builder: (context) => SearchDropdown(
                                   onSaved: (list) {
                                     setState(() {
-                                      categories = list;
+                                      selectedCategories = list;
                                     });
                                   },
                                 ),
@@ -137,13 +139,13 @@ class _CreativeFormState extends State<CreativeForm> {
                           direction: Axis.horizontal,
                           spacing: 5,
                           children: List<Widget>.generate(
-                              categories.length,
+                              selectedCategories.length,
                               (index) => Chip(
-                                    label: Text(categories[index]),
+                                    label: Text(selectedCategories[index]),
                                     deleteIcon: const Icon(Icons.close),
                                     onDeleted: () {
                                       setState(() {
-                                        categories.remove(categories[index]);
+                                        selectedCategories.remove(selectedCategories[index]);
                                       });
                                     },
                                   )),
@@ -267,7 +269,7 @@ class _CreativeFormState extends State<CreativeForm> {
           role: 'creative',
           name: _pagenameController.text,
           stage: stage,
-          category: categories[0],
+          category: selectedCategories,
           est_capital: _capitalController.text,
           photo: image,
           description: _descriptionController.text));

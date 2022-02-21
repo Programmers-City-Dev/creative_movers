@@ -4,6 +4,7 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/views/create_post.dart';
+import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
@@ -80,9 +81,13 @@ class _FeedScreenState extends State<FeedScreen> {
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                    return const PostItem();
+                    return const NewPostItem();
                   },
                   childCount: 5,
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
+
+
                 ),
               ),
             ),

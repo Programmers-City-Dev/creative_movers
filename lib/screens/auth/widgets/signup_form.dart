@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -175,8 +177,10 @@ class _SignupFormState extends State<SignupForm> {
       _showErrorToast(state.error);
     }
     if (state is RegistrationSuccessState) {
+
       cacheToken(state.response);
       Navigator.of(context).pop();
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const MoreDetailsScreen(),
@@ -203,10 +207,16 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   void cacheToken(AuthResponse response) {
-    StorageHelper.setString(
-        StorageKeys.registrationStage, response.user.regStatus.toString());
-    StorageHelper.setString(StorageKeys.token, response.user.apiToken);
-    StorageHelper.setString(StorageKeys.username, response.user.username);
+    try {
+      StorageHelper.setString(
+          StorageKeys.registrationStage, response.user.regStatus.toString());
+      StorageHelper.setString(StorageKeys.token, response.user.apiToken);
+      StorageHelper.setString(StorageKeys.username, response.user.username);
+      // StorageHelper.setString(StorageKeys.firstname, response.user.firstname!);
+    }   catch (e) {
+      log('ERROR $e',);
+      // TODO
+    }
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
 

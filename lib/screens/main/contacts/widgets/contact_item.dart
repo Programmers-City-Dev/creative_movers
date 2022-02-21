@@ -1,7 +1,10 @@
+import 'package:creative_movers/models/get_connects_response.dart';
 import 'package:flutter/material.dart';
 import 'package:image_stack/image_stack.dart';
 class ContactItem extends StatefulWidget {
-  const ContactItem({Key? key}) : super(key: key);
+  const ContactItem({Key? key, required this.connection}) : super(key: key);
+  final Datum connection  ;
+
 
   @override
   _ContactItemState createState() => _ContactItemState();
@@ -13,6 +16,15 @@ class _ContactItemState extends State<ContactItem> {
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
   ];
 
+  Datum? myConnection;
+
+  @override
+  void initState() {
+   myConnection = widget.connection;
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return  Container(
@@ -20,13 +32,14 @@ class _ContactItemState extends State<ContactItem> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:  [
-          const Padding(
-            padding: EdgeInsets.only(right: 8.0),
+           Padding(
+            padding: const EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
               radius: 30,
               foregroundColor: Colors.red,
               backgroundImage: NetworkImage(
-                'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+
+              myConnection!.profilePhotoPath
               ),
 
             ),
@@ -35,8 +48,8 @@ class _ContactItemState extends State<ContactItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children:  [
-                Text('Frank Trabivas',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 13),),
-                Text('Frank Trabivas',style: TextStyle(fontSize: 13,color: Colors.grey),),
+                Text( myConnection!.firstname,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 13),),
+                Text( myConnection!.firstname,style: TextStyle(fontSize: 13,color: Colors.grey),),
                 Row(children: [
                   ImageStack(
                     imageList: images,
@@ -49,8 +62,8 @@ class _ContactItemState extends State<ContactItem> {
                     imageBorderWidth: 3, // Border width around the images
                   ),
                   SizedBox(width: 5,),
-                  Text('Peter C. ',style: TextStyle(fontWeight: FontWeight.bold),),
-                  Text('+5'),
+                  Text (myConnection!.connects[0].firstname,style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text('+${ myConnection!.connects.length -1}'),
                 ],)
               ],),
           ),

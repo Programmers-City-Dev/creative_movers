@@ -87,6 +87,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
                         ),
                         TextFormField(
                             controller: _phoneNumberController,
+                            keyboardType: TextInputType.number,
                             validator: MultiValidator([
                               RequiredValidator(
                                   errorText: 'Please enter your Phone Number'),
@@ -147,7 +148,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
   void _postBioData() {
     if (_formKey.currentState!.validate()) {
       _authBloc.add(BioDataEvent(
-          image: image,
+          image: image.isNotEmpty?image:null,
           firstname: _firstNameController.text.toString(),
           lastname: _lastNameController.text.toString(),
           phoneNumber: _phoneNumberController.text.toString(),
@@ -169,7 +170,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
       Navigator.pop(context);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => const AccountTypeScreen(),
+            builder: (context) =>  AccountTypeScreen(categories:state.bioDataResponse.category),
           ),
           (route) => false);
     }

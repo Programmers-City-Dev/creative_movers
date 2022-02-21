@@ -15,13 +15,13 @@ class BioDataResponse {
   });
 
   String status;
-  List<dynamic> category;
+  List<String> category;
   String message;
 
   factory BioDataResponse.fromJson(Map<String, dynamic> json) =>
       BioDataResponse(
         status: json["status"],
-        category: List<dynamic>.from(json["category"].map((x) => x)),
+        category: List<String>.from(json["category"].map((x) => x)),
         message: json["message"],
       );
 
