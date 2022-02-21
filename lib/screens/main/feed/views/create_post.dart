@@ -248,7 +248,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _fetchMedia() async {
-    var images = ['jpg', 'jpeg', 'png'];
+    var images = ['jpg', 'jpeg', 'png','webp'];
     var videos = ['mp4', 'mov'];
     var files = await AppUtils.fetchMedia(allowMultiple: true);
 

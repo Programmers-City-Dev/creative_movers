@@ -2,6 +2,7 @@ import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/invite_contact_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+
 class AddContactsWidget extends StatefulWidget {
   const AddContactsWidget({Key? key}) : super(key: key);
 
@@ -19,46 +20,51 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          height: 50,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: placeholders.length,
-            itemBuilder: (context, index) => CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage(placeholders[index]),
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: placeholders.length,
+              itemBuilder: (context, index) => CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage(placeholders[index]),
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 16,),
-        const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text(
-
-            ' Yor Contact list is empty find out people you might love to connect to and grow your audience',textAlign: TextAlign.center,),
-
-
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 35,vertical: 18),
-
-          width: MediaQuery.of(context).size.width,
-          child: ElevatedButton(
-
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12),primary: AppColors.primaryColor),
-
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InviteContactScreen(),));
-              },
-              child: const Text(
-                'CONNECT',
-                style: TextStyle(fontSize: 16),
-              )),
-        ),
-      ],),);
+          const SizedBox(
+            height: 16,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              ' This  list is empty find out people you might love to connect to and grow your audience',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 18),
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    primary: AppColors.primaryColor),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const InviteContactScreen(),
+                  ));
+                },
+                child: const Text(
+                  'CONNECT',
+                  style: TextStyle(fontSize: 16),
+                )),
+          ),
+        ],
+      ),
+    );
   }
 }

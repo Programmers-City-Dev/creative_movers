@@ -14,6 +14,5 @@ class AddFeedEvent extends FeedEvent {
   AddFeedEvent({required this.type, this.pageId, required this.content, required this.media});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [type,pageId,content,media];
 }
