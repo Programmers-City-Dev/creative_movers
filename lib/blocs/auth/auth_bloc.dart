@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:core';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/models/account_type_response.dart';
 import 'package:creative_movers/models/addconnection_response.dart';
 import 'package:creative_movers/models/biodata_response.dart';
-import 'package:creative_movers/models/categories.dart';
 import 'package:creative_movers/models/logout_response.dart';
 import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/models/server_error_model.dart';

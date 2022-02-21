@@ -27,7 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter:
+  flutter: 
     sdk: flutter
   flutter_svg: ^0.23.0+1
   modal_bottom_sheet: ^2.0.0
@@ -44,7 +44,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_localizations:
+  flutter_localizations: 
     sdk: flutter
     version: ^0.0.0
   google_nav_bar: ^5.0.5
@@ -60,6 +60,9 @@ dependencies:
   shimmer: ^2.0.0
   fluttertoast: ^8.0.8
   file_picker: ^4.2.7
+  path: ^1.8.0
+  flutter_stripe: ^2.2.0
+  either_dart: ^0.1.4
   video_player: ^2.2.18
   video_thumbnail: ^0.4.3
   path_provider: ^2.0.9

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
@@ -16,6 +17,7 @@ import 'package:creative_movers/models/server_error_model.dart';
 import 'package:creative_movers/models/state.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 
 class AuthRepository {
   final HttpHelper httpClient;
@@ -106,10 +108,11 @@ class AuthRepository {
       "lastname": lastname,
       "phone": phoneNumber,
       "biodata": biodata,
-      if(image != null)"image":
-      await MultipartFile.fromFile(image, filename:image.split('/').last),
+      if(image != null)"image":[
+      await MultipartFile.fromFile(image, filename:basename(image)),
+      ]
     });
-
+    log("IMAGE DATA:${image}");
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.biodata_endpoint, body: formData),
       successResponse: (data) {

@@ -12,6 +12,7 @@ class Endpoints {
   static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';
   static const fetch_connections_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all';
   static const search_endpoint = '${ApiConstants.BASE_URL}api/connections/search';
+  static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
   // static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';
 }

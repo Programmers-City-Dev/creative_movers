@@ -310,4 +310,7 @@ class _CreativeFormState extends State<CreativeForm> {
       });
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
