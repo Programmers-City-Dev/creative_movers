@@ -1,11 +1,10 @@
-import 'package:creative_movers/data/remote/repository/model/register_response.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
 
 class CachedUserRepository{
 
-  Future<User> getCachedUser() async{
+  // Future<User> getCachedUser() async{
 
-    Storage
 
-  }
+  // }
 
 }

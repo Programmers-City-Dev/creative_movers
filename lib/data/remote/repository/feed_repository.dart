@@ -3,12 +3,11 @@ import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/feed_response.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/data/remote/repository/model/feed_response.dart';
-import 'package:creative_movers/data/remote/repository/model/media.dart';
-import 'package:creative_movers/data/remote/repository/model/server_error_model.dart';
-import 'package:creative_movers/data/remote/repository/model/state.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 

@@ -1,4 +1,4 @@
-import 'package:creative_movers/models/account_type_response.dart';
+import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';

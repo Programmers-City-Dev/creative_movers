@@ -1,5 +1,5 @@
 import 'package:chewie/chewie.dart';
-import 'package:creative_movers/models/media.dart';
+import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 

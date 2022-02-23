@@ -1,16 +1,14 @@
 import 'dart:convert';
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/account_type_response.dart';
+import 'package:creative_movers/data/remote/model/addconnection_response.dart';
+import 'package:creative_movers/data/remote/model/biodata_response.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/data/remote/repository/model/account_type_response.dart';
-import 'package:creative_movers/data/remote/repository/model/account_type_response.dart';
-import 'package:creative_movers/data/remote/repository/model/account_type_response.dart';
-import 'package:creative_movers/data/remote/repository/model/addconnection_response.dart';
-import 'package:creative_movers/data/remote/repository/model/biodata_response.dart';
-import 'package:creative_movers/data/remote/repository/model/register_response.dart';
-import 'package:creative_movers/data/remote/repository/model/server_error_model.dart';
-import 'package:creative_movers/data/remote/repository/model/state.dart';
 import 'package:flutter/foundation.dart';
 
 class ProfileRepository {

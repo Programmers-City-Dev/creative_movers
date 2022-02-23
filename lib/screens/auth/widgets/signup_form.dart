@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/extension.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/main.dart';
-import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/form_field.dart';

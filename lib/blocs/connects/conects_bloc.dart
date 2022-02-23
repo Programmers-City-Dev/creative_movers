@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/data/remote/model/get_connects_response.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/repository/connects_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/get_connects_response.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
-import 'package:creative_movers/repository/remote/connects_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'conects_event.dart';

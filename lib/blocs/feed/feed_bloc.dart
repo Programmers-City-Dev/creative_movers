@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/data/remote/model/feed_response.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/repository/feed_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/feed_response.dart';
-import 'package:creative_movers/models/media.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
-import 'package:creative_movers/repository/remote/auth_repository.dart';
-import 'package:creative_movers/repository/remote/feed_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'feed_event.dart';
