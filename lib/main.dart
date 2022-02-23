@@ -15,7 +15,7 @@ void main() async {
   Stripe.publishableKey = ApiConstants.STRIPE_PLUBLISHABLE_KEY;
   var firstScreen = await AppUtils.getFirstScreen();
   SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      const SystemUiOverlayStyle(statusBarColor:AppColors.primaryColor));
   runApp(MyApp(firstScreen));
 }
 

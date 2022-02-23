@@ -28,22 +28,43 @@ class ConnectsFailureState extends ConnectsState {
   List<Object> get props => [ error];
 }
 
-
+//Search Request States
 class SearchLoadingState extends ConnectsState {
   @override
   List<Object> get props => [];
 }
 class SearchSuccesState extends ConnectsState {
-  FetchConnectionResponse getConnectsResponse;
+  SearchResponse searchResponse;
   @override
-  List<Object> get props => [getConnectsResponse];
+  List<Object> get props => [searchResponse];
 
-  SearchSuccesState({required this.getConnectsResponse});
+  SearchSuccesState({required this.searchResponse});
 }
 class SearchFailureState extends ConnectsState {
   String error;
 
   SearchFailureState({required this.error});
+
+  @override
+  List<Object> get props => [ error];
+}
+
+//Pending Request States
+class PendingRequestLoadingState extends ConnectsState {
+  @override
+  List<Object> get props => [];
+}
+class PendingRequestSuccesState extends ConnectsState {
+  FetchConnectionResponse getConnectsResponse;
+  @override
+  List<Object> get props => [getConnectsResponse];
+
+  PendingRequestSuccesState({required this.getConnectsResponse});
+}
+class PendingRequestFailureState extends ConnectsState {
+  String error;
+
+  PendingRequestFailureState({required this.error});
 
   @override
   List<Object> get props => [ error];

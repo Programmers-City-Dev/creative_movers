@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'contact_screen.dart';
 
 class ConnectsTab extends StatefulWidget {
-  final List<Datum> data;
+  final List<Connection> data;
 
   const ConnectsTab({Key? key, required this.data}) : super(key: key);
 
@@ -20,8 +20,8 @@ class ConnectsTab extends StatefulWidget {
 }
 
 class _ConnectsTabState extends State<ConnectsTab> {
-  List<Datum>? filterList;
-  List<Datum>? mainList;
+  List<Connection> filterList = [];
+  List<Connection> mainList = [];
 
   ConnectsBloc _connectsBloc = ConnectsBloc();
 
@@ -48,8 +48,11 @@ class _ConnectsTabState extends State<ConnectsTab> {
             child: CircularProgressIndicator(),
           ));
         } else if (state is ConnectsSuccesState) {
-          mainList = state.getConnectsResponse.connections.data;
-          filterList = state.getConnectsResponse.connections.data;
+          if (mainList.isEmpty) {
+            mainList = state.getConnectsResponse.connections.connectionList;
+            filterList = state.getConnectsResponse.connections.connectionList;
+          }
+
           return Container(
             padding: const EdgeInsets.all(18),
             child: Column(
@@ -59,11 +62,10 @@ class _ConnectsTabState extends State<ConnectsTab> {
                     hint: 'Search Contacts',
                     onChanged: (val) {
                       setState(() {
-                        log(mainList!.length.toString());
                         filterList = mainList
-                            ?.where((element) =>
-                                (element.firstname.contains(val!)) |
-                                (element.lastname.contains(val)))
+                            .where((element) =>
+                                element.firstname.toString().toLowerCase().contains(val.toString().toLowerCase()) |
+                                element.lastname.toLowerCase().contains(val.toString().toLowerCase()))
                             .toList();
                       });
                     },
@@ -72,14 +74,14 @@ class _ConnectsTabState extends State<ConnectsTab> {
                 const SizedBox(
                   height: 10,
                 ),
-                filterList!.isEmpty
+                filterList.isEmpty
                     ? const Expanded(child: Center(child: AddContactsWidget()))
                     : Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: filterList!.length,
+                            itemCount: filterList.length,
                             itemBuilder: (context, index) =>
-                                ContactItem(connection: filterList![index])))
+                                ContactItem(connection: filterList[index])))
               ],
             ),
           );
@@ -87,7 +89,9 @@ class _ConnectsTabState extends State<ConnectsTab> {
           return Expanded(
               child: ErrorScreen(
             message: state.error,
-            bloc: _connectsBloc,
+                onTap: (){
+              _connectsBloc.add(GetConnectsEvent());
+                },
           ));
         }
         return Container();

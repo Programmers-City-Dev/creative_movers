@@ -88,7 +88,7 @@ class _DetailsSavedDialogState extends State<DetailsSavedDialog> {
                CustomButton(onTap: (){
                  
                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(),));
-               },child: Text("Start Exploring"),)
+               },child: const Text("Start Exploring"),)
             ],
           ),
         ),

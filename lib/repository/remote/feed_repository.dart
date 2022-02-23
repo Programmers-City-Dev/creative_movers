@@ -4,7 +4,8 @@ import 'dart:ffi';
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/feed_response.dart';
+import 'package:creative_movers/models/add_feed_response.dart';
+import 'package:creative_movers/models/feedsResponse.dart';
 import 'package:creative_movers/models/media.dart';
 import 'package:creative_movers/models/server_error_model.dart';
 import 'package:creative_movers/models/state.dart';
@@ -30,8 +31,8 @@ class FeedRepository {
         "media" : media.map((e) => MultipartFile.fromFileSync(e) ),
       })),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -57,10 +58,10 @@ class FeedRepository {
 
   Future<State> getFeeds() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.fetch_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<FeedsResponse?>.success(
+            data != null ? FeedsResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -88,8 +89,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -117,8 +118,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -146,8 +147,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -175,8 +176,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -204,8 +205,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -233,8 +234,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

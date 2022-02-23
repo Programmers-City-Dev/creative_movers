@@ -24,7 +24,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
     return Scaffold(
       appBar: AppBar(
 
-        iconTheme: IconThemeData(color: AppColors.textColor, ),
+        iconTheme: const IconThemeData(color: AppColors.textColor, ),
         toolbarTextStyle: const TextStyle(color: AppColors.textColor,),
         backgroundColor: Colors.white,
         title: const Text(

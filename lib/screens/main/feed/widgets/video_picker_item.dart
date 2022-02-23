@@ -9,11 +9,12 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 
 class VideoPickerItem extends StatefulWidget {
   const VideoPickerItem(
-      {Key? key, required this.path, this.onClose, this.onAdded})
+      {Key? key, required this.path, this.onClose, this.onAdded, this.onPlay})
       : super(key: key);
   final String path;
   final VoidCallback? onClose;
   final VoidCallback? onAdded;
+  final VoidCallback? onPlay;
 
   @override
   _VideoPickerItemState createState() => _VideoPickerItemState();

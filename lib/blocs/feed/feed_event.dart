@@ -16,3 +16,13 @@ class AddFeedEvent extends FeedEvent {
   @override
   List<Object?> get props => [type,pageId,content,media];
 }
+
+class GetFeedEvent extends FeedEvent {
+
+
+
+  GetFeedEvent();
+
+  @override
+  List<Object?> get props => [];
+}

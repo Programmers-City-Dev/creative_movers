@@ -4,13 +4,13 @@
 
 import 'dart:convert';
 
-FeedResponse feedResponseFromJson(String str) =>
-    FeedResponse.fromJson(json.decode(str));
+AddFeedResponse feedResponseFromJson(String str) =>
+    AddFeedResponse.fromJson(json.decode(str));
 
-String feedResponseToJson(FeedResponse data) => json.encode(data.toJson());
+String feedResponseToJson(AddFeedResponse data) => json.encode(data.toJson());
 
-class FeedResponse {
-  FeedResponse({
+class AddFeedResponse {
+  AddFeedResponse({
     this.status,
     this.addedFeed,
     this.message,
@@ -21,7 +21,7 @@ class FeedResponse {
   AddedFeed? addedFeed;
   String? message;
 
-  factory FeedResponse.fromJson(Map<String, dynamic> json) => FeedResponse(
+  factory AddFeedResponse.fromJson(Map<String, dynamic> json) => AddFeedResponse(
         status: json["status"],
         addedFeed: AddedFeed.fromJson(json["added_feed"]),
         message: json["message"],

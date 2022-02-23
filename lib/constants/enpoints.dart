@@ -10,8 +10,10 @@ class Endpoints {
   static const add_connection_endpoint = '${ApiConstants.BASE_URL}api/user/choose-connection';
   static const logout_endpoint = '${ApiConstants.BASE_URL}api/user/logout';
   static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';
+  static const fetch_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/fetch';
   static const fetch_connections_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all';
-  static const search_endpoint = '${ApiConstants.BASE_URL}api/connections/search';
+  static const search_endpoint = '${ApiConstants.BASE_URL}api/user/search';
+  static const pending_request_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all-pending';
   static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
   // static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';

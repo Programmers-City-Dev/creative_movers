@@ -10,7 +10,7 @@ import 'package:creative_movers/models/account_type_response.dart';
 import 'package:creative_movers/models/addconnection_response.dart';
 import 'package:creative_movers/models/biodata_response.dart';
 import 'package:creative_movers/models/categories.dart';
-import 'package:creative_movers/models/feed_response.dart';
+import 'package:creative_movers/models/add_feed_response.dart';
 import 'package:creative_movers/models/logout_response.dart';
 import 'package:creative_movers/models/register_response.dart';
 import 'package:creative_movers/models/server_error_model.dart';
