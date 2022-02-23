@@ -97,26 +97,22 @@ class _LoginFormState extends State<LoginForm> {
             const SizedBox(
               height: 20,
             ),
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                return CustomButton(
-                  onTap: () {
-                    _submitLoginForm();
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(
-                        Icons.logout_outlined,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('Login')
-                    ],
-                  ),
-                );
+            CustomButton(
+              onTap: () {
+                _submitLoginForm();
               },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.logout_outlined,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text('Login')
+                ],
+              ),
             ),
             const SizedBox(
               height: 10,
@@ -222,7 +218,10 @@ class _LoginFormState extends State<LoginForm> {
     StorageHelper.setString(
         StorageKeys.token, response.user.apiToken.toString());
     StorageHelper.setString(
-        StorageKeys.firstname, response.user.firstname.toString());
+        StorageKeys.firstname, response.user.firstname.toString()
+    );
+
+
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
@@ -232,9 +231,7 @@ class _LoginFormState extends State<LoginForm> {
     if (stage == 'new') {
       return const MoreDetailsScreen();
     } else if (stage == 'biodata') {
-      return const AccountTypeScreen(
-        categories: [],
-      );
+      return const AccountTypeScreen(categories: [],);
     } else if (stage == 'account_type') {
       return const PaymentScreen();
     } else if (stage == 'payment') {
