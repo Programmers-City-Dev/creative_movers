@@ -105,8 +105,8 @@ class Datum {
   });
 
   int? id;
-  int? myId;
-  int userId;
+  String? myId;
+  String userId;
   String status;
   DateTime createdAt;
   DateTime updatedAt;

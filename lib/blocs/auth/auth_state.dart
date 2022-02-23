@@ -109,12 +109,11 @@ class AccountTypeFailureState extends AuthState {
   List<Object?> get props => [error];
 }
 
-
 //AddConnections  State
 class AddConnectionLoadingState extends AuthState {
   @override
   // TODO: implement props
-  List<Object?> get props =>[];
+  List<Object?> get props => [];
 }
 
 class AddConnectionSuccesState extends AuthState {
@@ -138,23 +137,25 @@ class AddConnectionFailureState extends AuthState {
 }
 
 //Logout
-class LogoutLoadingState extends AuthState{
+class LogoutLoadingState extends AuthState {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
-
 }
-class LogoutSuccessState extends AuthState{
-final  LogoutResponse logoutResponse;
 
-LogoutSuccessState({required this.logoutResponse});
+class LogoutSuccessState extends AuthState {
+  final LogoutResponse logoutResponse;
+
+  LogoutSuccessState({required this.logoutResponse});
 
   @override
   // TODO: implement props
   List<Object?> get props => [logoutResponse];
 }
-class LogoutFaliureState extends AuthState{
+
+class LogoutFaliureState extends AuthState {
   String error;
+
   @override
   // TODO: implement props
   List<Object?> get props => [error];
@@ -163,14 +164,14 @@ class LogoutFaliureState extends AuthState{
 }
 
 //Logout
-class CategoryLoadingState extends AuthState{
+class CategoryLoadingState extends AuthState {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
-
 }
-class CategorySuccessState extends AuthState{
-  final  CategoriesResponse categoriesReponse;
+
+class CategorySuccessState extends AuthState {
+  final CategoriesResponse categoriesReponse;
 
   CategorySuccessState({required this.categoriesReponse});
 
@@ -178,8 +179,10 @@ class CategorySuccessState extends AuthState{
   // TODO: implement props
   List<Object?> get props => [categoriesReponse];
 }
-class CategoryFaliureState extends AuthState{
+
+class CategoryFaliureState extends AuthState {
   String error;
+
   @override
   // TODO: implement props
   List<Object?> get props => [error];

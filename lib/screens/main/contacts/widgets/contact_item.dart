@@ -1,75 +1,89 @@
 import 'package:creative_movers/models/get_connects_response.dart';
 import 'package:flutter/material.dart';
 import 'package:image_stack/image_stack.dart';
+
 class ContactItem extends StatefulWidget {
   const ContactItem({Key? key, required this.connection}) : super(key: key);
-  final Datum connection  ;
-
+  final Datum connection;
 
   @override
   _ContactItemState createState() => _ContactItemState();
 }
 
 class _ContactItemState extends State<ContactItem> {
-  List<String> images = [
-    'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-    'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
-  ];
+  // List<String> images = connection.connects.map((e) => e.profilePhotoPath).toList();
 
-  Datum? myConnection;
+  var myConnection;
 
   @override
   void initState() {
-   myConnection = widget.connection;
-    super.initState();
+    myConnection = widget.connection;
   }
-
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      margin: EdgeInsets.symmetric(vertical: 16),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:  [
-           Padding(
+        children: [
+          Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
               radius: 30,
               foregroundColor: Colors.red,
-              backgroundImage: NetworkImage(
-
-              myConnection!.profilePhotoPath
-              ),
-
+              backgroundImage: NetworkImage(widget.connection.profilePhotoPath),
             ),
           ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                Text( myConnection!.firstname,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 13),),
-                Text( myConnection!.firstname,style: TextStyle(fontSize: 13,color: Colors.grey),),
-                Row(children: [
-                  ImageStack(
-                    imageList: images,
-                    totalCount: images.length,
-                    // If larger than images.length, will show extra empty circle
-                    imageRadius: 20,
-                    // Radius of each images
-                    imageCount: 3,
-                    // Maximum number of images to be shown in stack
-                    imageBorderWidth: 3, // Border width around the images
-                  ),
-                  SizedBox(width: 5,),
-                  Text (myConnection!.connects[0].firstname,style: TextStyle(fontWeight: FontWeight.bold),),
-                  Text('+${ myConnection!.connects.length -1}'),
-                ],)
-              ],),
+              children: [
+                Text(
+                  widget.connection.firstname +
+                      ' ' +
+                      widget.connection.lastname,
+                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                ),
+                Text(
+                  widget.connection.username,
+                  style: const TextStyle(fontSize: 13, color: Colors.grey),
+                ),
+                widget.connection.connects.isNotEmpty
+                    ? Row(
+                        children: [
+                          ImageStack(
+                            imageList: widget.connection.connects
+                                .map((e) => e.profilePhotoPath)
+                                .toList(),
+                            totalCount: widget.connection.connects.length,
+                            // If larger than images.length, will show extra empty circle
+                            imageRadius: 20,
+                            // Radius of each images
+                            imageCount: 3,
+                            // Maximum number of images to be shown in stack
+                            imageBorderWidth:
+                                3, // Border width around the images
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            widget.connection.connects.isNotEmpty
+                                ? widget.connection.connects[0].firstname
+                                : '',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('+${widget.connection.connects.length}'),
+                        ],
+                      )
+                    : SizedBox()
+              ],
+            ),
           ),
-         Icon(Icons.more_horiz),
-
-        ],),
+          Icon(Icons.more_horiz),
+        ],
+      ),
     );
   }
 }

@@ -172,6 +172,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     ));
   }
 
+
   void _listenToAccountTypeState(BuildContext context, AuthState state) {
     if (state is AddConnectionLoadingState) {
       AppUtils.showAnimatedProgressDialog(context);
@@ -185,7 +186,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     if (state is AddConnectionSuccesState) {
       Navigator.pop(context);
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const PaymentScreen()),
           (route) => false);
     }
   }
