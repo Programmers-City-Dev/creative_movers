@@ -1,3 +1,4 @@
+import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -22,10 +23,18 @@ class FeedScreen extends StatefulWidget {
   _FeedScreenState createState() => _FeedScreenState();
 }
 
-class _FeedScreenState extends State<FeedScreen> {
-  final ScrollController _scrollController = ScrollController();
-  String? username;
 
+class _FeedScreenState extends State<FeedScreen> {
+
+  final ScrollController _scrollController = ScrollController();
+
+  String? username;
+  FeedBloc feedBloc = FeedBloc();
+@override
+  void initState() {
+   feedBloc.add(GetFeedEvent());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +72,7 @@ class _FeedScreenState extends State<FeedScreen> {
           physics: const BouncingScrollPhysics(),
           slivers: [
             SliverPersistentHeader(
-              // pinned: true,
+                // pinned: true,
                 floating: true,
                 delegate: SliverAppBarDelegate(
                   const PreferredSize(
@@ -73,22 +82,40 @@ class _FeedScreenState extends State<FeedScreen> {
                     ),
                   ),
                 )),
-             SliverToBoxAdapter(child: PostCard(onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CreatePostScreen(),));
-            },)),
+            SliverToBoxAdapter(child: PostCard(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const CreatePostScreen(),
+                ));
+              },
+            )),
             SliverPadding(
               padding: const EdgeInsets.all(8),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return const NewPostItem();
-                  },
-                  childCount: 5,
-                  addAutomaticKeepAlives: false,
-                  addRepaintBoundaries: false,
-
-
-                ),
+              sliver: BlocBuilder<FeedBloc, FeedState>(
+                bloc: feedBloc,
+                builder: (context, state) {
+                  if (state is FeedLoadingState) {
+                    return SliverToBoxAdapter(
+                        child:
+                            Center(child: const CircularProgressIndicator()));
+                  } else if (state is FeedSuccessState) {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return NewPostItem(
+                            feed: state.feedResponse.feeds.data[index],
+                          );
+                        },
+                        childCount: state.feedResponse.feeds.data.length,
+                        addAutomaticKeepAlives: false,
+                        addRepaintBoundaries: false,
+                      ),
+                    );
+                  } else {
+                    return const SliverToBoxAdapter(
+                        child: Expanded(child: Center(child: Text('An Error Occured'))));
+                  }
+                },
               ),
             ),
           ],
@@ -107,10 +134,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       // padding: const EdgeInsets.only(top: 45, left: 10, right: 10),
       color: Colors.white,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
           const SizedBox(
@@ -130,9 +154,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: BlocBuilder<ProfileBloc, ProfileState>(
                         builder: (context, state) {
                           return Text(
-                              'Hello ${context
-                                  .watch<ProfileBloc>()
-                                  .firstname}!',
+                              'Hello ${context.watch<ProfileBloc>().firstname}!',
                               style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -185,9 +207,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(110);
 
   String greeting() {
-    var hour = DateTime
-        .now()
-        .hour;
+    var hour = DateTime.now().hour;
     if (hour < 12) {
       return ' Good Morning';
     }

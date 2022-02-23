@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/feed_response.dart';
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
@@ -34,9 +35,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint, body:formData),
       successResponse: (data) {
-        log('UPLOAD RESPONSE: $data');
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -62,10 +62,10 @@ class FeedRepository {
 
   Future<State> getFeeds() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.fetch_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<FeedsResponse?>.success(
+            data != null ? FeedsResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -93,8 +93,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -122,8 +122,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -151,8 +151,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -180,8 +180,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -209,8 +209,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -238,8 +238,8 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
       successResponse: (data) {
-        return State<FeedResponse?>.success(
-            data != null ? FeedResponse.fromJson(data) : null);
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

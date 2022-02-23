@@ -27,7 +27,7 @@ class FetchConnectionResponse {
 class Connections {
   Connections({
     required this.currentPage,
-    required this.data,
+    required this.connectionList,
     required this.firstPageUrl,
     required this.from,
     required this.lastPage,
@@ -42,7 +42,7 @@ class Connections {
   });
 
   int currentPage;
-  List<Datum> data;
+  List<Connection> connectionList;
   String firstPageUrl;
   int? from;
   int lastPage;
@@ -57,7 +57,7 @@ class Connections {
 
   factory Connections.fromJson(Map<String, dynamic> json) => Connections(
     currentPage: json["current_page"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    connectionList: List<Connection>.from(json["data"].map((x) => Connection.fromJson(x))),
     firstPageUrl: json["first_page_url"],
     from: json["from"],
     lastPage: json["last_page"],
@@ -73,7 +73,7 @@ class Connections {
 
   Map<String, dynamic> toJson() => {
     "current_page": currentPage,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(connectionList.map((x) => x.toJson())),
     "first_page_url": firstPageUrl,
     "from": from,
     "last_page": lastPage,
@@ -88,8 +88,8 @@ class Connections {
   };
 }
 
-class Datum {
-  Datum({
+class Connection {
+  Connection({
     this.id,
     this.myId,
     required this.userId,
@@ -117,7 +117,7 @@ class Datum {
   String profilePhotoPath;
   List<Connect> connects;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Connection.fromJson(Map<String, dynamic> json) => Connection(
     id: json["id"],
     myId: json["my_id"],
     userId: json["user_id"],

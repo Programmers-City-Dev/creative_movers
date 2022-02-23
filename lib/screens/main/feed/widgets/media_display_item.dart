@@ -1,13 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:chewie/chewie.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class MediaDisplayItem extends StatefulWidget {
   const MediaDisplayItem({Key? key, required this.media}) : super(key: key);
 
-  final Media media;
-
+  final MediaModel media;
 
   @override
   _MediaDisplayItemState createState() => _MediaDisplayItemState();
@@ -15,6 +17,7 @@ class MediaDisplayItem extends StatefulWidget {
 
 class _MediaDisplayItemState extends State<MediaDisplayItem> {
   VideoPlayerController? _controller;
+
   // final chewieController = ChewieController(
   //   videoPlayerController: _controller!,
   //   autoPlay: true,
@@ -26,6 +29,7 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
     _controller?.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     _controller = VideoPlayerController.network(
@@ -37,6 +41,7 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
       });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return widget.media.type == 'image'
@@ -49,21 +54,25 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                       'https://thegadgetflow.com/wp-content/uploads/2021/03/20-Cool-gadgets-to-add-to-your-2021-wish-list-featured-1200x675.jpeg',
                     ))),
           )
-        : Container(
-            child: Chewie( controller:  ChewieController(
-              videoPlayerController: _controller!,
-              autoPlay: false,
-              looping: false,
-              allowMuting: true,
-
-
-
-
-
-
-
+        : FutureBuilder<Uint8List?>(
+            future: VideoThumbnail.thumbnailData(
+              video: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+              imageFormat: ImageFormat.PNG,
+              maxWidth: 128,
+              // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+              quality: 150,
             ),
-      ),
-          );
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Image.memory(
+                  snapshot.data!,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                );
+              }
+              return Container(
+                  color: Colors.black,
+                  child: Center(child: CircularProgressIndicator()));
+            });
   }
 }

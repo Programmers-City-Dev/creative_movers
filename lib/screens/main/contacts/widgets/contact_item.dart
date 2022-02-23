@@ -4,21 +4,14 @@ import 'package:image_stack/image_stack.dart';
 
 class ContactItem extends StatefulWidget {
   const ContactItem({Key? key, required this.connection}) : super(key: key);
-  final Datum connection;
+  final Connection connection;
 
   @override
   _ContactItemState createState() => _ContactItemState();
 }
 
 class _ContactItemState extends State<ContactItem> {
-  // List<String> images = connection.connects.map((e) => e.profilePhotoPath).toList();
 
-  var myConnection;
-
-  @override
-  void initState() {
-    myConnection = widget.connection;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +53,7 @@ class _ContactItemState extends State<ContactItem> {
                             // If larger than images.length, will show extra empty circle
                             imageRadius: 20,
                             // Radius of each images
-                            imageCount: 3,
+                            imageCount: 2,
                             // Maximum number of images to be shown in stack
                             imageBorderWidth:
                                 3, // Border width around the images
@@ -81,7 +74,7 @@ class _ContactItemState extends State<ContactItem> {
               ],
             ),
           ),
-          Icon(Icons.more_horiz),
+          const Icon(Icons.more_horiz),
         ],
       ),
     );

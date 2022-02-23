@@ -1,15 +1,20 @@
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
+import 'package:creative_movers/screens/main/feed/views/comments_screen.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_stack/image_stack.dart';
 import 'package:readmore/readmore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class NewPostItem extends StatefulWidget {
-  const NewPostItem({Key? key}) : super(key: key);
+  const NewPostItem({Key? key, required this.feed, }) : super(key: key);
+final Feed feed;
+
 
   @override
   _NewPostItemState createState() => _NewPostItemState();
@@ -23,17 +28,17 @@ class _NewPostItemState extends State<NewPostItem> {
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
   ];
-  List<Media> mediaList = [
-    Media(type: 'image'),
-    Media(type: 'video'),
-    Media(type: 'image'),
-    Media(type: 'image'),
-    Media(type: 'image'),
-    Media(type: 'image'),
-    Media(type: 'image'),
-    Media(type: 'image'),
-    Media(type: 'image'),
-    Media(type: 'image')
+  List<MediaModel> mediaList = [
+    MediaModel(type: 'image'),
+    MediaModel(type: 'video'),
+    MediaModel(type: 'image'),
+    MediaModel(type: 'image'),
+    MediaModel(type: 'image'),
+    MediaModel(type: 'image'),
+    MediaModel(type: 'image'),
+    MediaModel(type: 'image'),
+    MediaModel(type: 'image'),
+    MediaModel(type: 'image')
   ];
   int pageIndex = 0;
 
@@ -51,18 +56,19 @@ class _NewPostItemState extends State<NewPostItem> {
               Container(
                 child: Row(
                   children: [
-                    const CircleAvatar(
+                     CircleAvatar(
                       radius: 20,
+                      backgroundImage: NetworkImage(widget.feed.user.profilePhotoPath!),
                     ),
                     const SizedBox(
                       width: 7,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children:  [
                         Text(
-                          'Amanda Berks',
-                          style: TextStyle(
+                          '${widget.feed.user.firstname} ${widget.feed.user.lastname}',
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         Text(
@@ -153,13 +159,13 @@ class _NewPostItemState extends State<NewPostItem> {
               )
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
+           Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: AnimatedSize(
-              duration: Duration(milliseconds: 2),
+              duration: const Duration(milliseconds: 12),
               child: ReadMoreText(
-                'This is a simple post in the social media platform please like and comment if you can  in the social media platform please like and comment if you can',
-                style: TextStyle(color: AppColors.textColor),
+                widget.feed.content!,
+                style: const TextStyle(color: AppColors.textColor),
                 trimLines: 2,
 
                 trimMode: TrimMode.Line,
@@ -216,6 +222,8 @@ class _NewPostItemState extends State<NewPostItem> {
           const SizedBox(
             height: 10,
           ),
+
+          mediaList.length >1 ?
           Container(
             height: 8,
             width: 58,
@@ -231,7 +239,7 @@ class _NewPostItemState extends State<NewPostItem> {
                 ),
               ),
             ),
-          ),
+          ):SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -258,13 +266,11 @@ class _NewPostItemState extends State<NewPostItem> {
               children: [
                 Container(
                   child: Row(
-                    children: const [
-                      Icon(
-                        Icons.thumb_up_rounded,
-                        color: AppColors.textColor,
-                      ),
+                    children:  const [
+                      FaIcon(FontAwesomeIcons.thumbsUp,color: AppColors.textColor,),
+
                       SizedBox(
-                        width: 5,
+                        width: 8,
                       ),
                       Text(
                         'Like',
@@ -273,21 +279,24 @@ class _NewPostItemState extends State<NewPostItem> {
                     ],
                   ),
                 ),
-                Container(
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.chat_bubble_rounded,
-                        color: AppColors.textColor,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Comment',
-                        style: TextStyle(fontSize: 13),
-                      )
-                    ],
+                GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommentsScreen(),));
+                  },
+                  child: Container(
+                    child: Row(
+                      children: const [
+                        FaIcon(FontAwesomeIcons.comment,color: AppColors.textColor,),
+
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          'Comment',
+                          style: TextStyle(fontSize: 13),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(

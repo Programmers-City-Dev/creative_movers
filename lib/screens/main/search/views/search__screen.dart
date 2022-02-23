@@ -21,7 +21,8 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController from_controller = TextEditingController();
   TextEditingController to_controller = TextEditingController();
   String userType = 'all';
-  ConnectsBloc _connectsBloc = ConnectsBloc();
+  final _searchValueController = TextEditingController();
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
       body: BlocListener<ConnectsBloc, ConnectsState>(
         bloc: _connectsBloc,
         listener: (context, state) {
-          // _listenToSearchState();
+          _listenToSearchState(context,state);
           // TODO: implement listener
         },
         child: SafeArea(
@@ -52,8 +53,10 @@ class _SearchScreenState extends State<SearchScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const SearchField(
+                   SearchField(
                     hint: 'Find Creators or Movers',
+                    controller: _searchValueController,
+
                   ),
                   const SizedBox(
                     height: 16,
@@ -264,9 +267,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                   padding:
                                   const EdgeInsets.symmetric(vertical: 12)),
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SearchResultScreen(),
-                                ));
+                                search();
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (context) => SearchResultScreen(),
+                                // ));
                               },
                               child: const Text(
                                 'Search',
@@ -285,13 +289,18 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+
+void search(){
+      _connectsBloc.add(SearchEvent(userType, _searchValueController.text));
+}
+
   void _listenToSearchState(BuildContext context, ConnectsState state) {
     if (state is SearchLoadingState) {
       AppUtils.showAnimatedProgressDialog(context);
     }
     if (state is SearchSuccesState) {
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchResultScreen(),));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchResultScreen(searchResponse: state.searchResponse,),));
     }
     if (state is SearchFailureState) {
       Navigator.pop(context);

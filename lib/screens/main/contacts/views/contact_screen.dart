@@ -2,6 +2,7 @@ import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/contacts/views/movers_tab.dart';
+import 'package:creative_movers/screens/main/contacts/views/pending_request_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +24,7 @@ class _ContactScreenState extends State<ContactScreen> {
   String userType = 'connects';
   List<Widget> pages = [
     ConnectsTab(data: []),
-   Container(),
+   PendingRequestScreen(),
     Container()
   ];
   // @override
@@ -148,26 +149,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   itemCount: pages.length,
                   itemBuilder: (context, index) => pages[selectedIndex],),
               ),
-              TabBar(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  isScrollable: false,
-                  indicatorPadding: EdgeInsets.all(7),
-                  indicator: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(16)),
-                  labelColor: AppColors.primaryColor,
-                  tabs: const [
-                    Tab(
-                      text: 'All',
-                    ),
-                    Tab(
-                      text: 'Creatives',
-                    ),
-                    Tab(
-                      text: 'Movers',
-                    ),
-                  ]),
+
 
             ],
           )),
@@ -179,8 +161,10 @@ class _ContactScreenState extends State<ContactScreen> {
 class ErrorScreen extends StatelessWidget {
   final String? message;
   final ConnectsBloc? bloc;
+  final VoidCallback? onTap;
 
-  ErrorScreen({this.message = 'Ooops an error occured ', this.bloc});
+
+  ErrorScreen({this.message = 'Ooops an error occured ', this.bloc, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -199,9 +183,7 @@ class ErrorScreen extends StatelessWidget {
             height: 10,
           ),
           CustomButton(
-            onTap: () {
-              bloc?.add(GetConnectsEvent());
-            },
+            onTap: onTap,
             child: const Text('Retry'),
           )
         ],
@@ -255,5 +237,25 @@ class ErrorScreen extends StatelessWidget {
 // }
 // return  Container();
 // },
+// TabBar(
+// padding: EdgeInsets.symmetric(horizontal: 25),
+// isScrollable: false,
+// indicatorPadding: EdgeInsets.all(7),
+// indicator: BoxDecoration(
+// color: Colors.white,
+// shape: BoxShape.rectangle,
+// borderRadius: BorderRadius.circular(16)),
+// labelColor: AppColors.primaryColor,
+// tabs: const [
+// Tab(
+// text: 'All',
+// ),
+// Tab(
+// text: 'Creatives',
+// ),
+// Tab(
+// text: 'Movers',
+// ),
+// ]),
 // )
 

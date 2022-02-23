@@ -119,7 +119,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       width: 8,
                     ),
                     Text(
-                      'Noble Okechi',
+                      'Noble Okechi ',
                       style: TextStyle(fontWeight: FontWeight.w600),
                     )
                   ],
@@ -206,8 +206,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void postFeed() {
-    List<Media> media = mediaItems
-        .map((e) => Media(
+    List<MediaModel> media = mediaItems
+        .map((e) => MediaModel(
             file: null ,
             type: e.mediaType == MediaType.image ? 'media' : 'video'))
         .toList();
@@ -216,16 +216,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _listenToAddFeedState(BuildContext context, FeedState state) {
-    if (state is FeedLoadingState) {
+    if (state is AddFeedLoadingState) {
       AppUtils.showAnimatedProgressDialog(context);
     }
 
-    if (state is FeedFaliureState) {
+    if (state is AddFeedFaliureState) {
       Navigator.pop(context);
       CustomSnackBar.showError(context, message: state.error);
     }
 
-    if (state is FeedSuccessState) {
+    if (state is AddFeedSuccessState) {
       Navigator.pop(context);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),

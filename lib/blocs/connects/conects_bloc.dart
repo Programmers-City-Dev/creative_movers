@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
+import 'package:creative_movers/data/remote/model/search_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/repository/connects_repository.dart';
@@ -23,6 +24,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
 
     on<GetConnectsEvent>(_mapGetConnectsEventToState);
     on<SearchEvent>(_mapSearchEventToState);
+    on<GetPendingRequestEvent>(_mapGetPendingRequestEventToState);
   }
 
   FutureOr<void> _mapGetConnectsEventToState(
@@ -42,13 +44,31 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
     }
   }
 
+  FutureOr<void> _mapGetPendingRequestEventToState(
+      GetPendingRequestEvent event, Emitter<ConnectsState> emit) async {
+    emit(PendingRequestLoadingState());
+    try {
+      var state = await connectsRepository.getPendingRequest();
+      if (state is SuccessState) {
+        emit(PendingRequestSuccesState(getConnectsResponse: state.value));
+      } else if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(PendingRequestFailureState(error: errorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(PendingRequestFailureState(error: 'Oops Something went wrong'));
+      // TODO
+    }
+  }
+
+
   FutureOr<void> _mapSearchEventToState(
       SearchEvent event, Emitter<ConnectsState> emit) async {
     emit(SearchLoadingState());
     try {
-      var state = await connectsRepository.search();
+      var state = await connectsRepository.search(searchValue: event.searchValue,role: event.role);
       if (state is SuccessState) {
-        emit(SearchSuccesState(getConnectsResponse: state.value));
+        emit(SearchSuccesState(searchResponse: state.value));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
         emit(SearchFailureState(error: errorModel.errorMessage));
