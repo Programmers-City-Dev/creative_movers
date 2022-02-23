@@ -106,7 +106,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             feed: state.feedResponse.feeds.data[index],
                           );
                         },
-                        childCount: 5,
+                        childCount: state.feedResponse.feeds.data.length,
                         addAutomaticKeepAlives: false,
                         addRepaintBoundaries: false,
                       ),
