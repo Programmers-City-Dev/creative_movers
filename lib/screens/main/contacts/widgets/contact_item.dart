@@ -1,4 +1,4 @@
-import 'package:creative_movers/models/get_connects_response.dart';
+import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:flutter/material.dart';
 import 'package:image_stack/image_stack.dart';
 

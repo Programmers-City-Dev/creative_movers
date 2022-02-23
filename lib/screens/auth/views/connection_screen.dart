@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/models/account_type_response.dart';
 import 'package:creative_movers/screens/auth/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/contact_item.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';

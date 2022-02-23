@@ -1,5 +1,6 @@
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/extension.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/onboarding/views/onboarding_item.dart';
@@ -34,9 +35,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           controller: PageController(viewportFraction: 1),
           children: [
             OnboardingItem(
-              header: AppLocalizations.of(context)!.intro1Title,
+              header: context.localization.intro1Title,
               text: Text(
-                AppLocalizations.of(context)!.intro1Text,
+                context.localization.intro1Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
@@ -44,9 +45,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               img: AppIcons.imgSlide1,
             ),
             OnboardingItem(
-              header: AppLocalizations.of(context)!.intro2Title,
+              header: context.localization.intro2Title,
               text: Text(
-                AppLocalizations.of(context)!.intro2Text,
+                context.localization.intro2Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
@@ -54,9 +55,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               img: AppIcons.imgSlide2,
             ),
             OnboardingItem(
-              header: AppLocalizations.of(context)!.intro3Title,
+              header: context.localization.intro3Title,
               text: Text(
-                AppLocalizations.of(context)!.intro3Text,
+                context.localization.intro3Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),
@@ -64,9 +65,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               img: AppIcons.imgSlide3,
             ),
             OnboardingItem(
-              header: AppLocalizations.of(context)!.intro4Title,
+              header: context.localization.intro4Title,
               text: Text(
-                AppLocalizations.of(context)!.intro4Text,
+                context.localization.intro4Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, color: Colors.white),

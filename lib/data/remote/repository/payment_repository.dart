@@ -1,9 +1,9 @@
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 

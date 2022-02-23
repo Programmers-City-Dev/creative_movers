@@ -1,14 +1,14 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/feed_response.dart';
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/add_feed_response.dart';
-import 'package:creative_movers/models/feedsResponse.dart';
-import 'package:creative_movers/models/media.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -23,13 +23,19 @@ class FeedRepository {
     required String content,
     required List<String> media,
   }) async {
+    var formData = FormData.fromMap({
+      "type" :type,
+      "page_id" :page_id,
+      "content" :content,
+    });
+    log("IMAGES: $media");
+    for (var file in media) {
+      formData.files.addAll([
+        MapEntry("media", await MultipartFile.fromFile(file)),
+      ]);
+    }
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint, body:FormData.fromMap({
-        "type" :type,
-        "page_id" :page_id,
-        "content" :content,
-        "media" : media.map((e) => MultipartFile.fromFileSync(e) ),
-      })),
+      () => httpHelper.post(Endpoints.add_feed_endpoint, body:formData),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);
@@ -45,7 +51,7 @@ class FeedRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER:$response');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,

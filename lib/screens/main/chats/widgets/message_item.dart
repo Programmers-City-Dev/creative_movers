@@ -1,4 +1,4 @@
-import 'package:creative_movers/models/message_model.dart';
+import 'package:creative_movers/data/remote/model/message_model.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -3,16 +3,16 @@ import 'dart:core';
 import 'dart:core';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/data/remote/model/account_type_response.dart';
+import 'package:creative_movers/data/remote/model/addconnection_response.dart';
+import 'package:creative_movers/data/remote/model/biodata_response.dart';
+import 'package:creative_movers/data/remote/model/categories.dart';
+import 'package:creative_movers/data/remote/model/logout_response.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/repository/auth_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/account_type_response.dart';
-import 'package:creative_movers/models/addconnection_response.dart';
-import 'package:creative_movers/models/biodata_response.dart';
-import 'package:creative_movers/models/categories.dart';
-import 'package:creative_movers/models/logout_response.dart';
-import 'package:creative_movers/models/register_response.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
-import 'package:creative_movers/repository/remote/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

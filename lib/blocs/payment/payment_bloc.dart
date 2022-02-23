@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
-import 'package:creative_movers/repository/remote/payment_repository.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/repository/payment_repository.dart';
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

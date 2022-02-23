@@ -1,22 +1,25 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/account_type_response.dart';
+import 'package:creative_movers/data/remote/model/addconnection_response.dart';
+import 'package:creative_movers/data/remote/model/biodata_response.dart';
+import 'package:creative_movers/data/remote/model/categories.dart';
+import 'package:creative_movers/data/remote/model/logout_response.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/account_type_response.dart';
-import 'package:creative_movers/models/account_type_response.dart';
-import 'package:creative_movers/models/account_type_response.dart';
-import 'package:creative_movers/models/addconnection_response.dart';
-import 'package:creative_movers/models/biodata_response.dart';
-import 'package:creative_movers/models/register_response.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 
-class ProfileRepository {
+class AuthRepository {
   final HttpHelper httpClient;
 
-  ProfileRepository(this.httpClient);
+  AuthRepository(this.httpClient);
 
   // Register Request
   Future<State> register(
@@ -96,14 +99,19 @@ class ProfileRepository {
       required String biodata,
          String? image
       }) async {
+
+    var formData = FormData.fromMap({
+      "firstname": firstname,
+      "lastname": lastname,
+      "phone": phoneNumber,
+      "biodata": biodata,
+      if(image != null)"image":[
+      await MultipartFile.fromFile(image, filename:basename(image)),
+      ]
+    });
+    log("IMAGE DATA:${image}");
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.biodata_endpoint, body: {
-        "firstname": firstname,
-        "lastname": lastname,
-        "phone": phoneNumber,
-        "biodata": biodata,
-        "image": image,
-      }),
+      () => httpClient.post(Endpoints.biodata_endpoint, body: formData),
       successResponse: (data) {
         return State<BioDataResponse?>.success(
             data != null ? BioDataResponse.fromJson(data) : null);
@@ -137,7 +145,7 @@ class ProfileRepository {
         String? user_id,
         String? name,
         String? stage,
-        String? category,
+        List<String>? category,
         String? est_capital,
         String? description,
         String? photo,
@@ -151,7 +159,7 @@ class ProfileRepository {
         "user_id": user_id,
         "name": name,
         "stage": stage,
-        "category": category,
+        "category": jsonEncode(category),
         "est_capital": est_capital,
         "description": description,
         "photo": photo,
@@ -201,6 +209,64 @@ class ProfileRepository {
       successResponse: (data) {
         return State<AddConnectionResponse?>.success(
             data != null ? AddConnectionResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> logout() async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpClient.post(Endpoints.logout_endpoint),
+      successResponse: (data) {
+        return State<LogoutResponse?>.success(
+            data != null ? LogoutResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> fetch_categories() async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpClient.post(Endpoints.categories_endpoint),
+      successResponse: (data) {
+        return State<CategoriesResponse?>.success(
+            data != null ? CategoriesResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

@@ -1,7 +1,5 @@
-
-import 'package:creative_movers/models/feedsResponse.dart';
-import 'package:creative_movers/models/media.dart';
-import 'package:creative_movers/screens/main/feed/views/comments_screen.dart';
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
 import 'package:creative_movers/theme/app_colors.dart';

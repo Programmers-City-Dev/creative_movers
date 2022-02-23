@@ -1,11 +1,10 @@
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/get_connects_response.dart';
+import 'package:creative_movers/data/remote/model/search_response.dart';
+import 'package:creative_movers/data/remote/model/server_error_model.dart';
+import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
-import 'package:creative_movers/models/get_connects_response.dart';
-import 'package:creative_movers/models/register_response.dart';
-import 'package:creative_movers/models/search_response.dart';
-import 'package:creative_movers/models/server_error_model.dart';
-import 'package:creative_movers/models/state.dart';
 import 'package:flutter/foundation.dart';
 
 class ConnectsRepository {

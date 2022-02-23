@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
-import 'package:creative_movers/models/get_connects_response.dart';
+import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/add_contacts_widget.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/contact_item.dart';
 import 'package:creative_movers/screens/widget/search_field.dart';

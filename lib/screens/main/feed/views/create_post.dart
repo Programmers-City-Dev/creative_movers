@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
+import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/models/media.dart';
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
 import 'package:creative_movers/screens/main/feed/widgets/MediaItem.dart';
 import 'package:creative_movers/screens/main/feed/widgets/image_picker_item.dart';

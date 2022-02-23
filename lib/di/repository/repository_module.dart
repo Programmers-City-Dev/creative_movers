@@ -1,6 +1,7 @@
-import 'package:creative_movers/repository/remote/auth_repository.dart';
-import 'package:creative_movers/repository/remote/payment_repository.dart';
-import 'package:creative_movers/repository/remote/profile_repository.dart';
+
+import 'package:creative_movers/data/remote/repository/auth_repository.dart';
+import 'package:creative_movers/data/remote/repository/payment_repository.dart';
+import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:get_it/get_it.dart';
 
 Future<void> init(GetIt injector) async {
