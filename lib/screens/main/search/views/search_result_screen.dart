@@ -1,4 +1,4 @@
-import 'package:creative_movers/models/search_response.dart';
+import 'package:creative_movers/data/remote/model/search_response.dart';
 import 'package:creative_movers/screens/main/search/widget/result_item.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';

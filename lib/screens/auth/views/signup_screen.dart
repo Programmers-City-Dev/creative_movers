@@ -1,8 +1,8 @@
+import 'package:creative_movers/helpers/extension.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/auth/widgets/signup_form.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   height: 16,
                 ),
                 Text(
-                  AppLocalizations.of(context)!.createAccount,
+                  context.localization.createAccount,
                   style: const TextStyle(
                       fontSize: 25, fontWeight: FontWeight.w700),
                 ),

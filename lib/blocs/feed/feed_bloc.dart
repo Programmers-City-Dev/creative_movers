@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/feed_response.dart';
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/repository/feed_repository.dart';

@@ -4,7 +4,7 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:creative_movers/helpers/extension.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'helpers/app_utils.dart';
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Creative Movers',
-      localizationsDelegates: const [
-        AppLocalizations.delegate, // Add this line
+      localizationsDelegates:  [
+        context.localization.delegate, // Add this line
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
