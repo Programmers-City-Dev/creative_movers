@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:chewie/chewie.dart';
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -9,7 +10,7 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 class MediaDisplayItem extends StatefulWidget {
   const MediaDisplayItem({Key? key, required this.media}) : super(key: key);
 
-  final MediaModel media;
+  final Media media;
 
   @override
   _MediaDisplayItemState createState() => _MediaDisplayItemState();
@@ -47,16 +48,16 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
     return widget.media.type == 'image'
         ? Container(
             height: 250,
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                      'https://thegadgetflow.com/wp-content/uploads/2021/03/20-Cool-gadgets-to-add-to-your-2021-wish-list-featured-1200x675.jpeg',
+                      widget.media.mediaPath
                     ))),
           )
         : FutureBuilder<Uint8List?>(
             future: VideoThumbnail.thumbnailData(
-              video: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+              video:widget.media.mediaPath,
               imageFormat: ImageFormat.PNG,
               maxWidth: 128,
               // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio

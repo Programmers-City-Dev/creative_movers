@@ -5,12 +5,14 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/views/create_post.dart';
+import 'package:creative_movers/screens/main/feed/widgets/feeds_shimmer.dart';
 import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
 import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
 import 'package:creative_movers/screens/main/search/views/search__screen.dart';
+import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/screens/widget/sliver_persistent_delegate.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -23,18 +25,18 @@ class FeedScreen extends StatefulWidget {
   _FeedScreenState createState() => _FeedScreenState();
 }
 
-
 class _FeedScreenState extends State<FeedScreen> {
-
   final ScrollController _scrollController = ScrollController();
 
   String? username;
   FeedBloc feedBloc = FeedBloc();
-@override
+
+  @override
   void initState() {
-   feedBloc.add(GetFeedEvent());
+    feedBloc.add(GetFeedEvent());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +84,8 @@ class _FeedScreenState extends State<FeedScreen> {
                     ),
                   ),
                 )),
-            SliverToBoxAdapter(child: PostCard(
+            SliverToBoxAdapter(
+                child: PostCard(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const CreatePostScreen(),
@@ -95,9 +98,16 @@ class _FeedScreenState extends State<FeedScreen> {
                 bloc: feedBloc,
                 builder: (context, state) {
                   if (state is FeedLoadingState) {
-                    return SliverToBoxAdapter(
-                        child:
-                            Center(child: const CircularProgressIndicator()));
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return FeedsShimer();
+                        },
+                        childCount: 7,
+                        addAutomaticKeepAlives: false,
+                        addRepaintBoundaries: false,
+                      ),
+                    );
                   } else if (state is FeedSuccessState) {
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
@@ -112,8 +122,22 @@ class _FeedScreenState extends State<FeedScreen> {
                       ),
                     );
                   } else {
-                    return const SliverToBoxAdapter(
-                        child: Expanded(child: Center(child: Text('An Error Occured'))));
+                    return SliverFillRemaining(
+                        child: Center(child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children:  [
+                            const Text('Sorry an error occurred try again..'),
+                            SizedBox(height: 10,),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: CustomButton(
+
+                                onTap:(){ feedBloc.add(GetFeedEvent());},
+                                child: const Text('Retry'),
+                              ),
+                            )
+                          ],
+                        )));
                   }
                 },
               ),

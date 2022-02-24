@@ -49,6 +49,7 @@ class _NewPostItemState extends State<NewPostItem> {
       decoration: const BoxDecoration(color: Colors.white),
       padding: const EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,6 +166,7 @@ class _NewPostItemState extends State<NewPostItem> {
               duration: const Duration(milliseconds: 12),
               child: ReadMoreText(
                 widget.feed.content!,
+                textAlign: TextAlign.start,
                 style: const TextStyle(color: AppColors.textColor),
                 trimLines: 2,
 
@@ -175,6 +177,7 @@ class _NewPostItemState extends State<NewPostItem> {
               ),
             ),
           ),
+          widget.feed.media.isNotEmpty ?
           Container(
             child: Stack(children: [
               Container(
@@ -192,15 +195,16 @@ class _NewPostItemState extends State<NewPostItem> {
                     });
                   },
                   scrollDirection: Axis.horizontal,
-                  itemCount: mediaList.length,
+                  itemCount:  widget.feed.media.length,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) =>
-                      MediaDisplayItem(media: mediaList[index]),
+                      MediaDisplayItem(media: widget.feed.media[index]),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  widget.feed.media.length>1?
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Chip(
@@ -214,28 +218,31 @@ class _NewPostItemState extends State<NewPostItem> {
                               color: AppColors.smokeWhite,
                               fontWeight: FontWeight.w600),
                         )),
-                  ),
+                  ):SizedBox(),
                 ],
               )
             ]),
-          ),
+          ):SizedBox(),
           const SizedBox(
             height: 10,
           ),
 
-          mediaList.length >1 ?
-          Container(
-            height: 8,
-            width: 58,
-            child: ScrollablePositionedList.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: mediaList.length,
-              itemScrollController: itemScrollController,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: DotIndicator(
-                  isActive: pageIndex == index,
+        widget.feed.media.length>2 ?
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              height: 8,
+              width: 58,
+              child: ScrollablePositionedList.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: widget.feed.media.length,
+                itemScrollController: itemScrollController,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: DotIndicator(
+                    isActive: pageIndex == index,
+                  ),
                 ),
               ),
             ),

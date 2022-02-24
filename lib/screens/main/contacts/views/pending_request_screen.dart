@@ -2,6 +2,7 @@ import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/invite_contact_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/add_contacts_widget.dart';
+import 'package:creative_movers/screens/main/contacts/widgets/connects_shimer.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/request_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +36,13 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
             bloc: _connectsBloc,
             builder: (context, state) {
               if(state is PendingRequestLoadingState){
-                return const Expanded(child: Center(child: CircularProgressIndicator()));
+                return  Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: 5,
+                      itemBuilder: (context, index) => ConnectsShimer(),
+                      separatorBuilder: (BuildContext context, int index) { return SizedBox(height: 14,); },
+                    ));
               }else if(state is PendingRequestSuccesState){
 
 

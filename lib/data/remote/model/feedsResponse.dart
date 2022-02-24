@@ -100,7 +100,7 @@ class Feed {
     required this.userId,
     this.pageId,
     this.content,
-    this.media,
+    required this.media,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -114,7 +114,7 @@ class Feed {
   String userId;
   dynamic pageId;
   String? content;
-  List<Media>? media;
+  List<Media> media;
   String status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -129,7 +129,7 @@ class Feed {
         pageId: json["page_id"],
         content: json["content"],
         media: json["media"] == null
-            ? null
+            ? []
             : List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -147,7 +147,7 @@ class Feed {
         "content": content,
         "media": media == null
             ? null
-            : List<dynamic>.from(media!.map((x) => x.toJson())),
+            : List<dynamic>.from(media.map((x) => x.toJson())),
         "status": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
