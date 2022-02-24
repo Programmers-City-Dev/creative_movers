@@ -15,7 +15,7 @@ void main() async {
   Stripe.publishableKey = ApiConstants.STRIPE_PLUBLISHABLE_KEY;
   var firstScreen = await AppUtils.getFirstScreen();
   SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor:AppColors.primaryColor));
+      const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));
   runApp(MyApp(firstScreen));
 }
 
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Creative Movers',
-      localizationsDelegates:  [
+      localizationsDelegates: [
         AppLocalizations.delegate, // Add this line
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

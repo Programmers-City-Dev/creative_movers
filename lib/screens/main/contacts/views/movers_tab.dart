@@ -43,10 +43,9 @@ class _ConnectsTabState extends State<ConnectsTab> {
       bloc: _connectsBloc,
       builder: (context, state) {
         if (state is ConnectsLoadingState) {
-          return const Expanded(
-              child: Center(
+          return const Center(
             child: CircularProgressIndicator(),
-          ));
+          );
         } else if (state is ConnectsSuccesState) {
           if (mainList.isEmpty) {
             mainList = state.getConnectsResponse.connections.connectionList;
@@ -64,8 +63,13 @@ class _ConnectsTabState extends State<ConnectsTab> {
                       setState(() {
                         filterList = mainList
                             .where((element) =>
-                                element.firstname.toString().toLowerCase().contains(val.toString().toLowerCase()) |
-                                element.lastname.toLowerCase().contains(val.toString().toLowerCase()))
+                                element.firstname
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(val.toString().toLowerCase()) |
+                                element.lastname
+                                    .toLowerCase()
+                                    .contains(val.toString().toLowerCase()))
                             .toList();
                       });
                     },
@@ -86,13 +90,12 @@ class _ConnectsTabState extends State<ConnectsTab> {
             ),
           );
         } else if (state is ConnectsFailureState) {
-          return Expanded(
-              child: ErrorScreen(
+          return ErrorScreen(
             message: state.error,
-                onTap: (){
+            onTap: () {
               _connectsBloc.add(GetConnectsEvent());
-                },
-          ));
+            },
+          );
         }
         return Container();
       },

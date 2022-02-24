@@ -67,57 +67,62 @@ class _FeedScreenState extends State<FeedScreen> {
             //     )),
           ];
         },
-        body: CustomScrollView(
-          // controller: _scrollController,
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverPersistentHeader(
-                // pinned: true,
-                floating: true,
-                delegate: SliverAppBarDelegate(
-                  const PreferredSize(
-                    preferredSize: Size.fromHeight(100),
-                    child: StatusViews(
-                      curvedBottom: true,
-                    ),
-                  ),
-                )),
-            SliverToBoxAdapter(child: PostCard(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const CreatePostScreen(),
-                ));
-              },
-            )),
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: BlocBuilder<FeedBloc, FeedState>(
-                bloc: feedBloc,
-                builder: (context, state) {
-                  if (state is FeedLoadingState) {
-                    return const SliverToBoxAdapter(child: FeedLoader());
-                  } else if (state is FeedSuccessState) {
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return NewPostItem(
-                            feed: state.feedResponse.feeds.data[index],
-                          );
-                        },
-                        childCount: state.feedResponse.feeds.data.length,
-                        addAutomaticKeepAlives: false,
-                        addRepaintBoundaries: false,
+        body: RefreshIndicator(
+          onRefresh: (() async {
+            await Future.delayed(const Duration(seconds: 1));
+            feedBloc.add(GetFeedEvent());
+          }),
+          child: CustomScrollView(
+            // controller: _scrollController,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverPersistentHeader(
+                  // pinned: true,
+                  floating: true,
+                  delegate: SliverAppBarDelegate(
+                    const PreferredSize(
+                      preferredSize: Size.fromHeight(100),
+                      child: StatusViews(
+                        curvedBottom: true,
                       ),
-                    );
-                  } else {
-                    return const SliverToBoxAdapter(
-                        child: Expanded(
-                            child: Center(child: Text('An Error Occured'))));
-                  }
+                    ),
+                  )),
+              SliverToBoxAdapter(child: PostCard(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const CreatePostScreen(),
+                  ));
                 },
+              )),
+              SliverPadding(
+                padding: const EdgeInsets.all(8),
+                sliver: BlocBuilder<FeedBloc, FeedState>(
+                  bloc: feedBloc,
+                  builder: (context, state) {
+                    if (state is FeedLoadingState) {
+                      return const SliverToBoxAdapter(child: FeedLoader());
+                    } else if (state is FeedSuccessState) {
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return NewPostItem(
+                              feed: state.feedResponse.feeds.data[index],
+                            );
+                          },
+                          childCount: state.feedResponse.feeds.data.length,
+                          addAutomaticKeepAlives: false,
+                          addRepaintBoundaries: false,
+                        ),
+                      );
+                    } else {
+                      return const SliverToBoxAdapter(
+                          child: Center(child: Text('An Error Occured')));
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

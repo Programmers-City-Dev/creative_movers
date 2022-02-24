@@ -12,9 +12,11 @@ import 'package:readmore/readmore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class NewPostItem extends StatefulWidget {
-  const NewPostItem({Key? key, required this.feed, }) : super(key: key);
-final Feed feed;
-
+  const NewPostItem({
+    Key? key,
+    required this.feed,
+  }) : super(key: key);
+  final Feed feed;
 
   @override
   _NewPostItemState createState() => _NewPostItemState();
@@ -49,6 +51,7 @@ class _NewPostItemState extends State<NewPostItem> {
       decoration: const BoxDecoration(color: Colors.white),
       padding: const EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,16 +59,17 @@ class _NewPostItemState extends State<NewPostItem> {
               Container(
                 child: Row(
                   children: [
-                     CircleAvatar(
+                    CircleAvatar(
                       radius: 20,
-                      backgroundImage: NetworkImage(widget.feed.user.profilePhotoPath!),
+                      backgroundImage:
+                          NetworkImage(widget.feed.user.profilePhotoPath!),
                     ),
                     const SizedBox(
                       width: 7,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children:  [
+                      children: [
                         Text(
                           '${widget.feed.user.firstname} ${widget.feed.user.lastname}',
                           style: const TextStyle(
@@ -115,7 +119,7 @@ class _NewPostItemState extends State<NewPostItem> {
                   PopupMenuItem<String>(
                       padding: EdgeInsets.all(10),
                       value: 'Delete',
-                      child: Container(
+                      child: SizedBox(
                         width: 100,
                         child: Row(
                           children: const [
@@ -159,7 +163,7 @@ class _NewPostItemState extends State<NewPostItem> {
               )
             ],
           ),
-           Padding(
+          Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: AnimatedSize(
               duration: const Duration(milliseconds: 12),
@@ -167,7 +171,7 @@ class _NewPostItemState extends State<NewPostItem> {
                 widget.feed.content!,
                 style: const TextStyle(color: AppColors.textColor),
                 trimLines: 2,
-
+                textAlign: TextAlign.start,
                 trimMode: TrimMode.Line,
                 trimCollapsedText: 'Show more',
                 trimExpandedText: 'Show less',
@@ -177,7 +181,7 @@ class _NewPostItemState extends State<NewPostItem> {
           ),
           Container(
             child: Stack(children: [
-              Container(
+              SizedBox(
                 height: 300,
                 child: PageView.builder(
                   controller: PageController(keepPage: true, initialPage: 0),
@@ -210,7 +214,7 @@ class _NewPostItemState extends State<NewPostItem> {
                           '${pageIndex + 1}/${mediaList.length} ',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            fontSize: 10,
+                              fontSize: 10,
                               color: AppColors.smokeWhite,
                               fontWeight: FontWeight.w600),
                         )),
@@ -222,24 +226,26 @@ class _NewPostItemState extends State<NewPostItem> {
           const SizedBox(
             height: 10,
           ),
-
-          mediaList.length >1 ?
-          Container(
-            height: 8,
-            width: 58,
-            child: ScrollablePositionedList.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: mediaList.length,
-              itemScrollController: itemScrollController,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: DotIndicator(
-                  isActive: pageIndex == index,
-                ),
-              ),
-            ),
-          ):SizedBox(),
+          mediaList.length > 1
+              ? Center(
+                  child: SizedBox(
+                    height: 8,
+                    width: 58,
+                    child: ScrollablePositionedList.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: mediaList.length,
+                      itemScrollController: itemScrollController,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: DotIndicator(
+                          isActive: pageIndex == index,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -266,9 +272,11 @@ class _NewPostItemState extends State<NewPostItem> {
               children: [
                 Container(
                   child: Row(
-                    children:  const [
-                      FaIcon(FontAwesomeIcons.thumbsUp,color: AppColors.textColor,),
-
+                    children: const [
+                      FaIcon(
+                        FontAwesomeIcons.thumbsUp,
+                        color: AppColors.textColor,
+                      ),
                       SizedBox(
                         width: 8,
                       ),
@@ -280,14 +288,18 @@ class _NewPostItemState extends State<NewPostItem> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommentsScreen(),));
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CommentsScreen(),
+                    ));
                   },
                   child: Container(
                     child: Row(
                       children: const [
-                        FaIcon(FontAwesomeIcons.comment,color: AppColors.textColor,),
-
+                        FaIcon(
+                          FontAwesomeIcons.comment,
+                          color: AppColors.textColor,
+                        ),
                         SizedBox(
                           width: 5,
                         ),
