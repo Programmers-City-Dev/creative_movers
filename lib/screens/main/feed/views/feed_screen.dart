@@ -5,6 +5,7 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/views/create_post.dart';
+import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
 import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
@@ -23,18 +24,17 @@ class FeedScreen extends StatefulWidget {
   _FeedScreenState createState() => _FeedScreenState();
 }
 
-
 class _FeedScreenState extends State<FeedScreen> {
-
   final ScrollController _scrollController = ScrollController();
 
   String? username;
   FeedBloc feedBloc = FeedBloc();
-@override
+  @override
   void initState() {
-   feedBloc.add(GetFeedEvent());
+    feedBloc.add(GetFeedEvent());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,9 +95,7 @@ class _FeedScreenState extends State<FeedScreen> {
                 bloc: feedBloc,
                 builder: (context, state) {
                   if (state is FeedLoadingState) {
-                    return SliverToBoxAdapter(
-                        child:
-                            Center(child: const CircularProgressIndicator()));
+                    return const SliverToBoxAdapter(child: FeedLoader());
                   } else if (state is FeedSuccessState) {
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
@@ -113,7 +111,8 @@ class _FeedScreenState extends State<FeedScreen> {
                     );
                   } else {
                     return const SliverToBoxAdapter(
-                        child: Expanded(child: Center(child: Text('An Error Occured'))));
+                        child: Expanded(
+                            child: Center(child: Text('An Error Occured'))));
                   }
                 },
               ),

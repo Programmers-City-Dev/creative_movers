@@ -7,11 +7,15 @@ abstract class FeedState extends Equatable {
 class FeedInitial extends FeedState {
   @override
   List<Object> get props => [];
+
+  
 }
+
 class AddFeedLoadingState extends FeedState {
   @override
   List<Object> get props => [];
 }
+
 class AddFeedSuccessState extends FeedState {
   AddFeedResponse feedResponse;
 
@@ -20,6 +24,7 @@ class AddFeedSuccessState extends FeedState {
   @override
   List<Object> get props => [feedResponse];
 }
+
 class AddFeedFaliureState extends FeedState {
   String error;
 
@@ -29,12 +34,12 @@ class AddFeedFaliureState extends FeedState {
   List<Object> get props => [error];
 }
 
-
 //Get Feeds States
 class FeedLoadingState extends FeedState {
   @override
   List<Object> get props => [];
 }
+
 class FeedSuccessState extends FeedState {
   FeedsResponse feedResponse;
 
@@ -43,6 +48,7 @@ class FeedSuccessState extends FeedState {
   @override
   List<Object> get props => [feedResponse];
 }
+
 class FeedFaliureState extends FeedState {
   String error;
 
