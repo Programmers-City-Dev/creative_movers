@@ -9,6 +9,8 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'helpers/app_utils.dart';
 
+final GlobalKey<NavigatorState> mainNavKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.setup();
@@ -30,7 +32,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Creative Movers',
-      localizationsDelegates: [
+      navigatorKey: mainNavKey,
+      localizationsDelegates: const [
         AppLocalizations.delegate, // Add this line
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

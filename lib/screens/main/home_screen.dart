@@ -6,7 +6,7 @@ import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
-import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
+import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const BuisnessScreen(),
     const ContactScreen(),
     const ChatScreen(),
-    const ProfileScreen()
+    const AccountSettingsScreen()
   ];
 
   // final bottomNavItems = [
