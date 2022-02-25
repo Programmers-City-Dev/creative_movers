@@ -207,12 +207,12 @@ class Poster {
 
 class Link {
   Link({
-    required this.url,
+    this.url,
     required this.label,
     required this.active,
   });
 
-  String url;
+  String? url;
   String label;
   bool active;
 

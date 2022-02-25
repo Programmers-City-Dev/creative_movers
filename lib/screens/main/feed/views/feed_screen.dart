@@ -5,7 +5,7 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/views/create_post.dart';
-import 'package:creative_movers/screens/main/feed/widgets/feeds_shimmer.dart';
+import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
 import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
@@ -25,18 +25,18 @@ class FeedScreen extends StatefulWidget {
   _FeedScreenState createState() => _FeedScreenState();
 }
 
+
 class _FeedScreenState extends State<FeedScreen> {
+
   final ScrollController _scrollController = ScrollController();
 
   String? username;
   FeedBloc feedBloc = FeedBloc();
-
-  @override
+@override
   void initState() {
-    feedBloc.add(GetFeedEvent());
+   feedBloc.add(GetFeedEvent());
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,80 +69,76 @@ class _FeedScreenState extends State<FeedScreen> {
             //     )),
           ];
         },
-        body: CustomScrollView(
-          // controller: _scrollController,
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverPersistentHeader(
-                // pinned: true,
-                floating: true,
-                delegate: SliverAppBarDelegate(
-                  const PreferredSize(
-                    preferredSize: Size.fromHeight(100),
-                    child: StatusViews(
-                      curvedBottom: true,
+        body: RefreshIndicator(
+          onRefresh: (() async {
+            await Future.delayed(const Duration(seconds: 1));
+            feedBloc.add(GetFeedEvent());
+          }),
+          child: CustomScrollView(
+            // controller: _scrollController,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverPersistentHeader(
+                  // pinned: true,
+                  floating: true,
+                  delegate: SliverAppBarDelegate(
+                    const PreferredSize(
+                      preferredSize: Size.fromHeight(100),
+                      child: StatusViews(
+                        curvedBottom: true,
+                      ),
                     ),
-                  ),
-                )),
-            SliverToBoxAdapter(
-                child: PostCard(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const CreatePostScreen(),
-                ));
-              },
-            )),
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: BlocBuilder<FeedBloc, FeedState>(
-                bloc: feedBloc,
-                builder: (context, state) {
-                  if (state is FeedLoadingState) {
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return FeedsShimer();
-                        },
-                        childCount: 7,
-                        addAutomaticKeepAlives: false,
-                        addRepaintBoundaries: false,
-                      ),
-                    );
-                  } else if (state is FeedSuccessState) {
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return NewPostItem(
-                            feed: state.feedResponse.feeds.data[index],
-                          );
-                        },
-                        childCount: state.feedResponse.feeds.data.length,
-                        addAutomaticKeepAlives: false,
-                        addRepaintBoundaries: false,
-                      ),
-                    );
-                  } else {
-                    return SliverFillRemaining(
-                        child: Center(child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children:  [
-                            const Text('Sorry an error occurred try again..'),
-                            SizedBox(height: 10,),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: CustomButton(
-
-                                onTap:(){ feedBloc.add(GetFeedEvent());},
-                                child: const Text('Retry'),
-                              ),
-                            )
-                          ],
-                        )));
-                  }
+                  )),
+              SliverToBoxAdapter(child: PostCard(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const CreatePostScreen(),
+                  ));
                 },
+              )),
+              SliverPadding(
+                padding: const EdgeInsets.all(8),
+                sliver: BlocBuilder<FeedBloc, FeedState>(
+                  bloc: feedBloc,
+                  builder: (context, state) {
+                    if (state is FeedLoadingState) {
+                      return const SliverToBoxAdapter(child: FeedLoader());
+                    } else if (state is FeedSuccessState) {
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return NewPostItem(
+                              feed: state.feedResponse.feeds.data[index],
+                            );
+                          },
+                          childCount: state.feedResponse.feeds.data.length,
+                          addAutomaticKeepAlives: false,
+                          addRepaintBoundaries: false,
+                        ),
+                      );
+                    } else {
+                      return  SliverFillRemaining(
+                          child: Center(child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children:  [
+                              const Text('Sorry an error occurred try again..'),
+                              SizedBox(height: 10,),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: CustomButton(
+
+                                  onTap:(){ feedBloc.add(GetFeedEvent());},
+                                  child: const Text('Retry'),
+                                ),
+                              )
+                            ],
+                          )));
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

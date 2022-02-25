@@ -1,5 +1,6 @@
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -13,6 +14,8 @@ Future<void> init(GetIt injector) async {
 
   //DEPENDENCIES RELATED TO PAYMENT
   _injectDependenciesRelatedToPayment(injector);
+
+  injector.registerLazySingleton(() => NavBloc());
 
 }
 

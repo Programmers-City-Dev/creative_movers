@@ -22,10 +22,10 @@ class _ContactScreenState extends State<ContactScreen> {
 
   int selectedIndex = 0;
   String userType = 'connects';
-  List<Widget> pages = [
+  List<Widget> pages = const [
     ConnectsTab(data: []),
-   PendingRequestScreen(),
-    Container()
+    PendingRequestScreen(),
+    SizedBox()
   ];
   // @override
   // void initState() {
@@ -40,9 +40,8 @@ class _ContactScreenState extends State<ContactScreen> {
           length: 3,
           child: Column(
             children: [
-
               Container(
-                margin: EdgeInsets.only(top: 20,left: 16,right: 16),
+                margin: EdgeInsets.only(top: 20, left: 16, right: 16),
                 height: 50,
                 child: ListView(
                   physics: BouncingScrollPhysics(),
@@ -113,7 +112,7 @@ class _ContactScreenState extends State<ContactScreen> {
                       onTap: () {
                         setState(() {
                           userType = 'suggestions';
-                          selectedIndex = 2 ;
+                          selectedIndex = 2;
                         });
                       },
                       child: Chip(
@@ -147,24 +146,22 @@ class _ContactScreenState extends State<ContactScreen> {
                   physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemCount: pages.length,
-                  itemBuilder: (context, index) => pages[selectedIndex],),
+                  itemBuilder: (context, index) => pages[selectedIndex],
+                ),
               ),
-
-
             ],
           )),
     );
   }
 }
 
-
 class ErrorScreen extends StatelessWidget {
   final String? message;
   final ConnectsBloc? bloc;
   final VoidCallback? onTap;
 
-
-  ErrorScreen({this.message = 'Ooops an error occured ', this.bloc, this.onTap});
+  ErrorScreen(
+      {this.message = 'Ooops an error occured ', this.bloc, this.onTap});
 
   @override
   Widget build(BuildContext context) {

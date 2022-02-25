@@ -4,7 +4,8 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'helpers/app_utils.dart';
 
@@ -14,7 +15,7 @@ void main() async {
   Stripe.publishableKey = ApiConstants.STRIPE_PLUBLISHABLE_KEY;
   var firstScreen = await AppUtils.getFirstScreen();
   SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor:AppColors.primaryColor));
+      const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));
   runApp(MyApp(firstScreen));
 }
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Creative Movers',
-      localizationsDelegates:  [
+      localizationsDelegates: [
         AppLocalizations.delegate, // Add this line
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

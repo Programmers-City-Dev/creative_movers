@@ -6,7 +6,7 @@ import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
-import 'package:creative_movers/screens/main/feed/widgets/MediaItem.dart';
+import 'package:creative_movers/screens/main/feed/widgets/media_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/image_picker_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
