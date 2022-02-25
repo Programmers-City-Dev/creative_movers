@@ -1,18 +1,12 @@
 import 'dart:developer';
 
-import 'package:creative_movers/blocs/auth/auth_bloc.dart';
-import 'package:creative_movers/blocs/payment/payment_bloc.dart';
-import 'package:creative_movers/constants/storage_keys.dart';
-import 'package:creative_movers/data/remote/model/logout_response.dart';
+import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/di/injector.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/screens/auth/views/login_screen.dart';
-import 'package:creative_movers/screens/main/profile/views/profile_details.dart';
+import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -22,405 +16,379 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final AuthBloc _authBloc = AuthBloc();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.smokeWhite,
       body: SingleChildScrollView(
-        child: BlocListener<AuthBloc, AuthState>(
-          bloc: _authBloc,
-          listener: (context, state) {
-            _listenToAuthState(context, state);
-            // TODO: implement listener
-          },
-          child: Column(
-            children: [
-              Container(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      height: 250,
-                      color: AppColors.primaryColor,
-                      // decoration: BoxDecoration(image: ()),
-                    ),
-                    Positioned(
-                        bottom: -50,
-                        left: 0,
-                        right: 0,
-                        child: Center(
-                            child: Stack(
-                          clipBehavior: Clip.none,
-                          children: const [
-                            CircleAvatar(
-                              radius: 65,
-                              backgroundColor: AppColors.lightBlue,
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
-                                ),
-                                radius: 60,
-                              ),
-                            ),
-                            Positioned(
-                              right: -5,
-                              bottom: 7,
-                              child: CircleAvatar(
-                                radius: 25,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    height: 250,
+                    color: AppColors.primaryColor,
+                    // decoration: BoxDecoration(image: ()),
+                  ),
+                  Positioned(
+                    bottom: -85,
+                    left: 20,
+                    right: 0,
+                    child: Hero(
+                      tag:'profile-image',
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: const [
+                              CircleAvatar(
+                                radius: 70,
                                 backgroundColor: AppColors.lightBlue,
                                 child: CircleAvatar(
-                                  radius: 22,
-                                  child: Icon(
-                                    Icons.photo_camera_rounded,
+                                  backgroundImage: NetworkImage(
+                                    'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
                                   ),
+                                  radius: 65,
                                 ),
                               ),
-                            )
-                          ],
-                        )))
-                  ],
-                ),
+                              Positioned(
+                                right: -5,
+                                bottom: 7,
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: AppColors.lightBlue,
+                                  child: CircleAvatar(
+                                    radius: 22,
+                                    child: Icon(
+                                      Icons.photo_camera_rounded,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                    ),
+                  )
+                ],
               ),
-              const SizedBox(
-                height: 70,
-              ),
-              const Text(
-                'Amander Berks',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.near_me_rounded,
-                    color: AppColors.primaryColor,
+            ),
+            Container(
+              padding: EdgeInsets.all(18),
+              alignment: Alignment.centerRight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Icon(
+                        Icons.near_me_rounded,
+                        color: AppColors.primaryColor,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Carlifonia, Badwin park',
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Carlifonia, Badwin park',
-                    style: TextStyle(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Icon(
+                        Icons.person,
+                        color: AppColors.primaryColor,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Creative',
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ProfileDetails(),
-                        ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Icon(Icons.person,
-                                    size: 25, color: AppColors.textColor),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Text(
-                                  'Profile',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textColor),
-                                ),
-                              ],
+            ),
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "I am senior developer that focus on mobile apps and web development. "
+                    "I am not only competent in delivering the effective deliverable,"
+                    " but I...",
+                    style: TextStyle(fontSize: 16, color: AppColors.textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'See More About Yourself',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          var allCache = await injector
+                              .get<CacheCachedUserDao>()
+                              .getAllCache();
+                          log('${allCache.first.toMap()}');
+                        },
+                        child: Text('Edit Details'),
+                        style: TextButton.styleFrom(
+                            backgroundColor: AppColors.lightBlue),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.svgProjects,
+                            color: AppColors.primaryColor,
+                          ),
+                          const Text(
+                            "114k",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(right: 16),
-                              child: Icon(Icons.chevron_right_rounded,
-                                  size: 30, color: AppColors.textColor),
+                          ),
+                          const Text(
+                            "Projects",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 2,
+                        decoration: BoxDecoration(color: Colors.grey.shade300),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.svgConnects,
+                            color: AppColors.primaryColor,
+                          ),
+                          const Text(
+                            "114k",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
+                          ),
+                          const Text(
+                            "Connects",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 2,
+                        decoration: BoxDecoration(color: Colors.grey.shade300),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.svgFollowing,
+                            color: AppColors.primaryColor,
+                          ),
+                          const Text(
+                            "114k",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Text(
+                            "Follwing",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Text(
+                    'CONNECTS',
+                    style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    height: 60,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: 6,
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => const Padding(
+                              padding: EdgeInsets.only(right: 8),
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
+                                ),
+                                radius: 25,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-
-
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Icon(Icons.notifications,
-                                  size: 25, color: AppColors.textColor),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Text(
-                                'Notification',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textColor),
-                              ),
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Icon(Icons.chevron_right_rounded,
-                                size: 30, color: AppColors.textColor),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Icon(Icons.settings,
-                                  size: 25, color: AppColors.textColor),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Text(
-                                'Transation History',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textColor),
-                              ),
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Icon(Icons.chevron_right_rounded,
-                                size: 30, color: AppColors.textColor),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Icon(Icons.auto_fix_high,
-                                  size: 25, color: AppColors.textColor),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Text(
-                                'My SubScriptions',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textColor),
-                              ),
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Icon(Icons.chevron_right_rounded,
-                                size: 30, color: AppColors.textColor),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Icon(Icons.settings,
-                                  size: 25, color: AppColors.textColor),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Text(
-                                'Setting',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textColor),
-                              ),
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Icon(Icons.chevron_right_rounded,
-                                size: 30, color: AppColors.textColor),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Icon(Icons.contact_support,
-                                  size: 25, color: AppColors.textColor),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              BlocListener<PaymentBloc, PaymentState>(
-                                bloc: injector.get<PaymentBloc>(),
-                                listener: (context, state) {
-                                  if(state is PaymentProcessingState){
-                                    AppUtils.showAnimatedProgressDialog(context, title: "Processing");
-                                  }
-                                  if(state is PaymentFailureState){
-                                    Navigator.of(context).pop();
-                                    AppUtils.showCustomToast(state.error);
-                                  }
-                                  if(state is PaymentIntentGottenState){
-                                    Navigator.of(context).pop();
-                                    injector.get<PaymentBloc>().add(MakePaymentEvent(state.intent['client_secret']));
-                                  }
-
-                                  if(state is PaymentConfirmedState){
-                                    Navigator.of(context).pop();
-                                    AppUtils.showCustomToast(state.message);
-                                  }
-                                },
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    injector.get<PaymentBloc>().add(const CreatePaymentIntentEvent(20, "USD"));
-                                  },
-                                  child: const Text(
-                                    'Help and Support',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textColor),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Icon(Icons.chevron_right_rounded,
-                                size: 30, color: AppColors.textColor),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    InkWell(
-                      onTap: () {
-                        AppUtils.showShowConfirmDialog(
-                          context,
-                          message: 'Are you sure you wan to logout ?',
-                          cancelButtonText: 'Cancel',
-                          confirmButtonText: 'Logout',
-                          onConfirmed: () {
-                            Navigator.pop(context);
-                            _logout();
-                          },
-                          onCancel: () {
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Icon(
-                                  Icons.logout_rounded,
-                                  color: AppColors.textColor,
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Text(
-                                  'Logout',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textColor),
-                                ),
-                              ],
-                            ),
-                            // const Padding(
-                            //   padding: EdgeInsets.only(right: 16),
-                            //   child: Icon(Icons.chevron_right_rounded,
-                            //       size: 30, color: AppColors.textColor),
-                            // ),
-                          ],
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text('+350k'),
+                          style: TextButton.styleFrom(
+                              backgroundColor: AppColors.lightBlue,
+                              padding: EdgeInsets.symmetric(vertical: 10)),
                         ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'BUSINESS/INVESTMENT',
+                        style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '+2 more',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    height: 80,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 4,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => Container(
+                        width: 110,
+                        margin: EdgeInsets.only(right: 2),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: const DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
+                                ))),
                       ),
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
   }
-
-  void _listenToAuthState(BuildContext context, AuthState state) {
-    if (state is LogoutLoadingState) {
-      AppUtils.showAnimatedProgressDialog(context);
-    }
-    if (state is LogoutFaliureState) {
-      Navigator.of(context).pop();
-      CustomSnackBar.showError(context, message: state.error);
-    }
-    if (state is LogoutSuccessState) {
-      clearCache(state.logoutResponse);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ));
-    }
-  }
-
-  void _logout() {
-    _authBloc.add(LogoutEvent());
-  }
-
-  void clearCache(LogoutResponse response) {
-    StorageHelper.remove(StorageKeys.token);
-    StorageHelper.setBoolean(StorageKeys.stayLoggedIn, false);
-
-    // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
-  }
 }
+
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.center,
+//   children: [
+//     Expanded(
+//       flex: 1,
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 1),
+//         child: TextButton(
+//           onPressed: () {},
+//           child: SvgPicture.asset(
+//             'assets/svgs/chats.svg',
+//             color: AppColors.primaryColor,
+//             width: 24,
+//           ),
+//           style: TextButton.styleFrom(
+//               backgroundColor: Colors.white,
+//               shape: StadiumBorder(),
+//               padding: const EdgeInsets.symmetric(horizontal: 25)),
+//         ),
+//       ),
+//     ),
+//     Expanded(
+//       flex: 1,
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 5),
+//         child: TextButton(
+//           onPressed: () {},
+//           child: Text("CONNECT",style: const TextStyle(color: Colors.white,fontSize: 10),),
+//           style: TextButton.styleFrom(
+//               backgroundColor: AppColors.primaryColor,
+//               shape: StadiumBorder(),
+//               padding: const EdgeInsets.symmetric(horizontal: 25)),
+//         ),
+//       ),
+//     ),
+//     Expanded(
+//       flex: 1,
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 1),
+//         child: TextButton(
+//           onPressed: () {},
+//           child: Icon(Icons.more_horiz),
+//           style: TextButton.styleFrom(
+//               backgroundColor: Colors.white,
+//               shape: StadiumBorder(),
+//               padding: const EdgeInsets.symmetric(horizontal: 25)),
+//         ),
+//       ),
+//     ),
+//
+//
+//
+//   ],
+// )

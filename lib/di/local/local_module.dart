@@ -16,7 +16,7 @@ Future<void> init(GetIt injector) async {
   });
 
   injector.registerLazySingleton(
-    () => CacheUserDao(
+    () => CacheCachedUserDao(
       database: injector.getAsync(),
       store: intMapStoreFactory.store("cachedUser"),
     ),

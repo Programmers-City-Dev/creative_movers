@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class AppErrorWidget extends StatelessWidget {
+class AppPromptWidget extends StatelessWidget {
   final String? message;
   final String? title;
   final VoidCallback? onTap;
@@ -9,7 +9,7 @@ class AppErrorWidget extends StatelessWidget {
   final bool? isSvgResource;
   final bool? canTryAgain;
 
-  const AppErrorWidget({
+  const AppPromptWidget({
     Key? key,
     this.message = 'Ooops an error occured',
     this.title,
@@ -76,7 +76,7 @@ class AppErrorWidget extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16))),
-                    child: Text("Try again")),
+                    child: const Text("Try again")),
               ],
             )
         ],

@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
+import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
@@ -212,16 +215,16 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  void cacheToken(AuthResponse response) {
+  void cacheToken(AuthResponse response) async {
+    injector
+        .get<CacheCachedUserDao>()
+        .insert(CachedUser.fromMap(response.user.toMap()));
     StorageHelper.setString(
         StorageKeys.username, response.user.username.toString());
     StorageHelper.setString(
         StorageKeys.token, response.user.apiToken.toString());
     StorageHelper.setString(
-        StorageKeys.firstname, response.user.firstname.toString()
-    );
-
-
+        StorageKeys.firstname, response.user.firstname.toString());
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
@@ -231,7 +234,9 @@ class _LoginFormState extends State<LoginForm> {
     if (stage == 'new') {
       return const MoreDetailsScreen();
     } else if (stage == 'biodata') {
-      return const AccountTypeScreen(categories: [],);
+      return const AccountTypeScreen(
+        categories: [],
+      );
     } else if (stage == 'account_type') {
       return const PaymentScreen();
     } else if (stage == 'payment') {

@@ -100,7 +100,7 @@ class _ConnectsTabState extends State<ConnectsTab>
             ),
           );
         } else if (state is ConnectsFailureState) {
-          return AppErrorWidget(
+          return AppPromptWidget(
             // title: "Something went wrong",
             isSvgResource: true,
             message: state.error,

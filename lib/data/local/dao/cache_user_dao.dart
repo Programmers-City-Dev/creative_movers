@@ -1,13 +1,15 @@
+// ignore_for_file: avoid_renaming_method_parameters
+
 import 'package:creative_movers/data/local/dao/base_dao.dart';
-import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sembast/sembast.dart';
 
-class CacheUserDao extends BaseDao<User> {
+class CacheCachedUserDao extends BaseDao<CachedUser> {
   final Future<Database> database;
   final StoreRef store;
 
-  CacheUserDao({required this.database, required this.store});
+  CacheCachedUserDao({required this.database, required this.store});
 
   @override
   Future deleteById(int id) async {
@@ -15,23 +17,24 @@ class CacheUserDao extends BaseDao<User> {
   }
 
   @override
-  Future<List<User>> getAllCache() async {
+  Future<List<CachedUser>> getAllCache() async {
     final snapshots = await store.find(await database);
     return snapshots
-        .map((snapshot) => User.fromMap(snapshot.value))
+        .map((snapshot) => CachedUser.fromMap(snapshot.value))
         .toList(growable: false);
   }
 
   @override
-  Future update(User cacheUser) async {
+  Future update(CachedUser cacheCachedUser) async {
     await store
-        .record(cacheUser.id)
-        .update(await database, cacheUser.toMap());
+        .record(cacheCachedUser.id)
+        .update(await database, cacheCachedUser.toMap());
   }
 
   @override
-  Future<int> insert(User cacheUser) async {
-    return await store.add(await database, cacheUser.toMap());
+  Future<int> insert(CachedUser cacheCachedUser) async {
+    await deleteAll();
+    return await store.add(await database, cacheCachedUser.toMap());
   }
 
   @override
@@ -41,14 +44,13 @@ class CacheUserDao extends BaseDao<User> {
   }
 
   @override
-  Future<User> findById(id) async {
-    User? cachedUser;
-    final users = await getAllCache();
-    if (users.isNotEmpty) {
-      cachedUser =
-          users.firstWhere((element) => element.id == id);
+  Future<CachedUser> findById(id) async {
+    CachedUser? cachedCachedUser;
+    final cachedUsers = await getAllCache();
+    if (cachedUsers.isNotEmpty) {
+      cachedCachedUser = cachedUsers.firstWhere((element) => element.id == id);
     }
-    debugPrint("cachedUser is $cachedUser");
-    return cachedUser!;
+    debugPrint("cachedCachedUser is $cachedCachedUser");
+    return cachedCachedUser!;
   }
 }

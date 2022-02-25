@@ -6,5 +6,6 @@ const feedsPath = '/home/feeds';
 const bizPath = '/home/biz';
 const connectsPath = '/home/connects';
 const chatsPath = '/home/chats';
-const profilePath = '/home/profile';
+const accountSettingsPath = '/home/profile';
 const inviteContactsPath = '/home/invite-contacts';
+const profilePath = '/home/profile';

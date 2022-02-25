@@ -71,6 +71,8 @@ dependencies:
   readmore: ^2.1.0
   font_awesome_flutter: ^9.2.0
   sembast: ^3.1.2
+  page_transition: ^2.0.5
+  cached_network_image: ^3.2.0
 
 dev_dependencies:
   flutter_test:

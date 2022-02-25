@@ -141,12 +141,10 @@ class _ContactScreenState extends State<ContactScreen>
   }
 
   void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      setState(() {
-        selectedIndex = _tabController.index;
-        log("INDEX:$selectedIndex");
-      });
-    }
+    setState(() {
+      selectedIndex = _tabController.index;
+      // log("INDEX:$selectedIndex");
+    });
   }
 }
 

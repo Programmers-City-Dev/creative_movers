@@ -7,6 +7,7 @@ import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/add_contacts_widget.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
+import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
@@ -24,9 +25,10 @@ class AppRoutes {
       );
     },
     chatsPath: (context) => const ChatScreen(),
-    profilePath: (context) => const ProfileScreen(),
+    accountSettingsPath: (context) => const AccountSettingsScreen(),
     loginPath: (context) => const LoginScreen(),
     inviteContactsPath: (_) => const InviteContactScreen(),
+    profilePath: (_) => const ProfileScreen()
   };
 }
 
