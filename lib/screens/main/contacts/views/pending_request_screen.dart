@@ -37,13 +37,13 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
             bloc: _connectsBloc,
             builder: (context, state) {
               if (state is PendingRequestLoadingState) {
-                return const Expanded(
+                return  Expanded(
                     child:  ListView.separated(
                       shrinkWrap: true,
                       itemCount: 5,
                       itemBuilder: (context, index) => ConnectsShimer(),
                       separatorBuilder: (BuildContext context, int index) { return SizedBox(height: 14,); },
-                    )););
+                    ));
               } else if (state is PendingRequestSuccesState) {
                 return state.getConnectsResponse.connections.connectionList
                         .isNotEmpty
