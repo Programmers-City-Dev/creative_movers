@@ -33,6 +33,7 @@ class CacheCachedUserDao extends BaseDao<CachedUser> {
 
   @override
   Future<int> insert(CachedUser cacheCachedUser) async {
+    await deleteAll();
     return await store.add(await database, cacheCachedUser.toMap());
   }
 
@@ -47,8 +48,7 @@ class CacheCachedUserDao extends BaseDao<CachedUser> {
     CachedUser? cachedCachedUser;
     final cachedUsers = await getAllCache();
     if (cachedUsers.isNotEmpty) {
-      cachedCachedUser =
-          cachedUsers.firstWhere((element) => element.id == id);
+      cachedCachedUser = cachedUsers.firstWhere((element) => element.id == id);
     }
     debugPrint("cachedCachedUser is $cachedCachedUser");
     return cachedCachedUser!;

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:page_transition/page_transition.dart';
 
 List<GlobalKey<NavigatorState>> homeNavigatorKeys = [
   GlobalKey<NavigatorState>(),
@@ -240,19 +243,31 @@ class _HomeScreenState extends State<HomeScreen> {
         // observers: [MyRouteObserver()],
         onGenerateRoute: (routeSettings) {
           print('Navigating to: ${routeSettings.name} --------------- ');
-          // return PageTransition(
-          //   child: Builder(builder: (context) {
-          //     if (routeSettings.name == '/') {
-          //       return routeBuilders[routeSettings.name]!(context);
-          //     } else {
-          //       return BuyerRoutes.routes[routeSettings.name]!(context);
-          //     }
-          //   }),
-          //   type: PageTransitionType.rightToLeftJoined,
-          //   childCurrent: SizedBox.shrink(),
-          //   settings: routeSettings,
-          //   // duration: Duration(milliseconds: 300),
-          // );
+
+          PageTransitionType? transitionType;
+          var arguments = routeSettings.arguments;
+          if (arguments != null) {
+            var args = arguments as Map;
+            transitionType = args['transition-type'];
+            log("Transition:$transitionType");
+          }
+
+          if (transitionType != null) {
+            return PageTransition(
+              child: Builder(builder: (context) {
+                if (routeSettings.name == '/') {
+                  return routeBuilders[routeSettings.name]!(context);
+                } else {
+                  return AppRoutes.routes[routeSettings.name]!(context);
+                }
+              }),
+              type: transitionType,
+              alignment: Alignment.center,
+              childCurrent: const SizedBox.shrink(),
+              settings: routeSettings,
+              // duration: Duration(milliseconds: 300),
+            );
+          }
 
           return CupertinoPageRoute(
               builder: (context) {

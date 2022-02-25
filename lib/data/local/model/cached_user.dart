@@ -130,4 +130,6 @@ class CachedUser {
         "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
         "api_token": apiToken == null ? null : apiToken,
       };
+
+  String get fullname => '$firstname  $lastname';
 }
