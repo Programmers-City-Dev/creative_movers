@@ -44,6 +44,7 @@ class AppErrorWidget extends StatelessWidget {
                 ),
                 Text(
                   title!,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -52,10 +53,18 @@ class AppErrorWidget extends StatelessWidget {
                 ),
               ],
             ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(message!),
+          if (message != null)
+            Column(
+              children: [
+                Text(
+                  message!,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+              ],
+            ),
           if (canTryAgain!)
             Column(
               children: [

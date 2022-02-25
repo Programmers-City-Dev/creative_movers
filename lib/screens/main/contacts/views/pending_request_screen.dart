@@ -51,9 +51,16 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
                           ),
                         ),
                       )
-                    : const Expanded(
+                    : Expanded(
                         child: Center(
-                            child: Text('You have no Pending Requests ')));
+                            child: AppErrorWidget(
+                        onTap: () {},
+                        canTryAgain: false,
+                        isSvgResource: true,
+                        imagePath: "assets/svgs/request.svg",
+                        title: "You have no pending requests.",
+                        message: "Invite your contacts to start moving!",
+                      )));
               } else if (state is PendingRequestFailureState) {
                 return Expanded(
                     child: AppErrorWidget(
