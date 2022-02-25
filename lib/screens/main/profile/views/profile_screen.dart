@@ -22,7 +22,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  AuthBloc _authBloc = AuthBloc();
+  final AuthBloc _authBloc = AuthBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -112,13 +112,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const ProfileDetails(),
                         ));
                       },
-                      child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -148,10 +150,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Center(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -180,10 +182,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Center(
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -212,10 +214,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Center(
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -244,10 +246,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Center(
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -276,10 +278,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Center(
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -334,9 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+
                     InkWell(
                       onTap: () {
                         AppUtils.showShowConfirmDialog(
@@ -354,38 +354,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Icon(
-                                    Icons.logout_rounded,
-                                    color: AppColors.textColor,
-                                  ),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Text(
-                                    'Logout',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textColor),
-                                  ),
-                                ],
-                              ),
-                              // const Padding(
-                              //   padding: EdgeInsets.only(right: 16),
-                              //   child: Icon(Icons.chevron_right_rounded,
-                              //       size: 30, color: AppColors.textColor),
-                              // ),
-                            ],
-                          ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Icon(
+                                  Icons.logout_rounded,
+                                  color: AppColors.textColor,
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Text(
+                                  'Logout',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textColor),
+                                ),
+                              ],
+                            ),
+                            // const Padding(
+                            //   padding: EdgeInsets.only(right: 16),
+                            //   child: Icon(Icons.chevron_right_rounded,
+                            //       size: 30, color: AppColors.textColor),
+                            // ),
+                          ],
                         ),
                       ),
                     ),
@@ -410,7 +408,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (state is LogoutSuccessState) {
       clearCache(state.logoutResponse);
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => const LoginScreen(),
       ));
     }
   }

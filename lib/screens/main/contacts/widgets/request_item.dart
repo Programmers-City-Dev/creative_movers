@@ -18,7 +18,7 @@ class RequestItem extends StatefulWidget {
 
 class _RequestItemState extends State<RequestItem> {
 
-  ConnectsBloc _connectsBloc = ConnectsBloc();
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
   AcceptState acceptState = AcceptState.idle;
   DeclineState declineState = DeclineState.idle;
 
@@ -35,7 +35,7 @@ class _RequestItemState extends State<RequestItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 8.0),
+              padding: const EdgeInsets.only(right: 8.0),
               child: CircleAvatar(
                 radius: 30,
                 foregroundColor: Colors.red,
@@ -69,6 +69,7 @@ class _RequestItemState extends State<RequestItem> {
                           onPressed: acceptState == AcceptState.idle ? () {
                             setState(() {
                               acceptState = AcceptState.loading;
+                              declineState = DeclineState.idle;
                             });
                             _connectsBloc.add(RequestReactEvent(
                                 widget.connection.id.toString(), 'accept'));
@@ -77,7 +78,7 @@ class _RequestItemState extends State<RequestItem> {
                             'Accept',
                             style:
                             TextStyle(color: Colors.green, fontSize: 12),
-                          ):SizedBox(child: const CircularProgressIndicator(color:Colors.green ,strokeWidth: 2,),height: 10,width: 10,),
+                          ):const SizedBox(child: CircularProgressIndicator(color:Colors.green ,strokeWidth: 2,),height: 10,width: 10,),
                           style: TextButton.styleFrom(
 
                               padding: EdgeInsets.zero,
@@ -86,7 +87,7 @@ class _RequestItemState extends State<RequestItem> {
                     const SizedBox(
                       width: 10,
                     ),
-                    Container(
+                    SizedBox(
                         height: 35,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: TextButton(
@@ -103,7 +104,7 @@ class _RequestItemState extends State<RequestItem> {
                             'Decline',
                             style:
                                 TextStyle(color: AppColors.red, fontSize: 12),
-                          ):Container(child: CircularProgressIndicator(color: AppColors.red,strokeWidth: 2,),height: 10,width: 10,),
+                          ):const SizedBox(child: CircularProgressIndicator(color: AppColors.red,strokeWidth: 2,),height: 10,width: 10,),
                           style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
                               backgroundColor: AppColors.lightred),
@@ -132,7 +133,6 @@ class _RequestItemState extends State<RequestItem> {
     if (state is RequestReactFailureState) {
       setState(() {
         AppUtils.showCustomToast(state.error);
-
         acceptState = AcceptState.idle;
         declineState = DeclineState.idle;
       });
