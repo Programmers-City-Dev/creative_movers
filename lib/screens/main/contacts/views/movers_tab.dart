@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/add_contacts_widget.dart';
+import 'package:creative_movers/screens/main/contacts/widgets/connects_shimer.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/contact_item.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/search_field.dart';
@@ -45,9 +46,16 @@ class _ConnectsTabState extends State<ConnectsTab>
       bloc: _connectsBloc,
       builder: (context, state) {
         if (state is ConnectsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: 5,
+            itemBuilder: (context, index) => ConnectsShimer(),
+                  separatorBuilder: (BuildContext context, int index) { return SizedBox(height: 14,); },
+          ),
+              ));
         } else if (state is ConnectsSuccesState) {
           if (mainList.isEmpty) {
             mainList = state.getConnectsResponse.connections.connectionList;

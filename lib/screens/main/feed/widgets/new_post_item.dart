@@ -12,11 +12,9 @@ import 'package:readmore/readmore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class NewPostItem extends StatefulWidget {
-  const NewPostItem({
-    Key? key,
-    required this.feed,
-  }) : super(key: key);
-  final Feed feed;
+  const NewPostItem({Key? key, required this.feed, }) : super(key: key);
+final Feed feed;
+
 
   @override
   _NewPostItemState createState() => _NewPostItemState();
@@ -59,17 +57,16 @@ class _NewPostItemState extends State<NewPostItem> {
               Container(
                 child: Row(
                   children: [
-                    CircleAvatar(
+                     CircleAvatar(
                       radius: 20,
-                      backgroundImage:
-                          NetworkImage(widget.feed.user.profilePhotoPath!),
+                      backgroundImage: NetworkImage(widget.feed.user.profilePhotoPath!),
                     ),
                     const SizedBox(
                       width: 7,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children:  [
                         Text(
                           '${widget.feed.user.firstname} ${widget.feed.user.lastname}',
                           style: const TextStyle(
@@ -119,7 +116,7 @@ class _NewPostItemState extends State<NewPostItem> {
                   PopupMenuItem<String>(
                       padding: EdgeInsets.all(10),
                       value: 'Delete',
-                      child: SizedBox(
+                      child: Container(
                         width: 100,
                         child: Row(
                           children: const [
@@ -163,15 +160,16 @@ class _NewPostItemState extends State<NewPostItem> {
               )
             ],
           ),
-          Padding(
+           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: AnimatedSize(
               duration: const Duration(milliseconds: 12),
               child: ReadMoreText(
                 widget.feed.content!,
+                textAlign: TextAlign.start,
                 style: const TextStyle(color: AppColors.textColor),
                 trimLines: 2,
-                textAlign: TextAlign.start,
+
                 trimMode: TrimMode.Line,
                 trimCollapsedText: 'Show more',
                 trimExpandedText: 'Show less',
@@ -179,9 +177,10 @@ class _NewPostItemState extends State<NewPostItem> {
               ),
             ),
           ),
+          widget.feed.media.isNotEmpty ?
           Container(
             child: Stack(children: [
-              SizedBox(
+              Container(
                 height: 300,
                 child: PageView.builder(
                   controller: PageController(keepPage: true, initialPage: 0),
@@ -196,15 +195,16 @@ class _NewPostItemState extends State<NewPostItem> {
                     });
                   },
                   scrollDirection: Axis.horizontal,
-                  itemCount: mediaList.length,
+                  itemCount:  widget.feed.media.length,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) =>
-                      MediaDisplayItem(media: mediaList[index]),
+                      MediaDisplayItem(media: widget.feed.media[index]),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  widget.feed.media.length>1?
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Chip(
@@ -214,38 +214,39 @@ class _NewPostItemState extends State<NewPostItem> {
                           '${pageIndex + 1}/${mediaList.length} ',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                              fontSize: 10,
+                            fontSize: 10,
                               color: AppColors.smokeWhite,
                               fontWeight: FontWeight.w600),
                         )),
-                  ),
+                  ):SizedBox(),
                 ],
               )
             ]),
-          ),
+          ):SizedBox(),
           const SizedBox(
             height: 10,
           ),
-          mediaList.length > 1
-              ? Center(
-                  child: SizedBox(
-                    height: 8,
-                    width: 58,
-                    child: ScrollablePositionedList.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: mediaList.length,
-                      itemScrollController: itemScrollController,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: DotIndicator(
-                          isActive: pageIndex == index,
-                        ),
-                      ),
-                    ),
+
+        widget.feed.media.length>2 ?
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              height: 8,
+              width: 58,
+              child: ScrollablePositionedList.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: widget.feed.media.length,
+                itemScrollController: itemScrollController,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: DotIndicator(
+                    isActive: pageIndex == index,
                   ),
-                )
-              : SizedBox(),
+                ),
+              ),
+            ),
+          ):SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -272,11 +273,9 @@ class _NewPostItemState extends State<NewPostItem> {
               children: [
                 Container(
                   child: Row(
-                    children: const [
-                      FaIcon(
-                        FontAwesomeIcons.thumbsUp,
-                        color: AppColors.textColor,
-                      ),
+                    children:  const [
+                      FaIcon(FontAwesomeIcons.thumbsUp,color: AppColors.textColor,),
+
                       SizedBox(
                         width: 8,
                       ),
@@ -288,18 +287,14 @@ class _NewPostItemState extends State<NewPostItem> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => CommentsScreen(),
-                    ));
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommentsScreen(),));
                   },
                   child: Container(
                     child: Row(
                       children: const [
-                        FaIcon(
-                          FontAwesomeIcons.comment,
-                          color: AppColors.textColor,
-                        ),
+                        FaIcon(FontAwesomeIcons.comment,color: AppColors.textColor,),
+
                         SizedBox(
                           width: 5,
                         ),

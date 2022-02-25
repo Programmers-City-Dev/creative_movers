@@ -18,7 +18,7 @@ class _PostCardState extends State<PostCard> {
       onTap: widget.onTap,
       child: Container(
         padding: EdgeInsets.all(16),
-        margin: const EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 40),
         decoration: const BoxDecoration(color: Colors.white),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
