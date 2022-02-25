@@ -154,50 +154,6 @@ class _ContactScreenState extends State<ContactScreen> {
     );
   }
 }
-
-class ErrorScreen extends StatelessWidget {
-  final String? message;
-  final ConnectsBloc? bloc;
-  final VoidCallback? onTap;
-
-  ErrorScreen(
-      {this.message = 'Ooops an error occured ', this.bloc, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Center(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            'assets/pngs/sorry.png',
-            height: 150,
-          ),
-          Text(message!),
-          SizedBox(
-            height: 10,
-          ),
-          CustomButton(
-            onTap: onTap,
-            child: const Text('Retry'),
-          )
-        ],
-      )),
-    );
-  }
-}
-
-
-
-
-
-
-
-
-
-
 //
 // BlocBuilder<ConnectsBloc, ConnectsState>(
 // bloc: _connectsBloc,
