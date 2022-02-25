@@ -39,7 +39,7 @@ class _ConnectsShimerState extends State<ConnectsShimer> {
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         Container(
                           height: 10,
@@ -61,6 +61,14 @@ class _ConnectsShimerState extends State<ConnectsShimer> {
                       ],
                     ),
                   ],
+                ),
+                Container(
+                  height: 10,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             ),
