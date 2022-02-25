@@ -121,7 +121,7 @@ class _FeedScreenState extends State<FeedScreen> {
                       return SliverToBoxAdapter(
                           child: SizedBox(
                               height: MediaQuery.of(context).size.height * 0.4,
-                              child: AppErrorWidget(
+                              child: AppPromptWidget(
                                 isSvgResource: true,
                                 message: state.error,
                                 onTap: () => feedBloc.add(GetFeedEvent()),

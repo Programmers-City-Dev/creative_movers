@@ -294,26 +294,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               BlocListener<PaymentBloc, PaymentState>(
                                 bloc: injector.get<PaymentBloc>(),
                                 listener: (context, state) {
-                                  if(state is PaymentProcessingState){
-                                    AppUtils.showAnimatedProgressDialog(context, title: "Processing");
+                                  if (state is PaymentProcessingState) {
+                                    AppUtils.showAnimatedProgressDialog(context,
+                                        title: "Processing");
                                   }
-                                  if(state is PaymentFailureState){
+                                  if (state is PaymentFailureState) {
                                     Navigator.of(context).pop();
                                     AppUtils.showCustomToast(state.error);
                                   }
-                                  if(state is PaymentIntentGottenState){
+                                  if (state is PaymentIntentGottenState) {
                                     Navigator.of(context).pop();
-                                    injector.get<PaymentBloc>().add(MakePaymentEvent(state.intent['client_secret']));
+                                    injector.get<PaymentBloc>().add(
+                                        MakePaymentEvent(
+                                            state.intent['client_secret']));
                                   }
 
-                                  if(state is PaymentConfirmedState){
+                                  if (state is PaymentConfirmedState) {
                                     Navigator.of(context).pop();
                                     AppUtils.showCustomToast(state.message);
                                   }
                                 },
                                 child: GestureDetector(
                                   onTap: () async {
-                                    injector.get<PaymentBloc>().add(const CreatePaymentIntentEvent(20, "USD"));
+                                    injector.get<PaymentBloc>().add(
+                                        const CreatePaymentIntentEvent(
+                                            20, "USD"));
                                   },
                                   child: const Text(
                                     'Help and Support',
@@ -345,7 +350,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           cancelButtonText: 'Cancel',
                           confirmButtonText: 'Logout',
                           onConfirmed: () {
-                            Navigator.pop(context);
+                            // Navigator.pop(context);
                             _logout();
                           },
                           onCancel: () {
@@ -401,25 +406,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _listenToAuthState(BuildContext context, AuthState state) {
     if (state is LogoutLoadingState) {
-      AppUtils.showAnimatedProgressDialog(context);
+      // AppUtils.showAnimatedProgressDialog(context);
     }
     if (state is LogoutFaliureState) {
-      Navigator.of(context).pop();
-      CustomSnackBar.showError(context, message: state.error);
+      // Navigator.of(context).pop();
+      // CustomSnackBar.showError(context, message: state.error);
     }
     if (state is LogoutSuccessState) {
-      clearCache(state.logoutResponse);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LoginScreen(),
-      ));
+      // clearCache(state.logoutResponse);
+      // Navigator.of(context).push(MaterialPageRoute(
+      //   builder: (context) => LoginScreen(),
+      // ));
     }
   }
 
   void _logout() {
     _authBloc.add(LogoutEvent());
+    clearCache();
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (Route<dynamic> route) => false,
+    );
   }
 
-  void clearCache(LogoutResponse response) {
+  void clearCache() {
     StorageHelper.remove(StorageKeys.token);
     StorageHelper.setBoolean(StorageKeys.stayLoggedIn, false);
 

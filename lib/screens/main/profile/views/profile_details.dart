@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,8 +91,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       ),
                       Text(
                         'Carlifonia, Badwin park',
-                        style:
-                            TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -105,8 +109,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       ),
                       Text(
                         'Creative',
-                        style:
-                            TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -135,7 +139,12 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          var allCache = await injector
+                              .get<CacheCachedUserDao>()
+                              .getAllCache();
+                          log('${allCache.first.toMap()}');
+                        },
                         child: Text('Edit Details'),
                         style: TextButton.styleFrom(
                             backgroundColor: AppColors.lightBlue),
@@ -149,8 +158,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
-                        children:  [
-                          SvgPicture.asset(AppIcons.svgProjects,color: AppColors.primaryColor,),
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.svgProjects,
+                            color: AppColors.primaryColor,
+                          ),
                           const Text(
                             "114k",
                             style: TextStyle(
@@ -176,8 +188,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         width: 15,
                       ),
                       Column(
-                        children:  [
-                          SvgPicture.asset(AppIcons.svgConnects,color: AppColors.primaryColor,),
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.svgConnects,
+                            color: AppColors.primaryColor,
+                          ),
                           const Text(
                             "114k",
                             style: TextStyle(
@@ -203,8 +218,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         width: 15,
                       ),
                       Column(
-                        children:  [
-                       SvgPicture.asset(AppIcons.svgFollowing,color: AppColors.primaryColor,),
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.svgFollowing,
+                            color: AppColors.primaryColor,
+                          ),
                           const Text(
                             "114k",
                             style: TextStyle(
@@ -249,7 +267,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                   'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
                                 ),
                                 radius: 25,
-
                               ),
                             ),
                           ),
@@ -258,12 +275,15 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                           onPressed: () {},
                           child: const Text('+350k'),
                           style: TextButton.styleFrom(
-                              backgroundColor: AppColors.lightBlue,padding: EdgeInsets.symmetric(vertical: 10)),
+                              backgroundColor: AppColors.lightBlue,
+                              padding: EdgeInsets.symmetric(vertical: 10)),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 16,),
+                  SizedBox(
+                    height: 16,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
@@ -276,32 +296,33 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       Text(
                         '+2 more',
                         style: TextStyle(
-                          fontSize: 13,
+                            fontSize: 13,
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Container(
                     height: 80,
                     child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: 4,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) =>
-                        Container(
-                          width: 110,
-                            margin: EdgeInsets.only(right: 2),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: const DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                                  ))),
-                        ),
+                      itemBuilder: (context, index) => Container(
+                        width: 110,
+                        margin: EdgeInsets.only(right: 2),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: const DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
+                                ))),
                       ),
+                    ),
                   )
                 ],
               ),

@@ -53,7 +53,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
                       )
                     : Expanded(
                         child: Center(
-                            child: AppErrorWidget(
+                            child: AppPromptWidget(
                         onTap: () {},
                         canTryAgain: false,
                         isSvgResource: true,
@@ -63,7 +63,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
                       )));
               } else if (state is PendingRequestFailureState) {
                 return Expanded(
-                    child: AppErrorWidget(
+                    child: AppPromptWidget(
                   onTap: () {
                     _connectsBloc.add(GetPendingRequestEvent());
                   },
