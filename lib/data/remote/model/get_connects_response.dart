@@ -31,31 +31,31 @@ class Connections {
   Connections({
     required this.currentPage,
     required this.connectionList,
-    required this.firstPageUrl,
-    required this.from,
-    required this.lastPage,
-    required this.lastPageUrl,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
     required this.links,
     this.nextPageUrl,
     required this.path,
     required this.perPage,
     this.prevPageUrl,
-    required this.to,
+    this.to,
     required this.total,
   });
 
   int currentPage;
   List<Connection> connectionList;
-  String firstPageUrl;
+  String? firstPageUrl;
   int? from;
-  int lastPage;
-  String lastPageUrl;
+  int? lastPage;
+  String? lastPageUrl;
   List<Link> links;
-  dynamic nextPageUrl;
+  String? nextPageUrl;
   String path;
   int perPage;
-  dynamic prevPageUrl;
-  int to;
+  String? prevPageUrl;
+  int? to;
   int total;
 
   factory Connections.fromJson(Map<String, dynamic> json) => Connections(

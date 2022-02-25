@@ -20,7 +20,8 @@ class ConnectsTab extends StatefulWidget {
   _ConnectsTabState createState() => _ConnectsTabState();
 }
 
-class _ConnectsTabState extends State<ConnectsTab> {
+class _ConnectsTabState extends State<ConnectsTab>
+    with AutomaticKeepAliveClientMixin {
   List<Connection> filterList = [];
   List<Connection> mainList = [];
 
@@ -92,7 +93,7 @@ class _ConnectsTabState extends State<ConnectsTab> {
           );
         } else if (state is ConnectsFailureState) {
           return AppErrorWidget(
-            title: "Something went wrong",
+            // title: "Something went wrong",
             isSvgResource: true,
             message: state.error,
             onTap: () {
@@ -104,4 +105,7 @@ class _ConnectsTabState extends State<ConnectsTab> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -14,12 +14,12 @@ class PendingRequestScreen extends StatefulWidget {
   _PendingRequestScreenState createState() => _PendingRequestScreenState();
 }
 
-class _PendingRequestScreenState extends State<PendingRequestScreen> {
+class _PendingRequestScreenState extends State<PendingRequestScreen>
+    with AutomaticKeepAliveClientMixin {
   ConnectsBloc _connectsBloc = ConnectsBloc();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _connectsBloc.add(GetPendingRequestEvent());
   }
@@ -60,6 +60,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
                   onTap: () {
                     _connectsBloc.add(GetPendingRequestEvent());
                   },
+                  isSvgResource: true,
                   message: state.error,
                 ));
               }
@@ -70,4 +71,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

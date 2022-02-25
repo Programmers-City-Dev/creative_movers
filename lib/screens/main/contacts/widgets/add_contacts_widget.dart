@@ -1,3 +1,4 @@
+import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/invite_contact_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -54,9 +55,7 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     primary: AppColors.primaryColor),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const InviteContactScreen(),
-                  ));
+                  Navigator.of(context).pushNamed(inviteContactsPath);
                 },
                 child: const Text(
                   'CONNECT',

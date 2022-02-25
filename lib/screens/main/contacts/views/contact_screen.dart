@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/resources/app_icons.dart';
@@ -17,7 +19,8 @@ class ContactScreen extends StatefulWidget {
   _ContactScreenState createState() => _ContactScreenState();
 }
 
-class _ContactScreenState extends State<ContactScreen> {
+class _ContactScreenState extends State<ContactScreen>
+    with SingleTickerProviderStateMixin {
   ConnectsBloc _connectsBloc = ConnectsBloc();
 
   int selectedIndex = 0;
@@ -27,133 +30,128 @@ class _ContactScreenState extends State<ContactScreen> {
     PendingRequestScreen(),
     SizedBox()
   ];
-  // @override
-  // void initState() {
-  //   _connectsBloc.add(GetConnectsEvent());
-  //   super.initState();
-  // }
+
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DefaultTabController(
-          length: 3,
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 20, left: 16, right: 16),
-                height: 50,
-                child: ListView(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = 0;
-                          userType = 'connects';
-                        });
-                      },
-                      child: Chip(
-                          padding: EdgeInsets.all(7),
-                          avatar: SvgPicture.asset(
-                            AppIcons.svgPeople,
-                            color: userType == 'connects'
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () => setState(() {
+                    selectedIndex = 0;
+                    _tabController.animateTo(selectedIndex);
+                  }),
+                  child: Chip(
+                      padding: EdgeInsets.all(7),
+                      avatar: SvgPicture.asset(
+                        AppIcons.svgPeople,
+                        color: selectedIndex == 0
+                            ? Colors.white
+                            : AppColors.primaryColor,
+                      ),
+                      backgroundColor: selectedIndex == 0
+                          ? AppColors.primaryColor
+                          : AppColors.lightBlue,
+                      label: Text(
+                        'Connects',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: selectedIndex == 0
                                 ? Colors.white
-                                : AppColors.primaryColor,
-                          ),
-                          backgroundColor: userType == 'connects'
-                              ? AppColors.primaryColor
-                              : AppColors.lightBlue,
-                          label: Text(
-                            'Connects',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: userType == 'connects'
-                                    ? Colors.white
-                                    : AppColors.textColor),
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = 1;
-                          userType = 'requests';
-                        });
-                      },
-                      child: Chip(
-                          padding: EdgeInsets.all(7),
-                          avatar: SvgPicture.asset(
-                            AppIcons.svgPeople,
-                            color: userType == 'requests'
-                                ? Colors.white
-                                : AppColors.primaryColor,
-                          ),
-                          backgroundColor: userType == 'requests'
-                              ? AppColors.primaryColor
-                              : AppColors.lightBlue,
-                          label: Text(
-                            'Requests',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: userType == 'requests'
-                                    ? Colors.white
-                                    : AppColors.textColor),
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          userType = 'suggestions';
-                          selectedIndex = 2;
-                        });
-                      },
-                      child: Chip(
-                          avatar: Icon(
-                            Icons.notifications_rounded,
-                            color: userType == 'suggestions'
-                                ? Colors.white
-                                : AppColors.primaryColor,
-                            size: 20,
-                          ),
-                          backgroundColor: userType == 'suggestions'
-                              ? AppColors.primaryColor
-                              : AppColors.lightBlue,
-                          label: Text(
-                            'Suggestions',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: userType == 'suggestions'
-                                    ? Colors.white
-                                    : AppColors.textColor),
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                  ],
+                                : AppColors.textColor),
+                      )),
                 ),
-              ),
-              Expanded(
-                child: PageView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: pages.length,
-                  itemBuilder: (context, index) => pages[selectedIndex],
+                GestureDetector(
+                  onTap: () => setState(() {
+                    selectedIndex = 1;
+                    _tabController.animateTo(selectedIndex);
+                  }),
+                  child: Chip(
+                      padding: EdgeInsets.all(7),
+                      avatar: SvgPicture.asset(
+                        AppIcons.svgPeople,
+                        color: selectedIndex == 1
+                            ? Colors.white
+                            : AppColors.primaryColor,
+                      ),
+                      backgroundColor: selectedIndex == 1
+                          ? AppColors.primaryColor
+                          : AppColors.lightBlue,
+                      label: Text(
+                        'Requests',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: selectedIndex == 1
+                                ? Colors.white
+                                : AppColors.textColor),
+                      )),
                 ),
-              ),
-            ],
-          )),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    selectedIndex = 2;
+                    _tabController.animateTo(selectedIndex);
+                  }),
+                  child: Chip(
+                      avatar: Icon(
+                        Icons.notifications_rounded,
+                        color: selectedIndex == 2
+                            ? Colors.white
+                            : AppColors.primaryColor,
+                        size: 20,
+                      ),
+                      backgroundColor: selectedIndex == 2
+                          ? AppColors.primaryColor
+                          : AppColors.lightBlue,
+                      label: Text(
+                        'Suggestions',
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: selectedIndex == 2
+                                ? Colors.white
+                                : AppColors.textColor),
+                      )),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              physics: const BouncingScrollPhysics(),
+              controller: _tabController,
+              children: pages,
+            ),
+          )
+        ],
+      ),
     );
   }
+
+  void _handleTabSelection() {
+    if (_tabController.indexIsChanging) {
+      setState(() {
+        selectedIndex = _tabController.index;
+        log("INDEX:$selectedIndex");
+      });
+    }
+  }
 }
+
+
+
 //
 // BlocBuilder<ConnectsBloc, ConnectsState>(
 // bloc: _connectsBloc,
@@ -212,3 +210,104 @@ class _ContactScreenState extends State<ContactScreen> {
 // ]),
 // )
 
+// Container(
+//                 margin: EdgeInsets.only(top: 20, left: 16, right: 16),
+//                 height: 50,
+//                 child: ListView(
+//                   physics: BouncingScrollPhysics(),
+//                   scrollDirection: Axis.horizontal,
+//                   shrinkWrap: true,
+//                   children: [
+//                     InkWell(
+//                       onTap: () {
+//                         setState(() {
+//                           selectedIndex = 0;
+//                           userType = 'connects';
+//                         });
+//                       },
+//                       child: Chip(
+//                           padding: EdgeInsets.all(7),
+//                           avatar: SvgPicture.asset(
+//                             AppIcons.svgPeople,
+//                             color: userType == 'connects'
+//                                 ? Colors.white
+//                                 : AppColors.primaryColor,
+//                           ),
+//                           backgroundColor: userType == 'connects'
+//                               ? AppColors.primaryColor
+//                               : AppColors.lightBlue,
+//                           label: Text(
+//                             'Connects',
+//                             style: TextStyle(
+//                                 fontSize: 13,
+//                                 color: userType == 'connects'
+//                                     ? Colors.white
+//                                     : AppColors.textColor),
+//                           )),
+//                     ),
+//                     const SizedBox(
+//                       width: 5,
+//                     ),
+//                     InkWell(
+//                       onTap: () {
+//                         setState(() {
+//                           selectedIndex = 1;
+//                           userType = 'requests';
+//                         });
+//                       },
+//                       child: Chip(
+//                           padding: EdgeInsets.all(7),
+//                           avatar: SvgPicture.asset(
+//                             AppIcons.svgPeople,
+//                             color: userType == 'requests'
+//                                 ? Colors.white
+//                                 : AppColors.primaryColor,
+//                           ),
+//                           backgroundColor: userType == 'requests'
+//                               ? AppColors.primaryColor
+//                               : AppColors.lightBlue,
+//                           label: Text(
+//                             'Requests',
+//                             style: TextStyle(
+//                                 fontSize: 13,
+//                                 color: userType == 'requests'
+//                                     ? Colors.white
+//                                     : AppColors.textColor),
+//                           )),
+//                     ),
+//                     const SizedBox(
+//                       width: 5,
+//                     ),
+//                     InkWell(
+//                       onTap: () {
+//                         setState(() {
+//                           userType = 'suggestions';
+//                           selectedIndex = 2;
+//                         });
+//                       },
+//                       child: Chip(
+//                           avatar: Icon(
+//                             Icons.notifications_rounded,
+//                             color: userType == 'suggestions'
+//                                 ? Colors.white
+//                                 : AppColors.primaryColor,
+//                             size: 20,
+//                           ),
+//                           backgroundColor: userType == 'suggestions'
+//                               ? AppColors.primaryColor
+//                               : AppColors.lightBlue,
+//                           label: Text(
+//                             'Suggestions',
+//                             style: TextStyle(
+//                                 fontSize: 13,
+//                                 color: userType == 'suggestions'
+//                                     ? Colors.white
+//                                     : AppColors.textColor),
+//                           )),
+//                     ),
+//                     const SizedBox(
+//                       width: 5,
+//                     ),
+//                   ],
+//                 ),
+//               ),
