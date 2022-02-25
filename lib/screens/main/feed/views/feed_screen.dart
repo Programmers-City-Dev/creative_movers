@@ -127,7 +127,8 @@ class _FeedScreenState extends State<FeedScreen> {
                                 onTap: () => feedBloc.add(GetFeedEvent()),
                               )));
                     }
-                    return const SizedBox.shrink();
+                    return const SliverToBoxAdapter(
+                        child: const SizedBox.shrink());
                   },
                 ),
               ),
