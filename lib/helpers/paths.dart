@@ -7,5 +7,4 @@ const bizPath = '/home/biz';
 const connectsPath = '/home/connects';
 const chatsPath = '/home/chats';
 const profilePath = '/home/profile';
-
-
+const inviteContactsPath = '/home/invite-contacts';

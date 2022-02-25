@@ -12,7 +12,7 @@ import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
 import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
 import 'package:creative_movers/screens/main/search/views/search__screen.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
+import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/sliver_persistent_delegate.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -25,18 +25,17 @@ class FeedScreen extends StatefulWidget {
   _FeedScreenState createState() => _FeedScreenState();
 }
 
-
 class _FeedScreenState extends State<FeedScreen> {
-
   final ScrollController _scrollController = ScrollController();
 
   String? username;
   FeedBloc feedBloc = FeedBloc();
-@override
+  @override
   void initState() {
-   feedBloc.add(GetFeedEvent());
+    feedBloc.add(GetFeedEvent());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +102,8 @@ class _FeedScreenState extends State<FeedScreen> {
                   builder: (context, state) {
                     if (state is FeedLoadingState) {
                       return const SliverToBoxAdapter(child: FeedLoader());
-                    } else if (state is FeedSuccessState) {
+                    }
+                    if (state is FeedSuccessState) {
                       return SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
@@ -116,24 +116,18 @@ class _FeedScreenState extends State<FeedScreen> {
                           addRepaintBoundaries: false,
                         ),
                       );
-                    } else {
-                      return  SliverFillRemaining(
-                          child: Center(child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children:  [
-                              const Text('Sorry an error occurred try again..'),
-                              SizedBox(height: 10,),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: CustomButton(
-
-                                  onTap:(){ feedBloc.add(GetFeedEvent());},
-                                  child: const Text('Retry'),
-                                ),
-                              )
-                            ],
-                          )));
                     }
+                    if (state is FeedFaliureState) {
+                      return SliverToBoxAdapter(
+                          child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: AppErrorWidget(
+                                isSvgResource: true,
+                                message: state.error,
+                                onTap: () => feedBloc.add(GetFeedEvent()),
+                              )));
+                    }
+                    return const SliverToBoxAdapter(child: SizedBox.shrink());
                   },
                 ),
               ),

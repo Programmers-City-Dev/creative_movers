@@ -5,6 +5,7 @@ import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/add_contacts_widget.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/connects_shimer.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/contact_item.dart';
+import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,8 @@ class ConnectsTab extends StatefulWidget {
   _ConnectsTabState createState() => _ConnectsTabState();
 }
 
-class _ConnectsTabState extends State<ConnectsTab> {
+class _ConnectsTabState extends State<ConnectsTab>
+    with AutomaticKeepAliveClientMixin {
   List<Connection> filterList = [];
   List<Connection> mainList = [];
 
@@ -98,16 +100,20 @@ class _ConnectsTabState extends State<ConnectsTab> {
             ),
           );
         } else if (state is ConnectsFailureState) {
-          return Expanded(
-              child: ErrorScreen(
+          return AppErrorWidget(
+            // title: "Something went wrong",
+            isSvgResource: true,
             message: state.error,
             onTap: () {
               _connectsBloc.add(GetConnectsEvent());
             },
-          ));
+          );
         }
         return Container();
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

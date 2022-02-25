@@ -2,7 +2,9 @@ import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/screens/auth/views/connection_screen.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen.dart';
+import 'package:creative_movers/screens/main/buisness_page/views/invite_contact_screen.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
+import 'package:creative_movers/screens/main/contacts/widgets/add_contacts_widget.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,7 @@ class AppRoutes {
     chatsPath: (context) => const ChatScreen(),
     profilePath: (context) => const ProfileScreen(),
     loginPath: (context) => const LoginScreen(),
-    // checkoutSuccessPath: (_) => CheckoutSuccessScreen(),
+    inviteContactsPath: (_) => const InviteContactScreen(),
   };
 }
 
