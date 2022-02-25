@@ -17,5 +17,8 @@ class Endpoints {
   static const request_react_endpoint = '${ApiConstants.BASE_URL}api/connections/react';
   static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
+  static const String myProfileEndpoint = '${ApiConstants.BASE_URL}api/user/my-profile';
+  static const String userProfileEndpoint = '${ApiConstants.BASE_URL}api/user/user-profile';
+
   // static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';
 }

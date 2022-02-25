@@ -60,9 +60,9 @@ class User {
     required this.currentTeamId,
     this.profilePhotoPath,
     this.biodata,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.apiToken,
+    this.createdAt,
+    this.updatedAt,
+    this.apiToken,
     this.profilePhotoUrl,
   });
 
@@ -79,9 +79,9 @@ class User {
   final String? currentTeamId;
   final String? profilePhotoPath;
   final String? biodata;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final String apiToken;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String? apiToken;
   final String? profilePhotoUrl;
 
   User copyWith({
@@ -139,8 +139,12 @@ class User {
         currentTeamId: json["current_team_id"],
         profilePhotoPath: json["profile_photo_path"],
         biodata: json["biodata"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
         apiToken: json["api_token"] == null ? null : json["api_token"],
         profilePhotoUrl: json["profile_photo_url"] == null
             ? null
@@ -162,8 +166,8 @@ class User {
         "current_team_id": currentTeamId,
         "profile_photo_path": profilePhotoPath,
         "biodata": biodata,
-        "created_at": createdAt == null ? null : createdAt.toIso8601String(),
-        "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "api_token": apiToken == null ? null : apiToken,
         "profile_photo_url": profilePhotoUrl == null ? null : profilePhotoUrl,
       };
