@@ -29,3 +29,13 @@ class SearchEvent extends ConnectsEvent {
 
   SearchEvent(this.role, this.searchValue);
 }
+class RequestReactEvent extends ConnectsEvent {
+
+  final String? connection_id;
+  final String? action;
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+  RequestReactEvent(this.connection_id, this.action);
+}

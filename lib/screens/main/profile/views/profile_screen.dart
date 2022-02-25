@@ -4,7 +4,6 @@ import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -34,45 +33,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // decoration: BoxDecoration(image: ()),
                   ),
                   Positioned(
-                    bottom: -85,
-                    left: 20,
-                    right: 0,
-                    child: Hero(
-                      tag:'profile-image',
+                      bottom: -85,
+                      left: 20,
+                      right: 0,
                       child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: const [
-                              CircleAvatar(
-                                radius: 70,
+                        alignment: Alignment.centerLeft,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: const [
+                            CircleAvatar(
+                              radius: 70,
+                              backgroundColor: AppColors.lightBlue,
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+                                ),
+                                radius: 65,
+                              ),
+                            ),
+                            Positioned(
+                              right: -5,
+                              bottom: 7,
+                              child: CircleAvatar(
+                                radius: 25,
                                 backgroundColor: AppColors.lightBlue,
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+                                  radius: 22,
+                                  child: Icon(
+                                    Icons.photo_camera_rounded,
                                   ),
-                                  radius: 65,
                                 ),
                               ),
-                              Positioned(
-                                right: -5,
-                                bottom: 7,
-                                child: CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: AppColors.lightBlue,
-                                  child: CircleAvatar(
-                                    radius: 22,
-                                    child: Icon(
-                                      Icons.photo_camera_rounded,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                    ),
-                  )
+                      ))
                 ],
               ),
             ),

@@ -69,3 +69,25 @@ class PendingRequestFailureState extends ConnectsState {
   @override
   List<Object> get props => [ error];
 }
+
+
+//Request Reaction States
+class RequestReactLoadingState extends ConnectsState {
+  @override
+  List<Object> get props => [];
+}
+class  RequestReactSuccesState extends ConnectsState {
+  ReactResponse reactResponse;
+  @override
+  List<Object> get props => [reactResponse];
+
+  RequestReactSuccesState({required this.reactResponse});
+}
+class RequestReactFailureState extends ConnectsState {
+  String error;
+
+  RequestReactFailureState({required this.error});
+
+  @override
+  List<Object> get props => [ error];
+}

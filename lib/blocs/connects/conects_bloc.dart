@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
+import 'package:creative_movers/data/remote/model/react_response.dart';
 import 'package:creative_movers/data/remote/model/search_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
@@ -25,6 +26,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
     on<GetConnectsEvent>(_mapGetConnectsEventToState);
     on<SearchEvent>(_mapSearchEventToState);
     on<GetPendingRequestEvent>(_mapGetPendingRequestEventToState);
+    on<RequestReactEvent>(_mapRequestReactEventToState);
   }
 
   FutureOr<void> _mapGetConnectsEventToState(
@@ -75,6 +77,23 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       }
     } catch (e) {
       emit(SearchFailureState(error: 'Oops Something went wrong'));
+      // TODO
+    }
+  }
+
+  FutureOr<void> _mapRequestReactEventToState(
+      RequestReactEvent event, Emitter<ConnectsState> emit) async {
+    emit(RequestReactLoadingState());
+    try {
+      var state = await connectsRepository.react(connection_id: event.connection_id,action: event.action);
+      if (state is SuccessState) {
+        emit(RequestReactSuccesState(reactResponse: state.value));
+      } else if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(RequestReactFailureState(error: errorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(RequestReactFailureState(error: 'Oops Something went wrong'));
       // TODO
     }
   }
