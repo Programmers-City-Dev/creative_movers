@@ -14,6 +14,7 @@ class Endpoints {
   static const fetch_connections_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all';
   static const search_endpoint = '${ApiConstants.BASE_URL}api/user/search';
   static const pending_request_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all-pending';
+  static const request_react_endpoint = '${ApiConstants.BASE_URL}api/connections/react';
   static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
   // static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';

@@ -1,5 +1,6 @@
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
+import 'package:creative_movers/data/remote/model/react_response.dart';
 import 'package:creative_movers/data/remote/model/search_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
@@ -89,6 +90,42 @@ class ConnectsRepository {
       successResponse: (data) {
         return State<SearchResponse?>.success(
             data != null ? SearchResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> react({String? connection_id, String? action}) async {
+
+    return await SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(
+        Endpoints.request_react_endpoint,
+        body:{
+          "connection_id" :connection_id,
+          "action":action
+        }
+      ),
+      successResponse: (data) {
+        return State<ReactResponse?>.success(
+            data != null ? ReactResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
