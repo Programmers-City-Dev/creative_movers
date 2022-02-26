@@ -22,3 +22,14 @@ class FetchUserProfileEvent extends ProfileEvent {
   @override
   List<Object> get props => [];
 }
+
+class UpdateProfilePhotoEvent extends ProfileEvent {
+  final String imagePath;
+
+  const UpdateProfilePhotoEvent(
+    this.imagePath
+  );
+
+  @override
+  List<Object> get props => [imagePath];
+}

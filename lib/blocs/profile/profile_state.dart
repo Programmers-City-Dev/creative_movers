@@ -37,3 +37,5 @@ class UsernameFetchedState extends ProfileState {
   @override
   List<Object> get props => [username];
 }
+
+

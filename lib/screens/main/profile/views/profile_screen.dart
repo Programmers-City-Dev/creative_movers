@@ -4,6 +4,7 @@ import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
@@ -69,16 +70,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       withBaseUrl: false,
                                     ),
                                   ),
-                                  const Positioned(
+                                  Positioned(
                                     right: -5,
                                     bottom: 7,
-                                    child: CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: AppColors.lightBlue,
-                                      child: CircleAvatar(
-                                        radius: 22,
-                                        child: Icon(
-                                          Icons.photo_camera_rounded,
+                                    child: GestureDetector(
+                                      onTap: (() {
+                                        _profileBloc
+                                            .add(UpdateProfilePhotoEvent(""));
+                                      }),
+                                      child: const CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor: AppColors.lightBlue,
+                                        child: CircleAvatar(
+                                          radius: 22,
+                                          child: Icon(
+                                            Icons.photo_camera_rounded,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -156,10 +163,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                var allCache = await injector
-                                    .get<CacheCachedUserDao>()
-                                    .getAllCache();
-                                log('${allCache.first.toMap()}');
+                                Navigator.of(context)
+                                    .pushNamed(profileEditPath);
                               },
                               child: const Text('Edit Details'),
                               style: TextButton.styleFrom(
@@ -170,95 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(
                           height: 18,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                SvgPicture.asset(
-                                  AppIcons.svgProjects,
-                                  color: AppColors.primaryColor,
-                                ),
-                                const Text(
-                                  "114k",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Text(
-                                  "Projects",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Container(
-                              height: 50,
-                              width: 2,
-                              decoration:
-                                  BoxDecoration(color: Colors.grey.shade300),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              children: [
-                                SvgPicture.asset(
-                                  AppIcons.svgConnects,
-                                  color: AppColors.primaryColor,
-                                ),
-                                const Text(
-                                  "114k",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Text(
-                                  "Connects",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Container(
-                              height: 50,
-                              width: 2,
-                              decoration:
-                                  BoxDecoration(color: Colors.grey.shade300),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              children: [
-                                SvgPicture.asset(
-                                  AppIcons.svgFollowing,
-                                  color: AppColors.primaryColor,
-                                ),
-                                const Text(
-                                  "114k",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Text(
-                                  "Follwing",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                          ],
-                        ),
+                        const UserMetricsOverview(),
                         const SizedBox(
                           height: 16,
                         ),
@@ -368,6 +285,103 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const SizedBox.shrink();
         },
       ),
+    );
+  }
+}
+
+class UserMetricsOverview extends StatelessWidget {
+  const UserMetricsOverview({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
+          children: [
+            SvgPicture.asset(
+              AppIcons.svgProjects,
+              color: AppColors.primaryColor,
+            ),
+            const Text(
+              "114k",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              "Projects",
+              style: TextStyle(fontSize: 13),
+            ),
+          ],
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+        Container(
+          height: 50,
+          width: 2,
+          decoration: BoxDecoration(color: Colors.grey.shade300),
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+        Column(
+          children: [
+            SvgPicture.asset(
+              AppIcons.svgConnects,
+              color: AppColors.primaryColor,
+            ),
+            const Text(
+              "114k",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              "Connects",
+              style: TextStyle(fontSize: 13),
+            ),
+          ],
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+        Container(
+          height: 50,
+          width: 2,
+          decoration: BoxDecoration(color: Colors.grey.shade300),
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+        Column(
+          children: [
+            SvgPicture.asset(
+              AppIcons.svgFollowing,
+              color: AppColors.primaryColor,
+            ),
+            const Text(
+              "114k",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              "Follwing",
+              style: TextStyle(fontSize: 13),
+            ),
+          ],
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+      ],
     );
   }
 }
