@@ -12,6 +12,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AppUtils {
   AppUtils._();
@@ -142,7 +144,9 @@ class AppUtils {
                 const SizedBox(
                   width: 16,
                 ),
-                Expanded(child: CustomButton(child: Text(cancelButtonText), onTap: onCancel)),
+                Expanded(
+                    child: CustomButton(
+                        child: Text(cancelButtonText), onTap: onCancel)),
               ],
             )
           ],
@@ -312,7 +316,7 @@ class AppUtils {
       FilePickerResult? result = await filePicker.pickFiles(
         type: FileType.image,
         allowCompression: true,
-        dialogTitle:'SELECT IMAGE' ,
+        dialogTitle: 'SELECT IMAGE',
         withData: true,
         allowMultiple: allowMultiple,
         // allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
@@ -327,7 +331,104 @@ class AppUtils {
     }
   }
 
-  static Future<List<Map<String,String?>>> fetchVideos({bool allowMultiple = false}) async {
+  static Future<String?> fetchImageFromCamera() async {
+    try {
+      var pickedFile = await ImagePicker()
+          .pickImage(source: ImageSource.camera, imageQuality: 70);
+      if (pickedFile != null) {
+        return pickedFile.path;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static selectImage(BuildContext context, Function(List<String>) onSelected,
+      {bool allowMultiple = false,
+      bool hasViewAction = false,
+      VoidCallback? onViewAction}) async {
+    await showMaterialModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+        ),
+        backgroundColor: AppColors.smokeWhite,
+        builder: (context) {
+          return Container(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              children: <Widget>[
+                InkWell(
+                  child: Container(
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: const Text('Take a photo',
+                          textAlign: TextAlign.center)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    fetchImageFromCamera().then((value) {
+                      if (null != value) {
+                        return onSelected([value]);
+                      }
+                    });
+                  },
+                ),
+                const SizedBox(height: 1),
+                InkWell(
+                  child: Container(
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: const Text('Select from Gallery',
+                          textAlign: TextAlign.center)),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    var list = await fetchImages(allowMultiple: allowMultiple);
+                    onSelected(list);
+                  },
+                ),
+                if (hasViewAction)
+                  Column(
+                    children: [
+                      const SizedBox(height: 1),
+                      InkWell(
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.all(16),
+                            color: Colors.white,
+                            child: const Text('View Photo',
+                                textAlign: TextAlign.center)),
+                        onTap: () {
+                          Navigator.pop(context);
+                          if (onViewAction != null && hasViewAction) {
+                            onViewAction();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                const SizedBox(height: 16),
+                InkWell(
+                  child: Container(
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: Text('Cancel', textAlign: TextAlign.center)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    // _openCamera();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  static Future<List<Map<String, String?>>> fetchVideos(
+      {bool allowMultiple = false}) async {
     try {
       FilePicker filePicker = FilePicker.platform;
       FilePickerResult? result = await filePicker.pickFiles(
@@ -336,10 +437,11 @@ class AppUtils {
 
         allowMultiple: allowMultiple,
         // allowedExtensions: ['mp4'],
-
       );
       if (result != null) {
-        return result.files.map((file) => {'path':file.path,'size':file.size.toString()}).toList();
+        return result.files
+            .map((file) => {'path': file.path, 'size': file.size.toString()})
+            .toList();
       } else {
         return [];
       }
@@ -347,16 +449,16 @@ class AppUtils {
       return [];
     }
   }
-  static Future<List<PlatformFile>> fetchMedia({bool allowMultiple = false}) async {
+
+  static Future<List<PlatformFile>> fetchMedia(
+      {bool allowMultiple = false}) async {
     try {
       FilePicker filePicker = FilePicker.platform;
       FilePickerResult? result = await filePicker.pickFiles(
         type: FileType.custom,
         allowCompression: true,
-
         allowMultiple: allowMultiple,
-        allowedExtensions: ['mp4','mov', 'jpg','jpeg','png'],
-
+        allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png'],
       );
       if (result != null) {
         return result.files;
@@ -367,10 +469,7 @@ class AppUtils {
       return [];
     }
   }
-
 }
-
-
 
 class CustomSnackBar {
   final BuildContext context;

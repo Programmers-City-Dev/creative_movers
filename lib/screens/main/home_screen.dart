@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -214,10 +215,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icons.person,
                       text: 'Profile',
                       borderRadius: BorderRadius.circular(4),
-                      leading: const CircleAvatar(
-                        radius: 14,
-                        backgroundImage:
-                            AssetImage('assets/images/slide_i.png'),
+                      leading: BlocBuilder<CacheCubit, CacheState>(
+                        bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
+                        builder: (context, state) {
+                          if (state is CachedUserDataFetched) {
+                            return CircleAvatar(
+                              radius: 14,
+                              backgroundImage: NetworkImage(
+                                  state.cachedUser.profilePhotoPath!),
+                            );
+                          }
+                          return const CircleAvatar(
+                            radius: 14,
+                            backgroundImage:
+                                AssetImage('assets/images/slide_i.png'),
+                          );
+                        },
                       ),
                     )
                   ])),

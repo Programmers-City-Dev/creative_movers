@@ -4,43 +4,43 @@
 class CachedUser {
   CachedUser({
     required this.id,
-    required this.firstname,
-    required this.lastname,
-    required this.username,
-    required this.email,
-    required this.phone,
-    required this.emailVerifiedAt,
-    required this.role,
-    required this.payStatus,
-    required this.regStatus,
-    required this.currentTeamId,
-    required this.profilePhotoPath,
-    required this.coverPhotoPath,
-    required this.biodata,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.apiToken,
+    this.firstname,
+    this.lastname,
+    this.username,
+    this.email,
+    this.phone,
+    this.emailVerifiedAt,
+    this.role,
+    this.payStatus,
+    this.regStatus,
+    this.currentTeamId,
+    this.profilePhotoPath,
+    this.coverPhotoPath,
+    this.biodata,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.apiToken,
   });
 
   final int id;
-  final String firstname;
-  final String lastname;
-  final String username;
-  final String email;
-  final String phone;
+  final String? firstname;
+  final String? lastname;
+  final String? username;
+  final String? email;
+  final String? phone;
   final DateTime? emailVerifiedAt;
-  final String role;
-  final String payStatus;
-  final String regStatus;
+  final String? role;
+  final String? payStatus;
+  final String? regStatus;
   final String? currentTeamId;
-  final String profilePhotoPath;
+  final String? profilePhotoPath;
   final String? coverPhotoPath;
-  final String biodata;
+  final String? biodata;
   final String? status;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final String apiToken;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String? apiToken;
 
   CachedUser copyWith({
     int? id,
@@ -100,11 +100,16 @@ class CachedUser {
         profilePhotoPath: json["profile_photo_path"] == null
             ? null
             : json["profile_photo_path"],
-        coverPhotoPath: json["cover_photo_path"],
+        coverPhotoPath:
+            json["cover_photo_path"] == null ? null : json["cover_photo_path"],
         biodata: json["biodata"] == null ? null : json["biodata"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
         apiToken: json["api_token"] == null ? null : json["api_token"],
       );
 
@@ -116,18 +121,18 @@ class CachedUser {
         "email": email == null ? null : email,
         "phone": phone == null ? null : phone,
         "email_verified_at":
-            emailVerifiedAt == null ? null : createdAt.toIso8601String(),
+            emailVerifiedAt == null ? null : createdAt!.toIso8601String(),
         "role": role == null ? null : role,
         "pay_status": payStatus == null ? null : payStatus,
         "reg_status": regStatus == null ? null : regStatus,
         "current_team_id": currentTeamId,
         "profile_photo_path":
             profilePhotoPath == null ? null : profilePhotoPath,
-        "cover_photo_path": coverPhotoPath,
+        "cover_photo_path": coverPhotoPath == null ? null : coverPhotoPath,
         "biodata": biodata == null ? null : biodata,
         "status": status,
-        "created_at": createdAt == null ? null : createdAt.toIso8601String(),
-        "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "api_token": apiToken == null ? null : apiToken,
       };
 

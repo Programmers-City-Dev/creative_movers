@@ -9,7 +9,9 @@ import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 
 class ProfileRepository {
   final HttpHelper httpClient;
@@ -224,6 +226,43 @@ class ProfileRepository {
       successResponse: (data) {
         return State<User?>.success(
             data != null ? User.fromMap(data["user"]) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> updateProfilePhoto(
+      String imagePath, bool isProfilePhoto) async {
+    String url = isProfilePhoto
+        ? Endpoints.profilePhotoEndpoint
+        : Endpoints.profileCoverImageEndpoint;
+
+    FormData formData = FormData.fromMap({
+      "image": await MultipartFile.fromFile(imagePath,
+          filename: basename(imagePath)),
+    });
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(url, body: formData),
+      successResponse: (data) {
+        return State<String?>.success(data != null ? data["photo_path"] : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

@@ -2,6 +2,7 @@
 //
 //     final authResponse = authResponseFromMap(jsonString);
 
+import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -171,4 +172,8 @@ class User {
         "api_token": apiToken == null ? null : apiToken,
         "profile_photo_url": profilePhotoUrl == null ? null : profilePhotoUrl,
       };
+
+  CachedUser toCachedUser() {
+    return CachedUser.fromMap(toMap());
+  }
 }

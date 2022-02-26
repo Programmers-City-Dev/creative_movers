@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
@@ -21,6 +22,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(this.profileRepository) : super(ProfileInitial()) {
     on<GetUsernameEvent>(_mapGetUsernameToState);
     on<FetchUserProfileEvent>(_mapFetchUserProfileEventToEvent);
+    on<UpdateProfilePhotoEvent>(_mapUpdateProfilePhotoEventToEvent);
   }
 
   FutureOr<void> _mapGetUsernameToState(
@@ -45,6 +47,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfileErrorState(errorModel.errorMessage));
       }
     } catch (e) {
+      emit(const ProfileErrorState(
+          "Oops! Something went wrong, please try agin"));
+    }
+  }
+
+  FutureOr<void> _mapUpdateProfilePhotoEventToEvent(
+      UpdateProfilePhotoEvent event, Emitter<ProfileState> emit) async {
+    try {
+      emit(ProfileLoading());
+      var state = await profileRepository.updateProfilePhoto(
+          event.imagePath, event.isProfilePhoto!);
+      if (state is SuccessState) {
+        emit(ProfilePhotoUpdatedState(state.value, event.isProfilePhoto!));
+      }
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(ProfileErrorState(errorModel.errorMessage));
+      }
+    } catch (e) {
+      log("EXCEPTION: $e");
       emit(const ProfileErrorState(
           "Oops! Something went wrong, please try agin"));
     }

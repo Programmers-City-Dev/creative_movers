@@ -15,9 +15,7 @@ class GetUsernameEvent extends ProfileEvent {
 class FetchUserProfileEvent extends ProfileEvent {
   final int? userId;
 
-  const FetchUserProfileEvent(
-    [this.userId]
-  );
+  const FetchUserProfileEvent([this.userId]);
 
   @override
   List<Object> get props => [];
@@ -25,11 +23,10 @@ class FetchUserProfileEvent extends ProfileEvent {
 
 class UpdateProfilePhotoEvent extends ProfileEvent {
   final String imagePath;
+  final bool? isProfilePhoto;
 
-  const UpdateProfilePhotoEvent(
-    this.imagePath
-  );
+  const UpdateProfilePhotoEvent(this.imagePath, {this.isProfilePhoto = false});
 
   @override
-  List<Object> get props => [imagePath];
+  List<Object> get props => [imagePath, isProfilePhoto!];
 }

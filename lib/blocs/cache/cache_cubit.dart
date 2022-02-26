@@ -10,8 +10,19 @@ class CacheCubit extends Cubit<CacheState> {
   CacheCubit() : super(CacheInitial());
 
   void fetchCachedUserData() async {
+    try {
+      var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
+      CachedUser cachedUser = dataList.first;
+      emit(CachedUserDataFetched(cachedUser: cachedUser));
+    } catch (e) {
+      print("ERROR FETCHING: $e");
+    }
+  }
+
+  void updateCachedUserData(CachedUser cachedUser) async {
+    await injector.get<CacheCachedUserDao>().insert(cachedUser);
     var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
-    CachedUser cachedUser = dataList.first;
-    emit(CachedUserDataFetched(cachedUser: cachedUser));
+    CachedUser user = dataList.first;
+    emit(CachedUserDataFetched(cachedUser: user));
   }
 }

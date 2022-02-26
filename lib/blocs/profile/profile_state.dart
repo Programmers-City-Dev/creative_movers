@@ -29,6 +29,16 @@ class ProfileErrorState extends ProfileState {
   List<Object> get props => [error];
 }
 
+class ProfilePhotoUpdatedState extends ProfileState {
+  final String photo;
+  final bool isProfilePhoto;
+
+  const ProfilePhotoUpdatedState(this.photo, this.isProfilePhoto);
+
+  @override
+  List<Object> get props => [photo, isProfilePhoto];
+}
+
 class UsernameFetchedState extends ProfileState {
   final String username;
 
@@ -37,5 +47,3 @@ class UsernameFetchedState extends ProfileState {
   @override
   List<Object> get props => [username];
 }
-
-
