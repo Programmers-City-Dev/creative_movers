@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
@@ -217,8 +218,8 @@ class _LoginFormState extends State<LoginForm> {
 
   void cacheToken(AuthResponse response) async {
     injector
-        .get<CacheCachedUserDao>()
-        .insert(CachedUser.fromMap(response.user.toMap()));
+        .get<CacheCubit>()
+        .updateCachedUserData(CachedUser.fromMap(response.user.toMap()));
     StorageHelper.setString(
         StorageKeys.username, response.user.username.toString());
     StorageHelper.setString(

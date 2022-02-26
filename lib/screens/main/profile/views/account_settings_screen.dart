@@ -30,8 +30,8 @@ class AccountSettingsScreen extends StatefulWidget {
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   void initState() {
-    super.initState();
     injector.get<CacheCubit>().fetchCachedUserData();
+    super.initState();
   }
 
   @override
@@ -108,7 +108,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           width: 5,
                         ),
                         Text(
-                          cachedUser.email,
+                          cachedUser.email!,
                           style: TextStyle(),
                         ),
                       ],

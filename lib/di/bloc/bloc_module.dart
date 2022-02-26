@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
@@ -16,7 +15,6 @@ Future<void> init(GetIt injector) async {
   _injectDependenciesRelatedToPayment(injector);
 
   injector.registerLazySingleton(() => NavBloc());
-
 }
 
 void _injectDependenciesRelatedToAuth(GetIt injector) {
@@ -24,8 +22,9 @@ void _injectDependenciesRelatedToAuth(GetIt injector) {
 }
 
 void _injectDependenciesRelatedToProfile(GetIt injector) {
-  injector.registerLazySingleton(() => ProfileBloc());
+  injector.registerLazySingleton(() => ProfileBloc(injector.get()));
 }
-  void _injectDependenciesRelatedToPayment(GetIt injector) {
-    injector.registerLazySingleton(() => PaymentBloc(injector.get()));
-  }
+
+void _injectDependenciesRelatedToPayment(GetIt injector) {
+  injector.registerLazySingleton(() => PaymentBloc(injector.get()));
+}

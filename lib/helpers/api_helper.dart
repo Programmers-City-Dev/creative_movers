@@ -1,14 +1,18 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:dio/dio.dart';
 
 class ApiConstants {
   static const String STRIPE_PLUBLISHABLE_KEY =
       'pk_test_51HQHG3IASx7Ij3gQDglAvu89M8PMCpIPtIbyppvbrzf5myLVRsCYUkBymrKVFhQydMZmoLE1x3D2tuGTdhCwjzEU00v928HQ6m';
 
-  static const String STRIPE_SECRETE_KEY = 'sk_test_51HQHG3IASx7Ij3gQrH6Cixc8NMMe5j1q7wvIefnChdsgAvFsPp46BqcRuOK8AYcSF48ERG9nJO6O64O2UDT0mjka00YQIJAMCR';
+  static const String STRIPE_SECRETE_KEY =
+      'sk_test_51HQHG3IASx7Ij3gQrH6Cixc8NMMe5j1q7wvIefnChdsgAvFsPp46BqcRuOK8AYcSF48ERG9nJO6O64O2UDT0mjka00YQIJAMCR';
 
   ApiConstants._();
 
