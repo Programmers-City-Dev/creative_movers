@@ -63,6 +63,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               imageUrl: user.coverPhotoPath!,
                               width: double.infinity,
                               fit: BoxFit.cover,
+                              errorWidget: (_, __, ___) => Image.asset(
+                                'assets/pngs/creative_splash.PNG',
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

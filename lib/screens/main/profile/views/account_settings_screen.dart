@@ -55,10 +55,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             // color: AppColors.primaryColor,
                             // decoration: BoxDecoration(image: ()),
                             child: CachedNetworkImage(
-                              imageUrl: cachedUser.coverPhotoPath!,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
+                                imageUrl: cachedUser.coverPhotoPath!,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorWidget: (_, __, ___) => Image.asset(
+                                      'assets/pngs/creative_splash.PNG',
+                                      fit: BoxFit.cover,
+                                    )),
                           ),
                           Positioned(
                             bottom: -50,
