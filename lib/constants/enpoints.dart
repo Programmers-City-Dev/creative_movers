@@ -32,11 +32,11 @@ class Endpoints {
       '${ApiConstants.BASE_URL}api/user/update-profile-image';
   static const profileCoverImageEndpoint =
       '${ApiConstants.BASE_URL}api/user/update-cover-image';
-  static const pending_request_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all-pending';
-  static const request_react_endpoint = '${ApiConstants.BASE_URL}api/connections/react';
+  // static const pending_request_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all-pending';
+  // static const request_react_endpoint = '${ApiConstants.BASE_URL}api/connections/react';
   static const send_request_endpoint = '${ApiConstants.BASE_URL}api/connections/connect';
   static const follow_endpoint = '${ApiConstants.BASE_URL}api/connections/follow';
-  static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
+  // static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
   // static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';
 }
