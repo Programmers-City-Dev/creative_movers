@@ -60,11 +60,11 @@ class User {
     this.regStatus,
     required this.currentTeamId,
     this.profilePhotoPath,
+    this.coverPhotoPath,
     this.biodata,
     this.createdAt,
     this.updatedAt,
     this.apiToken,
-    this.profilePhotoUrl,
   });
 
   final int id;
@@ -83,7 +83,7 @@ class User {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? apiToken;
-  final String? profilePhotoUrl;
+  final String? coverPhotoPath;
 
   User copyWith({
     int? id,
@@ -102,7 +102,7 @@ class User {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? apiToken,
-    String? profilePhotoUrl,
+    String? coverPhotoPath,
   }) =>
       User(
         id: id ?? this.id,
@@ -121,7 +121,7 @@ class User {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         apiToken: apiToken ?? this.apiToken,
-        profilePhotoUrl: profilePhotoUrl ?? this.profilePhotoUrl,
+        coverPhotoPath: coverPhotoPath ?? this.coverPhotoPath,
       );
 
   factory User.fromMap(Map<String, dynamic> json) => User(
@@ -147,9 +147,8 @@ class User {
             ? null
             : DateTime.parse(json["updated_at"]),
         apiToken: json["api_token"] == null ? null : json["api_token"],
-        profilePhotoUrl: json["profile_photo_url"] == null
-            ? null
-            : json["profile_photo_url"],
+        coverPhotoPath:
+            json["cover_photo_path"] == null ? null : json["cover_photo_path"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -170,7 +169,7 @@ class User {
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "api_token": apiToken == null ? null : apiToken,
-        "profile_photo_url": profilePhotoUrl == null ? null : profilePhotoUrl,
+        "cover_photo_path": coverPhotoPath == null ? null : coverPhotoPath,
       };
 
   CachedUser toCachedUser() {

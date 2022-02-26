@@ -43,7 +43,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             builder: (context, state) {
               if (state is CachedUserDataFetched) {
                 var cachedUser = state.cachedUser;
-                log('PHOTO:${cachedUser.profilePhotoPath}');
+                // log('PHOTO:${cachedUser.profilePhotoPath}');
                 return Column(
                   children: [
                     Container(
@@ -52,8 +52,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         children: [
                           Container(
                             height: 250,
-                            color: AppColors.primaryColor,
+                            // color: AppColors.primaryColor,
                             // decoration: BoxDecoration(image: ()),
+                            child: CachedNetworkImage(
+                              imageUrl: cachedUser.coverPhotoPath!,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           Positioned(
                             bottom: -50,

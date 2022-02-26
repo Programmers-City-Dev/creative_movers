@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
@@ -58,6 +59,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 250,
                             color: AppColors.primaryColor,
                             // decoration: BoxDecoration(image: ()),
+                            child: CachedNetworkImage(
+                              imageUrl: user.coverPhotoPath!,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         Positioned(

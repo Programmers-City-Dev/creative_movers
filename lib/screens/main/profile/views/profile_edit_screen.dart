@@ -58,7 +58,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       builder: (context, state) {
         if (state is CachedUserDataFetched) {
           var user = state.cachedUser;
-          log("USER: ${user.toMap()}");
           String? photo = user.coverPhotoPath;
           return SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
@@ -427,10 +426,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             .get<CacheCubit>()
             .updateCachedUserData(list.first.copyWith(profilePhotoPath: photo));
       } else {
-        log("COVER RETURNED WITH: $photo");
-        injector
-            .get<CacheCubit>()
-            .updateCachedUserData(list.first.copyWith(coverPhotoPath: photo));
+        var user = list.first.copyWith(coverPhotoPath: photo);
+        log("USER DATA: ${user.toMap()}");
+
+        // log("COVER RETURNED WITH: $photo");
+        injector.get<CacheCubit>().updateCachedUserData(user);
       }
 
       injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
@@ -445,7 +445,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   ) {
     AppUtils.selectImage(mainNavKey.currentContext!, (images) {
       if (images.isEmpty) return;
-      log("IMAGE PATH: ${images.first}");
       _profileBloc.add(UpdateProfilePhotoEvent(images.first,
           isProfilePhoto: isProfilePhoto));
     }, hasViewAction: true, onViewAction: () {});

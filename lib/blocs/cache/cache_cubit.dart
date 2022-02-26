@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
@@ -12,17 +14,24 @@ class CacheCubit extends Cubit<CacheState> {
   void fetchCachedUserData() async {
     try {
       var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
-      CachedUser cachedUser = dataList.first;
-      emit(CachedUserDataFetched(cachedUser: cachedUser));
+      if (dataList.isNotEmpty) {
+        CachedUser cachedUser = dataList.first;
+        emit(CachedUserDataFetched(cachedUser: cachedUser));
+      }
     } catch (e) {
       print("ERROR FETCHING: $e");
     }
   }
 
   void updateCachedUserData(CachedUser cachedUser) async {
-    await injector.get<CacheCachedUserDao>().insert(cachedUser);
-    var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
-    CachedUser user = dataList.first;
-    emit(CachedUserDataFetched(cachedUser: user));
+    try {
+      await injector.get<CacheCachedUserDao>().insert(cachedUser);
+      var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
+      CachedUser user = dataList.first;
+      log("INSERT: ${user.toMap()}");
+      emit(CachedUserDataFetched(cachedUser: user));
+    } catch (e) {
+      print("ERROR UPDATING: $e");
+    }
   }
 }
