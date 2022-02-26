@@ -148,4 +148,78 @@ class ConnectsRepository {
       },
     );
   }
+
+
+  Future<State> send_request({String? user_id, }) async {
+
+    return await SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(
+          Endpoints.send_request_endpoint,
+          body:{
+            "user_id" :user_id,
+
+          }
+      ),
+      successResponse: (data) {
+        return State<ReactResponse?>.success(
+            data != null ? ReactResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> follow_request({String? user_id, }) async {
+
+    return await SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(
+          Endpoints.follow_endpoint,
+          body:{
+            "user_id" :user_id,
+
+          }
+      ),
+      successResponse: (data) {
+        return State<ReactResponse?>.success(
+            data != null ? ReactResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/feed_response.dart';
 import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/post_comments_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
@@ -89,6 +90,41 @@ class FeedRepository {
     );
   }
 
+
+  Future<State> postComments({required String feed_id, required String comment}) async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(Endpoints.comment_endpoint,body: {
+            "feed_id": feed_id,
+            "comment": comment,
+          }),
+      successResponse: (data) {
+        return State<PostCommentResponse?>.success(
+            data != null ? PostCommentResponse.fromJson(data) : null);
+      },
+
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+
   Future<State> postLike() async {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.add_feed_endpoint),
@@ -147,34 +183,7 @@ class FeedRepository {
     );
   }
 
-  Future<State> postComments() async {
-    return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
-      successResponse: (data) {
-        return State<AddFeedResponse?>.success(
-            data != null ? AddFeedResponse.fromJson(data) : null);
-      },
-      statusCodeSuccess: 200,
-      errorResponse: (response) {
-        debugPrint('ERROR SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data.toString(),
-              data: null),
-        );
-      },
-      dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
-              data: null),
-        );
-      },
-    );
-  }
+
 
   Future<State> getComments() async {
     return SimplifyApiConsuming.makeRequest(

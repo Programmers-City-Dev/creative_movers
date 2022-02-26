@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
@@ -10,7 +10,7 @@ import 'package:creative_movers/screens/widget/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'contact_screen.dart';
+
 
 class ConnectsTab extends StatefulWidget {
   final List<Connection> data;
@@ -58,8 +58,9 @@ class _ConnectsTabState extends State<ConnectsTab>
               ));
         } else if (state is ConnectsSuccesState) {
           if (mainList.isEmpty) {
-            mainList = state.getConnectsResponse.connections.connectionList;
             filterList = state.getConnectsResponse.connections.connectionList;
+            mainList = state.getConnectsResponse.connections.connectionList;
+
           }
 
           return Container(

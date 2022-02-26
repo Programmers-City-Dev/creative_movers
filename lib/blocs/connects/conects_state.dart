@@ -91,3 +91,46 @@ class RequestReactFailureState extends ConnectsState {
   @override
   List<Object> get props => [ error];
 }
+
+
+//Request Reaction States
+class SendRequestLoadingState extends ConnectsState {
+  @override
+  List<Object> get props => [];
+}
+class SendRequestSuccesState extends ConnectsState {
+  ReactResponse reactResponse;
+  @override
+  List<Object> get props => [reactResponse];
+
+  SendRequestSuccesState({required this.reactResponse});
+}
+class SendRequestFailureState extends ConnectsState {
+  String error;
+
+  SendRequestFailureState({required this.error});
+
+  @override
+  List<Object> get props => [ error];
+}
+
+//Follow States
+class FollowLoadingState extends ConnectsState {
+  @override
+  List<Object> get props => [];
+}
+class FollowSuccesState extends ConnectsState {
+  ReactResponse reactResponse;
+  @override
+  List<Object> get props => [reactResponse];
+
+  FollowSuccesState({required this.reactResponse});
+}
+class FollowFailureState extends ConnectsState {
+  String error;
+
+  FollowFailureState({required this.error});
+
+  @override
+  List<Object> get props => [ error];
+}
