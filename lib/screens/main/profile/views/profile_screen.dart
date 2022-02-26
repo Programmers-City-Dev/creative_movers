@@ -117,16 +117,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.person,
                               color: AppColors.primaryColor,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Text(
                               user.role!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.w600),
                             ),
                           ],
@@ -135,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -161,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     .getAllCache();
                                 log('${allCache.first.toMap()}');
                               },
-                              child: Text('Edit Details'),
+                              child: const Text('Edit Details'),
                               style: TextButton.styleFrom(
                                   backgroundColor: AppColors.lightBlue),
                             )
