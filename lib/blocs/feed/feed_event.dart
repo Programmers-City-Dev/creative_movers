@@ -26,3 +26,19 @@ class GetFeedEvent extends FeedEvent {
   @override
   List<Object?> get props => [];
 }
+class CommentEvent extends FeedEvent {
+ final String feed_id;
+ final String comment;
+
+  CommentEvent({required this.feed_id, required this.comment});
+
+  @override
+  List<Object?> get props => [];
+}
+class LikeEvent extends FeedEvent {
+ final String feed_id;
+ LikeEvent({required this.feed_id});
+
+  @override
+  List<Object?> get props => [];
+}

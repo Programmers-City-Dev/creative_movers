@@ -46,14 +46,14 @@ class _ContactItemState extends State<ContactItem> {
                     ? Row(
                         children: [
                           ImageStack(
-                            imageList: widget.connection.connects
+                            imageList: widget.connection.connects.length < 3? widget.connection.connects
                                 .map((e) => e.profilePhotoPath)
-                                .toList(),
+                                .toList():[],
                             totalCount: widget.connection.connects.length,
                             // If larger than images.length, will show extra empty circle
                             imageRadius: 20,
                             // Radius of each images
-                            imageCount: 2,
+                            imageCount: widget.connection.connects.length < 3? widget.connection.connects.length: 0,
                             // Maximum number of images to be shown in stack
                             imageBorderWidth:
                                 3, // Border width around the images

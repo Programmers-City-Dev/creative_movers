@@ -118,7 +118,7 @@ class Feed {
   String status;
   DateTime createdAt;
   DateTime updatedAt;
-  List<dynamic> comments;
+  List<Comment> comments;
   List<dynamic> likes;
   Poster user;
 
@@ -134,7 +134,7 @@ class Feed {
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        comments: List<dynamic>.from(json["comments"].map((x) => x)),
+        comments: List<Comment>.from(json["comments"].map((x) =>Comment.fromJson(x))),
         likes: List<dynamic>.from(json["likes"].map((x) => x)),
         user: Poster.fromJson(json["user"]),
       );
@@ -156,6 +156,55 @@ class Feed {
         "user": user.toJson(),
       };
 }
+
+
+
+
+class Comment {
+  Comment({
+    required this.id,
+    required this.userId,
+    required this.comment,
+    required this.feedId,
+    this.createdAt,
+    this.updatedAt,
+    required this.user,
+  });
+
+  int id;
+  String userId;
+  String comment;
+  String feedId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  Poster user;
+
+  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+    id: json["id"],
+    userId: json["user_id"],
+    comment: json["comment"] == null ? null : json["comment"],
+    feedId: json["feed_id"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    user: Poster.fromJson(json["user"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "comment": comment == null ? null : comment,
+    "feed_id": feedId,
+    "created_at": createdAt.toString(),
+    "updated_at": updatedAt.toString(),
+    "user": user.toJson(),
+  };
+}
+
+
+
+
+
+
 
 class Media {
   Media({

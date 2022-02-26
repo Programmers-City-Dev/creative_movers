@@ -1,9 +1,11 @@
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CommentItem extends StatelessWidget {
-  const CommentItem({Key? key}) : super(key: key);
+  const CommentItem({Key? key, required this.comment}) : super(key: key);
+  final Comment comment;
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +14,12 @@ class CommentItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children:  [
-          CircleAvatar(
+           CircleAvatar(
             backgroundColor: AppColors.lightBlue,
             radius: 20,
             child: CircleAvatar(
               backgroundImage: NetworkImage(
-                  'https://www.w3schools.com/w3images/avatar6.png'),
+                 comment.user.profilePhotoPath!),
               radius: 18,
             ),
           ),
@@ -27,8 +29,8 @@ class CommentItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children:  [
-              Text('Anyanwu Nzubechi',style: TextStyle(fontWeight: FontWeight.bold),),
-              Text('Error waiting for a debug connection: The log reader stopped unexpectedly '),
+              Text(comment.user.firstname,style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(comment.comment),
               SizedBox(height: 10,),
 
               Row(

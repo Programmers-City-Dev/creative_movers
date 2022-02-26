@@ -12,9 +12,11 @@ import 'package:readmore/readmore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class NewPostItem extends StatefulWidget {
-  const NewPostItem({Key? key, required this.feed, }) : super(key: key);
-final Feed feed;
-
+  const NewPostItem({
+    Key? key,
+    required this.feed,
+  }) : super(key: key);
+  final Feed feed;
 
   @override
   _NewPostItemState createState() => _NewPostItemState();
@@ -24,6 +26,7 @@ class _NewPostItemState extends State<NewPostItem> {
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
+  bool liked = false;
   List<String> images = [
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
@@ -57,22 +60,23 @@ class _NewPostItemState extends State<NewPostItem> {
               Container(
                 child: Row(
                   children: [
-                     CircleAvatar(
+                    CircleAvatar(
                       radius: 20,
-                      backgroundImage: NetworkImage(widget.feed.user.profilePhotoPath!),
+                      backgroundImage:
+                          NetworkImage(widget.feed.user.profilePhotoPath!),
                     ),
                     const SizedBox(
                       width: 7,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children:  [
+                      children: [
                         Text(
                           '${widget.feed.user.firstname} ${widget.feed.user.lastname}',
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        Text(
+                        const Text(
                           '12 mins ago',
                           style: TextStyle(fontSize: 13),
                         ),
@@ -160,7 +164,7 @@ class _NewPostItemState extends State<NewPostItem> {
               )
             ],
           ),
-           Padding(
+          Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: AnimatedSize(
               duration: const Duration(milliseconds: 12),
@@ -169,7 +173,6 @@ class _NewPostItemState extends State<NewPostItem> {
                 textAlign: TextAlign.start,
                 style: const TextStyle(color: AppColors.textColor),
                 trimLines: 2,
-
                 trimMode: TrimMode.Line,
                 trimCollapsedText: 'Show more',
                 trimExpandedText: 'Show less',
@@ -177,76 +180,80 @@ class _NewPostItemState extends State<NewPostItem> {
               ),
             ),
           ),
-          widget.feed.media.isNotEmpty ?
-          Container(
-            child: Stack(children: [
-              Container(
-                height: 300,
-                child: PageView.builder(
-                  controller: PageController(keepPage: true, initialPage: 0),
-                  pageSnapping: true,
-                  onPageChanged: (currentindex) {
-                    setState(() {
-                      pageIndex = currentindex;
-                      itemScrollController.scrollTo(
-                          index: pageIndex,
-                          duration: Duration(seconds: 2),
-                          curve: Curves.easeInOutCubic);
-                    });
-                  },
-                  scrollDirection: Axis.horizontal,
-                  itemCount:  widget.feed.media.length,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) =>
-                      MediaDisplayItem(media: widget.feed.media[index]),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  widget.feed.media.length>1?
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Chip(
-                        backgroundColor: Colors.black.withOpacity(0.8),
-                        padding: EdgeInsets.zero,
-                        label: Text(
-                          '${pageIndex + 1}/${mediaList.length} ',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 10,
-                              color: AppColors.smokeWhite,
-                              fontWeight: FontWeight.w600),
-                        )),
-                  ):SizedBox(),
-                ],
-              )
-            ]),
-          ):SizedBox(),
+          widget.feed.media.isNotEmpty
+              ? Container(
+                  child: Stack(children: [
+                    Container(
+                      height: 300,
+                      child: PageView.builder(
+                        controller:
+                            PageController(keepPage: true, initialPage: 0),
+                        pageSnapping: true,
+                        onPageChanged: (currentindex) {
+                          setState(() {
+                            pageIndex = currentindex;
+                            itemScrollController.scrollTo(
+                                index: pageIndex,
+                                duration: Duration(seconds: 2),
+                                curve: Curves.easeInOutCubic);
+                          });
+                        },
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.feed.media.length,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) =>
+                            MediaDisplayItem(media: widget.feed.media[index]),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        widget.feed.media.length > 1
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Chip(
+                                    backgroundColor:
+                                        Colors.black.withOpacity(0.8),
+                                    padding: EdgeInsets.zero,
+                                    label: Text(
+                                      '${pageIndex + 1}/${mediaList.length} ',
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontSize: 10,
+                                          color: AppColors.smokeWhite,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                              )
+                            : SizedBox(),
+                      ],
+                    )
+                  ]),
+                )
+              : SizedBox(),
           const SizedBox(
             height: 10,
           ),
-
-        widget.feed.media.length>2 ?
-          Center(
-            child: Container(
-              alignment: Alignment.center,
-              height: 8,
-              width: 58,
-              child: ScrollablePositionedList.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: widget.feed.media.length,
-                itemScrollController: itemScrollController,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: DotIndicator(
-                    isActive: pageIndex == index,
+          widget.feed.media.length > 2
+              ? Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 8,
+                    width: 58,
+                    child: ScrollablePositionedList.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: widget.feed.media.length,
+                      itemScrollController: itemScrollController,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: DotIndicator(
+                          isActive: pageIndex == index,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ):SizedBox(),
+                )
+              : SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -260,7 +267,7 @@ class _NewPostItemState extends State<NewPostItem> {
                 // Maximum number of images to be shown in stack
                 imageBorderWidth: 0, // Border width around the images
               ),
-              const Text('1,000 commented'),
+              Text('${widget.feed.comments.length} commented'),
             ],
           ),
           const Divider(
@@ -273,28 +280,47 @@ class _NewPostItemState extends State<NewPostItem> {
               children: [
                 Container(
                   child: Row(
-                    children:  const [
-                      FaIcon(FontAwesomeIcons.thumbsUp,color: AppColors.textColor,),
-
-                      SizedBox(
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            liked = !liked;
+                          });
+                        },
+                        child: Container(
+                            child: !liked? const FaIcon(
+                          FontAwesomeIcons.thumbsUp,
+                          color: AppColors.textColor,
+                        ):const FaIcon(
+                              FontAwesomeIcons.solidThumbsUp,
+                              color: AppColors.primaryColor,
+                            )),
+                      ),
+                      const SizedBox(
                         width: 8,
                       ),
-                      Text(
+                      const Text(
                         'Like',
                         style: TextStyle(fontSize: 13),
                       )
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommentsScreen(),));
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CommentsScreen(
+                        feed: widget.feed,
+                      ),
+                    ));
                   },
                   child: Container(
                     child: Row(
                       children: const [
-                        FaIcon(FontAwesomeIcons.comment,color: AppColors.textColor,),
-
+                        FaIcon(
+                          FontAwesomeIcons.comment,
+                          color: AppColors.textColor,
+                        ),
                         SizedBox(
                           width: 5,
                         ),

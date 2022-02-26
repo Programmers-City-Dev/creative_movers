@@ -38,39 +38,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     left: 20,
                     right: 0,
                     child: Hero(
-                      tag:'profile-image',
+                      tag: 'profile-image',
                       child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: const [
-                              CircleAvatar(
-                                radius: 70,
+                        alignment: Alignment.centerLeft,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: const [
+                            CircleAvatar(
+                              radius: 70,
+                              backgroundColor: AppColors.lightBlue,
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+                                ),
+                                radius: 65,
+                              ),
+                            ),
+                            Positioned(
+                              right: -5,
+                              bottom: 7,
+                              child: CircleAvatar(
+                                radius: 25,
                                 backgroundColor: AppColors.lightBlue,
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+                                  radius: 22,
+                                  child: Icon(
+                                    Icons.photo_camera_rounded,
                                   ),
-                                  radius: 65,
                                 ),
                               ),
-                              Positioned(
-                                right: -5,
-                                bottom: 7,
-                                child: CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: AppColors.lightBlue,
-                                  child: CircleAvatar(
-                                    radius: 22,
-                                    child: Icon(
-                                      Icons.photo_camera_rounded,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
+                      ),
                     ),
                   )
                 ],
@@ -122,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -149,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .getAllCache();
                           log('${allCache.first.toMap()}');
                         },
-                        child: Text('Edit Details'),
+                        child: const Text('Edit Details'),
                         style: TextButton.styleFrom(
                             backgroundColor: AppColors.lightBlue),
                       )
@@ -280,12 +280,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: const Text('+350k'),
                           style: TextButton.styleFrom(
                               backgroundColor: AppColors.lightBlue,
-                              padding: EdgeInsets.symmetric(vertical: 10)),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 10)),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Row(
@@ -306,7 +307,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Container(

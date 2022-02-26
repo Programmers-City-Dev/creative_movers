@@ -12,7 +12,7 @@ class SearchResultScreen extends StatefulWidget {
   _SearchResultScreenState createState() => _SearchResultScreenState();
 }
 
-class _SearchResultScreenState extends State<SearchResultScreen> {
+class _SearchResultScreenState extends State<SearchResultScreen> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,4 +42,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ),
         ));
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

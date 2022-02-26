@@ -44,7 +44,7 @@ class Result {
   String lastname;
   Role role;
   String? profilePhotoPath;
-  bool connected;
+  String connected;
   bool following;
   List<dynamic>? followers;
 

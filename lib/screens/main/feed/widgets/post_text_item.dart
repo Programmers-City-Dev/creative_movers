@@ -1,23 +1,25 @@
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostTextItem extends StatelessWidget {
-  const PostTextItem({Key? key}) : super(key: key);
+  const PostTextItem({Key? key, this.feed}) : super(key: key);
+  final Feed? feed;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children:  [
-          CircleAvatar(
+           CircleAvatar(
             backgroundColor: AppColors.lightBlue,
             radius: 20,
             child: CircleAvatar(
               backgroundImage: NetworkImage(
-                  'https://www.w3schools.com/w3images/avatar6.png'),
+                  feed!.user.profilePhotoPath!),
               radius: 18,
             ),
           ),
@@ -26,9 +28,9 @@ class PostTextItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('Noble Okechi 🌞',style: TextStyle(fontWeight: FontWeight.bold),),
-              Text('Error waiting for a debug connection: The log reader stopped unexpectedly '),
+            children:  [
+              Text(' ${feed!.user.firstname } ${feed!.user.firstname} 🌞',style: const TextStyle(fontWeight: FontWeight.bold),),
+              Text(feed!.content!),
               Text('12min',style: TextStyle(fontSize: 12,color: Colors.grey),),
             ],
           ))
