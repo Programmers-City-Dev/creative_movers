@@ -74,6 +74,10 @@ dependencies:
   page_transition: ^2.0.5
   cached_network_image: ^3.2.0
   image_picker: ^0.8.4+10
+  photo_view:
+    git:
+      url: https://github.com/bluefireteam/photo_view
+      ref: master
 
 dev_dependencies:
   flutter_test:

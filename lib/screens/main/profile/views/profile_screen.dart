@@ -7,15 +7,18 @@ import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/paths.dart';
+import 'package:creative_movers/main.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
+import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/screens/widget/widget_network_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -60,9 +63,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 250,
                             color: AppColors.primaryColor,
                             // decoration: BoxDecoration(image: ()),
-                            child: WidgetNetworkImage(
-                              image: user.coverPhotoPath,
-                              fit: BoxFit.cover,
+                            child: Hero(
+                              tag: "cover_photo",
+                              child: GestureDetector(
+                                onTap: user.coverPhotoPath != null
+                                    ? () => showDialog(
+                                          context: mainNavKey.currentContext!,
+                                          // isDismissible: false,
+                                          // enableDrag: false,
+                                          barrierDismissible: true,
+                                          builder: (context) => ImagePreviewer(
+                                            imageUrl: user.coverPhotoPath!,
+                                            heroTag: "cover_photo",
+                                            tightMode: true,
+                                          ),
+                                        )
+                                    : null,
+                                child: WidgetNetworkImage(
+                                  image: user.coverPhotoPath,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -77,14 +98,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Stack(
                                     clipBehavior: Clip.none,
                                     children: [
-                                      CircleAvatar(
-                                        radius: 70,
-                                        backgroundColor: AppColors.lightBlue,
+                                      GestureDetector(
+                                        onTap: user.profilePhotoPath != null
+                                            ? () => showMaterialModalBottomSheet(
+                                                context: mainNavKey
+                                                    .currentContext!,
+                                                isDismissible: false,
+                                                enableDrag: false,
+                                                expand: false,
+                                                builder: (context) =>
+                                                    ImagePreviewer(
+                                                        heroTag:
+                                                            "profile_photo",
+                                                        imageUrl: user
+                                                            .profilePhotoPath!))
+                                            : null,
                                         child: CircleImage(
                                           url: user.profilePhotoPath,
-                                          radius: 75,
-                                          borderWidth: 5,
                                           withBaseUrl: false,
+                                          radius: 70,
+                                          borderWidth: 5,
                                         ),
                                       ),
                                       Visibility(

@@ -1,6 +1,5 @@
 import 'package:creative_movers/screens/auth/views/creative_form.dart';
 import 'package:creative_movers/screens/auth/views/mover_form.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +12,7 @@ class AccountTypeScreen extends StatefulWidget {
 }
 
 class _AccountTypeScreenState extends State<AccountTypeScreen> {
-  String account_type = '';
+  String accountType = '';
   bool isEnabled = false;
   List<String> items = ['Creative', 'Mover'];
 

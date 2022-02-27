@@ -48,7 +48,6 @@ class _CreativeFormState extends State<CreativeForm> {
       bloc: _authBloc,
       listener: (context, state) {
         _listenToAccountTypeState(context, state);
-        // TODO: implement listener
       },
       child: Column(
         children: [
@@ -106,6 +105,7 @@ class _CreativeFormState extends State<CreativeForm> {
                       if (selectedCategories.isEmpty) {
                         return 'Please select your category of investment';
                       }
+                      return null;
                     }),
                     builder: (field) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

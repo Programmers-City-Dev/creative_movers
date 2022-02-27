@@ -14,12 +14,12 @@ import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/screens/widget/widget_network_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   const AccountSettingsScreen({Key? key}) : super(key: key);
@@ -47,52 +47,81 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                 // log('PHOTO:${cachedUser.profilePhotoPath}');
                 return Column(
                   children: [
-                    Container(
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          SizedBox(
-                            height: 250,
-                            // color: AppColors.primaryColor,
-                            // decoration: BoxDecoration(image: ()),
-                            child: WidgetNetworkImage(
-                              image: cachedUser.coverPhotoPath,
-                              fit: BoxFit.cover,
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        SizedBox(
+                          height: 250,
+                          // color: AppColors.primaryColor,
+                          // decoration: BoxDecoration(image: ()),
+                          child: Hero(
+                            tag: "cover_photo",
+                            child: GestureDetector(
+                              onTap: cachedUser.coverPhotoPath != null
+                                  ? () => showDialog(
+                                        context: mainNavKey.currentContext!,
+                                        // isDismissible: false,
+                                        // enableDrag: false,
+                                        barrierDismissible: true,
+                                        builder: (context) => ImagePreviewer(
+                                          imageUrl: cachedUser.coverPhotoPath!,
+                                          heroTag: "cover_photo",
+                                          tightMode: true,
+                                        ),
+                                      )
+                                  : null,
+                              child: WidgetNetworkImage(
+                                image: cachedUser.coverPhotoPath,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          Positioned(
-                            bottom: -50,
-                            left: 0,
-                            right: 0,
-                            child: Center(
-                                child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                CircleImage(
+                        ),
+                        Positioned(
+                          bottom: -50,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                              child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              GestureDetector(
+                                onTap: cachedUser.profilePhotoPath != null
+                                    ? () => showMaterialModalBottomSheet(
+                                        context: mainNavKey.currentContext!,
+                                        isDismissible: false,
+                                        enableDrag: false,
+                                        expand: false,
+                                        builder: (context) => ImagePreviewer(
+                                            heroTag: "profile_photo",
+                                            imageUrl:
+                                                cachedUser.profilePhotoPath!))
+                                    : null,
+                                child: CircleImage(
                                   url: cachedUser.profilePhotoPath,
                                   withBaseUrl: false,
                                   radius: 70,
                                   borderWidth: 5,
                                 ),
-                                // const Positioned(
-                                //   right: -5,
-                                //   bottom: 7,
-                                //   child: CircleAvatar(
-                                //     radius: 25,
-                                //     backgroundColor: AppColors.lightBlue,
-                                //     child: CircleAvatar(
-                                //       radius: 22,
-                                //       child: Icon(
-                                //         Icons.photo_camera_rounded,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // )
-                              ],
-                            )),
-                          )
-                        ],
-                      ),
+                              ),
+                              // const Positioned(
+                              //   right: -5,
+                              //   bottom: 7,
+                              //   child: CircleAvatar(
+                              //     radius: 25,
+                              //     backgroundColor: AppColors.lightBlue,
+                              //     child: CircleAvatar(
+                              //       radius: 22,
+                              //       child: Icon(
+                              //         Icons.photo_camera_rounded,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // )
+                            ],
+                          )),
+                        )
+                      ],
                     ),
                     const SizedBox(
                       height: 70,

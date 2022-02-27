@@ -1,7 +1,6 @@
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
-import 'package:creative_movers/screens/auth/widgets/form_field.dart';
 import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -20,7 +19,7 @@ class MoreDetailsForm extends StatefulWidget {
 }
 
 class _MoreDetailsFormState extends State<MoreDetailsForm> {
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
