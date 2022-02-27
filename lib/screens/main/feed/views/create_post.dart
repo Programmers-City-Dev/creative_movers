@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
@@ -10,6 +12,7 @@ import 'package:creative_movers/screens/main/feed/widgets/media_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/image_picker_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
+import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:dio/dio.dart';
@@ -104,26 +107,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: const [
-                    CircleAvatar(
-                      backgroundColor: AppColors.lightBlue,
-                      radius: 20,
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://www.w3schools.com/w3images/avatar6.png'),
-                        radius: 18,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      'Noble Okechi ',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    )
-                  ],
-                ),
+                const UserAvatarWidget(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -159,7 +143,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       setState(() {
                                         mediaItems.remove(mediaItems[index]);
                                         mediaFiles.removeAt(index);
-
                                       });
                                     },
                                   )
@@ -208,7 +191,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void postFeed() {
     List<MediaModel> media = mediaItems
         .map((e) => MediaModel(
-            file: null ,
+            file: null,
             type: e.mediaType == MediaType.image ? 'media' : 'video'))
         .toList();
     _feedBloc.add(AddFeedEvent(
@@ -248,7 +231,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _fetchMedia() async {
-    var images = ['jpg', 'jpeg', 'png','webp'];
+    var images = ['jpg', 'jpeg', 'png', 'webp'];
     var videos = ['mp4', 'mov'];
     var files = await AppUtils.fetchMedia(allowMultiple: true);
 
@@ -272,5 +255,39 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
       }
     }
+  }
+}
+
+class UserAvatarWidget extends StatelessWidget {
+  const UserAvatarWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CacheCubit, CacheState>(
+      bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
+      builder: (context, state) {
+        if (state is CachedUserDataFetched) {
+          return Row(
+            children: [
+              CircleImage(
+                url: state.cachedUser.profilePhotoPath,
+                radius: 20,
+                withBaseUrl: false,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Text(
+                state.cachedUser.fullname,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              )
+            ],
+          );
+        }
+        return const SizedBox();
+      },
+    );
   }
 }

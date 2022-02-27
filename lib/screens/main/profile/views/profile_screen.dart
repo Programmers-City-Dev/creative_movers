@@ -10,6 +10,7 @@ import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
+import 'package:creative_movers/screens/widget/widget_network_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,14 +60,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 250,
                             color: AppColors.primaryColor,
                             // decoration: BoxDecoration(image: ()),
-                            child: CachedNetworkImage(
-                              imageUrl: user.coverPhotoPath!,
-                              width: double.infinity,
+                            child: WidgetNetworkImage(
+                              image: user.coverPhotoPath,
                               fit: BoxFit.cover,
-                              errorWidget: (_, __, ___) => Image.asset(
-                                'assets/pngs/creative_splash.PNG',
-                                fit: BoxFit.cover,
-                              ),
                             ),
                           ),
                         ),

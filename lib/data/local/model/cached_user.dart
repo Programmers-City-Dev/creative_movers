@@ -136,5 +136,5 @@ class CachedUser {
         "api_token": apiToken == null ? null : apiToken,
       };
 
-  String get fullname => '$firstname  $lastname';
+  String get fullname => '$firstname $lastname';
 }

@@ -14,6 +14,7 @@ import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/widget_network_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,18 +51,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          Container(
+                          SizedBox(
                             height: 250,
                             // color: AppColors.primaryColor,
                             // decoration: BoxDecoration(image: ()),
-                            child: CachedNetworkImage(
-                                imageUrl: cachedUser.coverPhotoPath!,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                errorWidget: (_, __, ___) => Image.asset(
-                                      'assets/pngs/creative_splash.PNG',
-                                      fit: BoxFit.cover,
-                                    )),
+                            child: WidgetNetworkImage(
+                              image: cachedUser.coverPhotoPath,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           Positioned(
                             bottom: -50,
