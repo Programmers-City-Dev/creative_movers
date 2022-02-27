@@ -8,6 +8,7 @@ import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/main/profile/widgets/options_item_widget.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -443,10 +444,22 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     BuildContext context,
     bool isProfilePhoto,
   ) {
-    AppUtils.selectImage(mainNavKey.currentContext!, (images) {
-      if (images.isEmpty) return;
-      _profileBloc.add(UpdateProfilePhotoEvent(images.first,
-          isProfilePhoto: isProfilePhoto));
-    }, hasViewAction: true, onViewAction: () {});
+    AppUtils.selectImage(
+        mainNavKey.currentContext!,
+        (images) {
+          if (images.isEmpty) return;
+          _profileBloc.add(UpdateProfilePhotoEvent(images.first,
+              isProfilePhoto: isProfilePhoto));
+        },
+        hasViewAction: false,
+        onViewAction: () {
+          showMaterialModalBottomSheet(
+              context: mainNavKey.currentContext!,
+              isDismissible: false,
+              enableDrag: false,
+              expand: false,
+              builder: (context) =>
+                  const ImagePreviewer(heroTag: "profile_photo", imageUrl: ''));
+        });
   }
 }
