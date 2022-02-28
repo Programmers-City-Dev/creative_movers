@@ -6,6 +6,8 @@ import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/paths.dart';
+import 'package:creative_movers/helpers/routes.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_item.dart';
@@ -210,9 +212,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     if (state is AddFeedSuccessState) {
       Navigator.pop(context);
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (route) => false);
+      Navigator.of(context).pushNamed(feedsPath);
+          
     }
   }
 

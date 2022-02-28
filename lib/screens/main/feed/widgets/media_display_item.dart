@@ -1,8 +1,11 @@
+
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:chewie/chewie.dart';
 import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
+import 'package:creative_movers/screens/main/feed/widgets/video_preview_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -36,8 +39,6 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
     _controller = VideoPlayerController.network(
         'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
       ..initialize().then((_) {
-        // _controller?.play();
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
     super.initState();
@@ -48,32 +49,58 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
     return widget.media.type == 'image'
         ? Container(
             height: 250,
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(
-                      widget.media.mediaPath
-                    ))),
+                    image: NetworkImage(widget.media.mediaPath))),
           )
         : FutureBuilder<Uint8List?>(
             future: VideoThumbnail.thumbnailData(
-              video:widget.media.mediaPath,
-              imageFormat: ImageFormat.PNG,
-              maxWidth: 128,
+              video: widget.media.mediaPath,
+              imageFormat: ImageFormat.JPEG,
+              maxWidth: 300,
+              maxHeight: 300,
               // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-              quality: 150,
+              quality: 100,
+
             ),
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Image.memory(
-                  snapshot.data!,
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                );
+              // log(widget.media.mediaPath);
+              if (!snapshot.hasError) {
+                if (snapshot.hasData) {
+                  return Stack(children: [
+                    Container(
+                      height: 250,
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.memory(
+                        snapshot.data!,
+                        fit: BoxFit.fill,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){showDialog(context: context, builder: (context) => VideoPreview(videoUrl: widget.media.mediaPath));},
+                      child: Container(
+                        height: 250,
+                        width: MediaQuery.of(context).size.width,
+                        child: const Center(
+                          child: Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]);
+                } else {
+                  return  Container(   color: Colors.black,child: Center(child: CircularProgressIndicator()) );
+                }
+              } else {
+                return Container(
+
+                    child:Text(snapshot.error.toString()));
               }
-              return Container(
-                  color: Colors.black,
-                  child: Center(child: CircularProgressIndicator()));
             });
   }
 }

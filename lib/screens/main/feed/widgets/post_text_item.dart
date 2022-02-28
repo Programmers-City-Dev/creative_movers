@@ -29,9 +29,9 @@ class PostTextItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children:  [
-              Text(' ${feed!.user.firstname } ${feed!.user.firstname} 🌞',style: const TextStyle(fontWeight: FontWeight.bold),),
+              Text(' ${feed!.user.firstname } ${feed!.user.lastname} 🌞',style: const TextStyle(fontWeight: FontWeight.bold),),
               Text(feed!.content!),
-              Text('12min',style: TextStyle(fontSize: 12,color: Colors.grey),),
+              const Text('12min',style: TextStyle(fontSize: 12,color: Colors.grey),),
             ],
           ))
         ],

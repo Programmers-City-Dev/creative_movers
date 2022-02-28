@@ -43,7 +43,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       }
     } catch (e) {
       log(e.toString());
-      emit(AddFeedFaliureState(error: "Ooops Something went wrong. "));
+      emit(AddFeedFaliureState(error: "Ooops Something went wrong. $e."));
       // TODO
     }
   }
