@@ -85,12 +85,12 @@ class LikeLoadingState extends FeedState {
   List<Object> get props => [];
 }
 class LikeSuccessState extends FeedState {
-  FeedsResponse feedResponse;
+  LikeResponse likeResponse;
 
-  LikeSuccessState({required this.feedResponse});
+  LikeSuccessState({required this.likeResponse});
 
   @override
-  List<Object> get props => [feedResponse];
+  List<Object> get props => [likeResponse];
 }
 class LikeFaliureState extends FeedState {
   String error;

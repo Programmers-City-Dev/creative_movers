@@ -1,5 +1,7 @@
+import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/feed/views/comments_screen.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_stack/image_stack.dart';
+import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -27,6 +30,7 @@ class _NewPostItemState extends State<NewPostItem> {
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
   bool liked = false;
+  FeedBloc feedBloc = FeedBloc();
   List<String> images = [
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
@@ -76,9 +80,9 @@ class _NewPostItemState extends State<NewPostItem> {
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        const Text(
-                          '12 mins ago',
-                          style: TextStyle(fontSize: 13),
+                        Text(
+                          AppUtils.getTime(widget.feed.createdAt),
+                          style: TextStyle(fontSize: 10),
                         ),
                       ],
                     ),
@@ -257,17 +261,33 @@ class _NewPostItemState extends State<NewPostItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ImageStack(
-                imageList: images,
-                totalCount: images.length,
-                // If larger than images.length, will show extra empty circle
-                imageRadius: 25,
-                // Radius of each images
-                imageCount: 3,
-                // Maximum number of images to be shown in stack
-                imageBorderWidth: 0, // Border width around the images
-              ),
-              Text('${widget.feed.comments.length} commented'),
+              widget.feed.likes.length < 2
+                  ? ImageStack(
+                      imageList: widget.feed.likes
+                          .map((e) => e.user.profilePhotoPath!)
+                          .toList(),
+                      totalCount: widget.feed.likes.length,
+                      // If larger than images.length, will show extra empty circle
+                      imageRadius: 25,
+                      // Radius of each images
+                      imageCount: widget.feed.likes.length,
+                      // Maximum number of images to be shown in stack
+                      imageBorderWidth: 0, // Border width around the images
+                    )
+                  : ImageStack(
+                      imageList: [
+                        widget.feed.likes.elementAt(0).user.profilePhotoPath!,
+                        widget.feed.likes.elementAt(1).user.profilePhotoPath!,
+                      ],
+                      totalCount: widget.feed.likes.length,
+                      // If larger than images.length, will show extra empty circle
+                      imageRadius: 25,
+                      // Radius of each images
+                      imageCount: 2,
+                      // Maximum number of images to be shown in stack
+                      imageBorderWidth: 0, // Border width around the images
+                    ),
+              Text('${widget.feed.comments.length} commented',style: TextStyle(fontSize: 12),),
             ],
           ),
           const Divider(
@@ -282,19 +302,23 @@ class _NewPostItemState extends State<NewPostItem> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           setState(() {
                             liked = !liked;
+                            feedBloc.add(
+                                LikeEvent(feed_id: widget.feed.id.toString()));
                           });
                         },
                         child: Container(
-                            child: !liked? const FaIcon(
-                          FontAwesomeIcons.thumbsUp,
-                          color: AppColors.textColor,
-                        ):const FaIcon(
-                              FontAwesomeIcons.solidThumbsUp,
-                              color: AppColors.primaryColor,
-                            )),
+                            child: !liked
+                                ? const FaIcon(
+                                    FontAwesomeIcons.thumbsUp,
+                                    color: AppColors.textColor,
+                                  )
+                                : const FaIcon(
+                                    FontAwesomeIcons.solidThumbsUp,
+                                    color: AppColors.primaryColor,
+                                  )),
                       ),
                       const SizedBox(
                         width: 8,
@@ -355,5 +379,30 @@ class _NewPostItemState extends State<NewPostItem> {
         ],
       ),
     );
+  }
+
+  String getTime(DateTime dateTime) {
+    // DateTime dateTime = DateTime.parse(date);
+    Duration duration = DateTime.now().difference(dateTime);
+    double months = duration.inDays / 28;
+    double years = months / 12;
+
+    if (duration.inMinutes < 1) {
+      return ' ${duration.inSeconds.toString()}secs agp';
+    } else if (duration.inHours < 1) {
+      return ' ${duration.inMinutes.toString()}Mins agp';
+    } else if (duration.inDays < 1) {
+      return '${duration.inHours.toString()}Hrs ago';
+    } else if (months < 1) {
+      if (duration.inDays > 1) {
+        return '${duration.inDays.toString()}Days ago';
+      } else {
+        return '${duration.inDays.toString()}Day ago';
+      }
+    } else if (years < 1) {
+      return '${months.toString()}Months';
+    } else {
+      return '${years.toString()}Years';
+    }
   }
 }

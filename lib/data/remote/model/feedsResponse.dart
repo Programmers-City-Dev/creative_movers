@@ -119,7 +119,7 @@ class Feed {
   DateTime createdAt;
   DateTime updatedAt;
   List<Comment> comments;
-  List<dynamic> likes;
+  List<Like> likes;
   Poster user;
 
   factory Feed.fromJson(Map<String, dynamic> json) => Feed(
@@ -135,7 +135,7 @@ class Feed {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         comments: List<Comment>.from(json["comments"].map((x) =>Comment.fromJson(x))),
-        likes: List<dynamic>.from(json["likes"].map((x) => x)),
+        likes: List<Like>.from(json["likes"].map((x) => Like.fromJson(x))),
         user: Poster.fromJson(json["user"]),
       );
 
@@ -201,7 +201,41 @@ class Comment {
 }
 
 
+class Like {
+  Like({
+    required this.id,
+    required this.userId,
+    required this.feedId,
+    this.createdAt,
+    this.updatedAt,
+    required this.user,
+  });
 
+  int id;
+  String userId;
+  String feedId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  Poster user;
+
+  factory Like.fromJson(Map<String, dynamic> json) => Like(
+    id: json["id"],
+    userId: json["user_id"],
+    feedId: json["feed_id"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    user: Poster.fromJson(json["user"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "feed_id": feedId,
+    "created_at": createdAt.toString(),
+    "updated_at": updatedAt.toString(),
+    "user": user.toJson(),
+  };
+}
 
 
 

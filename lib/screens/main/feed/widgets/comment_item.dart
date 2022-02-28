@@ -1,4 +1,5 @@
 import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -41,9 +42,9 @@ class CommentItem extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Text(
-                    '12min',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                   Text(
+                    AppUtils.getTime(comment.createdAt!),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   const SizedBox(
                     width: 16,
@@ -59,7 +60,7 @@ class CommentItem extends StatelessWidget {
                     '12 replies',
                     style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Row(

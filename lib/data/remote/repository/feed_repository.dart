@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/feed_response.dart';
 import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/like_response.dart';
 import 'package:creative_movers/data/remote/model/post_comments_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
@@ -125,12 +126,15 @@ class FeedRepository {
   }
 
 
-  Future<State> postLike() async {
+  Future<State> postLike({required String feed_id}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.like_endpoint,body: {
+        "feed_id": feed_id,
+
+      }),
       successResponse: (data) {
-        return State<AddFeedResponse?>.success(
-            data != null ? AddFeedResponse.fromJson(data) : null);
+        return State<LikeResponse?>.success(
+            data != null ? LikeResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -182,6 +186,8 @@ class FeedRepository {
       },
     );
   }
+
+
 
 
 

@@ -47,6 +47,31 @@ class AppUtils {
     return username;
   }
 
+  static String getTime(DateTime dateTime) {
+    // DateTime dateTime = DateTime.parse(date);
+    Duration duration = DateTime.now().difference(dateTime);
+    double months = duration.inDays / 28;
+    double years = months / 12;
+
+    if (duration.inMinutes < 1) {
+      return' ${duration.inSeconds.toString()}secs agp';
+    } else if (duration.inHours < 1) {
+      return' ${duration.inMinutes.toString()}Mins agp';
+    } else if (duration.inDays < 1) {
+      return '${duration.inHours.toString()}Hrs ago';
+    } else if (months < 1) {
+      if(duration.inDays>1){
+        return '${duration.inDays.toString()}Days ago';
+      }else{
+        return '${duration.inDays.toString()}Day ago';
+      }
+    } else if (years < 1) {
+      return '${months.toString()}Months';
+    } else {
+      return '${years.toString()}Years';
+    }
+  }
+
   static void showAnimatedProgressDialog(BuildContext context,
       {String? title}) {
     showGeneralDialog(

@@ -12,6 +12,7 @@ class Endpoints {
   static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';
   static const fetch_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/fetch';
   static const comment_endpoint = '${ApiConstants.BASE_URL}api/feed/comment';
+  static const like_endpoint = '${ApiConstants.BASE_URL}api/feed/like';
 
 
   static const fetch_connections_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all';

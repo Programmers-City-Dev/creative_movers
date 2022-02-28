@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/feed_response.dart';
 import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/like_response.dart';
 import 'package:creative_movers/data/remote/model/post_comments_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
@@ -23,6 +24,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     on<AddFeedEvent>(_mapAddFeedEventToState);
     on<GetFeedEvent>(_mapGetFeedEventToState);
     on<CommentEvent>(_mapCommentEventToState);
+    on<LikeEvent>(_mapLikeEventToState);
   }
 
   Future<FutureOr<void>> _mapAddFeedEventToState(
@@ -66,94 +68,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     }
   }
 
-  //
-  // Future<FutureOr<void>> _mapLikeEventToState(
-  //     AddFeedEvent event, Emitter<FeedState> emit) async {
-  //   try {
-  //     emit(FeedLoadingState());
-  //     var response = await feedRepository.adFeed(
-  //         type: event.type,
-  //         page_id: event.pageId!,
-  //         content: event.content,
-  //         media: event.media);
-  //     if (response is SuccessState) {
-  //       emit(FeedSuccessState(feedResponse: response.value));
-  //     }
-  //     if (response is ErrorState) {
-  //       ServerErrorModel serverErrorModel = response.value;
-  //       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
-  //     }
-  //   } catch (e) {
-  //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-  //     // TODO
-  //   }
-  // }
-  //
-  // Future<FutureOr<void>> _mapAddCommentEventToState(
-  //     AddFeedEvent event, Emitter<FeedState> emit) async {
-  //   try {
-  //     emit(FeedLoadingState());
-  //     var response = await feedRepository.adFeed(
-  //         type: event.type,
-  //         page_id: event.pageId!,
-  //         content: event.content,
-  //         media: event.media);
-  //     if (response is SuccessState) {
-  //       emit(FeedSuccessState(feedResponse: response.value));
-  //     }
-  //     if (response is ErrorState) {
-  //       ServerErrorModel serverErrorModel = response.value;
-  //       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
-  //     }
-  //   } catch (e) {
-  //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-  //     // TODO
-  //   }
-  // }
-  //
-  // Future<FutureOr<void>> _mapGetCommentsEventToState(
-  //     AddFeedEvent event, Emitter<FeedState> emit) async {
-  //   try {
-  //     emit(FeedLoadingState());
-  //     var response = await feedRepository.adFeed(
-  //         type: event.type,
-  //         page_id: event.pageId!,
-  //         content: event.content,
-  //         media: event.media);
-  //     if (response is SuccessState) {
-  //       emit(FeedSuccessState(feedResponse: response.value));
-  //     }
-  //     if (response is ErrorState) {
-  //       ServerErrorModel serverErrorModel = response.value;
-  //       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
-  //     }
-  //   } catch (e) {
-  //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-  //     // TODO
-  //   }
-  // }
-  // Future<FutureOr<void>> _mapGetLikesEventToState(
-  //     AddFeedEvent event, Emitter<FeedState> emit) async {
-  //   try {
-  //     emit(FeedLoadingState());
-  //     var response = await feedRepository.adFeed(
-  //         type: event.type,
-  //         page_id: event.pageId!,
-  //         content: event.content,
-  //         media: event.media);
-  //     if (response is SuccessState) {
-  //       emit(FeedSuccessState(feedResponse: response.value));
-  //     }
-  //     if (response is ErrorState) {
-  //       ServerErrorModel serverErrorModel = response.value;
-  //       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
-  //     }
-  //   } catch (e) {
-  //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-  //     // TODO
-  //   }
-  // }
-
 
   Future<FutureOr<void>> _mapCommentEventToState(
       CommentEvent event, Emitter<FeedState> emit) async {
@@ -176,5 +90,118 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     }
   }
 
+  Future<FutureOr<void>> _mapLikeEventToState(
+      LikeEvent event, Emitter<FeedState> emit) async {
+    try {
+      emit(LikeLoadingState());
+      var response =
+      await feedRepository.postLike(
+          feed_id: event.feed_id);
+      if (response is SuccessState) {
+        emit(LikeSuccessState(likeResponse: response.value));
+      }
+      if (response is ErrorState) {
+        ServerErrorModel serverErrorModel = response.value;
+        emit(LikeFaliureState(error: serverErrorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(LikeFaliureState(error: "Ooops Something went wrong."));
+      // TODO
+    }
+  }
+
 
 }
+
+
+
+
+
+
+//
+// Future<FutureOr<void>> _mapLikeEventToState(
+//     AddFeedEvent event, Emitter<FeedState> emit) async {
+//   try {
+//     emit(FeedLoadingState());
+//     var response = await feedRepository.adFeed(
+//         type: event.type,
+//         page_id: event.pageId!,
+//         content: event.content,
+//         media: event.media);
+//     if (response is SuccessState) {
+//       emit(FeedSuccessState(feedResponse: response.value));
+//     }
+//     if (response is ErrorState) {
+//       ServerErrorModel serverErrorModel = response.value;
+//       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
+//     }
+//   } catch (e) {
+//     emit(FeedFaliureState(error: "Ooops Something went wrong."));
+//     // TODO
+//   }
+// }
+//
+// Future<FutureOr<void>> _mapAddCommentEventToState(
+//     AddFeedEvent event, Emitter<FeedState> emit) async {
+//   try {
+//     emit(FeedLoadingState());
+//     var response = await feedRepository.adFeed(
+//         type: event.type,
+//         page_id: event.pageId!,
+//         content: event.content,
+//         media: event.media);
+//     if (response is SuccessState) {
+//       emit(FeedSuccessState(feedResponse: response.value));
+//     }
+//     if (response is ErrorState) {
+//       ServerErrorModel serverErrorModel = response.value;
+//       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
+//     }
+//   } catch (e) {
+//     emit(FeedFaliureState(error: "Ooops Something went wrong."));
+//     // TODO
+//   }
+// }
+//
+// Future<FutureOr<void>> _mapGetCommentsEventToState(
+//     AddFeedEvent event, Emitter<FeedState> emit) async {
+//   try {
+//     emit(FeedLoadingState());
+//     var response = await feedRepository.adFeed(
+//         type: event.type,
+//         page_id: event.pageId!,
+//         content: event.content,
+//         media: event.media);
+//     if (response is SuccessState) {
+//       emit(FeedSuccessState(feedResponse: response.value));
+//     }
+//     if (response is ErrorState) {
+//       ServerErrorModel serverErrorModel = response.value;
+//       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
+//     }
+//   } catch (e) {
+//     emit(FeedFaliureState(error: "Ooops Something went wrong."));
+//     // TODO
+//   }
+// }
+// Future<FutureOr<void>> _mapGetLikesEventToState(
+//     AddFeedEvent event, Emitter<FeedState> emit) async {
+//   try {
+//     emit(FeedLoadingState());
+//     var response = await feedRepository.adFeed(
+//         type: event.type,
+//         page_id: event.pageId!,
+//         content: event.content,
+//         media: event.media);
+//     if (response is SuccessState) {
+//       emit(FeedSuccessState(feedResponse: response.value));
+//     }
+//     if (response is ErrorState) {
+//       ServerErrorModel serverErrorModel = response.value;
+//       emit(FeedFaliureState(error: serverErrorModel.errorMessage));
+//     }
+//   } catch (e) {
+//     emit(FeedFaliureState(error: "Ooops Something went wrong."));
+//     // TODO
+//   }
+// }
