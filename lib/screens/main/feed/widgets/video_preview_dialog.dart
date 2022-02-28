@@ -18,35 +18,49 @@ class _VideoPreviewState extends State<VideoPreview> {
   void dispose() {
     videoPlayerController?.dispose();
     _chewieController?.dispose();
+    videoPlayerController = null;
     super.dispose();
   }
 
   @override
   void initState() {
-    videoPlayerController = VideoPlayerController.network(widget.videoUrl)
-      ..initialize();
-  _chewieController =  ChewieController(
+    super.initState();
+    _initControllers();
+  }
+
+  Future<ChewieController> _initControllers() async {
+    videoPlayerController = VideoPlayerController.network(widget.videoUrl);
+    await videoPlayerController!.initialize();
+    _chewieController = ChewieController(
       videoPlayerController: videoPlayerController!,
       autoPlay: true,
       looping: false,
-    ) ;
-    super.initState();
+    );
+    return _chewieController!;
   }
 
 // final videoPlayerController = VideoPlayerController.network(
 //      widget.videoUrl);
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        child: Chewie(
-          controller:_chewieController!,
-        ),
-      ),
+      body: FutureBuilder<ChewieController>(
+          future: _initControllers(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Chewie(
+                controller: snapshot.data!,
+              );
+            }
+            return Container(
+              color: Colors.black,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }),
     );
   }
 }
