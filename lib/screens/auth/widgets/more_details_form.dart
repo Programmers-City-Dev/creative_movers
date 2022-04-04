@@ -130,7 +130,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
               ),
             ),
             decoration: const BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 boxShadow: [BoxShadow(color: Colors.blue, blurRadius: 30)],
                 borderRadius: BorderRadius.only()),
           ),

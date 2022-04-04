@@ -21,7 +21,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key, this.user_id}) : super(key: key);
+  final int? user_id;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -33,7 +34,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _profileBloc.add(const FetchUserProfileEvent());
+    log(widget.user_id.toString());
+    widget.user_id == null
+        ? _profileBloc.add(const FetchUserProfileEvent())
+        : _profileBloc.add(FetchUserProfileEvent(widget.user_id));
   }
 
   @override
@@ -353,29 +357,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           const SizedBox(
                                             height: 32,
                                           ),
+
+                                          //------------ LOCATION ---------------
+
+                                          // Row(
+                                          //   mainAxisSize: MainAxisSize.min,
+                                          //   mainAxisAlignment:
+                                          //       MainAxisAlignment.start,
+                                          //   children: const [
+                                          //     Icon(
+                                          //       Icons.near_me_rounded,
+                                          //       color: AppColors.primaryColor,
+                                          //     ),
+                                          //     SizedBox(
+                                          //       width: 5,
+                                          //     ),
+                                          //     Text(
+                                          //       'Carlifonia, Badwin park',
+                                          //       style: TextStyle(
+                                          //           fontSize: 13,
+                                          //           fontWeight:
+                                          //               FontWeight.w600),
+                                          //     ),
+                                          //   ],
+                                          // ),
+
                                           Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: const [
-                                              Icon(
-                                                Icons.near_me_rounded,
-                                                color: AppColors.primaryColor,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                'Carlifonia, Badwin park',
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
@@ -439,7 +447,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(
                           height: 18,
                         ),
-                        const UserMetricsOverview(),
+                        UserMetricsOverview(
+                          user: user,
+                        ),
                         const SizedBox(
                           height: 16,
                         ),
@@ -449,82 +459,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          height: 60,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: 6,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) =>
-                                      const Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                        'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
+                        user.connections!.isNotEmpty
+                            ? Container(
+                                height: 60,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount: user.connections?.length,
+                                        scrollDirection: Axis.horizontal,
+                                        physics: const BouncingScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) =>
+                                            Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8),
+                                          child: CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                              user.connections![index]
+                                                  ["profile_photo_path"],
+                                            ),
+                                            radius: 25,
+                                          ),
+                                        ),
                                       ),
-                                      radius: 25,
                                     ),
-                                  ),
+                                    user.connections!.length > 6
+                                        ? TextButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                                '+${user.connections!.length - 6}'),
+                                            style: TextButton.styleFrom(
+                                                backgroundColor:
+                                                    AppColors.lightBlue,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10)),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                ),
+                              )
+                            : const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('No Connections'),
                                 ),
                               ),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text('+350k'),
-                                style: TextButton.styleFrom(
-                                    backgroundColor: AppColors.lightBlue,
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 10)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              'BUSINESS/INVESTMENT',
-                              style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              '+2 more',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: 80,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 4,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => Container(
-                              width: 110,
-                              margin: EdgeInsets.only(right: 2),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                                      ))),
-                            ),
-                          ),
-                        )
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: const [
+                        //     Text(
+                        //       'BUSINESS/INVESTMENT',
+                        //       style: TextStyle(
+                        //           color: AppColors.primaryColor,
+                        //           fontWeight: FontWeight.bold),
+                        //     ),
+                        //     Text(
+                        //       '+2 more',
+                        //       style: TextStyle(
+                        //           fontSize: 13,
+                        //           color: AppColors.primaryColor,
+                        //           fontWeight: FontWeight.bold),
+                        //     ),
+                        //   ],
+                        // ),
+                        // const SizedBox(
+                        //   height: 5,
+                        // ),
+                        // Container(
+                        //   height: 80,
+                        //   child: ListView.builder(
+                        //     shrinkWrap: true,
+                        //     itemCount: 4,
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemBuilder: (context, index) => Container(
+                        //       width: 110,
+                        //       margin: const EdgeInsets.only(right: 2),
+                        //       decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(10),
+                        //           image: const DecorationImage(
+                        //               fit: BoxFit.cover,
+                        //               image: NetworkImage(
+                        //                 'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
+                        //               ))),
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                   )
@@ -554,8 +577,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class UserMetricsOverview extends StatelessWidget {
+  final User user;
+
   const UserMetricsOverview({
     Key? key,
+    required this.user,
   }) : super(key: key);
 
   @override
@@ -569,15 +595,15 @@ class UserMetricsOverview extends StatelessWidget {
               AppIcons.svgProjects,
               color: AppColors.primaryColor,
             ),
-            const Text(
-              "114k",
-              style: TextStyle(
+            Text(
+              user.followers != null ? user.followers!.length.toString() : '0',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const Text(
-              "Projects",
+              "Followers",
               style: TextStyle(fontSize: 13),
             ),
           ],
@@ -599,9 +625,11 @@ class UserMetricsOverview extends StatelessWidget {
               AppIcons.svgConnects,
               color: AppColors.primaryColor,
             ),
-            const Text(
-              "114k",
-              style: TextStyle(
+            Text(
+              user.connections != null
+                  ? user.connections!.length.toString()
+                  : '0',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -629,9 +657,9 @@ class UserMetricsOverview extends StatelessWidget {
               AppIcons.svgFollowing,
               color: AppColors.primaryColor,
             ),
-            const Text(
-              "114k",
-              style: TextStyle(
+            Text(
+              user.following != null ? user.following!.length.toString() : '0',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -665,7 +693,7 @@ class UserMetricsOverview extends StatelessWidget {
 //             width: 24,
 //           ),
 //           style: TextButton.styleFrom(
-//               backgroundColor: Colors.white,
+//               backgroundColor: AppColors.white,
 //               shape: StadiumBorder(),
 //               padding: const EdgeInsets.symmetric(horizontal: 25)),
 //         ),
@@ -677,7 +705,7 @@ class UserMetricsOverview extends StatelessWidget {
 //         padding: const EdgeInsets.symmetric(horizontal: 5),
 //         child: TextButton(
 //           onPressed: () {},
-//           child: Text("CONNECT",style: const TextStyle(color: Colors.white,fontSize: 10),),
+//           child: Text("CONNECT",style: const TextStyle(color: AppColors.white,fontSize: 10),),
 //           style: TextButton.styleFrom(
 //               backgroundColor: AppColors.primaryColor,
 //               shape: StadiumBorder(),
@@ -693,7 +721,7 @@ class UserMetricsOverview extends StatelessWidget {
 //           onPressed: () {},
 //           child: Icon(Icons.more_horiz),
 //           style: TextButton.styleFrom(
-//               backgroundColor: Colors.white,
+//               backgroundColor: AppColors.white,
 //               shape: StadiumBorder(),
 //               padding: const EdgeInsets.symmetric(horizontal: 25)),
 //         ),

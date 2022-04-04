@@ -3,6 +3,7 @@
 //     final authResponse = authResponseFromMap(jsonString);
 
 import 'package:creative_movers/data/local/model/cached_user.dart';
+import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -65,6 +66,11 @@ class User {
     this.createdAt,
     this.updatedAt,
     this.apiToken,
+    this.countryId,
+    this.followers,
+    this.following,
+    this.connections,
+    this.country,
   });
 
   final int id;
@@ -84,6 +90,12 @@ class User {
   final DateTime? updatedAt;
   final String? apiToken;
   final String? coverPhotoPath;
+  final  dynamic countryId;
+  final List<dynamic>? followers;
+  final List<dynamic>? following;
+  final List<dynamic>? connections;
+  final  dynamic country;
+
 
   User copyWith({
     int? id,
@@ -103,6 +115,11 @@ class User {
     DateTime? updatedAt,
     String? apiToken,
     String? coverPhotoPath,
+    dynamic countryId,
+    List<dynamic>? followers,
+    List<dynamic>? following,
+    List<Connect>? connections,
+    dynamic country
   }) =>
       User(
         id: id ?? this.id,
@@ -122,6 +139,11 @@ class User {
         updatedAt: updatedAt ?? this.updatedAt,
         apiToken: apiToken ?? this.apiToken,
         coverPhotoPath: coverPhotoPath ?? this.coverPhotoPath,
+        countryId: countryId ?? this.countryId,
+        followers: followers ?? this.followers,
+        following: following ?? this.following,
+        connections: connections ?? this.connections,
+        country: country ?? this.country,
       );
 
   factory User.fromMap(Map<String, dynamic> json) => User(
@@ -149,7 +171,13 @@ class User {
         apiToken: json["api_token"] == null ? null : json["api_token"],
         coverPhotoPath:
             json["cover_photo_path"] == null ? null : json["cover_photo_path"],
-      );
+    countryId: json["country_id"],
+    followers:  json["followers"] == null ?null :List<dynamic>.from(json["followers"].map((x) => x)),
+    // following: json["following"] == null ?null : List<dynamic>.from(json["following"].map((x) => x)),
+    connections:  json["connections"] == null ?null :List<dynamic>.from(json["connections"].map((x) => x)),
+    country: json["country"] == null ?null :json["country"] ,
+
+  );
 
   Map<String, dynamic> toMap() => {
         "id": id == null ? null : id,
@@ -170,7 +198,14 @@ class User {
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "api_token": apiToken == null ? null : apiToken,
         "cover_photo_path": coverPhotoPath == null ? null : coverPhotoPath,
-      };
+    "country_id": countryId,
+    "followers": followers== null ?null : List<dynamic>.from(followers!.map((x) => x)),
+    "following":following == null ? null : List<dynamic>.from(following!.map((x) => x)),
+    "connections":connections== null ? null: List<dynamic>.from(connections!.map((x) =>x )),
+    "country": country,
+
+
+};
 
   CachedUser toCachedUser() {
     return CachedUser.fromMap(toMap());

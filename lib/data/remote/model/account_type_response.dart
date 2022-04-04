@@ -36,37 +36,61 @@ class AccountTypeResponse {
   };
 }
 
+Connect connectFromMap(String str) => Connect.fromJson(json.decode(str));
+
+String connectToMap(Connect data) => json.encode(data.toJson());
 class Connect {
   Connect({
-     this.id,
-    this.username,
-    this.firstname,
-    this.lastname,
+    required this.id,
+    required this.firstname,
+    required this.lastname,
+     this.role,
     required this.profilePhotoPath,
+
   });
 
-  int? id;
-  String? username;
-  String? firstname;
-  String? lastname;
+  int id;
+  String firstname;
+  String lastname;
+  String? role;
   String profilePhotoPath;
 
+  Connect copyWith({
+    required int id,
+    required String firstname,
+    required String lastname,
+    required String role,
+    required String profilePhotoPath,
+
+  }) =>
+      Connect(
+        id: id ?? this.id,
+        firstname: firstname ?? this.firstname,
+        lastname: lastname ?? this.lastname,
+        role: role ?? this.role,
+        profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
+
+      );
+
   factory Connect.fromJson(Map<String, dynamic> json) => Connect(
-    id: json["id"],
-    username: json["username"],
-    firstname: json["firstname"],
-    lastname: json["lastname"],
-    profilePhotoPath: json["profile_photo_path"],
+    id: json["id"] == null ? null : json["id"],
+    firstname: json["firstname"] == null ? null : json["firstname"],
+    lastname: json["lastname"] == null ? null : json["lastname"],
+    role: json["role"] == null ? null : json["role"],
+    profilePhotoPath: json["profile_photo_path"] == null ? null : json["profile_photo_path"],
+
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "username": username,
-    "firstname": firstname,
-    "lastname": lastname,
-    "profile_photo_path": profilePhotoPath,
+    "id": id == null ? null : id,
+    "firstname": firstname == null ? null : firstname,
+    "lastname": lastname == null ? null : lastname,
+    "role": role == null ? null : role,
+    "profile_photo_path": profilePhotoPath == null ? null : profilePhotoPath,
+
   };
 }
+
 
 class UserRole {
   UserRole({

@@ -1,6 +1,7 @@
 import 'package:creative_movers/screens/auth/widgets/details_saved_succes_dialog.dart';
 import 'package:creative_movers/screens/auth/widgets/payment_succes_dialog.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class _PaymentFormState extends State<PaymentForm> {
             .size
             .width,
         decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         child: Column(

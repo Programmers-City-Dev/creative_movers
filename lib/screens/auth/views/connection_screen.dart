@@ -88,7 +88,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16)),
                               onPressed: () {
-
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (context) => const PaymentScreen()),
+                                        (route) => false);
                               },
                               child: Row(
                                 children: const [
@@ -120,7 +122,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                               },
                               child: const Text(
                                 'Add',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: AppColors.white),
                               ))
                         ],
                       ),

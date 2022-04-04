@@ -26,7 +26,9 @@ import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({Key? key}) : super(key: key);
+  const CreatePostScreen({Key? key, this.post_type = "user_feed", this.page_id}) : super(key: key);
+  final String? post_type;
+  final String? page_id;
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -197,7 +199,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             type: e.mediaType == MediaType.image ? 'media' : 'video'))
         .toList();
     _feedBloc.add(AddFeedEvent(
-        type: "user_feed", content: _postController.text, media: mediaFiles));
+      pageId: widget.post_type == "page_feed" ? widget.page_id:null,
+        type: widget.post_type!, content: _postController.text, media: mediaFiles));
   }
 
   void _listenToAddFeedState(BuildContext context, FeedState state) {
@@ -212,7 +215,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     if (state is AddFeedSuccessState) {
       Navigator.pop(context);
-      Navigator.of(context).pushNamed(feedsPath);
+      widget.post_type != "page_feed"?
+      Navigator.of(context).pushNamed(feedsPath):  Navigator.pop(context);
           
     }
   }
@@ -232,30 +236,34 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _fetchMedia() async {
-    var images = ['jpg', 'jpeg', 'png', 'webp'];
+    var images = ['jpg', 'jpeg', 'png', 'webp','PNG'];
     var videos = ['mp4', 'mov'];
-    var files = await AppUtils.fetchMedia(allowMultiple: true);
+    var files = await AppUtils.fetchMedia(allowMultiple: true,onSelect: (result){
 
-    if (files.isNotEmpty) {
-      for (var file in files) {
-        if (images.where((element) => element == file.extension).isNotEmpty) {
-          mediaItems
-              .add(MediaItemModel(mediaType: MediaType.image, path: file.path));
-          mediaFiles.add(file.path!);
+      if (result!.files.isNotEmpty) {
+        for (var file in result.files) {
+          if (images.where((element) => element == file.extension).isNotEmpty) {
+            mediaItems
+                .add(MediaItemModel(mediaType: MediaType.image, path: file.path));
+            mediaFiles.add(file.path!);
 
-          setState(() {});
-        } else if (videos
-            .where((element) => element == file.extension)
-            .isNotEmpty) {
-          mediaItems
-              .add(MediaItemModel(mediaType: MediaType.video, path: file.path));
-          mediaFiles.add(file.path!);
-          // log('VIDEO ${mediaFiles[0].file?.filename}');
+            setState(() {});
+          } else if (videos
+              .where((element) => element == file.extension)
+              .isNotEmpty) {
+            mediaItems
+                .add(MediaItemModel(mediaType: MediaType.video, path: file.path));
+            mediaFiles.add(file.path!);
+            // log('VIDEO ${mediaFiles[0].file?.filename}');
 
-          setState(() {});
+            setState(() {});
+          }
         }
       }
-    }
+
+    });
+
+
   }
 }
 

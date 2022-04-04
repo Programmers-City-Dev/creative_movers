@@ -6,8 +6,11 @@ import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/addconnection_response.dart';
 import 'package:creative_movers/data/remote/model/biodata_response.dart';
 import 'package:creative_movers/data/remote/model/categories.dart';
+import 'package:creative_movers/data/remote/model/confirm_token_response.dart';
+import 'package:creative_movers/data/remote/model/forgot_password_response.dart';
 import 'package:creative_movers/data/remote/model/logout_response.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/model/reset_password_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
@@ -153,19 +156,24 @@ class AuthRepository {
         String? min_range,
 
       }) async {
+
+    var formData = FormData.fromMap({
+      "role": role,
+      "user_id": user_id,
+      "name": name,
+      "stage": stage,
+      "category": jsonEncode(category),
+      "est_capital": est_capital,
+      "description": description,
+      if(photo != null)"photo":[
+        await MultipartFile.fromFile(photo, filename:basename(photo)),
+      ],
+      // "photo": photo,
+      "max_range": max_range,
+      "min_range": min_range,
+    });
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.acount_type_endpoint, body: {
-        "role": role,
-        "user_id": user_id,
-        "name": name,
-        "stage": stage,
-        "category": jsonEncode(category),
-        "est_capital": est_capital,
-        "description": description,
-        "photo": photo,
-        "max_range": max_range,
-        "min_range": min_range,
-      }),
+      () async => httpClient.post(Endpoints.acount_type_endpoint, body:formData),
       successResponse: (data) {
         return State<AccountTypeResponse?>.success(
             data != null ? AccountTypeResponse.fromJson(data) : null);
@@ -289,4 +297,100 @@ class AuthRepository {
       },
     );
   }
+
+  Future<State> forgot_password(String email) async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpClient.post(Endpoints.forgot_password_endpoint,body: {
+            "email":email
+          }),
+      successResponse: (data) {
+        return State<ForgotPasswordResponse?>.success(
+            data != null ? ForgotPasswordResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> confirm_token(String token) async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpClient.post(Endpoints.confirm_token_endpoint,body: {
+            "token":token
+          }),
+      successResponse: (data) {
+        return State<ConfirmTokenResponse?>.success(
+            data != null ? ConfirmTokenResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+  Future<State> reset_password(
+      {required String email, required String password, required String password_confirmation}) async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpClient.post(Endpoints.reset_password_endpoint,body: {
+            "email":email,
+            "password":password,
+            "password_confirmation":password_confirmation,
+          }),
+      successResponse: (data) {
+        return State<ResetPasswordResponse?>.success(
+            data != null ? ResetPasswordResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
 }

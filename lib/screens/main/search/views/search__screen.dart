@@ -29,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: AppColors.smokeWhite,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         iconTheme: const IconThemeData(color: AppColors.textColor),
         title: const Text(
           'Search Users',
@@ -84,7 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               'Movers',
                               style: TextStyle(
                                   color: userType == 'movers'
-                                      ? Colors.white
+                                      ? AppColors.white
                                       : AppColors.textColor),
                             )),
                       ),
@@ -105,7 +105,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               'Creative',
                               style: TextStyle(
                                   color: userType == 'creative'
-                                      ? Colors.white
+                                      ? AppColors.white
                                       : AppColors.textColor),
                             )),
                       ),
@@ -126,7 +126,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               'All',
                               style: TextStyle(
                                   color: userType == 'all'
-                                      ? Colors.white
+                                      ? AppColors.white
                                       : AppColors.textColor),
                             )),
                       ),

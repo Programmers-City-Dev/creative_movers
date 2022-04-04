@@ -43,64 +43,65 @@ class CommentItem extends StatelessWidget {
               Row(
                 children: [
                    Text(
-                    AppUtils.getTime(comment.createdAt!),
+                     comment.createdAt != null?
+                    AppUtils.getTime(comment.createdAt!):'1 sec ago',
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  const Text(
-                    'like',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Text(
-                    '12 replies',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      FaIcon(
-                        FontAwesomeIcons.solidThumbsUp,
-                        color: AppColors.primaryColor,
-                        size: 12,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        '126',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                    ],
-                  ),
+                  // const SizedBox(
+                  //   width: 16,
+                  // ),
+                  // const Text(
+                  //   'like',
+                  //   style: TextStyle(fontSize: 12, color: Colors.grey),
+                  // ),
+                  // const SizedBox(
+                  //   width: 10,
+                  // ),
+                  // const Text(
+                  //   '12 replies',
+                  //   style: TextStyle(fontSize: 12, color: Colors.grey),
+                  // ),
+                  // const SizedBox(
+                  //   width: 16,
+                  // ),
+                  // Row(
+                  //   mainAxisSize: MainAxisSize.min,
+                  //   children: const [
+                  //     FaIcon(
+                  //       FontAwesomeIcons.solidThumbsUp,
+                  //       color: AppColors.primaryColor,
+                  //       size: 12,
+                  //     ),
+                  //     SizedBox(
+                  //       width: 5,
+                  //     ),
+                  //     Text(
+                  //       '126',
+                  //       style: TextStyle(fontSize: 12, color: Colors.grey),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  Container(
-                    width: 30,
-                    height: 1,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(
-                    width: 7,
-                  ),
-                  const Text(
-                    'View more replies',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ],
-              )
+              // Row(
+              //   children: [
+              //     Container(
+              //       width: 30,
+              //       height: 1,
+              //       color: Colors.grey,
+              //     ),
+              //     const SizedBox(
+              //       width: 7,
+              //     ),
+              //     const Text(
+              //       'View more replies',
+              //       style: TextStyle(fontSize: 12, color: Colors.grey),
+              //     ),
+              //   ],
+              // )
             ],
           ))
         ],

@@ -16,7 +16,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       backgroundColor: AppColors.smokeWhite,
       appBar: AppBar(
         iconTheme: IconThemeData(color: AppColors.textColor),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         actions: [Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(onPressed: () {}, icon: Icon(Icons.search)),

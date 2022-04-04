@@ -1,4 +1,6 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:ui';
+
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
@@ -126,6 +128,8 @@ class _LoginFormState extends State<LoginForm> {
               child: GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
+
+                      backgroundColor: Colors.transparent,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(30),
@@ -133,8 +137,18 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       isScrollControlled: true,
+
                       context: context,
-                      builder: (_) => const ForgotPasswordModal());
+                      builder: (c) => BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 45, sigmaY: 45),
+                        child: ForgotPasswordModal(
+                              onComplete: () {
+                                log('complete');
+                                Navigator.pop(context);
+                                AppUtils.showSuccessSuccessDialog(context,message:'You successfully changed your password proceed to login ');
+                              },
+                            ),
+                      ));
                 },
                 child: const Text(
                   'Forgot Password',
@@ -150,7 +164,7 @@ class _LoginFormState extends State<LoginForm> {
                   text: TextSpan(children: [
                 const TextSpan(
                     text: 'I dont have an account  ?  ',
-                    style: TextStyle(color: Colors.black)),
+                    style: TextStyle(color: AppColors.black)),
                 TextSpan(
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
@@ -210,7 +224,7 @@ class _LoginFormState extends State<LoginForm> {
   void _submitLoginForm() {
     if (_formKey.currentState!.validate()) {
       _authBloc.add(LoginEvent(
-        email: _emailController.text,
+        email: _emailController.text.trim(),
         password: _passwordController.text,
       ));
     }
@@ -226,6 +240,8 @@ class _LoginFormState extends State<LoginForm> {
         StorageKeys.token, response.user.apiToken.toString());
     StorageHelper.setString(
         StorageKeys.firstname, response.user.firstname.toString());
+    StorageHelper.setString(
+        StorageKeys.user_id, response.user.id.toString());
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }

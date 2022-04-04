@@ -19,7 +19,7 @@ class _PostCardState extends State<PostCard> {
       child: Container(
         padding: EdgeInsets.all(16),
         margin: const EdgeInsets.only(top: 40),
-        decoration: const BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: AppColors.white),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

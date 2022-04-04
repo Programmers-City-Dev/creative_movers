@@ -35,7 +35,7 @@ class Result {
     this.profilePhotoPath,
     required this.connected,
     required this.following,
-    this.followers,
+    required this.followers,
   });
 
   int id;
@@ -46,7 +46,7 @@ class Result {
   String? profilePhotoPath;
   String connected;
   bool following;
-  List<dynamic>? followers;
+  List<Follower> followers;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
@@ -57,7 +57,7 @@ class Result {
         profilePhotoPath: json["profile_photo_path"],
         connected: json["connected"],
         following: json["following"],
-        followers: List<dynamic>.from(json["followers"].map((x) => x)),
+        followers: List<Follower>.from(json["followers"].map((x) =>Follower.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,7 +69,7 @@ class Result {
         "profile_photo_path": profilePhotoPath,
         "connected": connected,
         "following": following,
-        "followers": List<dynamic>.from(followers!.map((x) => x)),
+        "followers": List<dynamic>.from(followers.map((x) => x)),
       };
 }
 
@@ -89,4 +89,36 @@ class EnumValues<T> {
     }
     return reverseMap;
   }
+}
+
+class Follower {
+  Follower({
+    required this.id,
+    required this.firstname,
+    required this.lastname,
+    required this.role,
+    required this.profilePhotoPath,
+  });
+
+  int id;
+  String firstname;
+  String lastname;
+  String role;
+  String profilePhotoPath;
+
+  factory Follower.fromJson(Map<String, dynamic> json) => Follower(
+        id: json["id"],
+        firstname: json["firstname"],
+        lastname: json["lastname"],
+        role: json["role"],
+        profilePhotoPath: json["profile_photo_path"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "firstname": firstname,
+        "lastname": lastname,
+        "role": role,
+        "profile_photo_path": profilePhotoPath,
+      };
 }

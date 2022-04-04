@@ -73,11 +73,16 @@ dependencies:
   sembast: ^3.1.2
   page_transition: ^2.0.5
   cached_network_image: ^3.2.0
+  flutter_countdown_timer: ^4.1.0
+  status_view: ^0.0.2
+  story_view: ^0.13.2
+
   image_picker: ^0.8.4+10
   photo_view:
     git:
       url: https://github.com/bluefireteam/photo_view
       ref: master
+#  google_fonts: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +108,18 @@ flutter:
         - asset: assets/fonts/poppins/poppins_regular.ttf
         - asset: assets/fonts/poppins/poppins_bold.ttf
         - asset: assets/fonts/poppins/poppins_medium.ttf
+    - family: Lobster
+      fonts:
+        - asset: assets/fonts/lobster/lobster_regular.ttf
+    - family: Dancing_Script
+      fonts:
+        - asset: assets/fonts/dancing_Script/dancingScript_regular.ttf
+        - asset: assets/fonts/dancing_Script/dancingScript_bold.ttf
+        - asset: assets/fonts/dancing_Script/dancingScript_medium.ttf
+    - family: Syne_Mono
+      fonts:
+        - asset: assets/fonts/Syne_Mono/syneMono_regular.ttf
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

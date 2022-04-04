@@ -222,11 +222,12 @@ class ProfileRepository {
         ? Endpoints.myProfileEndpoint
         : Endpoints.userProfileEndpoint;
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(url),
+      () => httpClient.post(url,body: userId !=null ? {'user_id':userId,}:null),
       successResponse: (data) {
         return State<User?>.success(
             data != null ? User.fromMap(data["user"]) : null);
       },
+
       statusCodeSuccess: 200,
       errorResponse: (response) {
         debugPrint('ERROR SERVER');
@@ -237,6 +238,7 @@ class ProfileRepository {
               data: null),
         );
       },
+
       dioErrorResponse: (response) {
         debugPrint('DIO SERVER');
         return State<ServerErrorModel>.error(

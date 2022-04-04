@@ -223,6 +223,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
+  flutter_countdown_timer:
+    dependency: "direct main"
+    description:
+      name: flutter_countdown_timer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -721,6 +728,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  status_view:
+    dependency: "direct main"
+    description:
+      name: status_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
+  story_view:
+    dependency: "direct main"
+    description:
+      name: story_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.2"
   stream_channel:
     dependency: transitive
     description:

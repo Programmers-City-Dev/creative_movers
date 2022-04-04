@@ -14,7 +14,7 @@ class _NotificationItemState extends State<NotificationItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 1),
-      color: Colors.white,
+      color: AppColors.white,
       padding: EdgeInsets.all(16),
       child: Column(
         children: [

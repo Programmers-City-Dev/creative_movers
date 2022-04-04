@@ -9,4 +9,5 @@ const chatsPath = '/home/chats';
 const accountSettingsPath = '/home/profile-settings';
 const inviteContactsPath = '/home/invite-contacts';
 const profilePath = '/home/profile';
+const viewProfilePath = '/home/view-profile';
 const profileEditPath = '/home/profile-edit';

@@ -98,13 +98,46 @@ class AddConnectionsEvent extends AuthEvent {
   AddConnectionsEvent({this.user_id, required this.connection});
 }
 
-class LogoutEvent extends AuthEvent{
+class LogoutEvent extends AuthEvent {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
-class CategoriesEvent extends AuthEvent{
+class CategoriesEvent extends AuthEvent {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
+}
+class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+
+  ForgotPasswordEvent({
+    required this.email,
+  });
+
+  @override
+  List<Object?> get props => [
+        email,
+      ];
+}
+class ConfirmTokenEvent extends AuthEvent {
+  final String token;
+
+  ConfirmTokenEvent({
+    required this.token,
+  });
+
+  @override
+  List<Object?> get props => [token];
+}
+class ResetPasswordEvent extends AuthEvent {
+  final String password;
+  final String password_confirmation;
+  final String email;
+
+  ResetPasswordEvent(
+      {required this.password_confirmation, required this.password,required this.email, });
+
+  @override
+  List<Object?> get props => [password_confirmation, password];
 }

@@ -6,6 +6,7 @@ import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/routes.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen.dart';
+import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
@@ -36,7 +37,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final screens = [
     const FeedScreen(),
-    const BuisnessScreen(),
+    const MyPageTab(),
     const ContactScreen(),
     const ChatScreen(),
     const AccountSettingsScreen()
@@ -123,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               //     'Creative Movers',
               //     style: TextStyle(color: AppColors.textColor),
               //   ),
-              //   backgroundColor: Colors.white,
+              //   backgroundColor: AppColors.white,
               // ),
               body: IndexedStack(index: _navIndex, children: <Widget>[
                 _buildOffstageNavigator(0),
@@ -136,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   haptic: true, // haptic feedback
                   tabBorderRadius: 15,
                   // tabActiveBorder:
-                  //     Border.all(color: Colors.black, width: 1), // tab button border
+                  //     Border.all(color: AppColors.black, width: 1), // tab button border
                   // tabBorder:
                   //     Border.all(color: Colors.grey, width: 1), // tab button border
                   // tabShadow: [
@@ -151,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       AppColors.primaryColor, // selected icon and text color
                   iconSize: 18,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColors.white,
                   onTabChange: (index) {
                     setState(() {
                       _navBloc.add(SwitchNavEvent(index));
@@ -256,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // observers: [MyRouteObserver()],
         onGenerateRoute: (routeSettings) {
           print('Navigating to: ${routeSettings.name} --------------- ');
+          print('Navigating to: ${routeSettings.arguments} --------------- ');
 
           PageTransitionType? transitionType;
           var arguments = routeSettings.arguments;
@@ -397,7 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //                   style: TextStyle(color: AppColors.primaryColor),
 //                 ),
 //                 activeColor:
-//                     _screenIndex == 1 ? AppColors.primaryColor : Colors.white,
+//                     _screenIndex == 1 ? AppColors.primaryColor : AppColors.white,
 //                 inactiveColor: Colors.transparent),
 //             BottomNavyBarItem(
 //                 // icon: const Icon(Icons.work_outline),
@@ -410,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //                   style: TextStyle(
 //                     color: _screenIndex == 2
 //                         ? AppColors.primaryColor
-//                         : Colors.white,
+//                         : AppColors.white,
 //                   ),
 //                 ),
 //                 activeColor: AppColors.primaryColor,

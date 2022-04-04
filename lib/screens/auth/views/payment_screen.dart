@@ -33,8 +33,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Text('Welcome Destiny',textAlign:TextAlign.left,style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.white),),
-                  Text('Just one more step before you start exploring',textAlign:TextAlign.left,style: TextStyle(color: Colors.white),),
+                      color: AppColors.white),),
+                  Text('Just one more step before you start exploring',textAlign:TextAlign.left,style: TextStyle(color: AppColors.white),),
                     SizedBox(height: 16,)
                 ],),),
             ),

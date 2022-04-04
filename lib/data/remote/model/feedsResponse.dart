@@ -72,7 +72,7 @@ class Feeds {
         path: json["path"],
         perPage: json["per_page"],
         prevPageUrl: json["prev_page_url"],
-        to: json["to"],
+        to: json["to"] ?? 0,
         total: json["total"],
       );
 
@@ -106,7 +106,8 @@ class Feed {
     required this.updatedAt,
     required this.comments,
     required this.likes,
-    required this.user,
+     this.user,
+    this.page
   });
 
   int id;
@@ -120,7 +121,9 @@ class Feed {
   DateTime updatedAt;
   List<Comment> comments;
   List<Like> likes;
-  Poster user;
+  Poster? user;
+  PostPage? page;
+
 
   factory Feed.fromJson(Map<String, dynamic> json) => Feed(
         id: json["id"],
@@ -137,6 +140,7 @@ class Feed {
         comments: List<Comment>.from(json["comments"].map((x) =>Comment.fromJson(x))),
         likes: List<Like>.from(json["likes"].map((x) => Like.fromJson(x))),
         user: Poster.fromJson(json["user"]),
+          page: json["page"] == null ?null: PostPage.fromJson(json["page"])
       );
 
   Map<String, dynamic> toJson() => {
@@ -153,7 +157,8 @@ class Feed {
         "updated_at": updatedAt.toIso8601String(),
         "comments": List<dynamic>.from(comments.map((x) => x)),
         "likes": List<dynamic>.from(likes.map((x) => x)),
-        "user": user.toJson(),
+        "user": user?.toJson(),
+        "page": page == null ? null :page?.toJson(),
       };
 }
 
@@ -311,3 +316,29 @@ class Link {
         "active": active,
       };
 }
+
+
+class PostPage {
+  PostPage({
+    required this.id,
+    required this.name,
+    required this.photoPath,
+  });
+
+  int id;
+  String name;
+  String? photoPath;
+
+  factory PostPage.fromJson(Map<String, dynamic> json) => PostPage(
+    id: json["id"] == null ? null : json["id"],
+    name: json["name"] == null ? null : json["name"],
+    photoPath:json["photo_path"] == null ? null : json["photo_path"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "name": name == null ? null : name,
+    "photo_path": photoPath == null ? null : photoPath,
+  };
+}
+

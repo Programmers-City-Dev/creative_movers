@@ -148,7 +148,7 @@ class _SignupFormState extends State<SignupForm> {
                     text: TextSpan(children: [
                   TextSpan(
                       text: context.localization.alreadyHasAnAccountText,
-                      style: const TextStyle(color: Colors.black)),
+                      style: const TextStyle(color: AppColors.black)),
                   TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {

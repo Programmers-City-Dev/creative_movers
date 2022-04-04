@@ -35,7 +35,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         titleTextStyle:
         const TextStyle(color: AppColors.textColor, fontSize: 18),
         iconTheme: const IconThemeData(color: AppColors.textColor),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         title: const Text('Comments'),
         actions: [
           Padding(

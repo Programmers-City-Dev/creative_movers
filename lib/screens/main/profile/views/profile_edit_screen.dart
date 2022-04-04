@@ -72,7 +72,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       Container(
                         height: size.height * .41,
                         foregroundDecoration:
-                            BoxDecoration(color: Colors.black.withOpacity(0.5)),
+                            BoxDecoration(color: AppColors.black.withOpacity(0.5)),
                         decoration: BoxDecoration(
                             image: photo == null || photo.isEmpty
                                 ? DecorationImage(
@@ -128,11 +128,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   width: 120,
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.black.withOpacity(0.6)),
+                                      color: AppColors.black.withOpacity(0.6)),
                                   child: IconButton(
                                     icon: const Icon(
                                       Icons.camera_alt_outlined,
-                                      color: Colors.white,
+                                      color: AppColors.white,
                                       size: 32,
                                     ),
                                     onPressed: () {
@@ -156,11 +156,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           padding:
                               EdgeInsets.symmetric(vertical: 7, horizontal: 12),
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppColors.white,
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(.03),
+                                  color: AppColors.black.withOpacity(.03),
                                   blurRadius: 20,
                                   spreadRadius: 2,
                                   offset: Offset(0, 10),
@@ -216,12 +216,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               child: Container(
                                 padding: const EdgeInsets.fromLTRB(10, 5, 1, 5),
                                 decoration: const BoxDecoration(
-                                    color: Colors.black45,
+                                    color: AppColors.black,
                                     shape: BoxShape.circle),
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.arrow_back_ios,
-                                  color: Colors.white.withOpacity(.7),
+                                  color: AppColors.white.withOpacity(.7),
                                 ),
                               ),
                             ),
@@ -236,7 +236,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 padding:
                                     const EdgeInsets.fromLTRB(10, 10, 8, 10),
                                 decoration: const BoxDecoration(
-                                  color: Colors.black45,
+                                  color: AppColors.black,
                                   shape: BoxShape.circle,
                                 ),
                                 alignment: Alignment.center,
@@ -298,7 +298,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             child: Text(
                               'EDIT PROFILE',
                               style: TextStyle(
-                                  color: Colors.black.withOpacity(.6),
+                                  color: AppColors.black.withOpacity(.6),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500),
                             ),

@@ -44,7 +44,7 @@ class _AddImageWidgetState extends State<AddImageWidget> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(200),
                   child: Image.file(
-                    File(widget.imagePath!),
+                    File(widget.imagePath.toString()),
                     fit: BoxFit.cover,
                     width: 200,
                   ),

@@ -4,6 +4,7 @@ class StorageKeys {
   static final String registrationStage = "REGISTRATION_STAGE";
   static final String username = "USERNAME";
   static final String firstname = "FIRSTNAME";
+  static final String user_id = "USER_ID";
 
   static final String login = "LOGIN";
   static final String hasOnBoarded = "HAS_ON_BOARDED";

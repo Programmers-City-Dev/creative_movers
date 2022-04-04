@@ -19,7 +19,7 @@ class _DetailsSavedDialogState extends State<DetailsSavedDialog> {
       child: Container(
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(25),
-        color: Colors.white,
+        color: AppColors.white,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

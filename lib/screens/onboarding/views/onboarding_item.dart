@@ -46,7 +46,7 @@ class _OnboardingItemState extends State<OnboardingItem> {
                textAlign: TextAlign.center,
               style: const TextStyle(
                   fontSize: 25,
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(
@@ -54,7 +54,7 @@ class _OnboardingItemState extends State<OnboardingItem> {
             ),
             widget.text
 
-            // Text(' dcsdc oidco d',style: TextStyle(fontSize: 20,color: Colors.white),
+            // Text(' dcsdc oidco d',style: TextStyle(fontSize: 20,color: AppColors.white),
             // )
           ],
         ),

@@ -46,7 +46,7 @@ class _MessageItemState extends State<MessageItem> {
                     style: TextStyle(
                         color: !widget.messageModel.isForme
                             ? AppColors.PtextColor
-                            : Colors.white),
+                            : AppColors.white),
                   ),
                 ),
               ),
@@ -76,7 +76,7 @@ class _MessageItemState extends State<MessageItem> {
                   child: const Center(
                     child: Icon(
                       Icons.videocam_off_rounded,
-                      color: Colors.white,
+                      color: AppColors.white,
                     ),
                   ),
                 ),
@@ -103,7 +103,7 @@ class _MessageItemState extends State<MessageItem> {
                       child: const Center(
                         child: Icon(
                           Icons.photo_camera_rounded,
-                          color: Colors.white,
+                          color: AppColors.white,
                         ),
                       ),
                     ),
