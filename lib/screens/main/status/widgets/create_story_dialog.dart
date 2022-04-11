@@ -207,7 +207,7 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
             if (result.files.isNotEmpty) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => StatusMediaPreview(
-                  files: result.files ?? [],
+                  files: result.files,
                 ),
               ));
             } else {}
