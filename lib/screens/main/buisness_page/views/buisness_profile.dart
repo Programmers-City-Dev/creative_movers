@@ -127,7 +127,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                 ),
                 Text(
                   widget.profile.profile.biodata,
-                  style: const TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 13,color: Colors.grey),
                 ),
                 const SizedBox(
                   height: 10,
@@ -279,46 +279,40 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text(
-                                  'BUSINESS/INVESTMENT',
-                                  style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  '+2 more',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
                             const SizedBox(
                               height: 5,
                             ),
+                            const Text(
+                              'Preferred Investment Stage',
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              widget.profile.profile.investments[0].stage,
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: 13),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              'Investment Range',
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
                             SizedBox(
-                              height: 80,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: 4,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => Container(
-                                  width: 110,
-                                  margin: EdgeInsets.only(right: 2),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: const DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                            'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                                          ))),
-                                ),
-                              ),
-                            )
+                              height: 10,
+                            ),
+                            Text(
+                              ' ${widget.profile.profile.investments[0].minRange} -  ${widget.profile.profile.investments[0].maxRange}',
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: 13),
+                            ),
                           ],
                         ),
                       ),
@@ -369,8 +363,15 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     InkWell(
-                                      onTap:(){
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewBuisnessPageScreen(page_id: state.buisnessProfile.sugestedpages[index].id.toString()),));
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              ViewBuisnessPageScreen(
+                                                  page_id: state.buisnessProfile
+                                                      .sugestedpages[index].id
+                                                      .toString()),
+                                        ));
                                       },
                                       child: Container(
                                         width: 100,
@@ -388,7 +389,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                                   index]
                                                               .photoPath ==
                                                           null
-                                                      ? 'https://res.cloudinary.com/destinybravos/image/upload/v1648859448/creative_movers/pages/cover/images/puqaiabsv2n8e40qlaw0.png'
+                                                      ? 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'
                                                       : state
                                                           .buisnessProfile
                                                           .sugestedpages[index]
@@ -467,10 +468,17 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                         // ),
                                       ),
                                     ),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text(
-                                      state.buisnessProfile
-                                        .sugestedpages[index].name,style: TextStyle(fontSize: 10,),overflow: TextOverflow.ellipsis,)
+                                      state.buisnessProfile.sugestedpages[index]
+                                          .name,
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    )
                                   ],
                                 ),
                               ),

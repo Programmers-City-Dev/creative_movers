@@ -307,7 +307,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
           return Center(child: Text(state.error),);
         }
         else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

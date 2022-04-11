@@ -4,8 +4,10 @@ import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/screens/widget/widget_network_image.dart';
@@ -13,6 +15,7 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../../main.dart';
@@ -376,21 +379,23 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           //   ],
                                           // ),
                                           Row(
-                                            mainAxisSize: MainAxisSize.min,
+                                            // mainAxisSize: MainAxisSize.min,
                                             mainAxisAlignment:
                                             MainAxisAlignment.start,
                                             children: [
                                               const Icon(
                                                 Icons.person,
                                                 color: AppColors.primaryColor,
+                                                size: 25,
                                               ),
                                               const SizedBox(
                                                 width: 5,
                                               ),
                                               Text(
-                                                user.role!,
+                                                user.role!.toUpperCase(),
                                                 style: const TextStyle(
-                                                    fontSize: 13,
+                                                  color: AppColors.textColor,
+                                                    fontSize: 16,
                                                     fontWeight:
                                                     FontWeight.w600),
                                               ),
@@ -445,6 +450,72 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         ),
                         const SizedBox(
                           height: 16,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      CustomButton(
+                                        height: 50,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SvgPicture.asset(AppIcons.svgFollowing,
+                                                color: Colors.white),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            const Text('Follow'),
+                                          ],
+                                        ),
+                                        onTap: () {},
+                                      ),
+                                    ],
+                                  )),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      SizedBox(
+                                        height: 50,
+                                        child: TextButton(
+                                            style: TextButton.styleFrom(
+                                                backgroundColor: AppColors.lightBlue),
+                                            onPressed: () {},
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  AppIcons.svgConnects,
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                const Text('Connect'),
+                                              ],
+                                            )),
+                                      ),
+                                    ],
+                                  ))
+                            ],
+                          ),
                         ),
                         const Text(
                           'CONNECTS',

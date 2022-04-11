@@ -64,11 +64,11 @@ class Connect {
 
   }) =>
       Connect(
-        id: id ?? this.id,
-        firstname: firstname ?? this.firstname,
-        lastname: lastname ?? this.lastname,
-        role: role ?? this.role,
-        profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
+        id: id,
+        firstname: firstname ,
+        lastname: lastname ,
+        role: role ,
+        profilePhotoPath: profilePhotoPath ,
 
       );
 
