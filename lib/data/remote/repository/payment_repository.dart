@@ -5,6 +5,7 @@ import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 
 class PaymentRepository {
@@ -19,7 +20,7 @@ class PaymentRepository {
           body: body,
       options: Options(
           headers: {
-            "Authorization": 'Bearer ${ApiConstants.STRIPE_SECRETE_KEY}',
+            "Authorization": 'Bearer ${FirebaseRemoteConfig.instance.getString('stripe_secret_key')}',
             "Content-Type" : "application/x-www-form-urlencoded"
           }
       )),

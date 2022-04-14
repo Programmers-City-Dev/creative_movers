@@ -82,6 +82,12 @@ dependencies:
     git:
       url: https://github.com/bluefireteam/photo_view
       ref: master
+  rename: ^2.0.1
+  firebase_core: ^1.14.1
+  firebase_messaging: ^11.2.13
+  firebase_remote_config: ^2.0.4
+  firebase_analytics: ^9.1.5
+  flutter_local_notifications: ^9.4.0
 #  google_fonts: ^2.0.0
 
 dev_dependencies:

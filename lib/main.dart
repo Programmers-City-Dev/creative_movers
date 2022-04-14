@@ -1,6 +1,11 @@
 import 'package:creative_movers/di/injector.dart' as di;
 import 'package:creative_movers/helpers/api_helper.dart';
+import 'package:creative_movers/services/push_notification_service.dart';
+import 'package:creative_movers/services/remote_configs_service.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,11 +16,28 @@ import 'helpers/app_utils.dart';
 
 final GlobalKey<NavigatorState> mainNavKey = GlobalKey<NavigatorState>();
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+  PushNotificationService.showBackgroundNotification(message);
+}
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  PushNotificationService.initialise();
+
+  var remoteConfigsService = await RemoteConfigsService.create();
+  remoteConfigsService.retrieveSecrets();
   await di.setup();
-  Stripe.publishableKey = ApiConstants.STRIPE_PLUBLISHABLE_KEY;
-  var firstScreen = await AppUtils.getFirstScreen();
+  Stripe.publishableKey = FirebaseRemoteConfig.instance.getString("stripe_publishable_key");
+  var firstScreen = await AppUtils.getFirstScreen(); 
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));
   runApp(MyApp(firstScreen));
