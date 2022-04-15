@@ -193,34 +193,42 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           const SizedBox(
                             height: 25,
                           ),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(Icons.notifications,
-                                        size: 25, color: AppColors.textColor),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      'Notification',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor),
-                                    ),
-                                  ],
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.chevron_right_rounded,
-                                      size: 30, color: AppColors.textColor),
-                                ),
-                              ],
+                          GestureDetector(
+                            onTap: () {
+                              injector
+                                  .get<PaymentBloc>()
+                                  .add(CreatePaymentIntentEvent(200, "US"));
+                            },
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Icon(Icons.notifications,
+                                          size: 25, color: AppColors.textColor),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        'Notification',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.textColor),
+                                      ),
+                                    ],
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.chevron_right_rounded,
+                                        size: 30, color: AppColors.textColor),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(

@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
@@ -15,18 +16,17 @@ class PaymentRepository {
 
   // Register Request
   Future<State> createPaymentIntent(Map body) async {
+    log("SECRETE:${FirebaseRemoteConfig.instance.getString('stripe_secret_key')}");
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.stripe_intent,
           body: body,
-      options: Options(
-          headers: {
-            "Authorization": 'Bearer ${FirebaseRemoteConfig.instance.getString('stripe_secret_key')}',
-            "Content-Type" : "application/x-www-form-urlencoded"
-          }
-      )),
+          options: Options(headers: {
+            "Authorization":
+                'Bearer ${FirebaseRemoteConfig.instance.getString('stripe_secret_key')}',
+            "Content-Type": "application/x-www-form-urlencoded"
+          })),
       successResponse: (data) {
-        return State<Map<String, dynamic>>.success(
-            data != null ? data : null);
+        return State<Map<String, dynamic>>.success(data != null ? data : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

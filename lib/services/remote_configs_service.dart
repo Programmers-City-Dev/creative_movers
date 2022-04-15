@@ -22,9 +22,9 @@ class RemoteConfigsService {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.fetchAndActivate();
     final Map<String, String> secrets = {
-      'b2bin_password': remoteConfig.getString('b2bin_password'),
-      'b2bin_login': remoteConfig.getString('b2bin_login'),
-      'one_signal_app_id': remoteConfig.getString('one_signal_app_id'),
+      'stripe_publishable_key': remoteConfig.getString('stripe_publishable_key'),
+      'stripe_secret_key': remoteConfig.getString('stripe_secret_key'),
+      'one_signal_key': remoteConfig.getString('one_signal_key'),
     };
 
     return secrets;

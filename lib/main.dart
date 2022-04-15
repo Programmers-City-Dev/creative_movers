@@ -34,9 +34,9 @@ void main() async {
   PushNotificationService.initialise();
 
   var remoteConfigsService = await RemoteConfigsService.create();
-  remoteConfigsService.retrieveSecrets();
+  await remoteConfigsService.retrieveSecrets();
   await di.setup();
-  Stripe.publishableKey = FirebaseRemoteConfig.instance.getString("stripe_publishable_key");
+  Stripe.publishableKey = FirebaseRemoteConfig.instance.getString("pk_test_51HQHG3IASx7Ij3gQDglAvu89M8PMCpIPtIbyppvbrzf5myLVRsCYUkBymrKVFhQydMZmoLE1x3D2tuGTdhCwjzEU00v928HQ6m");
   var firstScreen = await AppUtils.getFirstScreen(); 
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));
