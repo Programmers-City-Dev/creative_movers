@@ -9,7 +9,7 @@ class HttpHelper {
   static Future<Dio?> _getInstance([bool enabledDioLogger = false]) async {
     final storageToken = await StorageHelper.getString(StorageKeys.token);
     // debugPrint('TOKEN:$storageToken');
-    if (_client == null) _client = Dio();
+    _client ??= Dio();
 
     Map<String, dynamic> headers = {};
     headers['Content-Type'] = 'application/json';
