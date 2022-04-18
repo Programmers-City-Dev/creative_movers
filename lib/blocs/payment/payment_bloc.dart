@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/model/subscription_response.dart';
 import 'package:creative_movers/data/remote/repository/payment_repository.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:either_dart/either.dart';
@@ -21,6 +22,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   PaymentBloc(this.repository) : super(PaymentInitial()) {
     on<CreatePaymentIntentEvent>(_mapCreatePaymentIntentEventToState);
     on<MakePaymentEvent>(_mapMakePaymentEventToState);
+    on<GetSubscriptionInfoEvent>(_mapGetSubscriptionInfoEventToState);
   }
 
   Future<Either<String, String>> makePayment(String secret) async {
@@ -83,7 +85,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       CreatePaymentIntentEvent event, Emitter<PaymentState> emit) async {
     try {
       emit(PaymentProcessingState());
-      var either = await _createPaymentIntent(event.amount, event.currency, event.duration, event.paymentFor);
+      var either = await _createPaymentIntent(
+          event.amount, event.currency, event.duration, event.paymentFor);
       if (either.isLeft) {
         emit(PaymentFailureState(either.left.errorMessage));
       } else {
@@ -108,6 +111,23 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     } catch (e) {
       emit(const PaymentFailureState(
           "Unable to initialize payment, try again!"));
+    }
+  }
+
+  FutureOr<void> _mapGetSubscriptionInfoEventToState(
+      GetSubscriptionInfoEvent event, Emitter<PaymentState> emit) async {
+    try {
+      emit(SubscriptionLoadingState());
+      var state = await repository.fetchActiveSubscription();
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(SubscriptionLoadErrorState(errorModel.errorMessage));
+      } else if (state is SuccessState) {
+        emit(SubscriptionLoadedState(state.value));
+      }
+    } catch (e) {
+      emit(const SubscriptionLoadErrorState(
+          "Could not load subscription data at the moment"));
     }
   }
 }

@@ -27,3 +27,10 @@ class MakePaymentEvent extends PaymentEvent {
   @override
   List<Object> get props => [secrete];
 }
+class GetSubscriptionInfoEvent extends PaymentEvent {
+
+  const GetSubscriptionInfoEvent();
+
+  @override
+  List<Object> get props => [];
+}

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:creative_movers/di/injector.dart' as di;
-import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:creative_movers/services/remote_configs_service.dart';
 import 'package:creative_movers/theme/app_colors.dart';

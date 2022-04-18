@@ -93,8 +93,13 @@ class _PaymentFormState extends State<PaymentForm> {
                             child: const DetailsSavedDialog()),
                         barrierDismissible: false);
                   } else {
-                    Navigator.of(context).pop();
+                    Navigator.of(context)
+                      ..pop()
+                      ..pop();
                     AppUtils.showCustomToast(state.message);
+                    injector
+                        .get<PaymentBloc>()
+                        .add(const GetSubscriptionInfoEvent());
                   }
                 }
               },

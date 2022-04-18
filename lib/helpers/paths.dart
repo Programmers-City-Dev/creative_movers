@@ -11,3 +11,5 @@ const inviteContactsPath = '/home/invite-contacts';
 const profilePath = '/home/profile';
 const viewProfilePath = '/home/view-profile';
 const profileEditPath = '/home/profile-edit';
+const paymentPath = '/payment';
+const subscriptionPath = '/subscription';

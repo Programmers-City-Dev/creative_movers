@@ -269,9 +269,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) =>
-                                      const ActiveSubscriptionScreen()));
+                              Navigator.of(context).pushNamed(subscriptionPath);
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(

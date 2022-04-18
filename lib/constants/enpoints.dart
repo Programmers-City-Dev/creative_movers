@@ -67,6 +67,9 @@ class Endpoints {
       .BASE_URL}api/user/create-page';
   static const get_page_endpoint = '${ApiConstants
       .BASE_URL}api/user/fetch-business-page-details';
+
+  static String activeSubscription = '${ApiConstants
+      .BASE_URL}api/payment/subscription';
 // static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
 // static const add_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/add-feed';
