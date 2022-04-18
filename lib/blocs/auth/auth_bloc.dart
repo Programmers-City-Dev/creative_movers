@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/repository/auth_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
+import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -38,17 +40,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ForgotPasswordEvent>(_mapForgotPasswordEventToState);
     on<ResetPasswordEvent>(_mapResetPasswordEventToState);
     on<ConfirmTokenEvent>(_mapConfirmTokenEventToState);
-
   }
 
   FutureOr<void> _mapRegisterEventToState(
       RegisterEvent event, Emitter<AuthState> emit) async {
     try {
       emit(RegistrationLoadingState());
+      var deviceToken = await PushNotificationService.getDeviceToken();
+      var platform = Platform.isAndroid ? "android" : "ios";
       var state = await authRepository.register(
           email: event.email,
           password: event.password,
-          username: event.username);
+          username: event.username,
+          deviceToken: deviceToken,
+          platform: platform);
       if (state is SuccessState) {
         emit(RegistrationSuccessState(response: state.value));
       } else if (state is ErrorState) {
@@ -64,8 +69,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       LoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoginLoadingState());
+      var deviceToken = await PushNotificationService.getDeviceToken();
+      var platform = Platform.isAndroid ? "android" : "ios";
       var state = await authRepository.login(
-          email: event.email, password: event.password);
+          email: event.email,
+          password: event.password,
+          deviceToken: deviceToken,
+          platform: platform);
       if (state is SuccessState) {
         emit(LoginSuccessState(response: state.value));
       } else if (state is ErrorState) {
@@ -181,8 +191,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-
-
   Future<FutureOr<void>> _mapForgotPasswordEventToState(
       ForgotPasswordEvent event, Emitter<AuthState> emit) async {
     emit(ForgotPasswordLoadingState());
@@ -190,7 +198,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       var state = await authRepository.forgot_password(event.email);
       if (state is SuccessState) {
         emit(ForgotPasswordSuccessState(response: state.value));
-      } if (state is ErrorState) {
+      }
+      if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
         emit(ForgotPasswordFailureState(error: errorModel.data));
       }

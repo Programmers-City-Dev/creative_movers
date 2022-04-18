@@ -88,6 +88,7 @@ dependencies:
   firebase_remote_config: ^2.0.4
   firebase_analytics: ^9.1.5
   flutter_local_notifications: ^9.4.0
+  uuid: ^3.0.6
 #  google_fonts: ^2.0.0
 
 dev_dependencies:

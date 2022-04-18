@@ -20,7 +20,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'connection_screen.dart';
 
 class CreativeForm extends StatefulWidget {
- final List<String> categories;
+  final List<String> categories;
   const CreativeForm({Key? key, required this.categories}) : super(key: key);
 
   @override
@@ -145,7 +145,8 @@ class _CreativeFormState extends State<CreativeForm> {
                                     deleteIcon: const Icon(Icons.close),
                                     onDeleted: () {
                                       setState(() {
-                                        selectedCategories.remove(selectedCategories[index]);
+                                        selectedCategories
+                                            .remove(selectedCategories[index]);
                                       });
                                     },
                                   )),
@@ -296,7 +297,9 @@ class _CreativeFormState extends State<CreativeForm> {
                     connections: state.accountTypeResponse.connect,
                     role: state.accountTypeResponse.userRole?.role,
                   )
-                : const PaymentScreen(),
+                : const PaymentScreen(
+                    isFirstTime: true,
+                  ),
           ),
           (route) => false);
     }

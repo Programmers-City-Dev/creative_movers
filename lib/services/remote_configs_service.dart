@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class RemoteConfigsService {
@@ -20,9 +22,10 @@ class RemoteConfigsService {
 
   Future<Map> retrieveSecrets() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
-    await remoteConfig.fetchAndActivate();
+    var res = await remoteConfig.fetchAndActivate();
     final Map<String, String> secrets = {
-      'stripe_publishable_key': remoteConfig.getString('stripe_publishable_key'),
+      'stripe_publishable_key':
+          remoteConfig.getString('stripe_publishable_key'),
       'stripe_secret_key': remoteConfig.getString('stripe_secret_key'),
       'one_signal_key': remoteConfig.getString('one_signal_key'),
     };

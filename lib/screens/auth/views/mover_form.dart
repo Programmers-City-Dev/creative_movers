@@ -47,7 +47,7 @@ class _MoverFormState extends State<MoverForm>
   ];
   List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
   String _groupValue = '';
-  String _preferedStage = '';
+  String _preferedStage = 'account_type';
   String? min = '';
   String? max = '';
   final _minController = TextEditingController();
@@ -394,7 +394,7 @@ class _MoverFormState extends State<MoverForm>
                     connections: state.accountTypeResponse.connect,
                     role: state.accountTypeResponse.userRole?.role,
                   )
-                : const PaymentScreen(),
+                : const PaymentScreen(isFirstTime: true,),
           ),
           (route) => false);
     }

@@ -37,7 +37,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         listener: (context, state) {
           _listenToAccountTypeState(context, state);
           // TODO: implement listener
-        //
+          //
         },
         child: Container(
           child: Column(
@@ -89,8 +89,10 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                       horizontal: 16)),
                               onPressed: () {
                                 Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(builder: (context) => const PaymentScreen()),
-                                        (route) => false);
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PaymentScreen()),
+                                    (route) => false);
                               },
                               child: Row(
                                 children: const [
@@ -174,7 +176,6 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     ));
   }
 
-
   void _listenToAccountTypeState(BuildContext context, AuthState state) {
     if (state is AddConnectionLoadingState) {
       AppUtils.showAnimatedProgressDialog(context);
@@ -188,7 +189,10 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     if (state is AddConnectionSuccesState) {
       Navigator.pop(context);
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const PaymentScreen()),
+          MaterialPageRoute(
+              builder: (context) => const PaymentScreen(
+                    isFirstTime: true,
+                  )),
           (route) => false);
     }
   }

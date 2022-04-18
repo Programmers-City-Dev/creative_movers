@@ -23,4 +23,6 @@ class StorageKeys {
   static const String sellerType = "sellerType";
 
   static const String firsTimeUser = "firstTimeUser";
+
+  static const String email = "email";
 }

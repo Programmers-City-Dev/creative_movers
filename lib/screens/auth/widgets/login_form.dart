@@ -234,6 +234,8 @@ class _LoginFormState extends State<LoginForm> {
     injector
         .get<CacheCubit>()
         .updateCachedUserData(CachedUser.fromMap(response.user.toMap()));
+        StorageHelper.setString(
+        StorageKeys.email, response.user.email.toString());
     StorageHelper.setString(
         StorageKeys.username, response.user.username.toString());
     StorageHelper.setString(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/di/injector.dart' as di;
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
@@ -24,7 +26,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   PushNotificationService.showBackgroundNotification(message);
 }
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -36,8 +37,11 @@ void main() async {
   var remoteConfigsService = await RemoteConfigsService.create();
   await remoteConfigsService.retrieveSecrets();
   await di.setup();
-  Stripe.publishableKey = FirebaseRemoteConfig.instance.getString("pk_test_51HQHG3IASx7Ij3gQDglAvu89M8PMCpIPtIbyppvbrzf5myLVRsCYUkBymrKVFhQydMZmoLE1x3D2tuGTdhCwjzEU00v928HQ6m");
-  var firstScreen = await AppUtils.getFirstScreen(); 
+  var stripeKey =
+      FirebaseRemoteConfig.instance.getString("stripe_publishable_key");
+  Stripe.publishableKey = stripeKey;
+  
+  var firstScreen = await AppUtils.getFirstScreen();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));
   runApp(MyApp(firstScreen));
