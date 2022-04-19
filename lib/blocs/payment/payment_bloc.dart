@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/data/remote/model/payment_history_data.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/subscription_response.dart';
@@ -23,6 +24,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     on<CreatePaymentIntentEvent>(_mapCreatePaymentIntentEventToState);
     on<MakePaymentEvent>(_mapMakePaymentEventToState);
     on<GetSubscriptionInfoEvent>(_mapGetSubscriptionInfoEventToState);
+    on<GetPaymentHistoryEvent>(_mapGetPaymentHistoryEventToState);
   }
 
   Future<Either<String, String>> makePayment(String secret) async {
@@ -128,6 +130,25 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     } catch (e) {
       emit(const SubscriptionLoadErrorState(
           "Could not load subscription data at the moment"));
+    }
+  }
+
+  FutureOr<void> _mapGetPaymentHistoryEventToState(
+      GetPaymentHistoryEvent event, Emitter<PaymentState> emit) async {
+    try {
+      emit(PaymentHistoryLoadingState());
+      var state = await repository.fetchPaymentHistory();
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(PaymentHistoryLoadErrorState(errorModel.errorMessage));
+      } else if (state is SuccessState) {
+        PaymentHistoryResponse response = state.value;
+        // log("RES:${response.user!.toMap()}");
+        emit(PaymentHistoryLoadedState(response));
+      }
+    } catch (e) {
+      emit(const PaymentHistoryLoadErrorState(
+          "Could not load payment history data at the moment"));
     }
   }
 }

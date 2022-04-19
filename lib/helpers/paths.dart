@@ -12,4 +12,5 @@ const profilePath = '/home/profile';
 const viewProfilePath = '/home/view-profile';
 const profileEditPath = '/home/profile-edit';
 const paymentPath = '/payment';
+const paymentHistoryPath = '/payment/history';
 const subscriptionPath = '/subscription';

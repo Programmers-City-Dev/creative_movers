@@ -3,12 +3,9 @@ import 'dart:developer';
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/auth/views/payment_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/contact_item.dart';
-import 'package:creative_movers/screens/main/home_screen.dart';
-import 'package:creative_movers/screens/widget/search_field.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +24,7 @@ class ConnectionScreen extends StatefulWidget {
 class _ConnectionScreenState extends State<ConnectionScreen> {
   bool isAdded = false;
   List<Connect> myConnects = [];
-  AuthBloc _authBloc = AuthBloc();
+  final AuthBloc _authBloc = AuthBloc();
 
   @override
   Widget build(BuildContext context) {

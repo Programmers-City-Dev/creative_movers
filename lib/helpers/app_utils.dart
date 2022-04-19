@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
@@ -17,6 +16,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class AppUtils {
   AppUtils._();
@@ -54,6 +54,10 @@ class AppUtils {
   static Future<String?> getUserId() async {
     String? userId = await StorageHelper.getString(StorageKeys.user_id);
     return userId;
+  }
+
+  static String capitalizeFirstCharacter(String s) {
+    return toBeginningOfSentenceCase(s)!;
   }
 
   static String getTime(DateTime dateTime) {
@@ -525,7 +529,19 @@ class AppUtils {
   }
 
   static String getDateAndTime(DateTime createdAt) {
-    return DateFormat.yMMMMd().format(createdAt);
+    return DateFormat("MMMM dd, yyyy hh:mm a").format(createdAt);
+  }
+
+  static String getGroupLabel(int groupByValue) {
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(groupByValue);
+    if (date.day == DateTime.now().day) {
+      return 'Today';
+    } else if (date.day == DateTime.now().day - 1) {
+      return 'Yesterday';
+    }
+
+    return DateFormat.yMMMEd()
+        .format(DateTime.fromMillisecondsSinceEpoch(groupByValue));
   }
 }
 

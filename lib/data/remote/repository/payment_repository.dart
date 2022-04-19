@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/payment_history_data.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/subscription_response.dart';
@@ -51,12 +52,12 @@ class PaymentRepository {
     );
   }
 
-Future<State> fetchActiveSubscription() async {
+  Future<State> fetchActiveSubscription() async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.activeSubscription),
       successResponse: (data) {
         return State<SubscriptionResponse?>.success(
-           SubscriptionResponse.fromMap(data));
+            SubscriptionResponse.fromMap(data));
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -79,5 +80,33 @@ Future<State> fetchActiveSubscription() async {
       },
     );
   }
-    
+
+  Future<State> fetchPaymentHistory() async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(Endpoints.paymentHistory),
+      successResponse: (data) {
+        return State<PaymentHistoryResponse?>.success(
+            PaymentHistoryResponse.fromMap(data));
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
 }

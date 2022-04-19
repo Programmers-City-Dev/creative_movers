@@ -55,3 +55,22 @@ class SubscriptionLoadErrorState extends PaymentState {
   @override
   List<Object> get props => [error];
 }
+
+
+class PaymentHistoryLoadingState extends PaymentState {}
+
+class PaymentHistoryLoadedState extends PaymentState {
+  final PaymentHistoryResponse data;
+
+  const PaymentHistoryLoadedState(this.data);
+
+  @override
+  List<Object> get props => [data];
+}
+
+class PaymentHistoryLoadErrorState extends PaymentState {
+  final String error;
+  const PaymentHistoryLoadErrorState(this.error);
+  @override
+  List<Object> get props => [error];
+}

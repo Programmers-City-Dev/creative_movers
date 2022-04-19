@@ -12,8 +12,8 @@ import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
-import 'package:creative_movers/screens/auth/views/payment_screen.dart';
-import 'package:creative_movers/screens/main/profile/views/active_subscription_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/active_subscription_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
@@ -232,7 +232,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(paymentHistoryPath);
+                            },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 8.0),
