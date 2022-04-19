@@ -39,6 +39,27 @@ class ProfilePhotoUpdatedState extends ProfileState {
   List<Object> get props => [photo, isProfilePhoto];
 }
 
+
+class ProfileUpdateLoading extends ProfileState {}
+
+class ProfileUpdateLoadedState extends ProfileState {
+  final User user;
+
+  const ProfileUpdateLoadedState({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
+class ProfileUpdateErrorState extends ProfileState {
+  final String error;
+
+  const ProfileUpdateErrorState(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
 class UsernameFetchedState extends ProfileState {
   final String username;
 
@@ -47,3 +68,16 @@ class UsernameFetchedState extends ProfileState {
   @override
   List<Object> get props => [username];
 }
+
+
+
+
+// class ProfilePhotoUpdatedState extends ProfileState {
+//   final String photo;
+//   final bool isProfilePhoto;
+//
+//   const ProfilePhotoUpdatedState(this.photo, this.isProfilePhoto);
+//
+//   @override
+//   List<Object> get props => [photo, isProfilePhoto];
+// }

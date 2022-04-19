@@ -30,3 +30,31 @@ class UpdateProfilePhotoEvent extends ProfileEvent {
   @override
   List<Object> get props => [imagePath, isProfilePhoto!];
 }
+
+class UpdateProfileEvent extends ProfileEvent {
+  final String? imagePath;
+  final bool? isProfilePhoto;
+  final String? phone;
+  final String? email;
+  final String? gender;
+  final String? dateOfBirth;
+  final String? ethnicity;
+  final String? country;
+  final String? state;
+
+  UpdateProfileEvent(
+      {this.imagePath,
+      this.isProfilePhoto,
+      this.phone,
+      this.email,
+      this.gender,
+      this.dateOfBirth,
+      this.ethnicity,
+      this.country,
+      this.state});
+
+  @override
+  List<Object> get props => [
+
+      ];
+}

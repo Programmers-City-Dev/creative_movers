@@ -50,6 +50,8 @@ class Endpoints {
       '${ApiConstants.BASE_URL}api/user/update-profile-image';
   static const profileCoverImageEndpoint =
       '${ApiConstants.BASE_URL}api/user/update-cover-image';
+  static const updateProfileEndpoint =
+      '${ApiConstants.BASE_URL}api/user/update-profile';
 
   // static const pending_request_endpoint = '${ApiConstants.BASE_URL}api/connections/fetch-all-pending';
   // static const request_react_endpoint = '${ApiConstants.BASE_URL}api/connections/react';
