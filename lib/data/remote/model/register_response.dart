@@ -71,6 +71,8 @@ class User {
     this.following,
     this.connections,
     this.country,
+    this.state,
+    this.dateOfbirth,
   });
 
   final int id;
@@ -88,6 +90,7 @@ class User {
   final String? biodata;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final DateTime? dateOfbirth;
   final String? apiToken;
   final String? coverPhotoPath;
   final  dynamic countryId;
@@ -95,6 +98,7 @@ class User {
   final List<dynamic>? following;
   final List<dynamic>? connections;
   final  dynamic country;
+  final  dynamic state;
 
 
   User copyWith({

@@ -1,28 +1,27 @@
-import 'package:creative_movers/blocs/profile/profile_bloc.dart';
-import 'package:creative_movers/blocs/profile/profile_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
+import '../../../../blocs/profile/profile_bloc.dart';
 import '../../../../di/injector.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
 
-class EditPhoneNumberDialog extends StatefulWidget {
+class EditEmailDialog extends StatefulWidget {
   final VoidCallback onSuccess;
-  const EditPhoneNumberDialog({Key? key, required this.onSuccess}) : super(key: key);
+  const EditEmailDialog({Key? key, required this.onSuccess}) : super(key: key);
 
   @override
-  _EditPhoneNumberDialogState createState() => _EditPhoneNumberDialogState();
+  _EditEmailDialogState createState() => _EditEmailDialogState();
 }
 
-class _EditPhoneNumberDialogState extends State<EditPhoneNumberDialog> {
-  final _phoneNumberController = TextEditingController();
-  final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
-  final _profileBloc = ProfileBloc(injector.get());
+final _emailController = TextEditingController();
+final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
+final _profileBloc = ProfileBloc(injector.get());
 
-
+class _EditEmailDialogState extends State<EditEmailDialog> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
@@ -38,7 +37,7 @@ class _EditPhoneNumberDialogState extends State<EditPhoneNumberDialog> {
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
           AppUtils.showCustomToast(
-              "Phone number has been updated successfully");
+              "Email has been updated successfully");
           // _updateProfile(
           //     state.photo, state.isProfilePhoto);
         }
@@ -70,7 +69,7 @@ class _EditPhoneNumberDialogState extends State<EditPhoneNumberDialog> {
                 height: 15,
               ),
               const Text(
-                'Edit phone number',
+                'Edit email',
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
               ),
               const SizedBox(
@@ -88,20 +87,20 @@ class _EditPhoneNumberDialogState extends State<EditPhoneNumberDialog> {
                   key: _fieldKey,
                   child: TextFormField(
                     validator: MultiValidator([
-                      RequiredValidator(errorText: 'Enter phone number'),
-                      // EmailValidator(errorText: 'Enter a valid email'),
+                      RequiredValidator(errorText: 'Enter your email'),
+                      EmailValidator(errorText: 'Enter a valid email'),
                     ]),
 
-                    controller: _phoneNumberController,
+                    controller: _emailController,
                     cursorColor: AppColors.textColor,
                     decoration: const InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         focusedBorder: OutlineInputBorder(),
                         prefixIcon: Icon(
-                          Icons.phone,
+                          Icons.mail,
                           color: AppColors.textColor,
                         ),
-                        hintText: 'Enter your phone number',
+                        hintText: 'Enter your email',
                         border: OutlineInputBorder()),
                   ),
                 ),
@@ -112,7 +111,7 @@ class _EditPhoneNumberDialogState extends State<EditPhoneNumberDialog> {
               CustomButton(
                 onTap: () {
                   if (_fieldKey.currentState!.validate()) {
-                    _profileBloc.add(UpdateProfileEvent(phone: _phoneNumberController.text));
+                    _profileBloc.add(UpdateProfileEvent(email: _emailController.text));
                     // _authBloc.add(ForgotPasswordEvent(email: _phoneNumberController.text));
 
                   }

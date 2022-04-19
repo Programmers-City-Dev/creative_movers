@@ -39,6 +39,7 @@ dependencies:
   dropdown_search: ^2.0.1
   dropdown_plus: ^0.0.9
   image_stack: ^2.1.0
+  syncfusion_flutter_datepicker: ^20.1.50
 
 
   # The following adds the Cupertino Icons font to your application.
