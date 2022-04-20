@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
@@ -17,6 +16,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class AppUtils {
   AppUtils._();
@@ -50,14 +50,19 @@ class AppUtils {
     String? username = await StorageHelper.getString(StorageKeys.username);
     return username;
   }
+
   static Future<String?> getUserId() async {
     String? userId = await StorageHelper.getString(StorageKeys.user_id);
     return userId;
   }
 
+  static String capitalizeFirstCharacter(String s) {
+    return toBeginningOfSentenceCase(s)!;
+  }
+
   static String getTime(DateTime dateTime) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    
+
     // DateTime dateTime = DateTime.parse(date);
     Duration duration = DateTime.now().difference(dateTime);
 
@@ -66,7 +71,6 @@ class AppUtils {
     log(formatter.format(DateTime.now()));
 
     if (duration.inMinutes < 1) {
-
       return ' ${duration.inSeconds.toString()} secs ago';
     } else if (duration.inHours < 1) {
       return ' ${duration.inMinutes.toString()} mins ago';
@@ -79,7 +83,9 @@ class AppUtils {
         return '${duration.inDays.toString()} day ago';
       }
     } else if (years < 1) {
-      return  months<2 ?'${months.round().toString()} month ago':'${months.round().toString()} months ago';
+      return months < 2
+          ? '${months.round().toString()} month ago'
+          : '${months.round().toString()} months ago';
     } else {
       return '${years.toString()} years ago';
     }
@@ -348,7 +354,9 @@ class AppUtils {
     );
   }
 
-  static void showStoryDialog(BuildContext context,) {
+  static void showStoryDialog(
+    BuildContext context,
+  ) {
     showDialog(
       context: context,
       builder: (context) {
@@ -518,6 +526,22 @@ class AppUtils {
     } catch (e) {
       return [];
     }
+  }
+
+  static String getDateAndTime(DateTime createdAt) {
+    return DateFormat("MMMM dd, yyyy hh:mm a").format(createdAt);
+  }
+
+  static String getGroupLabel(int groupByValue) {
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(groupByValue);
+    if (date.day == DateTime.now().day) {
+      return 'Today';
+    } else if (date.day == DateTime.now().day - 1) {
+      return 'Yesterday';
+    }
+
+    return DateFormat.yMMMEd()
+        .format(DateTime.fromMillisecondsSinceEpoch(groupByValue));
   }
 }
 

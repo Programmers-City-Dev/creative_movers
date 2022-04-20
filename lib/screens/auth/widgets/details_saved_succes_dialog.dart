@@ -52,7 +52,8 @@ class _DetailsSavedDialogState extends State<DetailsSavedDialog> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 decoration: BoxDecoration(
                     color: AppColors.chipsColor,
                     borderRadius: BorderRadius.circular(15)),
@@ -61,34 +62,49 @@ class _DetailsSavedDialogState extends State<DetailsSavedDialog> {
                   style: TextStyle(color: AppColors.smokeWhite),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               const Text(
                 'Your one month trial period have been activated and you have moved to the front now.',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.textColor),
               ),
-              const SizedBox(height: 16,),
+              const SizedBox(
+                height: 16,
+              ),
               Row(
                 children: [
                   Expanded(
-
                       child: OutlinedButton(
-
-                        style: OutlinedButton.styleFrom(
-                          primary: AppColors.primaryColor,
-                            side:const BorderSide(color: AppColors.primaryColor) ,
-                            padding: const EdgeInsets.all(16)),
-                        onPressed: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(),));
-                        }, child:const Text("Finalize Your Profile",style: TextStyle(color: AppColors.primaryColor),),)),
+                    style: OutlinedButton.styleFrom(
+                        primary: AppColors.primaryColor,
+                        side: const BorderSide(color: AppColors.primaryColor),
+                        padding: const EdgeInsets.all(16)),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ));
+                    },
+                    child: const Text(
+                      "Finalize Your Profile",
+                      style: TextStyle(color: AppColors.primaryColor),
+                    ),
+                  )),
                 ],
               ),
               // CustomButton(onTap: (){},child: Text("Finalize Your Profile"),),
-               const SizedBox(height: 10,),
-               CustomButton(onTap: (){
-                 
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(),));
-               },child: const Text("Start Exploring"),)
+              const SizedBox(
+                height: 10,
+              ),
+              CustomButton(
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      (route) => false);
+                },
+                child: const Text("Start Exploring"),
+              )
             ],
           ),
         ),

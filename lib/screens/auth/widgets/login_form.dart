@@ -15,7 +15,7 @@ import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/auth/views/forgot_password_modal.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
-import 'package:creative_movers/screens/auth/views/payment_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
@@ -234,6 +234,8 @@ class _LoginFormState extends State<LoginForm> {
     injector
         .get<CacheCubit>()
         .updateCachedUserData(CachedUser.fromMap(response.user.toMap()));
+        StorageHelper.setString(
+        StorageKeys.email, response.user.email.toString());
     StorageHelper.setString(
         StorageKeys.username, response.user.username.toString());
     StorageHelper.setString(

@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter: 
     sdk: flutter
+  in_app_update: ^3.0.0
   flutter_svg: ^0.23.0+1
   modal_bottom_sheet: ^2.0.0
   pin_code_fields: ^7.3.0
@@ -83,6 +84,14 @@ dependencies:
     git:
       url: https://github.com/bluefireteam/photo_view
       ref: master
+  rename: ^2.0.1
+  firebase_core: ^1.14.1
+  firebase_messaging: ^11.2.13
+  firebase_remote_config: ^2.0.4
+  firebase_analytics: ^9.1.5
+  flutter_local_notifications: ^9.4.0
+  uuid: ^3.0.6
+  grouped_list: ^4.1.0
 #  google_fonts: ^2.0.0
 
 dev_dependencies:
