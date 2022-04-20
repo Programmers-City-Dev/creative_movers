@@ -2,7 +2,7 @@
 //
 //     final cachedUser = cachedUserFromMap(jsonString);
 class CachedUser {
-  CachedUser({
+  CachedUser( {
     required this.id,
     this.firstname,
     this.lastname,
@@ -20,7 +20,9 @@ class CachedUser {
     this.status,
     this.createdAt,
     this.updatedAt,
+    this.dateOfBirth,
     this.apiToken,
+    this.country, this.state,
   });
 
   final int id;
@@ -41,6 +43,9 @@ class CachedUser {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? apiToken;
+  final String? country;
+  final String? state;
+  final DateTime? dateOfBirth;
 
   CachedUser copyWith({
     int? id,
@@ -61,6 +66,9 @@ class CachedUser {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? apiToken,
+     String? country,
+    String? state,
+     DateTime? dateOfBirth
   }) =>
       CachedUser(
         id: id ?? this.id,
@@ -81,6 +89,9 @@ class CachedUser {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         apiToken: apiToken ?? this.apiToken,
+        country: country ?? this.country,
+        state: state ?? this.state,
+        dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       );
 
   factory CachedUser.fromMap(Map<String, dynamic> json) => CachedUser(
@@ -111,6 +122,9 @@ class CachedUser {
             ? null
             : DateTime.parse(json["updated_at"]),
         apiToken: json["api_token"] == null ? null : json["api_token"],
+        dateOfBirth: json["date_of_birth"] == null ? null : json["date_of_birth"],
+        country: json["country"] == null ? null : json["country"],
+        state: json["state"] == null ? null : json["state"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -134,6 +148,9 @@ class CachedUser {
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "api_token": apiToken == null ? null : apiToken,
+    "date_of_birth": dateOfBirth == null ? null : dateOfBirth!.toIso8601String(),
+    "country": country == null ? null : country,
+    "state": state == null ? null : state,
       };
 
   String get fullname => '$firstname $lastname';

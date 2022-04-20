@@ -51,7 +51,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     } catch (e) {
       emit(const ProfileErrorState(
-          "Oops! Something went wrong, please try agin"));
+          "Oops! Something went wrong, please try again"));
     }
   }
 
@@ -71,7 +71,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch (e) {
       log("EXCEPTION: $e");
       emit(const ProfileErrorState(
-          "Oops! Something went wrong, please try agin"));
+          "Oops! Something went wrong, please try again"));
     }
   }
 
@@ -89,7 +89,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         country: event.country);
     if (state is SuccessState) {
       UpdateProfileResponse response = state.value;
-      emit(ProfileUpdateLoadedState(user: response.user));
+      emit(ProfileUpdateLoadedState(updateProfileResponse: response));
     }
     if (state is ErrorState) {
       ServerErrorModel errorModel = state.value;

@@ -1,13 +1,17 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
+import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/main/profile/views/edit_email_dialog.dart';
+import 'package:creative_movers/screens/main/profile/views/edit_fullname_dialog.dart';
+import 'package:creative_movers/screens/main/profile/views/edit_gender_dialog.dart';
 import 'package:creative_movers/screens/main/profile/views/edit_phone_number_dialog.dart';
 import 'package:creative_movers/screens/main/profile/views/edit_state_dialog.dart';
 import 'package:creative_movers/screens/main/profile/widgets/options_item_widget.dart';
@@ -62,12 +66,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         context: context,
         helpText: 'DATE OF BIRTH',
         initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        _profileBloc.add(UpdateProfileEvent(dateOfBirth: selectedDate.toString()));
+        _profileBloc.add(UpdateProfileEvent(dateOfBirth: selectedDate));
         log(picked.toString());
       });
     }
@@ -194,15 +198,48 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 5.0),
-                                child: Text(
-                                  user.fullname,
-                                  style: const TextStyle(
-                                      color: Color(0xFF363636),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Center(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 5.0),
+                                        child: Text(
+                                          user.fullname,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: Color(0xFF363636),
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      showMaterialModalBottomSheet(
+                                        context: context,
+                                        builder: (context) {
+                                          return BackdropFilter(
+                                            filter:
+                                            ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                            child: EditFullnameDialog(
+                                              onSuccess: () {
+                                                Navigator.pop(context);
+                                                _updateUserProfile();
+                                              },
+                                            ),
+                                          );
+                                        },
+                                        shape: const RoundedRectangleBorder(),
+                                        // clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      );
+                                    },
+                                    child: const Icon(Icons.edit_outlined,
+                                        color: AppColors.black, size: 20),
+                                  )
+                                ],
                               ),
                               const Flexible(
                                 child: Text(
@@ -332,6 +369,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditPhoneNumberDialog(
                                       onSuccess: () {
+                                        _updateUserProfile();
+
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -367,9 +406,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     filter:
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditEmailDialog(
-                                      onSuccess: () {
+                                      onSuccess: (updatedUser) {
+                                        setState(() {
+                                          user = user.copyWith(email: updatedUser.email);
+                                          log(user.email!);
+
+                                        });
                                         Navigator.pop(context);
-                                      },
+                                      }, initialEmail: user.email
                                     ),
                                   );
                                 },
@@ -388,41 +432,40 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               // );
                             },
                           ),
-                          const OptionsItemWidget(
+                          OptionsItemWidget(
                             title: 'Gender',
                             subtitle: "Male",
-                            // onPressed: () {
-                            //   showMaterialModalBottomSheet(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return BackdropFilter(
-                            //         filter:
-                            //             ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                            //         child: EditPhoneNumberDialog(
-                            //           onSuccess: () {
-                            //             Navigator.pop(context);
-                            //           },
-                            //         ),
-                            //       );
-                            //     },
-                            //     shape: const RoundedRectangleBorder(),
-                            //     // clipBehavior: Clip.antiAliasWithSaveLayer,
-                            //   );
-                            // },
+                            onPressed: () {
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 5, sigmaY: 5),
+                                      child: EditGenderDialog(
+                                        onSuccess: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ));
+                                },
+                                shape: const RoundedRectangleBorder(),
+                                // clipBehavior: Clip.antiAliasWithSaveLayer,
+                              );
+                            },
                           ),
                           BlocListener<ProfileBloc, ProfileState>(
                             bloc: _profileBloc,
                             listener: (context, state) {
                               if (state is ProfileUpdateLoading) {
-                                AppUtils.showAnimatedProgressDialog(
-                                    context,
+                                AppUtils.showAnimatedProgressDialog(context,
                                     title: "Updating, please wait...");
                               }
                               if (state is ProfileUpdateLoadedState) {
-
                                 // setState(() {
                                 //
                                 // });
+                                _updateUserProfile();
+
                                 Navigator.of(context).pop();
                                 // AppUtils.cancelAllShowingToasts();
                                 AppUtils.showCustomToast(
@@ -441,16 +484,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               //profile.dateOfBirth,
                               onPressed: () {
                                 _selectDate(context);
-                                // showDialog(
-                                //   context: context,
-                                //   builder: (context) {
-                                //     return BlocProvider<ProfileEditCubit>(
-                                //       create: (context) =>
-                                //           di.injector<ProfileEditCubit>(),
-                                //       child: CalendarPopup(),
-                                //     );
-                                //   },
-                                // );
                               },
                             ),
                           ),
@@ -465,9 +498,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     filter:
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditEthnicityDialog(
-                                      onSuccess: () {
+                                      onSuccess: (updatedUser) {
+                                        _updateUserProfile();
+
+                                        setState(() {
+                                          user = user.copyWith(country: updatedUser.country );
+                                        });
                                         Navigator.pop(context);
-                                      },
+                                      }, initialEthnicity: user.country,
                                     ),
                                   );
                                 },
@@ -502,7 +540,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           OptionsItemWidget(
                             title: 'Country',
-                            subtitle: 'Nigeria',
+                            subtitle: user.country?? 'None',
                             onPressed: () {
                               showMaterialModalBottomSheet(
                                 context: context,
@@ -511,9 +549,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     filter:
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditCountryDialog(
-                                      onSuccess: () {
+                                      onSuccess: (updatedUser) {
+                                        _updateUserProfile();
+
+                                        setState(() {
+                                          user = user.copyWith(country: updatedUser.country );
+                                        });
                                         Navigator.pop(context);
-                                      },
+                                      }, initialCountry: user.country,
                                     ),
                                   );
                                 },
@@ -545,6 +588,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditStateDialog(
                                       onSuccess: () {
+                                        _updateUserProfile();
+
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -603,6 +648,30 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       print(e);
     }
   }
+
+
+
+  Future<void> _updateUserProfile() async {
+    try {
+      // var list = await injector.get<CacheCachedUserDao>().getAllCache();
+      // if (isProfilePhoto) {
+      //   injector
+      //       .get<CacheCubit>()
+      //       .updateCachedUserData(list.first.copyWith(profilePhotoPath: photo));
+      // } else {
+      //   var user = list.first.copyWith(coverPhotoPath: photo);
+      //   log("USER DATA: ${user.toMap()}");
+      //
+      //   // log("COVER RETURNED WITH: $photo");
+      //   injector.get<CacheCubit>().updateCachedUserData(user);
+      // }
+
+      injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   void _showImageSelectionDialog(
     BuildContext context,

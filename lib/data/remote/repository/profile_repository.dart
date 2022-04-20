@@ -303,10 +303,12 @@ class ProfileRepository {
       String? phone,
       String? email,
       String? gender,
-      String? dateOfBirth,
+      DateTime? dateOfBirth,
       String? ethnicity,
       String? country,
-      String? state
+        String? state,
+        String? firstNAme,
+        String? lastName
       }) async {
     String url = Endpoints.updateProfileEndpoint;
     FormData formData = FormData.fromMap({
@@ -320,6 +322,8 @@ class ProfileRepository {
       "ethnicity":ethnicity,
       "country":country,
       "state":state,
+      "first_name":firstNAme,
+      "last_name":lastName,
     });
     return SimplifyApiConsuming.makeRequest(
           () => httpClient.post(url, body: formData),
