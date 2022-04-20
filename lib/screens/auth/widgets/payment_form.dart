@@ -37,7 +37,7 @@ class _PaymentFormState extends State<PaymentForm> {
     return Form(
       child: Container(
         padding: const EdgeInsets.all(20),
-        height: MediaQuery.of(context).size.height * 0.8,
+        height: MediaQuery.of(context).size.height * 0.7,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
             color: AppColors.white,
@@ -59,6 +59,7 @@ class _PaymentFormState extends State<PaymentForm> {
               height: 18,
             ),
             PaymentOptionsWidget(
+              includeTrial: widget.isFirstTime,
               onSelected: (type, amount, duration) {
                 paymentType = type;
                 paymentAmount = amount;
@@ -156,59 +157,63 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedIndex = 0;
-              widget.onSelected('paid', "7", "monthly");
-            });
-          },
-          child: PaymentOptionCard(
-            selected: selectedIndex == 0,
-            title: '\$7.00 / Month',
-            description:
-                'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.5,
+      child: ListView(
+        // shrinkWrap: true,
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedIndex = 0;
+                widget.onSelected('paid', "7", "monthly");
+              });
+            },
+            child: PaymentOptionCard(
+              selected: selectedIndex == 0,
+              title: '\$7.00 / Month',
+              description:
+                  'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedIndex = 1;
-              widget.onSelected('paid', "77", "yearly");
-            });
-          },
-          child: PaymentOptionCard(
-            selected: selectedIndex == 1,
-            title: '\$77.00 / Year',
-            description:
-                'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
+          const SizedBox(
+            height: 16,
           ),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        widget.includeTrial
-            ? GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedIndex = 2;
-                    widget.onSelected('trial', "0", "free");
-                  });
-                },
-                child: PaymentOptionCard(
-                  selected: selectedIndex == 2,
-                  title: '9 DAY FREE TRIAL',
-                  description:
-                      'Try and experience our features for 9 days and then you can pay for the full version.\n',
-                ),
-              )
-            : const SizedBox.shrink()
-      ],
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedIndex = 1;
+                widget.onSelected('paid', "77", "yearly");
+              });
+            },
+            child: PaymentOptionCard(
+              selected: selectedIndex == 1,
+              title: '\$77.00 / Year',
+              description:
+                  'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          widget.includeTrial
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = 2;
+                      widget.onSelected('trial', "0", "free");
+                    });
+                  },
+                  child: PaymentOptionCard(
+                    selected: selectedIndex == 2,
+                    title: '9 DAY FREE TRIAL',
+                    description:
+                        'Try and experience our features for 9 days and then you can pay for the full version.\n',
+                  ),
+                )
+              : const SizedBox.shrink()
+        ],
+      ),
     );
   }
 }

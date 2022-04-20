@@ -6,6 +6,7 @@ import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/model/update_profile_response.dart';
 import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
@@ -27,8 +28,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UpdateProfileEvent>(_mapUpdateProfileEventToState);
   }
 
-  FutureOr<void> _mapGetUsernameToState(GetUsernameEvent event,
-      Emitter<ProfileState> emit) async {
+  FutureOr<void> _mapGetUsernameToState(
+      GetUsernameEvent event, Emitter<ProfileState> emit) async {
     var s = await StorageHelper.getString(StorageKeys.username);
     username = s!;
     var firstName = await StorageHelper.getString(StorageKeys.firstname);
@@ -36,8 +37,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(UsernameFetchedState(username));
   }
 
-  FutureOr<void> _mapFetchUserProfileEventToEvent(FetchUserProfileEvent event,
-      Emitter<ProfileState> emit) async {
+  FutureOr<void> _mapFetchUserProfileEventToEvent(
+      FetchUserProfileEvent event, Emitter<ProfileState> emit) async {
     try {
       emit(ProfileLoading());
       var state = await profileRepository.fetchUserProfile(event.userId);
@@ -74,31 +75,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-
-  FutureOr<void> _mapUpdateProfileEventToState(UpdateProfileEvent event,
-      Emitter<ProfileState> emit) async {
-    try {
-      emit(ProfileUpdateLoading());
-      var state = await profileRepository.updateProfile(
-          email: event.email,
-          phone: event.phone,
-          gender: event.gender,
-          dateOfBirth: event.dateOfBirth,
-          ethnicity: event.ethnicity,
-          imagePath
-          :event.imagePath,
-          country: event.country);
-      if (state is SuccessState) {
-        emit(ProfileUpdateLoadedState(user: state.value));
-      }
-      if (state is ErrorState) {
-        ServerErrorModel errorModel = state.value;
-        emit(ProfileUpdateErrorState(errorModel.errorMessage));
-      }
-    } catch (e) {
-      log("EXCEPTION: $e");
-      emit(const ProfileUpdateErrorState(
-          "Oops! Something went wrong, please try again"));
+  FutureOr<void> _mapUpdateProfileEventToState(
+      UpdateProfileEvent event, Emitter<ProfileState> emit) async {
+    // try {
+    emit(ProfileUpdateLoading());
+    var state = await profileRepository.updateProfile(
+        email: event.email,
+        phone: event.phone,
+        gender: event.gender,
+        dateOfBirth: event.dateOfBirth,
+        ethnicity: event.ethnicity,
+        imagePath: event.imagePath,
+        country: event.country);
+    if (state is SuccessState) {
+      UpdateProfileResponse response = state.value;
+      emit(ProfileUpdateLoadedState(user: response.user));
     }
+    if (state is ErrorState) {
+      ServerErrorModel errorModel = state.value;
+      emit(ProfileUpdateErrorState(errorModel.errorMessage));
+    }
+    // } catch (e) {
+    //   log("EXCEPTION: $e");
+    //   emit(const ProfileUpdateErrorState(
+    //       "Oops! Something went wrong, please try again"));
+    // }
   }
 }
