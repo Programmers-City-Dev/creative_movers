@@ -51,7 +51,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     } catch (e) {
       emit(const ProfileErrorState(
-          "Oops! Something went wrong, please try agin"));
+          "Oops! Something went wrong, please try again"));
     }
   }
 

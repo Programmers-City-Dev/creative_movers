@@ -227,6 +227,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                             child: EditFullnameDialog(
                                               onSuccess: () {
                                                 Navigator.pop(context);
+                                                _updateUserProfile();
                                               },
                                             ),
                                           );
@@ -368,6 +369,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditPhoneNumberDialog(
                                       onSuccess: () {
+                                        _updateUserProfile();
+
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -461,6 +464,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 // setState(() {
                                 //
                                 // });
+                                _updateUserProfile();
+
                                 Navigator.of(context).pop();
                                 // AppUtils.cancelAllShowingToasts();
                                 AppUtils.showCustomToast(
@@ -494,6 +499,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditEthnicityDialog(
                                       onSuccess: (updatedUser) {
+                                        _updateUserProfile();
+
                                         setState(() {
                                           user = user.copyWith(country: updatedUser.country );
                                         });
@@ -543,6 +550,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditCountryDialog(
                                       onSuccess: (updatedUser) {
+                                        _updateUserProfile();
+
                                         setState(() {
                                           user = user.copyWith(country: updatedUser.country );
                                         });
@@ -579,6 +588,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditStateDialog(
                                       onSuccess: () {
+                                        _updateUserProfile();
+
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -637,6 +648,30 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       print(e);
     }
   }
+
+
+
+  Future<void> _updateUserProfile() async {
+    try {
+      // var list = await injector.get<CacheCachedUserDao>().getAllCache();
+      // if (isProfilePhoto) {
+      //   injector
+      //       .get<CacheCubit>()
+      //       .updateCachedUserData(list.first.copyWith(profilePhotoPath: photo));
+      // } else {
+      //   var user = list.first.copyWith(coverPhotoPath: photo);
+      //   log("USER DATA: ${user.toMap()}");
+      //
+      //   // log("COVER RETURNED WITH: $photo");
+      //   injector.get<CacheCubit>().updateCachedUserData(user);
+      // }
+
+      injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   void _showImageSelectionDialog(
     BuildContext context,
