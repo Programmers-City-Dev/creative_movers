@@ -3,13 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 import '../../../../blocs/profile/profile_bloc.dart';
+import '../../../../data/remote/model/register_response.dart';
 import '../../../../di/injector.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
 class EditEthnicityDialog extends StatefulWidget {
-  final VoidCallback onSuccess;
-  const EditEthnicityDialog({Key? key, required this.onSuccess}) : super(key: key);
+  final Function(User user ) onSuccess;
+  final String? initialEthnicity;
+  const EditEthnicityDialog({Key? key, required this.onSuccess, this.initialEthnicity}) : super(key: key);
 
   @override
   _EditEthnicityDialogState createState() => _EditEthnicityDialogState();
@@ -19,6 +21,12 @@ final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
 final _profileBloc = ProfileBloc(injector.get());
 
 class _EditEthnicityDialogState extends State<EditEthnicityDialog> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _ethnicityController.text = widget.initialEthnicity ?? '';
+  }
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
@@ -30,7 +38,7 @@ class _EditEthnicityDialogState extends State<EditEthnicityDialog> {
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
-          widget.onSuccess();
+          widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
           AppUtils.showCustomToast(

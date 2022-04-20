@@ -43,12 +43,12 @@ class ProfilePhotoUpdatedState extends ProfileState {
 class ProfileUpdateLoading extends ProfileState {}
 
 class ProfileUpdateLoadedState extends ProfileState {
-  final User user;
+  final UpdateProfileResponse updateProfileResponse;
 
-  const ProfileUpdateLoadedState({required this.user});
+  const ProfileUpdateLoadedState({required this.updateProfileResponse});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [updateProfileResponse];
 }
 
 class ProfileUpdateErrorState extends ProfileState {

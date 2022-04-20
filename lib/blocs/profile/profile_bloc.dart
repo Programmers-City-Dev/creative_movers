@@ -6,6 +6,7 @@ import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/model/update_profile_response.dart';
 import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
@@ -70,7 +71,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch (e) {
       log("EXCEPTION: $e");
       emit(const ProfileErrorState(
-          "Oops! Something went wrong, please try agin"));
+          "Oops! Something went wrong, please try again"));
     }
   }
 
@@ -89,7 +90,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           :event.imagePath,
           country: event.country);
       if (state is SuccessState) {
-        emit(ProfileUpdateLoadedState(user: state.value));
+        emit(ProfileUpdateLoadedState(updateProfileResponse: state.value));
+        log(state.value.toString());
       }
       if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
