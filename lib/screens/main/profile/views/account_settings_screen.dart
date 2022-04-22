@@ -1,27 +1,20 @@
-import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
-import 'package:creative_movers/data/remote/model/logout_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
-import 'package:creative_movers/screens/main/payment/views/active_subscription_screen.dart';
-import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/screens/widget/widget_network_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AccountSettingsScreen extends StatefulWidget {

@@ -1,3 +1,8 @@
+import 'dart:developer';
+
+import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -7,20 +12,35 @@ import '../../../../di/injector.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
+
 class EditFullnameDialog extends StatefulWidget {
- final VoidCallback onSuccess;
-  const EditFullnameDialog({Key? key, required this.onSuccess}) : super(key: key);
+  final Function(User) onSuccess;
+  final String firstName;
+  final String lastName;
+
+  const EditFullnameDialog({
+    Key? key,
+    required this.onSuccess,
+    required this.firstName,
+    required this.lastName,
+  }) : super(key: key);
 
   @override
   _EditFullnameDialogState createState() => _EditFullnameDialogState();
 }
 
 class _EditFullnameDialogState extends State<EditFullnameDialog> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
   final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
   final _profileBloc = ProfileBloc(injector.get());
 
+  @override
+  void initState() {
+    super.initState();
+    _firstNameController = TextEditingController(text: widget.firstName);
+    _lastNameController = TextEditingController(text: widget.lastName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +48,17 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
       bloc: _profileBloc,
       listener: (context, state) {
         if (state is ProfileUpdateLoading) {
-          AppUtils.showAnimatedProgressDialog(
-              context,
+          AppUtils.showAnimatedProgressDialog(context,
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
-          widget.onSuccess();
+          widget.onSuccess(state.updateProfileResponse.user);
+          log("USER UPDATE: ${state.updateProfileResponse.user.toMap()}");
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
-          AppUtils.showCustomToast(
-              "Name has been updated successfully");
+          AppUtils.showCustomToast("Name has been updated successfully");
+          StorageHelper.setString(
+              StorageKeys.firstname, _firstNameController.text);
           // _updateProfile(
           //     state.photo, state.isProfilePhoto);
         }
@@ -47,7 +68,6 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
         }
       },
       child: Container(
-
         child: Container(
           padding: const EdgeInsets.all(30),
           decoration: const BoxDecoration(
@@ -58,13 +78,12 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Center(
                   child: Container(
-                    color: Colors.grey,
-                    width: 100,
-                    height: 2.5,
-                  )),
+                color: Colors.grey,
+                width: 100,
+                height: 2.5,
+              )),
               const SizedBox(
                 height: 15,
               ),
@@ -75,14 +94,9 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
               const SizedBox(
                 height: 10,
               ),
-
               Padding(
                 padding: EdgeInsets.only(
-
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Form(
                   key: _fieldKey,
                   child: Column(
@@ -92,7 +106,6 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
                           RequiredValidator(errorText: 'Enter your first name'),
                           // EmailValidator(errorText: 'Enter a valid email'),
                         ]),
-
                         controller: _firstNameController,
                         cursorColor: AppColors.textColor,
                         decoration: const InputDecoration(
@@ -105,13 +118,14 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
                             hintText: 'Update FirstName',
                             border: OutlineInputBorder()),
                       ),
-                      SizedBox(height: 16,),
+                      SizedBox(
+                        height: 16,
+                      ),
                       TextFormField(
                         validator: MultiValidator([
                           RequiredValidator(errorText: 'Enter your last name'),
                           // EmailValidator(errorText: 'Enter a valid email'),
                         ]),
-
                         controller: _lastNameController,
                         cursorColor: AppColors.textColor,
                         decoration: const InputDecoration(
@@ -134,7 +148,9 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
               CustomButton(
                 onTap: () {
                   if (_fieldKey.currentState!.validate()) {
-                    _profileBloc.add(UpdateProfileEvent(firstName: _firstNameController.text,lastName: _lastNameController.text));
+                    _profileBloc.add(UpdateProfileEvent(
+                        firstName: _firstNameController.text,
+                        lastName: _lastNameController.text));
                     // _authBloc.add(ForgotPasswordEvent(email: _phoneNumberController.text));
 
                   }

@@ -1,3 +1,5 @@
+import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/model/update_profile_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -8,7 +10,7 @@ import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
 class EditStateDialog extends StatefulWidget {
-  final VoidCallback onSuccess;
+  final Function(User) onSuccess;
   const EditStateDialog({Key? key, required this.onSuccess}) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class _EditStateDialogState extends State<EditStateDialog> {
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
-          widget.onSuccess();
+          widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
           AppUtils.showCustomToast(

@@ -26,6 +26,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<FetchUserProfileEvent>(_mapFetchUserProfileEventToEvent);
     on<UpdateProfilePhotoEvent>(_mapUpdateProfilePhotoEventToEvent);
     on<UpdateProfileEvent>(_mapUpdateProfileEventToState);
+    on<UpdateLocalUserProfileEvent>((event, emit) {
+      emit(ProfileLoadedState(user: event.user));
+    });
   }
 
   FutureOr<void> _mapGetUsernameToState(
@@ -77,28 +80,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   FutureOr<void> _mapUpdateProfileEventToState(
       UpdateProfileEvent event, Emitter<ProfileState> emit) async {
-    // try {
-    emit(ProfileUpdateLoading());
-    var state = await profileRepository.updateProfile(
-        email: event.email,
-        phone: event.phone,
-        gender: event.gender,
-        dateOfBirth: event.dateOfBirth,
-        ethnicity: event.ethnicity,
-        imagePath: event.imagePath,
-        country: event.country);
-    if (state is SuccessState) {
-      UpdateProfileResponse response = state.value;
-      emit(ProfileUpdateLoadedState(updateProfileResponse: response));
+    try {
+      emit(ProfileUpdateLoading());
+      var state = await profileRepository.updateProfile(
+          email: event.email,
+          phone: event.phone,
+          gender: event.gender,
+          dateOfBirth: event.dateOfBirth,
+          ethnicity: event.ethnicity,
+          imagePath: event.imagePath,
+          country: event.country,
+          firstNAme: event.firstName,
+          lastName: event.lastName);
+      if (state is SuccessState) {
+        UpdateProfileResponse response = state.value;
+        emit(ProfileUpdateLoadedState(updateProfileResponse: response));
+      }
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(ProfileUpdateErrorState(errorModel.errorMessage));
+      }
+    } catch (e) {
+      log("EXCEPTION: $e");
+      emit(const ProfileUpdateErrorState(
+          "Oops! Something went wrong, please try again"));
     }
-    if (state is ErrorState) {
-      ServerErrorModel errorModel = state.value;
-      emit(ProfileUpdateErrorState(errorModel.errorMessage));
-    }
-    // } catch (e) {
-    //   log("EXCEPTION: $e");
-    //   emit(const ProfileUpdateErrorState(
-    //       "Oops! Something went wrong, please try again"));
-    // }
   }
 }

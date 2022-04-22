@@ -54,12 +54,18 @@ class UpdateProfileEvent extends ProfileEvent {
       this.ethnicity,
       this.country,
       this.state,
-        this.firstName,
-        this.lastName
-      });
+      this.firstName,
+      this.lastName});
 
   @override
-  List<Object> get props => [
+  List<Object> get props => [];
+}
 
-      ];
+class UpdateLocalUserProfileEvent extends ProfileEvent {
+  final User user;
+
+  const UpdateLocalUserProfileEvent({required this.user});
+
+  @override
+  List<Object> get props => [user];
 }

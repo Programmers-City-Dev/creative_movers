@@ -1,3 +1,5 @@
+import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +13,11 @@ import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
 
 class EditEmailDialog extends StatefulWidget {
-  final Function(User user ) onSuccess;
+  final Function(User user) onSuccess;
   final String? initialEmail;
-  const EditEmailDialog({Key? key, required this.onSuccess, required this.initialEmail}) : super(key: key);
+  const EditEmailDialog(
+      {Key? key, required this.onSuccess, required this.initialEmail})
+      : super(key: key);
 
   @override
   _EditEmailDialogState createState() => _EditEmailDialogState();
@@ -30,22 +34,22 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
     super.initState();
     _emailController.text = widget.initialEmail ?? '';
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: _profileBloc,
       listener: (context, state) {
         if (state is ProfileUpdateLoading) {
-          AppUtils.showAnimatedProgressDialog(
-              context,
+          AppUtils.showAnimatedProgressDialog(context,
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
           widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
-          AppUtils.showCustomToast(
-              "Email has been updated successfully");
+          AppUtils.showCustomToast("Email has been updated successfully");
+          StorageHelper.setString(StorageKeys.email, _emailController.text);
           // _updateProfile(
           //     state.photo, state.isProfilePhoto);
         }
@@ -55,7 +59,6 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
         }
       },
       child: Container(
-
         child: Container(
           padding: const EdgeInsets.all(30),
           decoration: const BoxDecoration(
@@ -66,13 +69,12 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Center(
                   child: Container(
-                    color: Colors.grey,
-                    width: 100,
-                    height: 2.5,
-                  )),
+                color: Colors.grey,
+                width: 100,
+                height: 2.5,
+              )),
               const SizedBox(
                 height: 15,
               ),
@@ -83,14 +85,9 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
               const SizedBox(
                 height: 10,
               ),
-
               Padding(
                 padding: EdgeInsets.only(
-
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Form(
                   key: _fieldKey,
                   child: TextFormField(
@@ -98,7 +95,6 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
                       RequiredValidator(errorText: 'Enter your email'),
                       EmailValidator(errorText: 'Enter a valid email'),
                     ]),
-
                     controller: _emailController,
                     cursorColor: AppColors.textColor,
                     decoration: const InputDecoration(
@@ -119,7 +115,8 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
               CustomButton(
                 onTap: () {
                   if (_fieldKey.currentState!.validate()) {
-                    _profileBloc.add(UpdateProfileEvent(email: _emailController.text));
+                    _profileBloc
+                        .add(UpdateProfileEvent(email: _emailController.text));
                     // _authBloc.add(ForgotPasswordEvent(email: _phoneNumberController.text));
 
                   }

@@ -217,18 +217,21 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       showMaterialModalBottomSheet(
                                         context: context,
                                         builder: (context) {
                                           return BackdropFilter(
-                                            filter:
-                                            ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 5, sigmaY: 5),
                                             child: EditFullnameDialog(
-                                              onSuccess: () {
+                                              onSuccess: (user) async {
                                                 Navigator.pop(context);
-                                                _updateUserProfile();
+                                                _updateUserProfile(
+                                                    user.toMap());
                                               },
+                                              firstName: user.firstname!,
+                                              lastName: user.lastname!,
                                             ),
                                           );
                                         },
@@ -368,8 +371,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     filter:
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditPhoneNumberDialog(
-                                      onSuccess: () {
-                                        _updateUserProfile();
+                                      phoneNumber: user.phone!,
+                                      onSuccess: (user) {
+                                        _updateUserProfile(user.toMap());
 
                                         Navigator.pop(context);
                                       },
@@ -406,15 +410,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     filter:
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditEmailDialog(
-                                      onSuccess: (updatedUser) {
-                                        setState(() {
-                                          user = user.copyWith(email: updatedUser.email);
-                                          log(user.email!);
-
-                                        });
-                                        Navigator.pop(context);
-                                      }, initialEmail: user.email
-                                    ),
+                                        onSuccess: (updatedUser) {
+                                          _updateUserProfile(
+                                              updatedUser.toMap());
+                                          setState(() {
+                                            user = user.copyWith(
+                                                email: updatedUser.email);
+                                            log(user.email!);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        initialEmail: user.email),
                                   );
                                 },
                                 shape: const RoundedRectangleBorder(),
@@ -464,7 +470,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 // setState(() {
                                 //
                                 // });
-                                _updateUserProfile();
+                                _updateUserProfile(
+                                    state.updateProfileResponse.user.toMap());
 
                                 Navigator.of(context).pop();
                                 // AppUtils.cancelAllShowingToasts();
@@ -499,13 +506,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditEthnicityDialog(
                                       onSuccess: (updatedUser) {
-                                        _updateUserProfile();
+                                        _updateUserProfile(updatedUser.toMap());
 
                                         setState(() {
-                                          user = user.copyWith(country: updatedUser.country );
+                                          user = user.copyWith(
+                                              country: updatedUser.country);
                                         });
                                         Navigator.pop(context);
-                                      }, initialEthnicity: user.country,
+                                      },
+                                      initialEthnicity: user.country,
                                     ),
                                   );
                                 },
@@ -540,7 +549,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           OptionsItemWidget(
                             title: 'Country',
-                            subtitle: user.country?? 'None',
+                            subtitle: user.country ?? 'None',
                             onPressed: () {
                               showMaterialModalBottomSheet(
                                 context: context,
@@ -550,13 +559,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditCountryDialog(
                                       onSuccess: (updatedUser) {
-                                        _updateUserProfile();
+                                        _updateUserProfile(updatedUser.toMap());
 
                                         setState(() {
-                                          user = user.copyWith(country: updatedUser.country );
+                                          user = user.copyWith(
+                                              country: updatedUser.country);
                                         });
                                         Navigator.pop(context);
-                                      }, initialCountry: user.country,
+                                      },
+                                      initialCountry: user.country,
                                     ),
                                   );
                                 },
@@ -587,8 +598,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     filter:
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditStateDialog(
-                                      onSuccess: () {
-                                        _updateUserProfile();
+                                      onSuccess: (user) {
+                                        _updateUserProfile(user.toMap());
 
                                         Navigator.pop(context);
                                       },
@@ -649,29 +660,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     }
   }
 
-
-
-  Future<void> _updateUserProfile() async {
+  Future<void> _updateUserProfile(Map<String, dynamic> userData) async {
     try {
-      // var list = await injector.get<CacheCachedUserDao>().getAllCache();
-      // if (isProfilePhoto) {
-      //   injector
-      //       .get<CacheCubit>()
-      //       .updateCachedUserData(list.first.copyWith(profilePhotoPath: photo));
-      // } else {
-      //   var user = list.first.copyWith(coverPhotoPath: photo);
-      //   log("USER DATA: ${user.toMap()}");
-      //
-      //   // log("COVER RETURNED WITH: $photo");
-      //   injector.get<CacheCubit>().updateCachedUserData(user);
-      // }
-
+      injector
+          .get<CacheCubit>()
+          .updateCachedUserData(CachedUser.fromMap(userData));
       injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
-
 
   void _showImageSelectionDialog(
     BuildContext context,
