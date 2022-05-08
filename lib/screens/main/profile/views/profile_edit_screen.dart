@@ -217,13 +217,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       showMaterialModalBottomSheet(
                                         context: context,
                                         builder: (context) {
                                           return BackdropFilter(
-                                            filter:
-                                            ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 5, sigmaY: 5),
                                             child: EditFullnameDialog(
                                               onSuccess: () {
                                                 Navigator.pop(context);
@@ -406,15 +406,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     filter:
                                         ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: EditEmailDialog(
-                                      onSuccess: (updatedUser) {
-                                        setState(() {
-                                          user = user.copyWith(email: updatedUser.email);
-                                          log(user.email!);
-
-                                        });
-                                        Navigator.pop(context);
-                                      }, initialEmail: user.email
-                                    ),
+                                        onSuccess: (updatedUser) {
+                                          setState(() {
+                                            user = user.copyWith(
+                                                email: updatedUser.email);
+                                            log(user.email!);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        initialEmail: user.email),
                                   );
                                 },
                                 shape: const RoundedRectangleBorder(),
@@ -502,10 +502,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         _updateUserProfile();
 
                                         setState(() {
-                                          user = user.copyWith(country: updatedUser.country );
+                                          user = user.copyWith(
+                                              country: updatedUser.country);
                                         });
                                         Navigator.pop(context);
-                                      }, initialEthnicity: user.country,
+                                      },
+                                      initialEthnicity: user.country,
                                     ),
                                   );
                                 },
@@ -540,7 +542,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           OptionsItemWidget(
                             title: 'Country',
-                            subtitle: user.country?? 'None',
+                            subtitle: user.country ?? 'None',
                             onPressed: () {
                               showMaterialModalBottomSheet(
                                 context: context,
@@ -553,10 +555,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         _updateUserProfile();
 
                                         setState(() {
-                                          user = user.copyWith(country: updatedUser.country );
+                                          user = user.copyWith(
+                                              country: updatedUser.country);
                                         });
                                         Navigator.pop(context);
-                                      }, initialCountry: user.country,
+                                      },
+                                      initialCountry: user.country,
                                     ),
                                   );
                                 },
@@ -649,8 +653,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     }
   }
 
-
-
   Future<void> _updateUserProfile() async {
     try {
       // var list = await injector.get<CacheCachedUserDao>().getAllCache();
@@ -671,7 +673,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       print(e);
     }
   }
-
 
   void _showImageSelectionDialog(
     BuildContext context,

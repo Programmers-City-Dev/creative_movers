@@ -20,9 +20,10 @@ class _NotificationItemState extends State<NotificationItem> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children:  [
+            children: [
               const CircleAvatar(
-                backgroundImage: NetworkImage('https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'),
+                backgroundImage: NetworkImage(
+                    'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'),
                 radius: 20,
               ),
               const SizedBox(
@@ -30,22 +31,24 @@ class _NotificationItemState extends State<NotificationItem> {
               ),
               Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                'Emmason their is a user with the same idea with you and can invest'
-                ' in your ideas, you can reach up with him',
-                style: TextStyle(fontSize: 13),
-              ),
-                      SizedBox(height: 10,),
-                      Text(
-                        '5mins ago',
-                        textAlign: TextAlign.end,
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      )
-                    ],
-                  )),
-              IconButton(onPressed: (){}, icon:const Icon( Icons.more_horiz))
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Emmason their is a user with the same idea with you and can invest'
+                    ' in your ideas, you can reach up with him',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '5mins ago',
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  )
+                ],
+              )),
+              // IconButton(onPressed: (){}, icon:const Icon( Icons.more_horiz))
             ],
           )
         ],
