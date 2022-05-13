@@ -1,21 +1,31 @@
+import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/create_page_form.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/following_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/page_home.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/page_notification.dart';
+import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/widgets/create_post_card.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'edit_page_form.dart';
+
 class BuisnessPageScreen extends StatefulWidget {
-  const BuisnessPageScreen({Key? key}) : super(key: key);
+  final BusinessPage page;
+
+
+
+  const BuisnessPageScreen({Key? key, required this.page, }) : super(key: key);
 
   @override
   _BuisnessPageScreenState createState() => _BuisnessPageScreenState();
 }
 
 class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
+
+ late BusinessPage businessPage ;
   List<String> placeholders = [
     AppIcons.icPlaceHolder1,
     AppIcons.icPlaceHolder2,
@@ -24,22 +34,30 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
   ];
 
   List pages = [
-    PageHome(),
-    FollowingScreen(),
-    PageNotifications(),
-    const Padding(
-      padding: EdgeInsets.all(18),
-      child: CreatePageForm(),
-    )
   ];
 
   int selectedIndex = 0;
   String userType = 'home';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pages = [
+      PageHome(page: widget.page,),
+      FollowingScreen(),
+      PageNotifications(),
+       Padding(
+        padding: EdgeInsets.all(18),
+        child: EditPageForm(businessPage: widget.page,),
+      )
+    ];
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Jave Network',style: const TextStyle(fontSize: 16),),),
+      appBar: AppBar(title:  Text(widget.page.name,style: TextStyle(fontSize: 16),),),
       backgroundColor: AppColors.smokeWhite,
       body: SafeArea(
           child: Container(
@@ -50,7 +68,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
             ),
             Center(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 height:40 ,
                 child: ListView(
                   physics: BouncingScrollPhysics(),
@@ -69,7 +87,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                           avatar: SvgPicture.asset(
                             AppIcons.svgPeople,
                             color: userType == 'home'
-                                ? Colors.white
+                                ? AppColors.white
                                 : AppColors.primaryColor,
                           ),
                           backgroundColor: userType == 'home'
@@ -80,7 +98,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                             style: TextStyle(
                                 fontSize: 13,
                                 color: userType == 'home'
-                                    ? Colors.white
+                                    ? AppColors.white
                                     : AppColors.textColor),
                           )),
                     ),
@@ -99,7 +117,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                           avatar: SvgPicture.asset(
                             AppIcons.svgPeople,
                             color: userType == 'following'
-                                ? Colors.white
+                                ? AppColors.white
                                 : AppColors.primaryColor,
                           ),
                           backgroundColor: userType == 'following'
@@ -110,7 +128,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                             style: TextStyle(
                                 fontSize: 13,
                                 color: userType == 'following'
-                                    ? Colors.white
+                                    ? AppColors.white
                                     : AppColors.textColor),
                           )),
                     ),
@@ -128,7 +146,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                           avatar: Icon(
                             Icons.notifications_rounded,
                             color: userType == 'notification'
-                                ? Colors.white
+                                ? AppColors.white
                                 : AppColors.primaryColor,
                             size: 20,
                           ),
@@ -140,7 +158,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                             style: TextStyle(
                                 fontSize: 13,
                                 color: userType == 'notification'
-                                    ? Colors.white
+                                    ? AppColors.white
                                     : AppColors.textColor),
                           )),
                     ),
@@ -158,7 +176,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                           avatar: Icon(
                             Icons.edit_rounded,
                             color: userType == 'editPage'
-                                ? Colors.white
+                                ? AppColors.white
                                 : AppColors.primaryColor,
                             size: 20,
                           ),
@@ -170,7 +188,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                             style: TextStyle(
                                 fontSize: 13,
                                 color: userType == 'editPage'
-                                    ? Colors.white
+                                    ? AppColors.white
                                     : AppColors.textColor),
                           )),
                     ),

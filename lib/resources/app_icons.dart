@@ -27,6 +27,7 @@ class AppIcons{
   static const String  icPlaceHolder2 = '$pngBasePath/placeholder2.png';
   static const String  icPlaceHolder3 = '$pngBasePath/placeholder3.png';
   static const String  icPlaceHolder4 = '$pngBasePath/placeholder4.png';
+  static const String  icStory = '$pngBasePath/story.png';
 
 //  JPGS
   static const String  icAppLogo = '$jpgBasePath/app_logo.jpg';

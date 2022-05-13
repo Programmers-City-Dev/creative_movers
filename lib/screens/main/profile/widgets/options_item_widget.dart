@@ -1,3 +1,4 @@
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class OptionsItemWidget extends StatelessWidget {
@@ -25,12 +26,12 @@ class OptionsItemWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             if (elevated!)
               BoxShadow(
-                color: Colors.black.withOpacity(.03),
+                color: AppColors.black.withOpacity(.03),
                 blurRadius: 20,
                 spreadRadius: 2,
                 offset: const Offset(0, 10),
@@ -64,7 +65,7 @@ class OptionsItemWidget extends StatelessWidget {
             if (onPressed != null)
               trailing == null
                   ? const Icon(Icons.edit_outlined,
-                      color: Colors.black, size: 20)
+                      color: AppColors.black, size: 20)
                   : trailing!,
           ],
         ),

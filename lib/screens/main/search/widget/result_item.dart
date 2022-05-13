@@ -165,28 +165,53 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                     ),
                   ],
                 ),
-                Row(
+                widget.result.followers.isNotEmpty
+                    ? Row(
                   children: [
+
+                    widget.result.followers.length < 3 ?
                     ImageStack(
-                      imageList: images,
-                      totalCount: images.length,
+                      imageList: widget.result.followers
+                          .map((e) => e.profilePhotoPath)
+                          .toList(),
+                      totalCount: widget.result.followers.length,
                       // If larger than images.length, will show extra empty circle
                       imageRadius: 20,
                       // Radius of each images
-                      imageCount: 3,
+                      imageCount: widget.result.followers.length,
                       // Maximum number of images to be shown in stack
-                      imageBorderWidth: 3, // Border width around the images
+                      imageBorderWidth:
+                      0, // Border width around the images
+                    ) : ImageStack(
+                      imageList: [
+                        widget.result.followers[0].profilePhotoPath,
+                        widget.result.followers[0].profilePhotoPath
+                      ],
+
+                      totalCount: 2,
+                      // If larger than images.length, will show extra empty circle
+                      imageRadius: 20,
+                      // Radius of each images
+                      imageCount:2,
+                      // Maximum number of images to be shown in stack
+                      imageBorderWidth:
+                      0, // Border width around the images
                     ),
                     const SizedBox(
                       width: 5,
                     ),
-                    const Text(
-                      'Peter C. ',
+                    Text(
+                      widget.result.followers.isNotEmpty
+                          ? widget.result.followers[0].firstname
+                          : '',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const Text('+ are following'),
+                    widget.result.followers.length > 1 ?
+                    Text('+${widget.result.followers.length - 1}') :
+                    Text(''),
                   ],
                 )
+                    : SizedBox()
               ],
             ),
           ),
@@ -252,7 +277,7 @@ class _StackedImagesState extends State<StackedImages> {
       children: [
         ImageStack(
 
-          imageList: images,
+          imageList: [],
           totalCount: images.length,
           // If larger than images.length, will show extra empty circle
           imageRadius: 20,

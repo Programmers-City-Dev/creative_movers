@@ -17,7 +17,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> with AutomaticK
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.white,
           iconTheme: const IconThemeData(color: AppColors.textColor),
           title: const Text(
             'Search Result',

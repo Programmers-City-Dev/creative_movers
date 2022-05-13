@@ -19,7 +19,7 @@ class _PostItemState extends State<PostItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(color: Colors.white),
+      decoration: const BoxDecoration(color: AppColors.white),
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [

@@ -1,14 +1,11 @@
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
-import 'package:creative_movers/blocs/cache/cache_cubit.dart';
-import 'package:creative_movers/blocs/feed/feed_bloc.dart';
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/di/injector.dart';
-import 'package:creative_movers/screens/main/feed/widgets/comment_item.dart';
+import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_text_item.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({Key? key, required this.feed}) : super(key: key);
@@ -19,29 +16,31 @@ class CommentsScreen extends StatefulWidget {
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+  final _commentScrollController = ScrollController();
+
   @override
   void initState() {
     injector.get<CacheCubit>().fetchCachedUserData();
     super.initState();
   }
 
-  var _commentController = TextEditingController();
-  FeedBloc _feedBloc = FeedBloc();
+  // final _commentController = TextEditingController();
+  // final FeedBloc _feedBloc = FeedBloc();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         titleTextStyle:
-        const TextStyle(color: AppColors.textColor, fontSize: 18),
+            const TextStyle(color: AppColors.textColor, fontSize: 18),
         iconTheme: const IconThemeData(color: AppColors.textColor),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         title: const Text('Comments'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-              icon: const FaIcon(FontAwesomeIcons.paperPlane),
+              icon: const Icon(Icons.send),
               onPressed: () {},
             ),
           )
@@ -55,6 +54,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
+                    controller: _commentScrollController,
                     physics: const BouncingScrollPhysics(),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -71,78 +71,109 @@ class _CommentsScreenState extends State<CommentsScreen> {
                         widget.feed.comments.isEmpty
                             ? const Center(child: Text('No Comments'))
                             : ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: widget.feed.comments.length,
-                          itemBuilder: (context, index) =>
-                              CommentItem(
-                                comment: widget.feed.comments[index],
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: widget.feed.comments.length,
+                                itemBuilder: (context, index) =>
+                                    CommentItemWidget(
+                                  comment: widget.feed.comments[index],
+                                  feedId: '${widget.feed.id}',
+                                  shouldLoad:
+                                      widget.feed.comments[index].shouldLoad,
+                                  onCommentSent: () {
+                                    widget.feed.comments[index].shouldLoad =
+                                        false;
+                                  },
+                                ),
                               ),
-                        ),
                       ],
                     ),
                   ),
                 ),
-                Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Column(
-                    children: [
-                      const Divider(),
-                      Row(
-                        children: [
-                           CircleAvatar(
-                            backgroundColor: AppColors.lightBlue,
-                            radius: 20,
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  state.cachedUser.profilePhotoPath!),
-                              radius: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Expanded(
-                              child: TextField(
-                                controller: _commentController,
-                                minLines: 1,
-                                maxLines: 5,
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Add a comment'),
-                              )),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _feedBloc.add(CommentEvent(
-                                    feed_id: widget.feed.id.toString(),
-                                    comment: _commentController.text));
-                                widget.feed.comments.add(Comment(
-                                    id: 4,
-                                    userId: '',
-                                    comment: _commentController.text,
-                                    feedId: '',
-                                    user: Poster(
-                                        id: 4,
-                                        firstname: state.cachedUser.firstname!,
-                                        lastname: state.cachedUser.lastname!,
-                                        profilePhotoPath: 'csac')));
-                                _commentController.clear();
-                              });
-                            },
-                            child: const Text(
-                              'Post',
-                              style: TextStyle(
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                CommentBox(
+                  profilePhotoPath: state.cachedUser.profilePhotoPath,
+                  onCommentSent: (text) {
+                    setState(() {});
+                    widget.feed.comments.add(Comment(
+                        id: 4,
+                        userId: widget.feed.userId,
+                        comment: text,
+                        feedId: ' ${widget.feed.id}',
+                        user: Poster(
+                            id: int.parse(widget.feed.userId),
+                            firstname: widget.feed.user!.firstname,
+                            lastname: widget.feed.user!.lastname,
+                            profilePhotoPath:
+                                widget.feed.user!.profilePhotoPath),
+                        shouldLoad: true));
+                    _commentScrollController.animateTo(
+                      _commentScrollController.position.maxScrollExtent,
+                      curve: Curves.easeOut,
+                      duration: const Duration(milliseconds: 300),
+                    );
+                  },
                 )
+                // Container(
+                //   padding:
+                //       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                //   child: Column(
+                //     children: [
+                //       const Divider(),
+                //       Row(
+                //         children: [
+                //           CircleAvatar(
+                //             backgroundColor: AppColors.lightBlue,
+                //             radius: 20,
+                //             child: CircleAvatar(
+                //               backgroundImage: NetworkImage(
+                //                   state.cachedUser.profilePhotoPath!),
+                //               radius: 18,
+                //             ),
+                //           ),
+                //           const SizedBox(
+                //             width: 15,
+                //           ),
+                //           Expanded(
+                //               child: TextField(
+                //             controller: _commentController,
+                //             minLines: 1,
+                //             maxLines: 5,
+                //             decoration: const InputDecoration(
+                //                 border: InputBorder.none,
+                //                 hintText: 'Add a comment'),
+                //           )),
+                //           InkWell(
+                //             onTap: () {
+                //               setState(() {
+                //                 _feedBloc.add(CommentEvent(
+                //                     feedId: widget.feed.id.toString(),
+                //                     comment: _commentController.text));
+                //                 widget.feed.comments.add(Comment(
+                //                     id: 4,
+                //                     userId: widget.feed.userId,
+                //                     comment: _commentController.text,
+                //                     feedId: ' ${widget.feed.id}',
+                //                     user: Poster(
+                //                         id: 4,
+                //                         firstname: state.cachedUser.firstname!,
+                //                         lastname: state.cachedUser.lastname!,
+                //                         profilePhotoPath: widget
+                //                             .feed.user!.profilePhotoPath)));
+                //                 _commentController.clear();
+                //               });
+                //             },
+                //             child: const Text(
+                //               'Post',
+                //               style: TextStyle(
+                //                 color: AppColors.primaryColor,
+                //               ),
+                //             ),
+                //           )
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // )
               ],
             );
           } else {

@@ -12,7 +12,7 @@ class _ConnectsShimerState extends State<ConnectsShimer> {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-        period: Duration(milliseconds: 1000),
+        period: const Duration(milliseconds: 1000),
         child: Column(
           children: [
             Row(
@@ -49,7 +49,7 @@ class _ConnectsShimerState extends State<ConnectsShimer> {
                             color: Colors.grey,
                           ),
                         ),
-                        SizedBox(height: 5,),
+                        const SizedBox(height: 5,),
                         Container(
                           height: 10,
                           width: 100,

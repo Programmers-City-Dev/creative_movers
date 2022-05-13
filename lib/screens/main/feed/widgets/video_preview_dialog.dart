@@ -1,3 +1,4 @@
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
@@ -45,7 +46,7 @@ class _VideoPreviewState extends State<VideoPreview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.black,
       body: FutureBuilder<ChewieController>(
           future: _initControllers(),
           builder: (context, snapshot) {
@@ -55,7 +56,7 @@ class _VideoPreviewState extends State<VideoPreview> {
               );
             }
             return Container(
-              color: Colors.black,
+              color: AppColors.black,
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

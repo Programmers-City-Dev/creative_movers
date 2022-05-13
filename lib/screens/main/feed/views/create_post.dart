@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
@@ -7,26 +5,19 @@ import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
-import 'package:creative_movers/helpers/routes.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
-import 'package:creative_movers/screens/main/feed/widgets/media_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/image_picker_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
-import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_player/video_player.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({Key? key}) : super(key: key);
+  const CreatePostScreen({Key? key, this.postType = "user_feed", this.pageId}) : super(key: key);
+  final String? postType;
+  final String? pageId;
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -41,7 +32,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   List<MediaItemModel> mediaItem = [];
 
   final _postController = TextEditingController();
-  FeedBloc _feedBloc = FeedBloc();
+  final FeedBloc _feedBloc = FeedBloc();
 
   @override
   void initState() {
@@ -55,7 +46,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         bloc: _feedBloc,
         listener: (context, state) {
           _listenToAddFeedState(context, state);
-          // TODO: implement listener
         },
         child: SafeArea(
           child: Container(
@@ -197,7 +187,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             type: e.mediaType == MediaType.image ? 'media' : 'video'))
         .toList();
     _feedBloc.add(AddFeedEvent(
-        type: "user_feed", content: _postController.text, media: mediaFiles));
+      pageId: widget.postType == "page_feed" ? widget.pageId:null,
+        type: widget.postType!, content: _postController.text, media: mediaFiles));
   }
 
   void _listenToAddFeedState(BuildContext context, FeedState state) {
@@ -212,7 +203,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     if (state is AddFeedSuccessState) {
       Navigator.pop(context);
-      Navigator.of(context).pushNamed(feedsPath);
+      widget.postType != "page_feed"?
+      Navigator.of(context).pushNamed(feedsPath):  Navigator.pop(context);
           
     }
   }
@@ -232,30 +224,34 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _fetchMedia() async {
-    var images = ['jpg', 'jpeg', 'png', 'webp'];
+    var images = ['jpg', 'jpeg', 'png', 'webp','PNG'];
     var videos = ['mp4', 'mov'];
-    var files = await AppUtils.fetchMedia(allowMultiple: true);
+    var files = await AppUtils.fetchMedia(allowMultiple: true,onSelect: (result){
 
-    if (files.isNotEmpty) {
-      for (var file in files) {
-        if (images.where((element) => element == file.extension).isNotEmpty) {
-          mediaItems
-              .add(MediaItemModel(mediaType: MediaType.image, path: file.path));
-          mediaFiles.add(file.path!);
+      if (result!.files.isNotEmpty) {
+        for (var file in result.files) {
+          if (images.where((element) => element == file.extension).isNotEmpty) {
+            mediaItems
+                .add(MediaItemModel(mediaType: MediaType.image, path: file.path));
+            mediaFiles.add(file.path!);
 
-          setState(() {});
-        } else if (videos
-            .where((element) => element == file.extension)
-            .isNotEmpty) {
-          mediaItems
-              .add(MediaItemModel(mediaType: MediaType.video, path: file.path));
-          mediaFiles.add(file.path!);
-          // log('VIDEO ${mediaFiles[0].file?.filename}');
+            setState(() {});
+          } else if (videos
+              .where((element) => element == file.extension)
+              .isNotEmpty) {
+            mediaItems
+                .add(MediaItemModel(mediaType: MediaType.video, path: file.path));
+            mediaFiles.add(file.path!);
+            // log('VIDEO ${mediaFiles[0].file?.filename}');
 
-          setState(() {});
+            setState(() {});
+          }
         }
       }
-    }
+
+    });
+
+
   }
 }
 

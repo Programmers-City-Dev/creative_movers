@@ -31,6 +31,8 @@ class CacheCachedUserDao extends BaseDao<CachedUser> {
         .update(await database, cacheCachedUser.toMap());
   }
 
+
+
   @override
   Future<int> insert(CachedUser cacheCachedUser) async {
     await deleteAll();

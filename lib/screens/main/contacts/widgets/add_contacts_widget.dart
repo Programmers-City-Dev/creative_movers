@@ -22,20 +22,23 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+
+        SizedBox(height: 10,),
           Container(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: placeholders.length,
-              itemBuilder: (context, index) => CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage(placeholders[index]),
-              ),
+          height: 50,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: placeholders.length,
+            itemBuilder: (context, index) => CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(placeholders[index]),
             ),
+          ),
           ),
           const SizedBox(
             height: 16,
@@ -61,7 +64,8 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
                   'CONNECT',
                   style: TextStyle(fontSize: 16),
                 )),
-          ),
+          )
+         
         ],
       ),
     );
