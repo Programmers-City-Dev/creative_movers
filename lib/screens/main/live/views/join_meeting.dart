@@ -7,8 +7,11 @@ import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/enums.dart';
+import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
@@ -259,6 +262,14 @@ class _LocalUserViewState extends State<LocalUserView> {
                       _isMicOn ? Icons.mic_rounded : Icons.mic_off_outlined,
                       color: Colors.white,
                     )),
+                IconButton(
+                    onPressed: () {
+                      widget.engine.switchCamera();
+                    },
+                    icon: const Icon(
+                      Icons.switch_camera_outlined,
+                      color: Colors.white,
+                    )),
                 FloatingActionButton(
                   onPressed: () {
                     widget.engine.stopPreview();
@@ -271,12 +282,15 @@ class _LocalUserViewState extends State<LocalUserView> {
                     color: Colors.white,
                   ),
                 ),
+                ReactionButtonEx(
+                  onReaction: (reactionType) {},
+                ),
                 IconButton(
                     onPressed: () {
-                      widget.engine.switchCamera();
+                      _showCommentBox();
                     },
                     icon: const Icon(
-                      Icons.switch_camera_outlined,
+                      Icons.messenger_rounded,
                       color: Colors.white,
                     ))
               ],
@@ -284,6 +298,88 @@ class _LocalUserViewState extends State<LocalUserView> {
           ),
         )
       ],
+    );
+  }
+
+  void _showCommentBox() {
+    showBottomSheet(
+        context: context,
+        // expand: false,
+        builder: (ctx) {
+          return CommentBox(
+              focused: true,
+              profilePhotoPath: '',
+              onCommentSent: (msg) {
+                Navigator.of(context).pop();
+              });
+        });
+  }
+}
+
+class ReactionButtonEx extends StatelessWidget {
+  const ReactionButtonEx({Key? key, required this.onReaction})
+      : super(key: key);
+
+  final Function(ReactionType) onReaction;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactionButton<ReactionType>(
+      onReactionChanged: (ReactionType? value) {},
+      shouldChangeReaction: false,
+      itemScale: 0.8,
+      reactions: [
+        Reaction(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+              child: Image.asset(
+                "assets/images/like.gif",
+                width: 32,
+              ),
+            ),
+            value: ReactionType.like),
+        Reaction(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+              child: Image.asset("assets/images/love.gif", width: 32),
+            ),
+            value: ReactionType.love),
+        Reaction(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+              child: Image.asset("assets/images/angry.gif", width: 32),
+            ),
+            value: ReactionType.angry),
+        Reaction(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+              child: Image.asset("assets/images/wow.gif", width: 32),
+            ),
+            value: ReactionType.wow),
+        Reaction(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+              child: Image.asset("assets/images/sad.gif", width: 32),
+            ),
+            value: ReactionType.sad),
+        Reaction(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+              child: Image.asset("assets/images/haha.gif", width: 32),
+            ),
+            value: ReactionType.haha),
+      ],
+      initialReaction: Reaction<ReactionType>(
+        value: ReactionType.like,
+        icon: const Icon(
+          Icons.emoji_emotions,
+          color: Colors.white,
+        ),
+      ),
+      boxColor: Colors.black.withOpacity(0.5),
+      boxRadius: 10,
+      boxDuration: const Duration(milliseconds: 300),
+      itemScaleDuration: const Duration(milliseconds: 200),
     );
   }
 }

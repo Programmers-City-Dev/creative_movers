@@ -152,11 +152,15 @@ class _FeedDetailsWidgetState extends State<FeedDetailsWidget> {
 }
 
 class CommentBox extends StatefulWidget {
+  final bool? focused;
   final String? profilePhotoPath;
   final Function(String) onCommentSent;
 
   const CommentBox(
-      {Key? key, this.profilePhotoPath, required this.onCommentSent})
+      {Key? key,
+      this.profilePhotoPath,
+      required this.onCommentSent,
+      this.focused = false})
       : super(key: key);
 
   @override
@@ -168,11 +172,19 @@ class _CommentBoxState extends State<CommentBox> {
 
   final _commentBoxTextListener = ValueNotifier(false);
 
+
+  @override
+  void initState() {
+    if(widget.focused!)_focusNode.requestFocus();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const Divider(),
           Row(

@@ -90,6 +90,8 @@ dependencies:
   native_linkify: ^0.0.1
   any_link_preview: ^2.0.7
   camera: ^0.9.4+21
+  audioplayers: ^0.20.1
+  flutter_reaction_button: ^2.0.0+2
 
 dev_dependencies:
   flutter_test:
