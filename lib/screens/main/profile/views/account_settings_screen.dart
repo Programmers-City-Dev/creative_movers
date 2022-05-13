@@ -1,18 +1,13 @@
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
-import 'package:creative_movers/data/remote/model/logout_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
-import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/screens/widget/widget_network_image.dart';
@@ -29,6 +24,8 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
+  final _paymentBloc = PaymentBloc(injector.get());
+
   @override
   void initState() {
     injector.get<CacheCubit>().fetchCachedUserData();
@@ -154,242 +151,338 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
                         children: [
-                          GestureDetector(
+                          InkWell(
                             onTap: () {
                               Navigator.of(context).pushNamed(profilePath);
                             },
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: const [
-                                      Icon(Icons.person,
-                                          size: 25, color: AppColors.textColor),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Text(
-                                        'Profile',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppColors.textColor),
-                                      ),
-                                    ],
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 16),
-                                    child: Icon(Icons.chevron_right_rounded,
-                                        size: 30, color: AppColors.textColor),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(Icons.notifications,
-                                        size: 25, color: AppColors.textColor),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      'Notification',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor),
-                                    ),
-                                  ],
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.chevron_right_rounded,
-                                      size: 30, color: AppColors.textColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(Icons.settings,
-                                        size: 25, color: AppColors.textColor),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      'Transation History',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor),
-                                    ),
-                                  ],
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.chevron_right_rounded,
-                                      size: 30, color: AppColors.textColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(Icons.auto_fix_high,
-                                        size: 25, color: AppColors.textColor),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      'My SubScriptions',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor),
-                                    ),
-                                  ],
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.chevron_right_rounded,
-                                      size: 30, color: AppColors.textColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(Icons.settings,
-                                        size: 25, color: AppColors.textColor),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      'Setting',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor),
-                                    ),
-                                  ],
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.chevron_right_rounded,
-                                      size: 30, color: AppColors.textColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 16.0),
+                              child: Center(
+                                child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Icon(Icons.contact_support,
-                                        size: 25, color: AppColors.textColor),
-                                    const SizedBox(
-                                      width: 16,
-                                    ),
-                                    BlocListener<PaymentBloc, PaymentState>(
-                                      bloc: injector.get<PaymentBloc>(),
-                                      listener: (context, state) {
-                                        if (state is PaymentProcessingState) {
-                                          AppUtils.showAnimatedProgressDialog(
-                                              context,
-                                              title: "Processing");
-                                        }
-                                        if (state is PaymentFailureState) {
-                                          Navigator.of(context).pop();
-                                          AppUtils.showCustomToast(state.error);
-                                        }
-                                        if (state is PaymentIntentGottenState) {
-                                          Navigator.of(context).pop();
-                                          injector.get<PaymentBloc>().add(
-                                              MakePaymentEvent(state
-                                                  .intent['client_secret']));
-                                        }
-
-                                        if (state is PaymentConfirmedState) {
-                                          Navigator.of(context).pop();
-                                          AppUtils.showCustomToast(
-                                              state.message);
-                                        }
-                                      },
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          injector.get<PaymentBloc>().add(
-                                              const CreatePaymentIntentEvent(
-                                                  20, "USD"));
-                                        },
-                                        child: const Text(
-                                          'Help and Support',
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Icon(Icons.person,
+                                            size: 25,
+                                            color: AppColors.textColor),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text(
+                                          'Profile',
                                           style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                               color: AppColors.textColor),
                                         ),
-                                      ),
+                                      ],
+                                    ),
+                                    const Icon(Icons.chevron_right_rounded,
+                                        size: 30, color: AppColors.textColor),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          // InkWell(
+                          //   onTap: () {},
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.symmetric(
+                          //         vertical: 16, horizontal: 8.0),
+                          //     child: Center(
+                          //       child: Row(
+                          //         mainAxisAlignment:
+                          //             MainAxisAlignment.spaceBetween,
+                          //         children: [
+                          //           Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: const [
+                          //               Icon(Icons.notifications,
+                          //                   size: 25,
+                          //                   color: AppColors.textColor),
+                          //               SizedBox(
+                          //                 width: 16,
+                          //               ),
+                          //               Text(
+                          //                 'Notification',
+                          //                 style: TextStyle(
+                          //                     fontSize: 16,
+                          //                     fontWeight: FontWeight.w600,
+                          //                     color: AppColors.textColor),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           const Icon(Icons.chevron_right_rounded,
+                          //               size: 30, color: AppColors.textColor),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(paymentHistoryPath);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 8.0),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Icon(Icons.payment_outlined,
+                                            size: 25,
+                                            color: AppColors.textColor),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text(
+                                          'Payment History',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.textColor),
+                                        ),
+                                      ],
+                                    ),
+                                    const Icon(Icons.chevron_right_rounded,
+                                        size: 30, color: AppColors.textColor),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(subscriptionPath);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 8.0),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Icon(Icons.auto_fix_high,
+                                            size: 25,
+                                            color: AppColors.textColor),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text(
+                                          'My SubScription',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.textColor),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        BlocBuilder<PaymentBloc, PaymentState>(
+                                            bloc: _paymentBloc
+                                              ..add(
+                                                  const GetSubscriptionInfoEvent()),
+                                            builder: (context, state) {
+                                              if (state
+                                                  is SubscriptionLoadedState) {
+                                                var subscription = state
+                                                    .data.user!.subscription;
+                                                if (subscription != null) {
+                                                  return Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 8),
+                                                    decoration: BoxDecoration(
+                                                        color: subscription
+                                                                    .status ==
+                                                                "active"
+                                                            ? AppColors
+                                                                .lightBlue
+                                                            : subscription
+                                                                        .status ==
+                                                                    "trial"
+                                                                ? Colors.orange
+                                                                : AppColors.red,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: Text(
+                                                      subscription.status ==
+                                                              "active"
+                                                          ? 'Active'
+                                                          : subscription
+                                                                      .status ==
+                                                                  "trial"
+                                                              ? "Free Trial"
+                                                              : 'Inactive',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: subscription
+                                                                      .status ==
+                                                                  "active"
+                                                              ? AppColors
+                                                                  .textColor
+                                                              : AppColors
+                                                                  .white),
+                                                    ),
+                                                  );
+                                                }
+                                              }
+                                              if (state
+                                                  is SubscriptionLoadingState) {
+                                                return const Text('...');
+                                              }
+                                              return SizedBox.fromSize();
+                                            }),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        const Icon(Icons.chevron_right_rounded,
+                                            size: 30,
+                                            color: AppColors.textColor),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.chevron_right_rounded,
-                                      size: 30, color: AppColors.textColor),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 30,
+                          InkWell(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 8.0),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Icon(Icons.settings,
+                                            size: 25,
+                                            color: AppColors.textColor),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text(
+                                          'Setting',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.textColor),
+                                        ),
+                                      ],
+                                    ),
+                                    const Icon(Icons.chevron_right_rounded,
+                                        size: 30, color: AppColors.textColor),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 8.0),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Icon(Icons.contact_support,
+                                            size: 25,
+                                            color: AppColors.textColor),
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        BlocListener<PaymentBloc, PaymentState>(
+                                          bloc: injector.get<PaymentBloc>(),
+                                          listener: (context, state) {
+                                            if (state
+                                                is PaymentProcessingState) {
+                                              AppUtils
+                                                  .showAnimatedProgressDialog(
+                                                      context,
+                                                      title: "Processing");
+                                            }
+                                            if (state is PaymentFailureState) {
+                                              Navigator.of(context).pop();
+                                              AppUtils.showCustomToast(
+                                                  state.error);
+                                            }
+                                            if (state
+                                                is PaymentIntentGottenState) {
+                                              Navigator.of(context).pop();
+                                              injector.get<PaymentBloc>().add(
+                                                  MakePaymentEvent(state.intent[
+                                                      'client_secret']));
+                                            }
+
+                                            if (state
+                                                is PaymentConfirmedState) {
+                                              Navigator.of(context).pop();
+                                              AppUtils.showCustomToast(
+                                                  state.message);
+                                            }
+                                          },
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              injector.get<PaymentBloc>().add(
+                                                  const CreatePaymentIntentEvent(
+                                                      20,
+                                                      "USD",
+                                                      "monthly",
+                                                      "account_activation"));
+                                            },
+                                            child: const Text(
+                                              'Help and Support',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.textColor),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 16),
+                                      child: Icon(Icons.chevron_right_rounded,
+                                          size: 30, color: AppColors.textColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                           InkWell(
                             onTap: () {
@@ -403,13 +496,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                   _logout();
                                 },
                                 onCancel: () {
-                                  Navigator.pop(context);
+                                  Navigator.of(mainNavKey.currentState!.context)
+                                      .pop();
                                 },
                               );
                             },
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 16),
                               child: Center(
                                 child: Row(
                                   mainAxisAlignment:

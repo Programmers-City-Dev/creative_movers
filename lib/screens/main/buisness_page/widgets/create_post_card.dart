@@ -14,7 +14,7 @@ class _CreatePostCardState extends State<CreatePostCard> {
   Widget build(BuildContext context) {
     return Container(
 
-      decoration: const BoxDecoration(color: Colors.white),
+      decoration: const BoxDecoration(color: AppColors.white),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

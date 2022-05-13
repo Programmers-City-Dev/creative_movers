@@ -1,9 +1,17 @@
 import 'dart:ui';
 
+import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
+import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
+import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/buisness_page_screen.dart';
+import 'package:creative_movers/screens/main/buisness_page/views/buisness_profile.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
+import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
+import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class BuisnessScreen extends StatefulWidget {
   const BuisnessScreen({Key? key}) : super(key: key);
@@ -12,198 +20,140 @@ class BuisnessScreen extends StatefulWidget {
   _BuisnessScreenState createState() => _BuisnessScreenState();
 }
 
-class _BuisnessScreenState extends State<BuisnessScreen> {
+BuisnessBloc _buisnessBloc = BuisnessBloc();
+
+class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProviderStateMixin{
+
+  int selectedIndex = 0;
+  List<Widget> pages =  [
+   MyPageTab(),
+    Container(color: Colors.black,),
+
+  ];
+
+
+
+  late TabController _tabController;
+
+  String pageType = 'my_pages';
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+    _buisnessBloc.add(BuisnessProfileEvent());
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.bottomCenter,
-              height: 250,
-              decoration: const BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                      ))),
-              child: Container(
-                margin: const EdgeInsets.only(
-                  bottom: 10,
-                ),
-                decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(20)),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
-                      Icons.stacked_bar_chart_rounded,
-                      color: AppColors.smokeWhite,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Buisness Profile',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ],
-                ),
+    return  SafeArea(
+        child: Container(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 16,
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  height:40 ,
+                  child: ListView(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+
                     children: [
-                      const Text(
-                        'Amanda Berks',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = 0;
+                            pageType = 'my_pages';
+                          });
+                        },
+                        child: Chip(
+                            padding: EdgeInsets.all(7),
+                            avatar: SvgPicture.asset(
+                              AppIcons.svgPeople,
+                              color: pageType == 'my_pages'
+                                  ? AppColors.white
+                                  : AppColors.primaryColor,
+                            ),
+                            backgroundColor: pageType == 'my_pages'
+                                ? AppColors.primaryColor
+                                : AppColors.lightBlue,
+                            label: Text(
+                              'My Pages',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: pageType == 'my_pages'
+                                      ? AppColors.white
+                                      : AppColors.textColor),
+                            )),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
-                      Container(
-                        height: 10,
-                        width: 2,
-                        color: AppColors.primaryColor,
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = 1;
+                            pageType = 'following_pages';
+                          });
+                        },
+                        child: Chip(
+                            padding: EdgeInsets.all(7),
+                            avatar: SvgPicture.asset(
+                              AppIcons.svgPeople,
+                              color: pageType == 'following_pages'
+                                  ? AppColors.white
+                                  : AppColors.primaryColor,
+                            ),
+                            backgroundColor: pageType == 'following_pages'
+                                ? AppColors.primaryColor
+                                : AppColors.lightBlue,
+                            label: Text(
+                              'Following',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: pageType == 'following_pages'
+                                      ? AppColors.white
+                                      : AppColors.textColor),
+                            )),
                       ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      const Text(
-                        'Creative ',
-                        style: TextStyle(
-                            color: AppColors.primaryColor, fontSize: 13),
-                      ),
+
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    ' I am  senior developer focused on mobile apps and website '
-                    'development. i am not only competent in delivering the effective deliverable ... ',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Buisness Category',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Wrap(
-                    spacing: 5,
-                    children: List<Widget>.generate(
-                        6,
-                        (index) => const Chip(
-                              label: Text('Information  '),
-                            )),
-                  ),
-                  const Text(
-                    'Buisness Pages',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BuisnessPageScreen(),
-                      ));
-                    },
-                    child: Container(
-                      color: Colors.white,
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                                    ))),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'JAVIE NETWORK',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const CreatePageOnboarding(),
-                      ));
-                    },
-                    child: Container(
-                      color: Colors.grey.shade200,
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Container(
-                            child: const Icon(
-                              Icons.add_circle_outline_rounded,
-                              color: Colors.white,
-                            ),
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'CREATE A BUISNESS PAGE',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
-                                fontSize: 12),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                ],
+                ),
               ),
-            )
-          ],
-        ),
-      ),
-    );
+              const SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: PageView.builder(
+
+                  onPageChanged: (index){
+                    setState(() {
+                      selectedIndex =index;
+                    });
+                  },
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: pages.length,
+                  itemBuilder: (context, index) => pages[selectedIndex],
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+  void _handleTabSelection() {
+    setState(() {
+      selectedIndex = _tabController.index;
+      // log("INDEX:$selectedIndex");
+    });
+  }
+  void _listenToBuisnessProfileState() {
+
   }
 }

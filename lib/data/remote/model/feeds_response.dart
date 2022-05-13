@@ -72,7 +72,7 @@ class Feeds {
         path: json["path"],
         perPage: json["per_page"],
         prevPageUrl: json["prev_page_url"],
-        to: json["to"],
+        to: json["to"] ?? 0,
         total: json["total"],
       );
 
@@ -94,20 +94,21 @@ class Feeds {
 }
 
 class Feed {
-  Feed({
-    required this.id,
-    required this.type,
-    required this.userId,
-    this.pageId,
-    this.content,
-    required this.media,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.comments,
-    required this.likes,
-    required this.user,
-  });
+  Feed(
+      {required this.id,
+      required this.type,
+      required this.userId,
+      this.pageId,
+      this.content,
+      required this.media,
+      required this.status,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.comments,
+      required this.likes,
+      required this.liked,
+      this.user,
+      this.page});
 
   int id;
   String type;
@@ -116,28 +117,32 @@ class Feed {
   String? content;
   List<Media> media;
   String status;
+  bool liked;
   DateTime createdAt;
   DateTime updatedAt;
   List<Comment> comments;
-  List<dynamic> likes;
-  Poster user;
+  List<Like> likes;
+  Poster? user;
+  PostPage? page;
 
   factory Feed.fromJson(Map<String, dynamic> json) => Feed(
-        id: json["id"],
-        type: json["type"],
-        userId: json["user_id"],
-        pageId: json["page_id"],
-        content: json["content"],
-        media: json["media"] == null
-            ? []
-            : List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
-        status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        comments: List<Comment>.from(json["comments"].map((x) =>Comment.fromJson(x))),
-        likes: List<dynamic>.from(json["likes"].map((x) => x)),
-        user: Poster.fromJson(json["user"]),
-      );
+      id: json["id"],
+      type: json["type"],
+      userId: json["user_id"],
+      pageId: json["page_id"],
+      content: json["content"],
+      liked: json["liked"],
+      media: json["media"] == null
+          ? []
+          : List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
+      status: json["status"],
+      createdAt: DateTime.parse(json["created_at"]),
+      updatedAt: DateTime.parse(json["updated_at"]),
+      comments:
+          List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
+      likes: List<Like>.from(json["likes"].map((x) => Like.fromJson(x))),
+      user: Poster.fromJson(json["user"]),
+      page: json["page"] == null ? null : PostPage.fromJson(json["page"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -145,6 +150,7 @@ class Feed {
         "user_id": userId,
         "page_id": pageId,
         "content": content,
+        "liked": liked,
         "media": media == null
             ? null
             : List<dynamic>.from(media.map((x) => x.toJson())),
@@ -153,23 +159,21 @@ class Feed {
         "updated_at": updatedAt.toIso8601String(),
         "comments": List<dynamic>.from(comments.map((x) => x)),
         "likes": List<dynamic>.from(likes.map((x) => x)),
-        "user": user.toJson(),
+        "user": user?.toJson(),
+        "page": page == null ? null : page?.toJson(),
       };
 }
 
-
-
-
 class Comment {
-  Comment({
-    required this.id,
-    required this.userId,
-    required this.comment,
-    required this.feedId,
-    this.createdAt,
-    this.updatedAt,
-    required this.user,
-  });
+  Comment(
+      {required this.id,
+      required this.userId,
+      required this.comment,
+      required this.feedId,
+      this.createdAt,
+      this.updatedAt,
+      required this.user,
+      this.shouldLoad});
 
   int id;
   String userId;
@@ -178,33 +182,64 @@ class Comment {
   DateTime? createdAt;
   DateTime? updatedAt;
   Poster user;
+  bool? shouldLoad;
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-    id: json["id"],
-    userId: json["user_id"],
-    comment: json["comment"] == null ? null : json["comment"],
-    feedId: json["feed_id"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    user: Poster.fromJson(json["user"]),
-  );
+        id: json["id"],
+        userId: json["user_id"],
+        comment: json["comment"] == null ? null : json["comment"],
+        feedId: json["feed_id"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        user: Poster.fromJson(json["user"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": userId,
-    "comment": comment == null ? null : comment,
-    "feed_id": feedId,
-    "created_at": createdAt.toString(),
-    "updated_at": updatedAt.toString(),
-    "user": user.toJson(),
-  };
+        "id": id,
+        "user_id": userId,
+        "comment": comment == null ? null : comment,
+        "feed_id": feedId,
+        "created_at": createdAt.toString(),
+        "updated_at": updatedAt.toString(),
+        "user": user.toJson(),
+      };
 }
 
+class Like {
+  Like({
+    required this.id,
+    required this.userId,
+    required this.feedId,
+    this.createdAt,
+    this.updatedAt,
+    required this.user,
+  });
 
+  int id;
+  String userId;
+  String feedId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  Poster user;
 
+  factory Like.fromJson(Map<String, dynamic> json) => Like(
+        id: json["id"],
+        userId: json["user_id"],
+        feedId: json["feed_id"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        user: Poster.fromJson(json["user"]),
+      );
 
-
-
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "feed_id": feedId,
+        "created_at": createdAt.toString(),
+        "updated_at": updatedAt.toString(),
+        "user": user.toJson(),
+      };
+}
 
 class Media {
   Media({
@@ -275,5 +310,29 @@ class Link {
         "url": url == null ? null : url,
         "label": label,
         "active": active,
+      };
+}
+
+class PostPage {
+  PostPage({
+    required this.id,
+    required this.name,
+    required this.photoPath,
+  });
+
+  int id;
+  String name;
+  String? photoPath;
+
+  factory PostPage.fromJson(Map<String, dynamic> json) => PostPage(
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
+        photoPath: json["photo_path"] == null ? null : json["photo_path"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
+        "photo_path": photoPath == null ? null : photoPath,
       };
 }

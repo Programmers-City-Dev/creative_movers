@@ -26,7 +26,7 @@ class _ContactScreenState extends State<ContactScreen>
   int selectedIndex = 0;
   String userType = 'connects';
   List<Widget> pages = const [
-    ConnectsTab(data: []),
+    ConnectsTab(),
     PendingRequestScreen(),
     SizedBox()
   ];
@@ -60,7 +60,7 @@ class _ContactScreenState extends State<ContactScreen>
                       avatar: SvgPicture.asset(
                         AppIcons.svgPeople,
                         color: selectedIndex == 0
-                            ? Colors.white
+                            ? AppColors.white
                             : AppColors.primaryColor,
                       ),
                       backgroundColor: selectedIndex == 0
@@ -71,7 +71,7 @@ class _ContactScreenState extends State<ContactScreen>
                         style: TextStyle(
                             fontSize: 13,
                             color: selectedIndex == 0
-                                ? Colors.white
+                                ? AppColors.white
                                 : AppColors.textColor),
                       )),
                 ),
@@ -85,7 +85,7 @@ class _ContactScreenState extends State<ContactScreen>
                       avatar: SvgPicture.asset(
                         AppIcons.svgPeople,
                         color: selectedIndex == 1
-                            ? Colors.white
+                            ? AppColors.white
                             : AppColors.primaryColor,
                       ),
                       backgroundColor: selectedIndex == 1
@@ -96,7 +96,7 @@ class _ContactScreenState extends State<ContactScreen>
                         style: TextStyle(
                             fontSize: 13,
                             color: selectedIndex == 1
-                                ? Colors.white
+                                ? AppColors.white
                                 : AppColors.textColor),
                       )),
                 ),
@@ -109,7 +109,7 @@ class _ContactScreenState extends State<ContactScreen>
                       avatar: Icon(
                         Icons.notifications_rounded,
                         color: selectedIndex == 2
-                            ? Colors.white
+                            ? AppColors.white
                             : AppColors.primaryColor,
                         size: 20,
                       ),
@@ -121,7 +121,7 @@ class _ContactScreenState extends State<ContactScreen>
                         style: TextStyle(
                             fontSize: 13,
                             color: selectedIndex == 2
-                                ? Colors.white
+                                ? AppColors.white
                                 : AppColors.textColor),
                       )),
                 ),
@@ -191,7 +191,7 @@ class _ContactScreenState extends State<ContactScreen>
 // isScrollable: false,
 // indicatorPadding: EdgeInsets.all(7),
 // indicator: BoxDecoration(
-// color: Colors.white,
+// color: AppColors.white,
 // shape: BoxShape.rectangle,
 // borderRadius: BorderRadius.circular(16)),
 // labelColor: AppColors.primaryColor,
@@ -228,7 +228,7 @@ class _ContactScreenState extends State<ContactScreen>
 //                           avatar: SvgPicture.asset(
 //                             AppIcons.svgPeople,
 //                             color: userType == 'connects'
-//                                 ? Colors.white
+//                                 ? AppColors.white
 //                                 : AppColors.primaryColor,
 //                           ),
 //                           backgroundColor: userType == 'connects'
@@ -239,7 +239,7 @@ class _ContactScreenState extends State<ContactScreen>
 //                             style: TextStyle(
 //                                 fontSize: 13,
 //                                 color: userType == 'connects'
-//                                     ? Colors.white
+//                                     ? AppColors.white
 //                                     : AppColors.textColor),
 //                           )),
 //                     ),
@@ -258,7 +258,7 @@ class _ContactScreenState extends State<ContactScreen>
 //                           avatar: SvgPicture.asset(
 //                             AppIcons.svgPeople,
 //                             color: userType == 'requests'
-//                                 ? Colors.white
+//                                 ? AppColors.white
 //                                 : AppColors.primaryColor,
 //                           ),
 //                           backgroundColor: userType == 'requests'
@@ -269,7 +269,7 @@ class _ContactScreenState extends State<ContactScreen>
 //                             style: TextStyle(
 //                                 fontSize: 13,
 //                                 color: userType == 'requests'
-//                                     ? Colors.white
+//                                     ? AppColors.white
 //                                     : AppColors.textColor),
 //                           )),
 //                     ),
@@ -287,7 +287,7 @@ class _ContactScreenState extends State<ContactScreen>
 //                           avatar: Icon(
 //                             Icons.notifications_rounded,
 //                             color: userType == 'suggestions'
-//                                 ? Colors.white
+//                                 ? AppColors.white
 //                                 : AppColors.primaryColor,
 //                             size: 20,
 //                           ),
@@ -299,7 +299,7 @@ class _ContactScreenState extends State<ContactScreen>
 //                             style: TextStyle(
 //                                 fontSize: 13,
 //                                 color: userType == 'suggestions'
-//                                     ? Colors.white
+//                                     ? AppColors.white
 //                                     : AppColors.textColor),
 //                           )),
 //                     ),

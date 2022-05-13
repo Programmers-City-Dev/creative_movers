@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
@@ -7,6 +8,7 @@ import 'package:creative_movers/data/remote/model/biodata_response.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/model/update_profile_response.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:dio/dio.dart';
@@ -222,7 +224,12 @@ class ProfileRepository {
         ? Endpoints.myProfileEndpoint
         : Endpoints.userProfileEndpoint;
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(url),
+      () => httpClient.post(url,
+          body: userId != null
+              ? {
+                  'user_id': userId,
+                }
+              : null),
       successResponse: (data) {
         return State<User?>.success(
             data != null ? User.fromMap(data["user"]) : null);
@@ -250,7 +257,9 @@ class ProfileRepository {
   }
 
   Future<State> updateProfilePhoto(
-      String imagePath, bool isProfilePhoto) async {
+    String imagePath,
+    bool isProfilePhoto,
+  ) async {
     String url = isProfilePhoto
         ? Endpoints.profilePhotoEndpoint
         : Endpoints.profileCoverImageEndpoint;
@@ -263,6 +272,60 @@ class ProfileRepository {
       () => httpClient.post(url, body: formData),
       successResponse: (data) {
         return State<String?>.success(data != null ? data["photo_path"] : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> updateProfile(
+      {String? imagePath,
+      bool? isProfilePhoto,
+      String? phone,
+      String? email,
+      String? gender,
+      DateTime? dateOfBirth,
+      String? ethnicity,
+      String? country,
+      String? state,
+      String? firstNAme,
+      String? lastName}) async {
+    String url = Endpoints.updateProfileEndpoint;
+    FormData formData = FormData.fromMap({
+      // "image": await MultipartFile.fromFile(imagePath!,
+      //     filename: basename(imagePath!)) ,
+      "phone": phone,
+      "email": email,
+      "gender": gender,
+      "dob": dateOfBirth,
+      "ethnicity": ethnicity,
+      "country": country,
+      "state": state,
+      "firstname": firstNAme,
+      "lastname": lastName,
+    });
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(url, body: formData),
+      successResponse: (data) {
+        return State<UpdateProfileResponse?>.success(
+            UpdateProfileResponse.fromJson(data));
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

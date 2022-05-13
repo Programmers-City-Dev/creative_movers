@@ -39,7 +39,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context.localization.intro1Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontWeight: FontWeight.normal, color: Colors.white),
+                    fontWeight: FontWeight.normal, color: AppColors.white),
               ),
               img: AppIcons.imgSlide1,
             ),
@@ -49,7 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context.localization.intro2Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontWeight: FontWeight.normal, color: Colors.white),
+                    fontWeight: FontWeight.normal, color: AppColors.white),
               ),
               img: AppIcons.imgSlide2,
             ),
@@ -59,7 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context.localization.intro3Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontWeight: FontWeight.normal, color: Colors.white),
+                    fontWeight: FontWeight.normal, color: AppColors.white),
               ),
               img: AppIcons.imgSlide3,
             ),
@@ -69,7 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context.localization.intro4Text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontWeight: FontWeight.normal, color: Colors.white),
+                    fontWeight: FontWeight.normal, color: AppColors.white),
               ),
               img: AppIcons.imgSlide4,
             ),
@@ -123,7 +123,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 2),
                         child: DotIndicator(
                           inActiveColor: Colors.grey,
-                          active_color: Colors.white,
+                          active_color: AppColors.white,
                           size: 10,
                           isActive: _currentIndex == index ? true : false,
                         ),
@@ -157,7 +157,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      primary: Colors.white,
+                                      primary: AppColors.white,
                                       onPrimary: AppColors.primaryColor,
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 20),

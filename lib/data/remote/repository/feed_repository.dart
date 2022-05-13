@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/feed_response.dart';
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
+import 'package:creative_movers/data/remote/model/like_response.dart';
 import 'package:creative_movers/data/remote/model/post_comments_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
@@ -18,14 +19,14 @@ class FeedRepository {
 
   Future<State> adFeed({
     required String type,
-     String? page_id,
+    String? page_id,
     required String content,
     required List<String> media,
   }) async {
     var formData = FormData.fromMap({
-      "type" :type,
-      "page_id" :page_id,
-      "content" :content,
+      "type": type,
+      "page_id": page_id,
+      "content": content,
     });
     log("IMAGES: $media");
     for (var file in media) {
@@ -34,7 +35,7 @@ class FeedRepository {
       ]);
     }
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint, body:formData),
+      () => httpHelper.post(Endpoints.add_feed_endpoint, body: formData),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);
@@ -90,18 +91,13 @@ class FeedRepository {
     );
   }
 
-
-  Future<State> postComments({required String feed_id, required String comment}) async {
+  Future<State> getFeedItem(int feedId) async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.comment_endpoint,body: {
-            "feed_id": feed_id,
-            "comment": comment,
-          }),
+      () => httpHelper.post(Endpoints.feedItem, body: {"feed_id": feedId}),
       successResponse: (data) {
-        return State<PostCommentResponse?>.success(
-            data != null ? PostCommentResponse.fromJson(data) : null);
+        return State<Feed?>.success(
+            data != null ? Feed.fromJson(data['feeds']) : null);
       },
-
       statusCodeSuccess: 200,
       errorResponse: (response) {
         debugPrint('ERROR SERVER');
@@ -124,13 +120,47 @@ class FeedRepository {
     );
   }
 
-
-  Future<State> postLike() async {
+  Future<State> postComments(
+      {required String feed_id, required String comment}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.comment_endpoint, body: {
+        "feed_id": feed_id,
+        "comment": comment,
+      }),
       successResponse: (data) {
-        return State<AddFeedResponse?>.success(
-            data != null ? AddFeedResponse.fromJson(data) : null);
+        return State<PostCommentResponse?>.success(
+            data != null ? PostCommentResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> postLike({required String feed_id}) async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(Endpoints.like_endpoint, body: {
+        "feed_id": feed_id,
+      }),
+      successResponse: (data) {
+        return State<LikeResponse?>.success(
+            data != null ? LikeResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -182,8 +212,6 @@ class FeedRepository {
       },
     );
   }
-
-
 
   Future<State> getComments() async {
     return SimplifyApiConsuming.makeRequest(

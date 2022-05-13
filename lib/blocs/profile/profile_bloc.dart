@@ -2,15 +2,19 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
+import 'package:creative_movers/data/remote/model/update_profile_response.dart';
 import 'package:creative_movers/data/remote/repository/profile_repository.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
 
 part 'profile_event.dart';
+
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -23,6 +27,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<GetUsernameEvent>(_mapGetUsernameToState);
     on<FetchUserProfileEvent>(_mapFetchUserProfileEventToEvent);
     on<UpdateProfilePhotoEvent>(_mapUpdateProfilePhotoEventToEvent);
+    on<UpdateProfileEvent>(_mapUpdateProfileEventToState);
+    on<UpdateLocalUserProfileEvent>((event, emit) {
+      emit(ProfileLoadedState(user: event.user));
+    });
   }
 
   FutureOr<void> _mapGetUsernameToState(
@@ -40,6 +48,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileLoading());
       var state = await profileRepository.fetchUserProfile(event.userId);
       if (state is SuccessState) {
+        User user = state.value;
+        if (event.userId == null) {
+          injector.get<CacheCubit>().updateCachedUserData(user.toCachedUser());
+        }
         emit(ProfileLoadedState(user: state.value));
       }
       if (state is ErrorState) {
@@ -48,7 +60,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     } catch (e) {
       emit(const ProfileErrorState(
-          "Oops! Something went wrong, please try agin"));
+          "Oops! Something went wrong, please try again"));
     }
   }
 
@@ -68,7 +80,37 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch (e) {
       log("EXCEPTION: $e");
       emit(const ProfileErrorState(
-          "Oops! Something went wrong, please try agin"));
+          "Oops! Something went wrong, please try again"));
+    }
+  }
+
+  FutureOr<void> _mapUpdateProfileEventToState(
+      UpdateProfileEvent event, Emitter<ProfileState> emit) async {
+    try {
+      emit(ProfileUpdateLoading());
+      var state = await profileRepository.updateProfile(
+          email: event.email,
+          phone: event.phone,
+          gender: event.gender,
+          dateOfBirth: event.dateOfBirth,
+          ethnicity: event.ethnicity,
+          imagePath: event.imagePath,
+          country: event.country,
+          state: event.state,
+          firstNAme: event.firstName,
+          lastName: event.lastName);
+      if (state is SuccessState) {
+        UpdateProfileResponse response = state.value;
+        emit(ProfileUpdateLoadedState(updateProfileResponse: response));
+      }
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(ProfileUpdateErrorState(errorModel.errorMessage));
+      }
+    } catch (e) {
+      log("EXCEPTION: $e");
+      emit(const ProfileUpdateErrorState(
+          "Oops! Something went wrong, please try again"));
     }
   }
 }

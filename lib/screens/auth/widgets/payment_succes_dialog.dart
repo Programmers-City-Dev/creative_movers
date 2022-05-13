@@ -19,7 +19,7 @@ class _PaymentSuccesDialogState extends State<PaymentSuccesDialog> {
       child: Container(
         margin: EdgeInsets.all(20),
         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-        color: Colors.white,
+        color: AppColors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

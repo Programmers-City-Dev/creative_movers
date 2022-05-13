@@ -58,13 +58,8 @@ class _CreatePageScreenState extends State<CreatePageScreen> {
             const SizedBox(
               height: 10,
             ),
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  CreatePageForm()
-                ],
-              ),
+            const Expanded(
+              child: CreatePageForm(),
             ),
           ],
         ),

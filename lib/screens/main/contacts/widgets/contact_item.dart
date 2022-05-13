@@ -36,7 +36,8 @@ class _ContactItemState extends State<ContactItem> {
                   widget.connection.firstname +
                       ' ' +
                       widget.connection.lastname,
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 13),
                 ),
                 Text(
                   widget.connection.username,
@@ -44,32 +45,50 @@ class _ContactItemState extends State<ContactItem> {
                 ),
                 widget.connection.connects.isNotEmpty
                     ? Row(
-                        children: [
-                          ImageStack(
-                            imageList: widget.connection.connects.length < 3? widget.connection.connects
-                                .map((e) => e.profilePhotoPath)
-                                .toList():[],
-                            totalCount: widget.connection.connects.length,
-                            // If larger than images.length, will show extra empty circle
-                            imageRadius: 20,
-                            // Radius of each images
-                            imageCount: widget.connection.connects.length < 3? widget.connection.connects.length: 0,
-                            // Maximum number of images to be shown in stack
-                            imageBorderWidth:
-                                3, // Border width around the images
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            widget.connection.connects.isNotEmpty
-                                ? widget.connection.connects[0].firstname
-                                : '',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text('+${widget.connection.connects.length}'),
-                        ],
-                      )
+                  children: [
+
+                    widget.connection.connects.length < 3 ?
+                    ImageStack(
+                      imageList: widget.connection.connects
+                          .map((e) => e.profilePhotoPath)
+                          .toList(),
+                      totalCount: widget.connection.connects.length,
+                      // If larger than images.length, will show extra empty circle
+                      imageRadius: 20,
+                      // Radius of each images
+                      imageCount: widget.connection.connects.length,
+                      // Maximum number of images to be shown in stack
+                      imageBorderWidth:
+                      0, // Border width around the images
+                    ) : ImageStack(
+                      imageList: [
+                        widget.connection.connects[0].profilePhotoPath,
+                        widget.connection.connects[0].profilePhotoPath
+                      ],
+
+                      totalCount: 2,
+                      // If larger than images.length, will show extra empty circle
+                      imageRadius: 20,
+                      // Radius of each images
+                      imageCount:2,
+                      // Maximum number of images to be shown in stack
+                      imageBorderWidth:
+                      0, // Border width around the images
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      widget.connection.connects.isNotEmpty
+                          ? widget.connection.connects[0].firstname
+                          : '',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    widget.connection.connects.length > 1 ?
+                    Text('+${widget.connection.connects.length - 1}') :
+                    Text(''),
+                  ],
+                )
                     : SizedBox()
               ],
             ),

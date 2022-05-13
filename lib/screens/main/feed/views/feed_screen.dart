@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
+import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
+import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -12,6 +16,7 @@ import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
 import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
 import 'package:creative_movers/screens/main/search/views/search__screen.dart';
+import 'package:creative_movers/screens/main/status/widgets/status_shimmer.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/sliver_persistent_delegate.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -30,9 +35,12 @@ class _FeedScreenState extends State<FeedScreen> {
 
   String? username;
   FeedBloc feedBloc = FeedBloc();
+  StatusBloc statusBloc = StatusBloc();
+
   @override
   void initState() {
-    feedBloc.add(GetFeedEvent());
+    feedBloc.add(const GetFeedEvent());
+    statusBloc.add(GetStatusEvent());
     super.initState();
   }
 
@@ -71,7 +79,8 @@ class _FeedScreenState extends State<FeedScreen> {
         body: RefreshIndicator(
           onRefresh: (() async {
             await Future.delayed(const Duration(seconds: 1));
-            feedBloc.add(GetFeedEvent());
+            feedBloc.add(const GetFeedEvent());
+            statusBloc.add(GetStatusEvent());
           }),
           child: CustomScrollView(
             // controller: _scrollController,
@@ -81,10 +90,27 @@ class _FeedScreenState extends State<FeedScreen> {
                   // pinned: true,
                   floating: true,
                   delegate: SliverAppBarDelegate(
-                    const PreferredSize(
-                      preferredSize: Size.fromHeight(100),
-                      child: StatusViews(
-                        curvedBottom: true,
+                    PreferredSize(
+                      preferredSize: const Size.fromHeight(90),
+                      child: BlocBuilder<StatusBloc, StatusState>(
+                        bloc: statusBloc,
+                        builder: (context, state) {
+                          if (state is StatusLoadingState) {
+                            return const StatusShimmer();
+                          }
+                          if (state is StatusSuccessState) {
+                            return StatusViews(
+                              curvedBottom: true,
+                              viewStatusResponse: state.viewStatusResponse,
+                            );
+                          }
+                          if (state is StatusFaliureState) {
+                            return Center(
+                              child: Text(state.error),
+                            );
+                          }
+                          return const StatusShimmer();
+                        },
                       ),
                     ),
                   )),
@@ -147,7 +173,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Container(
       // padding: const EdgeInsets.only(top: 45, left: 10, right: 10),
-      color: Colors.white,
+      color: AppColors.white,
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -172,7 +198,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                               style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black));
+                                  color: AppColors.black));
                         },
                       ),
                     ),
@@ -180,7 +206,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black)),
+                            color: AppColors.black)),
                   ],
                 ),
                 Row(
@@ -188,7 +214,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                     IconButton(
                       icon: const Icon(
                         Icons.search,
-                        color: Colors.black,
+                        color: AppColors.black,
                       ),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -196,17 +222,65 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ));
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.notifications_rounded,
-                        color: Colors.black,
+                    BlocProvider.value(
+                      value: injector.get<NotificationBloc>()
+                        ..add(FetchUserNotificationsEvent()),
+                      child: BlocBuilder<NotificationBloc, NotificationState>(
+                        builder: (context, state) {
+                          var notifications =
+                              context.watch<NotificationBloc>().notifications;
+                          if (state is UserNotificationsLoadedState) {
+                            int unreadNotifications = notifications
+                                .where((notification) =>
+                                    notification.readAt == null)
+                                .toList()
+                                .length;
+                            return Stack(
+                              children: [
+                                GestureDetector(
+                                  child: const Icon(
+                                    Icons.notifications_rounded,
+                                    color: AppColors.black,
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const NotificationScreen(),
+                                    ));
+                                  },
+                                ),
+                                unreadNotifications > 0
+                                    ? Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Container(
+                                          height: 10,
+                                          width: 10,
+                                          decoration: const BoxDecoration(
+                                              color: Colors.red,
+                                              shape: BoxShape.circle),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink()
+                              ],
+                            );
+                          }
+                          return IconButton(
+                            icon: const Icon(
+                              Icons.notifications_rounded,
+                              color: AppColors.black,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const NotificationScreen(),
+                              ));
+                            },
+                          );
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => NotificationScreen(),
-                        ));
-                      },
-                    ),
+                    )
                   ],
                 ),
               ],

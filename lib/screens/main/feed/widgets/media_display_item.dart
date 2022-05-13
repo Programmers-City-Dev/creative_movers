@@ -1,11 +1,9 @@
 
-import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:chewie/chewie.dart';
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
-import 'package:creative_movers/data/remote/model/media.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_preview_dialog.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -86,7 +84,7 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                         child: const Center(
                           child: Icon(
                             Icons.play_arrow_rounded,
-                            color: Colors.white,
+                            color: AppColors.white,
                             size: 30,
                           ),
                         ),
@@ -94,12 +92,10 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                     ),
                   ]);
                 } else {
-                  return  Container(   color: Colors.black,child: Center(child: CircularProgressIndicator()) );
+                  return  Container(   color: AppColors.black,child: const Center(child: CircularProgressIndicator()) );
                 }
               } else {
-                return Container(
-
-                    child:Text(snapshot.error.toString()));
+                return Text(snapshot.error.toString());
               }
             });
   }

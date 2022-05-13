@@ -51,9 +51,9 @@ class _MessagingScreenState extends State<MessagingScreen> {
               ),
             )
           ],
-          iconTheme: IconThemeData(color: AppColors.textColor),
+          iconTheme: const IconThemeData(color: AppColors.textColor),
           titleSpacing: 0,
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.white,
           toolbarHeight: 70,
           title: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -94,7 +94,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Column(
             children: [
               Expanded(
@@ -109,10 +109,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.all(15),
+                      margin: const EdgeInsets.symmetric(vertical: 15,horizontal: 5),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: Colors.white),
+                          color: AppColors.white),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -135,7 +135,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                               controller: _controller,
                               decoration: const InputDecoration(
                                   filled: true,
-                                  fillColor: Colors.white,
+                                  fillColor: AppColors.white,
                                   contentPadding: EdgeInsets.zero,
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide.none)),

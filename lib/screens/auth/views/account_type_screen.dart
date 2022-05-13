@@ -25,7 +25,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
 
         iconTheme: const IconThemeData(color: AppColors.textColor, ),
         toolbarTextStyle: const TextStyle(color: AppColors.textColor,),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         title: const Text(
           'Select Account Type',
 
@@ -117,7 +117,7 @@ class _ToggleSwitcherState extends State<ToggleSwitcher> {
                 side: BorderSide(
                   color: selectedIndex == 0
                       ? AppColors.primaryColor
-                      : Colors.white,
+                      : AppColors.white,
                 )),
             child: InkWell(
               onTap: () {
@@ -164,7 +164,7 @@ class _ToggleSwitcherState extends State<ToggleSwitcher> {
                 side: BorderSide(
                   color: selectedIndex == 1
                       ? AppColors.primaryColor
-                      : Colors.white,
+                      : AppColors.white,
                 )),
             child: InkWell(
               onTap: () {

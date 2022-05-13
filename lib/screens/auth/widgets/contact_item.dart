@@ -44,7 +44,7 @@ class _ContactItemState extends State<ContactItem> {
                     width: 20,
                   ),
                   Text(
-                    ' ${widget.connect.firstname} ${widget.connect.firstname}',
+                    ' ${widget.connect.firstname} ${widget.connect.lastname}',
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ],

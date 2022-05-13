@@ -163,7 +163,7 @@ class LogoutFaliureState extends AuthState {
   LogoutFaliureState({required this.error});
 }
 
-//Logout
+//Category State
 class CategoryLoadingState extends AuthState {
   @override
   // TODO: implement props
@@ -189,3 +189,74 @@ class CategoryFaliureState extends AuthState {
 
   CategoryFaliureState({required this.error});
 }
+
+
+//Forgot Password States
+class ForgotPasswordLoadingState extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
+// Login states
+class ForgotPasswordSuccessState extends AuthState {
+  final ForgotPasswordResponse response;
+
+  ForgotPasswordSuccessState({required this.response});
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class ForgotPasswordFailureState extends AuthState {
+  final String error;
+
+  ForgotPasswordFailureState({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
+
+//ConfirmToken States
+class ConfirmTokenLoadingState extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+class ConfirmTokenSuccessState extends AuthState {
+  final ConfirmTokenResponse response;
+
+  ConfirmTokenSuccessState({required this.response});
+
+  @override
+  List<Object?> get props => [response];
+}
+class ConfirmTokenFailureState extends AuthState {
+  final String error;
+
+  ConfirmTokenFailureState({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
+
+//ResetPassword states
+class ResetPasswordLoadingState extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+class ResetPasswordSuccessState extends AuthState {
+  final ResetPasswordResponse response;
+
+  ResetPasswordSuccessState({required this.response});
+
+  @override
+  List<Object?> get props => [response];
+}
+class ResetPasswordFailureState extends AuthState {
+  final String error;
+
+  ResetPasswordFailureState({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
+

@@ -26,7 +26,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                       fit: BoxFit.cover)),
             ),
             Container(
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
+              decoration: BoxDecoration(color: AppColors.black.withOpacity(0.1)),
               child: Column(
                 children: [
                   const SizedBox(
@@ -104,15 +104,15 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
 
                                 border: Border.symmetric(vertical: BorderSide(color: Colors.transparent.withOpacity(0.8))) ,
                                   boxShadow: [
-                                    BoxShadow(color:  Colors.black.withOpacity(0.08),blurRadius: 12,spreadRadius: 12)
+                                    BoxShadow(color:  AppColors.black.withOpacity(0.08),blurRadius: 12,spreadRadius: 12)
                                   ],
                                   gradient:  LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [
                                         Colors.transparent.withOpacity(0.1),
-                                        Colors.black26.withOpacity(0.1),
-                                        Colors.black26.withOpacity(0.1)
+                                        AppColors.black.withOpacity(0.1),
+                                        AppColors.black.withOpacity(0.1)
                                       ]),
                                 ),
 

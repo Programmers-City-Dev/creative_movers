@@ -17,18 +17,18 @@ class AddFeedLoadingState extends FeedState {
 }
 
 class AddFeedSuccessState extends FeedState {
-  AddFeedResponse feedResponse;
+  final AddFeedResponse feedResponse;
 
-  AddFeedSuccessState({required this.feedResponse});
+  const AddFeedSuccessState({required this.feedResponse});
 
   @override
   List<Object> get props => [feedResponse];
 }
 
 class AddFeedFaliureState extends FeedState {
-  String error;
+  final String error;
 
-  AddFeedFaliureState({required this.error});
+  const AddFeedFaliureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -40,20 +40,29 @@ class FeedLoadingState extends FeedState {
   List<Object> get props => [];
 }
 class FeedSuccessState extends FeedState {
-  FeedsResponse feedResponse;
+  final FeedsResponse feedResponse;
 
-  FeedSuccessState({required this.feedResponse});
+  const FeedSuccessState({required this.feedResponse});
 
   @override
   List<Object> get props => [feedResponse];
 }
 class FeedFaliureState extends FeedState {
-  String error;
+  final String error;
 
-  FeedFaliureState({required this.error});
+  const FeedFaliureState({required this.error});
 
   @override
   List<Object> get props => [error];
+}
+
+class FeedItemLoadedState extends FeedState {
+  final Feed feed;
+
+  const FeedItemLoadedState({required this.feed});
+
+  @override
+  List<Object> get props => [feed];
 }
 
 
@@ -63,17 +72,17 @@ class CommentsLoadingState extends FeedState {
   List<Object> get props => [];
 }
 class CommentsSuccessState extends FeedState {
-  PostCommentResponse postCommentsResponse;
+  final PostCommentResponse postCommentsResponse;
 
-  CommentsSuccessState({required this.postCommentsResponse});
+  const CommentsSuccessState({required this.postCommentsResponse});
 
   @override
   List<Object> get props => [postCommentsResponse];
 }
 class CommentsFaliureState extends FeedState {
-  String error;
+  final String error;
 
-  CommentsFaliureState({required this.error});
+  const CommentsFaliureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -85,17 +94,17 @@ class LikeLoadingState extends FeedState {
   List<Object> get props => [];
 }
 class LikeSuccessState extends FeedState {
-  FeedsResponse feedResponse;
+  final LikeResponse likeResponse;
 
-  LikeSuccessState({required this.feedResponse});
+  const LikeSuccessState({required this.likeResponse});
 
   @override
-  List<Object> get props => [feedResponse];
+  List<Object> get props => [likeResponse];
 }
 class LikeFaliureState extends FeedState {
-  String error;
+  final String error;
 
-  LikeFaliureState({required this.error});
+  const LikeFaliureState({required this.error});
 
   @override
   List<Object> get props => [error];
