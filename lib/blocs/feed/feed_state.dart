@@ -109,3 +109,46 @@ class LikeFaliureState extends FeedState {
   @override
   List<Object> get props => [error];
 }
+
+class DeleteFeedLoadingState extends FeedState {
+  @override
+  List<Object> get props => [];
+}
+class DeleteFeedSuccessState extends FeedState {
+  LikeResponse likeResponse;
+
+  DeleteFeedSuccessState({required this.likeResponse});
+
+  @override
+  List<Object> get props => [likeResponse];
+}
+class DeleteFeedFaliureState extends FeedState {
+  String error;
+
+  DeleteFeedFaliureState({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}
+
+
+class EditFeedLoadingState extends FeedState {
+  @override
+  List<Object> get props => [];
+}
+class EditFeedSuccessState extends FeedState {
+  AddFeedResponse feedResponse;
+
+  EditFeedSuccessState({required this.feedResponse});
+
+  @override
+  List<Object> get props => [feedResponse];
+}
+class EditFeedFaliureState extends FeedState {
+  String error;
+
+  EditFeedFaliureState({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

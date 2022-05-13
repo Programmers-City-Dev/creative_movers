@@ -31,7 +31,7 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
   ];
   List<Color> theme = [
     Colors.lightBlue,
-    const Color(0xFFC2185B),
+    Color(0xFFC2185B),
     // Color(0xFF),
     // Color(0xFF),
     // Color(0xFF),

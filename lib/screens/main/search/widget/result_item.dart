@@ -22,8 +22,8 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
   ];
-  ConnectsBloc _connectsBloc = ConnectsBloc();
-  ConnectsBloc _connectsBloc2 = ConnectsBloc();
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
+  final ConnectsBloc _connectsBloc2 = ConnectsBloc();
   ConnectState connectState = ConnectState.idle;
 
   @override
@@ -33,7 +33,7 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
               radius: 31,
               foregroundColor: Colors.red,
@@ -85,7 +85,7 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                             }
                                 : null,
                             child: connectState == ConnectState.idle
-                                ? Text('Connect')
+                                ? const Text('Connect')
                                 : connectState == ConnectState.loading
                                 ? const SizedBox(
                               child: CircularProgressIndicator(

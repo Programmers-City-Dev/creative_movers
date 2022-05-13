@@ -6,12 +6,16 @@ import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
+import 'dart:ui';
+
+import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/comments_screen.dart';
+import 'package:creative_movers/screens/main/feed/widgets/edit_post_form.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
 import 'package:creative_movers/screens/widget/link_preview.dart';
@@ -20,16 +24,22 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_stack/image_stack.dart';
+import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import '../../profile/views/edit_gender_dialog.dart';
 
 class NewPostItem extends StatefulWidget {
   const NewPostItem({
     Key? key,
     required this.feed,
     this.onCommentBoxClicked,
+    required this.onUpdated,
   }) : super(key: key);
   final Feed feed;
   final VoidCallback? onCommentBoxClicked;
+  final VoidCallback onUpdated;
 
   @override
   _NewPostItemState createState() => _NewPostItemState();
@@ -128,7 +138,7 @@ class _NewPostItemState extends State<NewPostItem> {
                                       .push(MaterialPageRoute(
                                       builder: (context) =>
                                           ViewBuisnessPageScreen(
-                                              pageId: widget.feed.page!.id
+                                              page_id: widget.feed.page!.id
                                                   .toString()),
                                     ))
                                   : Navigator.of(context)
@@ -185,40 +195,102 @@ class _NewPostItemState extends State<NewPostItem> {
                   }
                   if (state is CachedUserDataFetched &&
                       state.cachedUser.id.toString() == widget.feed.userId) {
-                    return PopupMenuButton<String>(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      itemBuilder: (context) => <PopupMenuEntry<String>>[
-                        PopupMenuItem<String>(
-                            padding: const EdgeInsets.all(10),
-                            value: 'Edit',
-                            child: Container(
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.edit_rounded),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text('Edit'),
-                                ],
-                              ),
-                            )),
-                        PopupMenuItem<String>(
-                            padding: const EdgeInsets.all(10),
-                            value: 'Delete',
-                            child: SizedBox(
-                              width: 100,
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.delete_rounded),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text('Delete'),
-                                ],
-                              ),
-                            )),
-                      ],
+                    return BlocListener<FeedBloc, FeedState>(
+                      bloc: feedBloc,
+                      listener: (context, state) {
+                        if (state is DeleteFeedLoadingState) {
+                          AppUtils.showAnimatedProgressDialog(
+                              context,
+                              title: "Deleting Post, please wait...");
+                        }
+                        if (state is DeleteFeedSuccessState) {
+                          widget.onUpdated();
+                          Navigator.of(context).pop();
+                          // AppUtils.cancelAllShowingToasts();
+                          AppUtils.showCustomToast(
+                              "Post has been Deleted successfully");
+                        }
+                        if (state is DeleteFeedFaliureState) {
+                          Navigator.of(context).pop();
+                          AppUtils.showCustomToast(state.error);
+                        }
+                      },
+                      child: PopupMenuButton<String>(
+                        onSelected: (val) {
+                          if (val == 'Edit') {
+                            showMaterialModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return BackdropFilter(
+                                    filter:
+                                        ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                    child: EditPostForm(
+                                      feed: widget.feed,
+                                      onSucces: () {
+                                        widget.onUpdated();
+                                        Navigator.pop(context);
+                                      },
+                                    ));
+                              },
+                              shape: const RoundedRectangleBorder(),
+                              // clipBehavior: Clip.antiAliasWithSaveLayer,
+                            );
+                          } else {
+                            feedBloc.add(DeleteFeedEvent(
+                                feed_id: widget.feed.id.toString()));
+                          }
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        itemBuilder: (context) => <PopupMenuEntry<String>>[
+                          PopupMenuItem<String>(
+                              padding: const EdgeInsets.all(10),
+                              onTap: () {
+                                // showMaterialModalBottomSheet(
+                                //   context: context,
+                                //   builder: (context) {
+                                //     return BackdropFilter(
+                                //         filter: ImageFilter.blur(
+                                //             sigmaX: 5, sigmaY: 5),
+                                //         child: EditGenderDialog(
+                                //           onSuccess: () {
+                                //             Navigator.pop(context);
+                                //           },
+                                //         ));
+                                //   },
+                                //   shape: const RoundedRectangleBorder(),
+                                //   // clipBehavior: Clip.antiAliasWithSaveLayer,
+                                // );
+                              },
+                              value: 'Edit',
+                              child: Container(
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.edit_rounded),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text('Edit'),
+                                  ],
+                                ),
+                              )),
+                          PopupMenuItem<String>(
+                              padding: EdgeInsets.all(10),
+                              value: 'Delete',
+                              child: Container(
+                                width: 100,
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.delete_rounded),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text('Delete'),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
                     );
                   } else {
                     Container(

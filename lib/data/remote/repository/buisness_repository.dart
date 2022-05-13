@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:creative_movers/constants/enpoints.dart';
-import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/data/remote/model/create_page_response.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';

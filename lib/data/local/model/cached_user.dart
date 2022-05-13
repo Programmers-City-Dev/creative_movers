@@ -2,7 +2,7 @@
 //
 //     final cachedUser = cachedUserFromMap(jsonString);
 class CachedUser {
-  CachedUser({
+  CachedUser( {
     required this.id,
     this.firstname,
     this.lastname,

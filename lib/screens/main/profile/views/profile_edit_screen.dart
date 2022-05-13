@@ -554,7 +554,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               //     return BlocProvider<ProfileEditCubit>(
                               //       create: (context) =>
                               //           di.injector<ProfileEditCubit>(),
-                              //       child: UpdateEthnicity(),
+                              //       child: UpdateLocationPopup(),
                               //     );
                               //   },
                               // );

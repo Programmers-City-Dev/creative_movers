@@ -4,7 +4,6 @@
 
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 AuthResponse authResponseFromMap(String str) =>

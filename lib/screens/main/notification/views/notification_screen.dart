@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -50,26 +49,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ),
                         Text('Mark all as read'),
                       ],
-                    )),
-                PopupMenuItem<String>(
-                    padding: const EdgeInsets.all(10),
-                    value: 'Filter',
-                    child: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: const [
-                          Icon(Icons.sort),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text('Filter'),
-                        ],
-                      ),
-                    )),
-              ],
-            ),
-          )
-        ],
+                    ),
+                  ),
+              PopupMenuItem<String>(
+                  padding: const EdgeInsets.all(10),
+                  value: 'Filter',
+                  child: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: const [
+                        Icon(Icons.sort),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text('Filter'),
+                      ],
+                    ),
+                  )),
+            ],
+          ),
+        )],
         title: const Text(
           'Notifications',
           style: TextStyle(color: AppColors.textColor),

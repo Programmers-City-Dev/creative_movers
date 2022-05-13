@@ -21,10 +21,12 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
   FeedBloc() : super(FeedInitial()) {
     on<AddFeedEvent>(_mapAddFeedEventToState);
+    // on<DeleteFeedEvent>(_mapDeleteFeedEventToState);
     on<GetFeedEvent>(_mapGetFeedEventToState);
     on<CommentEvent>(_mapCommentEventToState);
     on<LikeEvent>(_mapLikeEventToState);
     on<FetchFeedItemEvent>(_mapFetchFeedItemEventToState);
+    // on<EditFeedEvent>(_mapEditFeedEventToState);
   }
 
   Future<FutureOr<void>> _mapAddFeedEventToState(

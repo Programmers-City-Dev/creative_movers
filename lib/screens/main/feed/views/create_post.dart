@@ -15,9 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({Key? key, this.postType = "user_feed", this.pageId}) : super(key: key);
-  final String? postType;
-  final String? pageId;
+  const CreatePostScreen({Key? key, this.post_type = "user_feed", this.page_id}) : super(key: key);
+  final String? post_type;
+  final String? page_id;
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -187,8 +187,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             type: e.mediaType == MediaType.image ? 'media' : 'video'))
         .toList();
     _feedBloc.add(AddFeedEvent(
-      pageId: widget.postType == "page_feed" ? widget.pageId:null,
-        type: widget.postType!, content: _postController.text, media: mediaFiles));
+      pageId: widget.post_type == "page_feed" ? widget.page_id:null,
+        type: widget.post_type!, content: _postController.text, media: mediaFiles));
   }
 
   void _listenToAddFeedState(BuildContext context, FeedState state) {
@@ -203,7 +203,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     if (state is AddFeedSuccessState) {
       Navigator.pop(context);
-      widget.postType != "page_feed"?
+      widget.post_type != "page_feed"?
       Navigator.of(context).pushNamed(feedsPath):  Navigator.pop(context);
           
     }

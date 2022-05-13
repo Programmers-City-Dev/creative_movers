@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:creative_movers/data/remote/model/add_feed_response.dart';
-import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/upload_status_response.dart';
@@ -20,7 +18,6 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
 
   StatusBloc() : super(StatusInitial()) {
     on<StatusEvent>((event, emit) {
-      // TODO: implement event handler
     });
     on<UploadStatusEvent>(_mapUploadStatusEventToState);
     on<GetStatusEvent>(_mapGetStatusEventToState);

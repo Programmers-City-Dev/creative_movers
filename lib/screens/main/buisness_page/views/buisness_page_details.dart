@@ -1,17 +1,11 @@
-import 'dart:ui';
 
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/resources/app_icons.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/buisness_page_screen.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/buisness_profile.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
-import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BuisnessScreen extends StatefulWidget {
@@ -24,10 +18,12 @@ class BuisnessScreen extends StatefulWidget {
 
 BuisnessBloc _buisnessBloc = BuisnessBloc();
 
-class _BuisnessScreenState extends State<BuisnessScreen>
-    with SingleTickerProviderStateMixin {
+class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProviderStateMixin{
+
   int selectedIndex = 0;
-  List<Widget> pages = [];
+  List<Widget> pages =  [];
+
+
 
   late TabController _tabController;
 

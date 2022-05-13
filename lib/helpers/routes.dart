@@ -55,7 +55,7 @@ class AppRoutes {
         user_id: userId,
       );
     },
-    profileEditPath: (_) => ProfileEditScreen()
+    profileEditPath: (_) => const ProfileEditScreen()
   };
 }
 

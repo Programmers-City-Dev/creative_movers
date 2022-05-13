@@ -362,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onNavigate: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => ProfileEditScreen()));
+                          builder: (_) => const ProfileEditScreen()));
                       // _navBloc.add(SwitchNavEvent(4));
                       // Navigator.of(homeNavigatorKeys[4].currentState!.context)
                       //     .pushNamed(profileEditPath);

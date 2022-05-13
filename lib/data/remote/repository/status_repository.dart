@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
-import 'package:creative_movers/data/remote/model/add_feed_response.dart';
-import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/upload_status_response.dart';

@@ -31,6 +31,8 @@ class Endpoints {
   static const get_status_endpoint =
       '${ApiConstants.BASE_URL}api/user/get-status';
 
+  static const edit_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/update-feed';
+
   static const fetch_connections_endpoint =
       '${ApiConstants.BASE_URL}api/connections/fetch-all';
   static const search_endpoint = '${ApiConstants.BASE_URL}api/user/search';
