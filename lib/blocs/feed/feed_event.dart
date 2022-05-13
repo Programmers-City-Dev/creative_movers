@@ -42,3 +42,24 @@ class LikeEvent extends FeedEvent {
   @override
   List<Object?> get props => [];
 }
+
+class EditFeedEvent extends FeedEvent {
+  String feed_id;
+  String? pageId;
+  String content;
+  // List<String> media;
+
+
+  EditFeedEvent({required this.feed_id, this.pageId, required this.content,});
+
+  @override
+  List<Object?> get props => [feed_id,pageId,content];
+}
+
+class DeleteFeedEvent extends FeedEvent {
+  final String feed_id;
+  const DeleteFeedEvent({required this.feed_id});
+
+  @override
+  List<Object?> get props => [];
+}

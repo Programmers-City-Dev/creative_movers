@@ -1,50 +1,53 @@
+import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-import '../../../../blocs/profile/profile_bloc.dart';
-import '../../../../di/injector.dart';
+import '../../../../blocs/feed/feed_bloc.dart';
 import '../../../../helpers/app_utils.dart';
-import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
-class EditGenderDialog extends StatefulWidget {
-  final VoidCallback onSuccess;
-  const EditGenderDialog({Key? key, required this.onSuccess}) : super(key: key);
+
+class EditPostForm extends StatefulWidget {
+  const EditPostForm({Key? key, required this.feed, required this.onSucces}) : super(key: key);
+  final Feed feed;
+  final VoidCallback onSucces;
 
   @override
-  _EditGenderDialogState createState() => _EditGenderDialogState();
+  _EditPostFormState createState() => _EditPostFormState();
 }
 
-class _EditGenderDialogState extends State<EditGenderDialog> {
-  final _phoneNumberController = TextEditingController();
+class _EditPostFormState extends State<EditPostForm> {
+  final _contentController = TextEditingController();
   final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
-  final _profileBloc = ProfileBloc(injector.get());
-  List<String> genders = ['Male' , 'Female','dcwdcec' , 'cec','MCale' , 'ddc','sdc' , 'ssc','sxsdsd','ddsd,','jdwdd','hgfsghjde','ughedjw''iuywgdh'];
-  String gender = '';
 
+  @override
+  void initState() {
+    _contentController.text =
+    widget.feed.content == null ? '' : widget.feed.content!;
+    super.initState();
+  }
 
+  final _feedBloc = FeedBloc();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProfileBloc, ProfileState>(
-      bloc: _profileBloc,
+    return BlocListener<FeedBloc, FeedState>(
+      bloc: _feedBloc,
       listener: (context, state) {
-        if (state is ProfileUpdateLoading) {
+        if (state is EditFeedLoadingState) {
           AppUtils.showAnimatedProgressDialog(
               context,
               title: "Updating, please wait...");
         }
-        if (state is ProfileUpdateLoadedState) {
-
-          widget.onSuccess();
+        if (state is EditFeedSuccessState) {
+          widget.onSucces();
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
           AppUtils.showCustomToast(
-              "Gender has been updated successfully");
-          // _updateProfile(
-          //     state.photo, state.isProfilePhoto);
+              "Post has been updated successfully");
+
         }
-        if (state is ProfileUpdateErrorState) {
+        if (state is EditFeedFaliureState) {
           Navigator.of(context).pop();
           AppUtils.showCustomToast(state.error);
         }
@@ -53,9 +56,11 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
 
         child: Container(
           padding: const EdgeInsets.all(30),
-          decoration: const BoxDecoration(
-              color: AppColors.smokeWhite,
-              borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+              color: Theme
+                  .of(context)
+                  .cardColor,
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30))),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +77,7 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
                 height: 15,
               ),
               const Text(
-                'Edit Gender',
+                'Edit Post',
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
               ),
               const SizedBox(
@@ -88,23 +93,22 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
                         .bottom),
                 child: Form(
                   key: _fieldKey,
-                  child: DropdownButtonFormField<String>(
-                      onChanged: (value) {
-                        gender = value!;
-                      },
-                      decoration: const InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                              BorderSide(color: AppColors.textColor)),
-                          labelStyle: TextStyle(color: AppColors.textColor),
-                          labelText: 'Select Gender',
-                          contentPadding: EdgeInsets.all(16),
-                          border: OutlineInputBorder()),
-                      value: 'Male',
-                      items: genders
-                          .map((e) => DropdownMenuItem<String>(
-                          value: e, child: Text(e)))
-                          .toList()),
+                  child: TextFormField(
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'Content must not be empty'),
+                      // EmailValidator(errorText: 'Enter a valid email'),
+                    ]),
+
+                    controller: _contentController,
+                    maxLines: 5,
+                    minLines: 1,
+
+                    decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(10),
+                        focusedBorder: OutlineInputBorder(),
+                        hintText: 'Edit post',
+                        border: OutlineInputBorder()),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -113,7 +117,12 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
               CustomButton(
                 onTap: () {
                   if (_fieldKey.currentState!.validate()) {
-                    _profileBloc.add(UpdateProfileEvent(gender: gender));
+                    _feedBloc.add(EditFeedEvent(
+                        feed_id: widget.feed.id.toString(),
+                        content: _contentController.text,
+                        pageId: widget.feed.type == 'page_feed' ? widget.feed
+                            .pageId : null));
+                    // _profileBloc.add(UpdateProfileEvent(phone: _phoneNumberController.text));
                     // _authBloc.add(ForgotPasswordEvent(email: _phoneNumberController.text));
 
                   }

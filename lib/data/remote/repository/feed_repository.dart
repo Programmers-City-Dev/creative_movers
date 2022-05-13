@@ -277,4 +277,82 @@ class FeedRepository {
       },
     );
   }
+
+  Future<State> deletePost({required String feed_id}) async {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(Endpoints.delete_feed_endpoint,body: {
+        "feed_id": feed_id,
+
+      }),
+      successResponse: (data) {
+        return State<LikeResponse?>.success(
+            data != null ? LikeResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> editFeed({
+    String? page_id,
+    required String feed_id,
+    required String content,
+    // required List<String> media,
+  }) async {
+    var formData = FormData.fromMap({
+      "type" :'user_feed',
+      "page_id" :page_id,
+      "feed_id" :feed_id,
+      "content" :content,
+    });
+    // log("IMAGES: $media");
+    // for (var file in media) {
+    //   formData.files.addAll([
+    //     MapEntry("media", await MultipartFile.fromFile(file)),
+    //   ]);
+    // }
+    return SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(Endpoints.edit_feed_endpoint, body:formData),
+      successResponse: (data) {
+        return State<AddFeedResponse?>.success(
+            data != null ? AddFeedResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: response.data['message']),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER:$response');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
 }

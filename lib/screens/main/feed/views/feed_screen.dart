@@ -129,7 +129,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             return NewPostItem(
-                              feed: state.feedResponse.feeds.data[index],
+                              feed: state.feedResponse.feeds.data[index], onUpdated: () { feedBloc.add(GetFeedEvent());  },
                             );
                           },
                           childCount: state.feedResponse.feeds.data.length,

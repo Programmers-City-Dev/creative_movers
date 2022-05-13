@@ -24,6 +24,9 @@ class Endpoints {
   static const delete_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/delete';
   static const comment_endpoint = '${ApiConstants.BASE_URL}api/feed/comment';
   static const like_endpoint = '${ApiConstants.BASE_URL}api/feed/like';
+  static const edit_feed_endpoint = '${ApiConstants.BASE_URL}api/feed/update-feed';
+
+
   static const buisness_page_endpoint =
       '${ApiConstants.BASE_URL}api/user/fetch-business-page';
   static const upload_status_endpoint =

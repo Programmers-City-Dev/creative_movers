@@ -276,7 +276,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                           itemBuilder: (context, index) =>
                               NewPostItem(
                                   feed:
-                                  state.feedsResponse.feeds.data[index]),
+                                  state.feedsResponse.feeds.data[index], onUpdated: () {  },),
                         )
                             : const Center(
                           child: Padding(

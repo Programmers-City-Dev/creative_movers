@@ -43,7 +43,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   List<MediaItemModel> mediaItem = [];
 
   final _postController = TextEditingController();
-  FeedBloc _feedBloc = FeedBloc();
+  final FeedBloc _feedBloc = FeedBloc();
 
   @override
   void initState() {
