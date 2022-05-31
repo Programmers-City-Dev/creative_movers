@@ -8,7 +8,7 @@
             "name": "creative_movers_dev_1",
             "request": "launch",
             "type": "dart",
-            "deviceId": "192.168.0.104:5555",
+            // "deviceId": "192.168.0.104:5555",
             "program": "lib/main_dev.dart",
             "args": [
                 "--flavor",

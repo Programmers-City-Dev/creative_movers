@@ -57,6 +57,7 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
   @override
   void initState() {
     super.initState();
+    // log("CAMES: ${cameras.length}");
     cameraController = CameraController(
       _isFrontCamera ? cameras[1] : cameras[0],
       ResolutionPreset.medium,
@@ -203,17 +204,17 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                       },
                       builder: (context, state) {
                         return CustomButton(
-                          onTap: state is ChatLoading
+                          onTap: state is ChatMessageLoading
                               ? null
                               : () {
                                   _chatBloc.add(const GenerateAgoraToken(
-                                      channelName: "TestChannnel"));
+                                      channelName: "CreativeMovers"));
                                 },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                state is ChatLoading
+                                state is ChatMessageLoading
                                     ? "Preparing"
                                     : "Lets Go →",
                                 style: const TextStyle(color: Colors.white),
@@ -221,7 +222,7 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                               const SizedBox(
                                 width: 16.0,
                               ),
-                              state is ChatLoading
+                              state is ChatMessageLoading
                                   ? const SpinKitThreeBounce(
                                       color: Colors.white,
                                       size: 24,

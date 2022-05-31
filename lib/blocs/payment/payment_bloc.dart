@@ -11,7 +11,7 @@ import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:uuid/uuid.dart';
 
 part 'payment_event.dart';
@@ -29,24 +29,24 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   }
 
   Future<Either<String, String>> makePayment(String secret) async {
-    try {
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: secret,
-        applePay: true,
-        googlePay: true,
-        style: ThemeMode.light,
-        merchantCountryCode: "US",
-        merchantDisplayName: "Creative Movers Pay",
-      ));
+    // try {
+    //   await Stripe.instance.initPaymentSheet(
+    //       paymentSheetParameters: SetupPaymentSheetParameters(
+    //     paymentIntentClientSecret: secret,
+    //     applePay: true,
+    //     googlePay: true,
+    //     style: ThemeMode.light,
+    //     merchantCountryCode: "US",
+    //     merchantDisplayName: "Creative Movers Pay",
+    //   ));
 
-      await Stripe.instance.presentPaymentSheet();
-      // await Stripe.instance.presentPaymentSheet(parameters: secret);
+    //   await Stripe.instance.presentPaymentSheet();
+    //   // await Stripe.instance.presentPaymentSheet(parameters: secret);
       return const Right("Payment successful");
-    } catch (e) {
-      print("Payment error: $e");
-      return const Left("Unable to process payment");
-    }
+    // } catch (e) {
+    //   print("Payment error: $e");
+    //   return const Left("Unable to process payment");
+    // }
   }
 
   Future<Either<ServerErrorModel, Map<String, dynamic>>> _createPaymentIntent(

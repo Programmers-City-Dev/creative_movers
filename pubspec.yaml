@@ -38,7 +38,7 @@ dependencies:
   intl: ^0.17.0
   dropdown_search: ^2.0.1
   image_stack: ^2.1.0
-  syncfusion_flutter_datepicker: ^20.1.50
+  # syncfusion_flutter_datepicker: ^20.1.50
   cupertino_icons: ^1.0.2
   flutter_localizations: 
     sdk: flutter
@@ -79,6 +79,7 @@ dependencies:
   firebase_core: ^1.14.1
   firebase_messaging: ^11.2.13
   firebase_remote_config: ^2.0.4
+  cloud_firestore: ^3.1.17
   firebase_analytics: ^9.1.5
   flutter_local_notifications: ^9.4.0
   uuid: ^3.0.6
@@ -117,19 +118,7 @@ flutter:
         - asset: assets/fonts/poppins/poppins_regular.ttf
         - asset: assets/fonts/poppins/poppins_bold.ttf
         - asset: assets/fonts/poppins/poppins_medium.ttf
-    - family: Lobster
-      fonts:
-        - asset: assets/fonts/lobster/lobster_regular.ttf
-    - family: Dancing_Script
-      fonts:
-        - asset: assets/fonts/dancing_Script/dancingScript_regular.ttf
-        - asset: assets/fonts/dancing_Script/dancingScript_bold.ttf
-        - asset: assets/fonts/dancing_Script/dancingScript_medium.ttf
-    - family: Syne_Mono
-      fonts:
-        - asset: assets/fonts/Syne_Mono/syneMono_regular.ttf
-
-
+   
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

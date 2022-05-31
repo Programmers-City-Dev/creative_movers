@@ -35,6 +35,7 @@ class CreativeMoversApp extends StatelessWidget {
         Locale('ru', ''),
       ],
       theme: ThemeData(
+        fontFamily: "Poppins",
           pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: ZoomPageTransitionsBuilder(),

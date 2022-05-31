@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:creative_movers/data/remote/model/chat_message.dart';
+import 'package:creative_movers/data/remote/model/live_chat_message.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
@@ -6,6 +9,7 @@ import 'package:flutter/foundation.dart';
 
 class ChatRepository {
   final HttpHelper httpClient;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   ChatRepository(this.httpClient);
 
@@ -15,8 +19,8 @@ class ChatRepository {
     return SimplifyApiConsuming.makeRequest(
       () =>
           httpClient.post("https://agora-token-gen.herokuapp.com/token", body: {
-        "appId": "ab9a79c1cfc7491a92c574140c234529",
-        "appCertificate": "0ff36beda29f43c79c47a38530fdd107",
+        "appId": "d914468e34e446acb3892494cf004eab",
+        "appCertificate": "49b03f4b574b4f1bb403b76d138bedf4",
         "channelName": channelName,
         "uid": uid ?? "22048695876",
         "role": "subscriber"
@@ -44,5 +48,40 @@ class ChatRepository {
         );
       },
     );
+  }
+
+  Future<State> sendChannelMessage(
+      String channelName, LiveChatMessage message) async {
+    try {
+      var documentReference = _firestore
+          .collection("messaging")
+          .doc("live")
+          .collection(channelName)
+          .doc();
+      await _firestore
+          .collection("messaging")
+          .doc("live")
+          .collection(channelName)
+          .add(message.copyWith(id: documentReference.id).toMap());
+
+      return State.success(documentReference);
+    } on FirebaseException catch (fe) {
+      return State.error(
+          ServerErrorModel(statusCode: 401, errorMessage: fe.message!));
+    }
+  }
+
+  Stream<List<LiveChatMessage>> channelMessages(String channelName) {
+    return _firestore
+        .collection("messaging")
+        .doc("live")
+        .collection(channelName)
+        .orderBy(
+          "timestamp",
+        )
+        .snapshots()
+        .map((snapshots) => snapshots.docs.map((e) {
+              return LiveChatMessage.fromMap(e.data());
+            }).toList());
   }
 }

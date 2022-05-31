@@ -11,7 +11,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -51,7 +51,7 @@ class AppConfig {
     await Firebase.initializeApp();
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-cameras = await availableCameras();
+    cameras = await availableCameras();
     PushNotificationService.initialise();
 
     var remoteConfigsService = await RemoteConfigsService.create();
@@ -59,7 +59,7 @@ cameras = await availableCameras();
     await di.setup();
     var stripeKey =
         FirebaseRemoteConfig.instance.getString("stripe_publishable_key");
-    Stripe.publishableKey = stripeKey;
+    // Stripe.publishableKey = stripeKey;
     var firstScreen = await AppUtils.getFirstScreen();
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));

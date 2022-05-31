@@ -366,7 +366,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                             .push(MaterialPageRoute(
                                           builder: (context) =>
                                               ViewBuisnessPageScreen(
-                                                  pageId: state.buisnessProfile
+                                                  page_id: state.buisnessProfile
                                                       .sugestedpages[index].id
                                                       .toString()),
                                         ));

@@ -38,7 +38,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProv
     pages = [
       MyPageTab(),
       ViewBuisnessPageScreen(
-        pageId: widget.page.id.toString(),
+        page_id: widget.page.id.toString(),
       )
     ];
   }

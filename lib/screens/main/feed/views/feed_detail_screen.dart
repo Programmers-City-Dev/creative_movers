@@ -101,7 +101,7 @@ class _FeedDetailsWidgetState extends State<FeedDetailsWidget> {
                       onCommentBoxClicked: () {
                         _focusNode.unfocus();
                         _focusNode.requestFocus();
-                      },
+                      }, onUpdated: () {  },
                     ),
                     widget.feed.comments.isEmpty
                         ? const Center(child: Text('No Comments'))
