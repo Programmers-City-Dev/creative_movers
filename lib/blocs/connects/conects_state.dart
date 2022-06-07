@@ -4,7 +4,7 @@ abstract class ConnectsState extends Equatable {
   const ConnectsState();
 }
 
-class ConectsInitial extends ConnectsState {
+class ConnectsInitial extends ConnectsState {
   @override
   List<Object> get props => [];
 }

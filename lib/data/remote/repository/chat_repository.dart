@@ -1,11 +1,20 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:creative_movers/data/remote/model/chat_message.dart';
-import 'package:creative_movers/data/remote/model/live_chat_message.dart';
+import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/chat/chat_message_request.dart';
+import 'package:creative_movers/data/remote/model/chat/chat_message_response.dart';
+import 'package:creative_movers/data/remote/model/chat/conversation.dart';
+import 'package:creative_movers/data/remote/model/chat/conversation_messages_response.dart';
+import 'package:creative_movers/data/remote/model/chat/conversations_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:flutter/foundation.dart';
+
+import '../model/chat/live_chat_message.dart';
 
 class ChatRepository {
   final HttpHelper httpClient;
@@ -84,4 +93,98 @@ class ChatRepository {
               return LiveChatMessage.fromMap(e.data());
             }).toList());
   }
+
+  //Retrieve all chat conversations to be displayed on the chat tab
+  Future<State> fetchChatConversations() async {
+    return SimplifyApiConsuming.makeRequest(
+      () =>
+          httpClient.post(Endpoints.chatConversations),
+      successResponse: (data) {
+        return State<List<Conversation>?>.success(data != null ? ConversationsResponse.fromMap(data).conversations : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER FROM FETCH');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: "Oops! something went wrong",
+              data: null),
+        );
+      },
+    );
+  }
+
+  // Send chat message on the main chat screen
+  Future<State> sendChatMessage({required List<File> files, required ChatMessageRequest message}) async {
+    log("CONVO ID: ${message.conversationId}");
+    return SimplifyApiConsuming.makeRequest(
+          () =>
+          httpClient.post(Endpoints.sendChatMessage,body: message.toMap()),
+      successResponse: (data) {
+        return State<ChatMessageResponse?>.success(data != null ? ChatMessageResponse.fromMap(data): null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER FROM SEND MESSAGE: ${response.data}');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: "Oops! something went wrong",
+              data: null),
+        );
+      },
+    );
+  }
+
+  // Fetch messages for a particular conversation
+  Future<State> fetchChatConversationMessages(int conversationId) async{
+    return SimplifyApiConsuming.makeRequest(
+          () =>
+          httpClient.post(Endpoints.fetchConversationMessages, body: {
+            "conversation_id": conversationId
+          }),
+      successResponse: (data) {
+        return State<ConversationMessagesResponse?>.success(data != null ? ConversationMessagesResponse.fromMap(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: "Oops! unable to fetch conversation messages, try again",
+              data: null),
+        );
+      },
+    );
+  }
+
 }

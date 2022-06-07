@@ -9,6 +9,8 @@ import 'package:equatable/equatable.dart';
 part 'cache_state.dart';
 
 class CacheCubit extends Cubit<CacheState> {
+  CachedUser? cachedUser;
+
   CacheCubit() : super(CacheInitial());
 
   void fetchCachedUserData() async {
@@ -16,6 +18,7 @@ class CacheCubit extends Cubit<CacheState> {
       var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
       if (dataList.isNotEmpty) {
         CachedUser cachedUser = dataList.first;
+        this.cachedUser = cachedUser;
         emit(CachedUserDataFetched(cachedUser: cachedUser));
       }
     } catch (e) {

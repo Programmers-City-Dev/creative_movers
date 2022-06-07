@@ -25,7 +25,7 @@ class ProfileRepository {
     required String username}) async {
     return SimplifyApiConsuming.makeRequest(
           () =>
-          httpClient.post(Endpoints.register_endpoint, body: {
+          httpClient.post(Endpoints.registerEndpoint, body: {
             "email": email,
             "password": password,
             "username": username,
@@ -60,7 +60,7 @@ class ProfileRepository {
   Future<State> login({required String email, required String password}) async {
     return SimplifyApiConsuming.makeRequest(
           () =>
-          httpClient.post(Endpoints.login_endpoint, body: {
+          httpClient.post(Endpoints.loginEndpoint, body: {
             "email": email,
             "password": password,
           }),
@@ -98,7 +98,7 @@ class ProfileRepository {
     String? image}) async {
     return SimplifyApiConsuming.makeRequest(
           () =>
-          httpClient.post(Endpoints.biodata_endpoint, body: {
+          httpClient.post(Endpoints.bioDataEndpoint, body: {
             "firstname": firstname,
             "lastname": lastname,
             "phone": phoneNumber,
@@ -146,7 +146,7 @@ class ProfileRepository {
   }) async {
     return SimplifyApiConsuming.makeRequest(
           () =>
-          httpClient.post(Endpoints.acount_type_endpoint, body: {
+          httpClient.post(Endpoints.accountTypeEndpoint, body: {
             "role": role,
             "user_id": user_id,
             "name": name,
@@ -191,7 +191,7 @@ class ProfileRepository {
   }) async {
     return SimplifyApiConsuming.makeRequest(
           () =>
-          httpClient.post(Endpoints.add_connection_endpoint, body: {
+          httpClient.post(Endpoints.addConnectionEndpoint, body: {
             "user_id": user_id,
             "connection": jsonEncode(connections),
           }),

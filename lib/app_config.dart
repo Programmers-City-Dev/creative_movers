@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/services/puhser_service.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:creative_movers/services/remote_configs_service.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -52,7 +53,9 @@ class AppConfig {
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     cameras = await availableCameras();
-    PushNotificationService.initialise();
+    await PushNotificationService.initialise();
+    var pusherService = await PusherService.getInstance;
+    await pusherService.initialize();
 
     var remoteConfigsService = await RemoteConfigsService.create();
     await remoteConfigsService.retrieveSecrets();

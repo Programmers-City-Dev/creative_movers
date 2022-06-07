@@ -56,7 +56,7 @@ class _ContactScreenState extends State<ContactScreen>
                     _tabController.animateTo(selectedIndex);
                   }),
                   child: Chip(
-                      padding: EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(7),
                       avatar: SvgPicture.asset(
                         AppIcons.svgPeople,
                         color: selectedIndex == 0
@@ -81,7 +81,7 @@ class _ContactScreenState extends State<ContactScreen>
                     _tabController.animateTo(selectedIndex);
                   }),
                   child: Chip(
-                      padding: EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(7),
                       avatar: SvgPicture.asset(
                         AppIcons.svgPeople,
                         color: selectedIndex == 1

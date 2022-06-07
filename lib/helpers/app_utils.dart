@@ -83,7 +83,12 @@ class AppUtils {
     return toBeginningOfSentenceCase(s)!;
   }
 
-  static String getTime(DateTime dateTime) {
+  static String getTime(DateTime date) {
+    final DateFormat formatter = DateFormat.jm();
+    return formatter.format(date);
+  }
+
+    static String getTimeAgo(DateTime dateTime) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     // DateTime dateTime = DateTime.parse(date);
@@ -555,6 +560,17 @@ class AppUtils {
     return DateFormat("MMMM dd, yyyy hh:mm a").format(createdAt);
   }
 
+  static String formatTimeAgo(DateTime date) {
+    if (date.day == DateTime.now().day) {
+      return 'Today ${DateFormat("hh:mm a").format(date)}';
+    } else if (date.day == DateTime.now().day - 1) {
+      return 'Yesterday ${DateFormat("hh:mm a").format(date)}';
+    }
+
+    return DateFormat.yMMMEd()
+        .format(date);
+  }
+
   static String getGroupLabel(int groupByValue) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(groupByValue);
     if (date.day == DateTime.now().day) {
@@ -596,6 +612,11 @@ class AppUtils {
       debugPrint(e.toString());
       return Future.error("error");
     }
+  }
+
+  static String formatDateTime(int? t) {
+    return DateFormat("E MMM d, yyyy・h:mm a")
+        .format(DateTime.fromMillisecondsSinceEpoch(t!));
   }
 }
 

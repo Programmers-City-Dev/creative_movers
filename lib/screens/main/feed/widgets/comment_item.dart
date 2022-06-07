@@ -43,7 +43,7 @@ class CommentItem extends StatelessWidget {
                 children: [
                    Text(
                      comment.createdAt != null?
-                    AppUtils.getTime(comment.createdAt!):'1 sec ago',
+                    AppUtils.getTimeAgo(comment.createdAt!):'1 sec ago',
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   // const SizedBox(

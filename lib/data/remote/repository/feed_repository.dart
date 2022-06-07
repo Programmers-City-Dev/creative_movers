@@ -35,7 +35,7 @@ class FeedRepository {
       ]);
     }
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint, body: formData),
+      () => httpHelper.post(Endpoints.addFeedEndpoint, body: formData),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);
@@ -64,7 +64,7 @@ class FeedRepository {
 
   Future<State> getFeeds() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.fetch_feed_endpoint),
+      () => httpHelper.post(Endpoints.fetchFeedEndpoint),
       successResponse: (data) {
         return State<FeedsResponse?>.success(
             data != null ? FeedsResponse.fromJson(data) : null);
@@ -123,7 +123,7 @@ class FeedRepository {
   Future<State> postComments(
       {required String feed_id, required String comment}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.comment_endpoint, body: {
+      () => httpHelper.post(Endpoints.commentEndpoint, body: {
         "feed_id": feed_id,
         "comment": comment,
       }),
@@ -155,7 +155,7 @@ class FeedRepository {
 
   Future<State> postLike({required String feed_id}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.like_endpoint, body: {
+      () => httpHelper.post(Endpoints.likeEndpoint, body: {
         "feed_id": feed_id,
       }),
       successResponse: (data) {
@@ -186,7 +186,7 @@ class FeedRepository {
 
   Future<State> getLike() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.addFeedEndpoint),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);
@@ -215,7 +215,7 @@ class FeedRepository {
 
   Future<State> getComments() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.addFeedEndpoint),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);
@@ -244,7 +244,7 @@ class FeedRepository {
 
   Future<State> getReplies() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.addFeedEndpoint),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);
@@ -273,7 +273,7 @@ class FeedRepository {
 
   Future<State> replyComment() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(Endpoints.add_feed_endpoint),
+      () => httpHelper.post(Endpoints.addFeedEndpoint),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);
@@ -302,7 +302,7 @@ class FeedRepository {
 
   Future<State> deletePost({required String feed_id}) async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.delete_feed_endpoint,body: {
+          () => httpHelper.post(Endpoints.deleteFeedEndpoint,body: {
         "feed_id": feed_id,
 
       }),
@@ -351,7 +351,7 @@ class FeedRepository {
     //   ]);
     // }
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.edit_feed_endpoint, body:formData),
+          () => httpHelper.post(Endpoints.editFeedEndpoint, body:formData),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);

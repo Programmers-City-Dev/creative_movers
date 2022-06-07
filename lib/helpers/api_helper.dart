@@ -39,7 +39,7 @@ class SimplifyApiConsuming {
             data: null),
       );
     } on DioError catch (e) {
-      print("dio error request is ${e.response}");
+      print("dio error request is:  ${e.response?.requestOptions.queryParameters}");
       if (dioErrorResponse != null) {
         return dioErrorResponse(e.response!);
       } else {

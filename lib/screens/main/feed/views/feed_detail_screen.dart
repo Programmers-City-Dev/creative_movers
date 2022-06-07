@@ -329,7 +329,7 @@ class _CommentItemWidgetState extends State<CommentItemWidget> {
                         if (state is CommentsSuccessState) {
                           return Text(
                             widget.comment.createdAt != null
-                                ? AppUtils.getTime(widget.comment.createdAt!)
+                                ? AppUtils.getTimeAgo(widget.comment.createdAt!)
                                 : '1 sec ago',
                             style: const TextStyle(
                                 fontSize: 12, color: Colors.grey),
@@ -369,7 +369,7 @@ class _CommentItemWidgetState extends State<CommentItemWidget> {
                         }
                         return Text(
                           widget.comment.createdAt != null
-                              ? AppUtils.getTime(widget.comment.createdAt!)
+                              ? AppUtils.getTimeAgo(widget.comment.createdAt!)
                               : '1 sec ago',
                           style:
                               const TextStyle(fontSize: 12, color: Colors.grey),

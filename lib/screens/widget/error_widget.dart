@@ -8,15 +8,17 @@ class AppPromptWidget extends StatelessWidget {
   final String? imagePath;
   final bool? isSvgResource;
   final bool? canTryAgain;
+  final String? buttonText;
 
   const AppPromptWidget({
     Key? key,
-    this.message = 'Ooops an error occured',
+    this.message = 'Oops an error occured',
     this.title,
     this.onTap,
     this.imagePath,
     this.isSvgResource = false,
     this.canTryAgain = true,
+    this.buttonText
   }) : super(key: key);
 
   @override
@@ -76,7 +78,7 @@ class AppPromptWidget extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16))),
-                    child: const Text("Try again")),
+                    child: Text( buttonText ?? "Try again")),
               ],
             )
         ],

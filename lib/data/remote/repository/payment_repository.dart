@@ -20,7 +20,7 @@ class PaymentRepository {
   Future<State> createPaymentIntent(Map body) async {
     log("SECRETE:${FirebaseRemoteConfig.instance.getString('stripe_secret_key')}");
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.stripe_intent,
+      () => httpClient.post(Endpoints.stripeIntent,
           body: body,
           options: Options(headers: {
             "Authorization":
@@ -70,7 +70,7 @@ class PaymentRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER FROM FETCH SUBSCRIPTION');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,

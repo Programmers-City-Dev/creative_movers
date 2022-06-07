@@ -18,7 +18,6 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _connectsBloc.add(GetPendingRequestEvent());
   }
@@ -56,7 +55,6 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
                           child: ListView.builder(
                             itemCount: state.getConnectsResponse.connections
                                 .connectionList.length,
-
                             itemBuilder: (context, index) => RequestItem(
                               connection: state.getConnectsResponse.connections
                                   .connectionList[index],
@@ -66,7 +64,9 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
                       : Expanded(
                           child: Center(
                               child: AppPromptWidget(
-                          onTap: () {  _connectsBloc.add(GetPendingRequestEvent());},
+                          onTap: () {
+                            _connectsBloc.add(GetPendingRequestEvent());
+                          },
                           canTryAgain: true,
                           isSvgResource: true,
                           imagePath: "assets/svgs/request.svg",

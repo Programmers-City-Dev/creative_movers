@@ -18,6 +18,11 @@
 		<string>de</string>
 		<string>ja</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 	<key>CFBundleName</key>
 	<string>creative_movers</string>
 	<key>CFBundlePackageType</key>

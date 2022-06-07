@@ -42,7 +42,7 @@ class PostTextItem extends StatelessWidget {
               ),
               Text(feed!.content!),
               Text(
-                AppUtils.getTime(feed!.createdAt),
+                AppUtils.getTimeAgo(feed!.createdAt),
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],

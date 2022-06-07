@@ -46,7 +46,7 @@ class CircleImage extends StatelessWidget {
                   width: mRadius,
                   height: mRadius,
                   child: Shimmer.fromColors(
-                    child: Container(
+                    child: SizedBox(
                       width: mRadius,
                       height: mRadius,
                     ),

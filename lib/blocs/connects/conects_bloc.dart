@@ -18,7 +18,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
   final ConnectsRepository connectsRepository =
       ConnectsRepository(HttpHelper());
 
-  ConnectsBloc() : super(ConectsInitial()) {
+  ConnectsBloc() : super(ConnectsInitial()) {
     on<ConnectsEvent>((event, emit) {
       // TODO: implement event handler
     });

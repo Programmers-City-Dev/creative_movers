@@ -57,7 +57,7 @@ class _NotificationItemState extends State<NotificationItem> {
                       height: 10,
                     ),
                     Text(
-                      AppUtils.getTime(widget.notificationData.createdAt),
+                      AppUtils.getTimeAgo(widget.notificationData.createdAt),
                       textAlign: TextAlign.end,
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     )

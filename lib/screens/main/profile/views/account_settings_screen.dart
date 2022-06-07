@@ -29,6 +29,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   void initState() {
     injector.get<CacheCubit>().fetchCachedUserData();
+    _paymentBloc
+    .add(
+        const GetSubscriptionInfoEvent());
     super.initState();
   }
 
@@ -298,9 +301,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                     Row(
                                       children: [
                                         BlocBuilder<PaymentBloc, PaymentState>(
-                                            bloc: _paymentBloc
-                                              ..add(
-                                                  const GetSubscriptionInfoEvent()),
+                                            bloc: _paymentBloc,
+                                              // ..add(
+                                              //     const GetSubscriptionInfoEvent()),
                                             builder: (context, state) {
                                               if (state
                                                   is SubscriptionLoadedState) {

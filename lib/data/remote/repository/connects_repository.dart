@@ -16,7 +16,7 @@ class ConnectsRepository {
   Future<State> getConnects() async {
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(
-        Endpoints.fetch_connections_endpoint,
+        Endpoints.fetchConnectionsEndpoint,
       ),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(
@@ -48,7 +48,7 @@ class ConnectsRepository {
   Future<State> getPendingRequest() async {
     return await SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(
-        Endpoints.pending_request_endpoint,
+        Endpoints.pendingRequestEndpoint,
       ),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(
@@ -81,7 +81,7 @@ class ConnectsRepository {
 
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(
-        Endpoints.search_endpoint,
+        Endpoints.searchEndpoint,
         body:{
           "role" :role,
           "search_value":searchValue
@@ -117,7 +117,7 @@ class ConnectsRepository {
 
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(
-        Endpoints.request_react_endpoint,
+        Endpoints.requestReactEndpoint,
         body:{
           "connection_id" :connection_id,
           "action":action
@@ -154,7 +154,7 @@ class ConnectsRepository {
 
     return await SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(
-          Endpoints.send_request_endpoint,
+          Endpoints.sendRequestEndpoint,
           body:{
             "user_id" :user_id,
 
@@ -190,7 +190,7 @@ class ConnectsRepository {
 
     return await SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(
-          Endpoints.follow_endpoint,
+          Endpoints.followEndpoint,
           body:{
             "user_id" :user_id,
 

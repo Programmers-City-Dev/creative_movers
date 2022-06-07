@@ -169,7 +169,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
 
   void addConnections() {
     _authBloc.add(AddConnectionsEvent(
-      connection: widget.connections,
+      connection: myConnects,
     ));
   }
 

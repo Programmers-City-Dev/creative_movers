@@ -137,6 +137,8 @@ class Connection {
             json["connects"].map((x) => Connect.fromJson(x))),
       );
 
+  String get fullname => '$firstname $lastname';
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "my_id": myId,

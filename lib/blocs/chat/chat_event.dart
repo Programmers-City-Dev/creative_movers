@@ -45,3 +45,45 @@ class LiveChatMessagesFetchedEvent extends ChatEvent {
   @override
   List<Object> get props => [messages];
 }
+
+class SendChatMessage extends ChatEvent{
+  final ChatMessageRequest message;
+  final List<File> files;
+
+  const SendChatMessage({required this.message, this.files = const []});
+
+  @override
+  List<Object> get props => [message, files];
+}
+
+class FetchConversationsEvent extends ChatEvent{}
+
+class FetchConversationsMessagesEvent extends ChatEvent{
+  final int conversationId;
+
+  const FetchConversationsMessagesEvent({required this.conversationId});
+
+  @override
+  List<Object> get props => [conversationId];
+}
+
+class ListenToChatEvent extends ChatEvent{
+  final int conversationId;
+  final String channelName;
+
+  const ListenToChatEvent(this.conversationId, this.channelName);
+
+  @override
+  List<Object> get props => [conversationId, channelName];
+}
+
+class ConversationMessagesFetchedEvent extends ChatEvent{
+  final int id;
+  final String channel;
+  final List<Message> messages;
+
+  const ConversationMessagesFetchedEvent({required this.id, required this.channel, required this.messages});
+
+  @override
+  List<Object> get props => [id, channel, messages];
+}

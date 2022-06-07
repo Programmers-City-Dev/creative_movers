@@ -16,7 +16,7 @@ class Constants {
     }
   }
 
-  static get baseUrl {
+  static String get baseUrl {
     return _config[_Config.baseUrl];
   }
 
@@ -24,13 +24,19 @@ class Constants {
     return _config[_Config.flavor];
   }
 
+  // Pusher
+  static const pusherApiKey = "277fd9b8aac2dbbd54a1";
+  static const pusherCluster = "eu";
+  static const pusherSecrete = "fd3eb9b5f0c9ee51e096";
+  static const pusherId = "1351185";
+
   static const userCredentials = 'login_user_credentials';
   static const themeKey = "nitrade_theme_key";
   static const firstTimeUserKey = "first_time_user_key";
   static const agoraAppId = "d914468e34e446acb3892494cf004eab";
 }
 
-/// Allows this class to be only visible to this file*/
+/// Allows this class to be only visible to this file
 ///
 class _Config {
   static const baseUrl = "BASE_URL";
@@ -40,7 +46,7 @@ class _Config {
   static const flavor = "ENV";
 
   static Map<String, dynamic> debugConstants = {
-    baseUrl: "https://creativemovers.app/",
+    baseUrl: "https://staging.creativemovers.app/",
     buildGradient: "dev",
     sentryDSN: '',
     sentryEnv: 'dev',

@@ -125,7 +125,7 @@ class _NewPostItemState extends State<NewPostItem> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  AppUtils.getTime(widget.feed.updatedAt),
+                                  AppUtils.getTimeAgo(widget.feed.updatedAt),
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               ],
@@ -176,7 +176,7 @@ class _NewPostItemState extends State<NewPostItem> {
                                       ),
                                     ),
                                     Text(
-                                      AppUtils.getTime(widget.feed.updatedAt),
+                                      AppUtils.getTimeAgo(widget.feed.updatedAt),
                                       style: const TextStyle(fontSize: 10),
                                     ),
                                   ],

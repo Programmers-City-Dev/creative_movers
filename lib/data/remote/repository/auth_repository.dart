@@ -32,7 +32,7 @@ class AuthRepository {
       String? deviceToken,
       String? platform}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.register_endpoint, body: {
+      () => httpClient.post(Endpoints.registerEndpoint, body: {
         "email": email,
         "password": password,
         "username": username,
@@ -73,7 +73,7 @@ class AuthRepository {
       String? deviceToken,
       String? platform}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.login_endpoint, body: {
+      () => httpClient.post(Endpoints.loginEndpoint, body: {
         "email": email,
         "password": password,
         "device_token": deviceToken,
@@ -124,7 +124,7 @@ class AuthRepository {
     });
     // log("IMAGE DATA:${image}");
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.biodata_endpoint, body: formData),
+      () => httpClient.post(Endpoints.bioDataEndpoint, body: formData),
       successResponse: (data) {
         return State<BioDataResponse?>.success(
             data != null ? BioDataResponse.fromJson(data) : null);
@@ -182,7 +182,7 @@ class AuthRepository {
     });
     return SimplifyApiConsuming.makeRequest(
       () async =>
-          httpClient.post(Endpoints.acount_type_endpoint, body: formData),
+          httpClient.post(Endpoints.accountTypeEndpoint, body: formData),
       successResponse: (data) {
         return State<AccountTypeResponse?>.success(
             data != null ? AccountTypeResponse.fromJson(data) : null);
@@ -215,7 +215,7 @@ class AuthRepository {
     required List<Connect> connections,
   }) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.add_connection_endpoint, body: {
+      () => httpClient.post(Endpoints.addConnectionEndpoint, body: {
         "user_id": user_id,
         "connection": jsonEncode(connections),
       }),
@@ -247,7 +247,7 @@ class AuthRepository {
 
   Future<State> logout() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.logout_endpoint),
+      () => httpClient.post(Endpoints.logoutEndpoint),
       successResponse: (data) {
         return State<LogoutResponse?>.success(
             data != null ? LogoutResponse.fromJson(data) : null);
@@ -276,7 +276,7 @@ class AuthRepository {
 
   Future<State> fetch_categories() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.categories_endpoint),
+      () => httpClient.post(Endpoints.categoriesEndpoint),
       successResponse: (data) {
         return State<CategoriesResponse?>.success(
             data != null ? CategoriesResponse.fromJson(data) : null);
@@ -306,7 +306,7 @@ class AuthRepository {
   Future<State> forgot_password(String email) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient
-          .post(Endpoints.forgot_password_endpoint, body: {"email": email}),
+          .post(Endpoints.forgotPasswordEndpoint, body: {"email": email}),
       successResponse: (data) {
         return State<ForgotPasswordResponse?>.success(
             data != null ? ForgotPasswordResponse.fromJson(data) : null);
@@ -336,7 +336,7 @@ class AuthRepository {
   Future<State> confirm_token(String token) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient
-          .post(Endpoints.confirm_token_endpoint, body: {"token": token}),
+          .post(Endpoints.confirmTokenEndpoint, body: {"token": token}),
       successResponse: (data) {
         return State<ConfirmTokenResponse?>.success(
             data != null ? ConfirmTokenResponse.fromJson(data) : null);
@@ -368,7 +368,7 @@ class AuthRepository {
       required String password,
       required String password_confirmation}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.reset_password_endpoint, body: {
+      () => httpClient.post(Endpoints.resetPasswordEndpoint, body: {
         "email": email,
         "password": password,
         "password_confirmation": password_confirmation,

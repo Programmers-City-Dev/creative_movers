@@ -1,14 +1,34 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
+  "version": "0.2.0",
     "configurations": [
         {
+            
+            "name": "dev",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev"
+            ]
+        },
+        {
+            
+            "name": "prod",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
+        },
+        {
+            
             "name": "creative_movers_dev_1",
             "request": "launch",
             "type": "dart",
-            // "deviceId": "192.168.0.104:5555",
+            "deviceId": "192.168.145.69:5555",
             "program": "lib/main_dev.dart",
             "args": [
                 "--flavor",
@@ -19,7 +39,7 @@
             "name": "creative_movers_dev_2",
             "request": "launch",
             "type": "dart",
-            "deviceId": "192.168.0.101:5555",
+            "deviceId": "emulator-5554",
             "program": "lib/main_dev.dart",
             "args": [
                 "--flavor",
@@ -47,22 +67,7 @@
                 "--flavor",
                 "prod"
             ]
-        },
-        // {
-        //     "name": "creative_movers (profile mode)",
-        //     "request": "launch",
-        //     "type": "dart",
-        //     "flutterMode": "profile",
-        //     "deviceId": "192.168.0.100:5555"
-        // },
-        // {
-        //     "name": "creative_movers (release mode)",
-        //     "request": "launch",
-        //     "type": "dart",
-        //     "flutterMode": "release",
-        //     "deviceId": "192.168.0.100:5555"
-        // },
-         
+        }
     ],
     "compounds": [
         {

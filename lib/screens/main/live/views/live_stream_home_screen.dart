@@ -58,23 +58,25 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
   void initState() {
     super.initState();
     // log("CAMES: ${cameras.length}");
-    cameraController = CameraController(
-      _isFrontCamera ? cameras[1] : cameras[0],
-      ResolutionPreset.medium,
-      enableAudio: false,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-    cameraController!.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
+    if (cameras.isNotEmpty) {
+      cameraController = CameraController(
+        _isFrontCamera ? cameras[1] : cameras[0],
+        ResolutionPreset.medium,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
+      cameraController!.initialize().then((_) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {});
+      });
+    }
   }
 
   @override
   void dispose() {
-    cameraController!.dispose();
+    cameraController?.dispose();
     super.dispose();
   }
 
@@ -83,7 +85,7 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
     return Stack(
       fit: StackFit.expand,
       children: [
-        if (cameraController!.value.isInitialized)
+        if (cameraController != null && cameraController!.value.isInitialized)
           CameraPreview(
             cameraController!,
             child: Container(
