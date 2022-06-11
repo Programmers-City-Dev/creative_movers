@@ -9,12 +9,12 @@ import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/chat/live_chat_message.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/helpers/enums.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_reaction_button/flutter_reaction_button.dart';
+
+// import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
@@ -160,14 +160,14 @@ class _MeetingState extends State<Meeting> {
                 channelName: channelName,
                 localUserJoined: _localUserJoined);
           }
-          return  Center(
-            child: Column(
-              children: const [
-                CircularProgressIndicator.adaptive(),
-                Text("Please wait, initializing chat..."),
-              ],
-            )
-          );
+          return Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CircularProgressIndicator.adaptive(),
+              Text("Please wait, initializing chat..."),
+            ],
+          ));
         },
       ),
     );
@@ -224,42 +224,6 @@ class LiveStreamWidget extends StatelessWidget {
               ),
             ),
           ),
-        Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              margin: const EdgeInsets.only(top: 35),
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(4.0),
-                    color: Colors.red,
-                    child: const Text("● Live",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  // const Text(
-                  //   'Agora Video Call',
-                  //   style: TextStyle(
-                  //       color: Colors.white,
-                  //       fontSize: 16,
-                  //       fontWeight: FontWeight.bold),
-                  // ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.group_outlined,
-                        color: Colors.white,
-                      ))
-                ],
-              ),
-            )),
       ],
     );
   }
@@ -307,213 +271,8 @@ class _RemoteUserViewState extends State<RemoteUserView> {
         CachedUser userData = (state as CachedUserDataFetched).cachedUser;
         return Stack(
           children: [
-            rtc_remote_view.SurfaceView(uid: widget.remoteUid!, channelId: widget.channelName),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: BlocConsumer<ChatBloc, ChatState>(
-                        bloc: _chatBloc,
-                        buildWhen: (previous, current) {
-                          return current is LiveChannelMessagesFetched;
-                        },
-                        listener: (context, state) {
-                          if (state is LiveChannelMessagesFetched) {
-                            WidgetsBinding.instance?.addPostFrameCallback(
-                                    (_) => _scrollToBottom());
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is LiveChannelMessagesFetched) {
-                            final List<LiveChatMessage> messages =
-                                state.messages;
-                            return ListView.builder(
-                                controller: _scrollController,
-                                physics: const BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: messages.length,
-                                itemBuilder: (ctx, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          CircleImage(
-                                            url: messages[index].userCoverPhoto,
-                                            withBaseUrl: false,
-                                          ),
-                                          const SizedBox(
-                                            width: 16.0,
-                                          ),
-                                          Flexible(
-                                            child: Container(
-                                              padding:
-                                              const EdgeInsets.all(8.0),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      8.0),
-                                                  color: Colors.white
-                                                      .withOpacity(0.1)),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    messages[index].username,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
-                                                  Text(
-                                                    messages[index].message,
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ]),
-                                  );
-                                });
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(32.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-
-                            ReactionButtonEx(
-                              onReaction: (reactionType) {},
-                            ),
-                            FloatingActionButton(
-                              onPressed: () {
-                                widget.engine?.stopPreview();
-                                widget.engine?.leaveChannel();
-                                widget.engine?.destroy();
-                                Navigator.of(context).pop();
-                              },
-                              backgroundColor: Colors.red,
-                              child: const Icon(
-                                Icons.call_end,
-                                color: Colors.white,
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  showBottomSheet(
-                                      context: context,
-                                      // expand: false,
-                                      builder: (ctx) {
-                                        return CommentBox(
-                                            focused: true,
-                                            profilePhotoPath: '',
-                                            onCommentSent: (msg) {
-                                              _chatBloc.add(SendLiveChannelMessage(
-                                                  message: LiveChatMessage(
-                                                    message: msg,
-                                                    username: userData.username!,
-                                                    firstName: userData.firstname!,
-                                                    lastName: userData.lastname!,
-                                                    email: userData.email!,
-                                                    userCoverPhoto:
-                                                    userData.coverPhotoPath,
-                                                    userPhoto: userData.profilePhotoPath,
-                                                    userId: userData.id,
-                                                    timestamp: DateTime.now()
-                                                        .millisecondsSinceEpoch,
-                                                  ),
-                                                  channelName: widget.channelName));
-                                              Navigator.of(context).pop();
-                                            });
-                                      });
-
-                                },
-                                icon: const Icon(
-                                  Icons.messenger_rounded,
-                                  color: Colors.white,
-                                ))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
-}
-
-class LocalUserView extends StatefulWidget {
-  final RtcEngine? engine;
-  final String channelName;
-  final bool? isMicOn;
-
-  const LocalUserView(
-    this.engine,
-    this.channelName, {
-    Key? key,
-    this.isMicOn = false,
-  }) : super(key: key);
-
-  @override
-  State<LocalUserView> createState() => _LocalUserViewState();
-}
-
-class _LocalUserViewState extends State<LocalUserView> {
-  bool _isMicOn = true;
-
-  final ChatBloc _chatBloc = ChatBloc(injector.get());
-
-  @override
-  void initState() {
-    super.initState();
-    _chatBloc.add(FetchLiveChannelMessages(channelName: widget.channelName));
-  }
-
-  @override
-  void dispose() {
-    _chatBloc.close();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<CacheCubit, CacheState>(
-      bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
-      buildWhen: (p, c) => c is CachedUserDataFetched,
-      builder: (context, state) {
-        CachedUser userData = (state as CachedUserDataFetched).cachedUser;
-        return Stack(
-          children: [
-            const rtc_local_view.SurfaceView(),
+            rtc_remote_view.SurfaceView(
+                uid: widget.remoteUid!, channelId: widget.channelName),
             Align(
               alignment: Alignment.bottomCenter,
               child: Column(
@@ -608,28 +367,13 @@ class _LocalUserViewState extends State<LocalUserView> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        ListView(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isMicOn = !_isMicOn;
-                                    widget.engine?.enableLocalAudio(_isMicOn);
-                                  });
-                                },
-                                icon: Icon(
-                                  _isMicOn
-                                      ? Icons.mic_rounded
-                                      : Icons.mic_off_outlined,
-                                  color: Colors.white,
-                                )),
-                            IconButton(
-                                onPressed: () {
-                                  widget.engine?.switchCamera();
-                                },
+                                onPressed: () {},
                                 icon: const Icon(
-                                  Icons.switch_camera_outlined,
+                                  Icons.emoji_emotions_outlined,
                                   color: Colors.white,
                                 )),
                             FloatingActionButton(
@@ -645,29 +389,41 @@ class _LocalUserViewState extends State<LocalUserView> {
                                 color: Colors.white,
                               ),
                             ),
-                            ReactionButtonEx(
-                              onReaction: (reactionType) {},
-                            ),
                             IconButton(
                                 onPressed: () {
-                                  _showCommentBox((msg) {
-                                    _chatBloc.add(SendLiveChannelMessage(
-                                        message: LiveChatMessage(
-                                          message: msg,
-                                          username: userData.username!,
-                                          firstName: userData.firstname!,
-                                          lastName: userData.lastname!,
-                                          email: userData.email!,
-                                          userCoverPhoto:
-                                              userData.coverPhotoPath,
-                                          userPhoto: userData.profilePhotoPath,
-                                          userId: userData.id,
-                                          timestamp: DateTime.now()
-                                              .millisecondsSinceEpoch,
-                                        ),
-                                        channelName: widget.channelName));
-                                    Navigator.of(context).pop();
-                                  });
+                                  showBottomSheet(
+                                      context: context,
+                                      // expand: false,
+                                      builder: (ctx) {
+                                        return CommentBox(
+                                            focused: true,
+                                            profilePhotoPath: '',
+                                            onCommentSent: (msg) {
+                                              _chatBloc.add(
+                                                  SendLiveChannelMessage(
+                                                      message: LiveChatMessage(
+                                                        message: msg,
+                                                        username:
+                                                            userData.username!,
+                                                        firstName:
+                                                            userData.firstname!,
+                                                        lastName:
+                                                            userData.lastname!,
+                                                        email: userData.email!,
+                                                        userCoverPhoto: userData
+                                                            .coverPhotoPath,
+                                                        userPhoto: userData
+                                                            .profilePhotoPath,
+                                                        userId: userData.id,
+                                                        timestamp: DateTime
+                                                                .now()
+                                                            .millisecondsSinceEpoch,
+                                                      ),
+                                                      channelName:
+                                                          widget.channelName));
+                                              Navigator.of(context).pop();
+                                            });
+                                      });
                                 },
                                 icon: const Icon(
                                   Icons.messenger_rounded,
@@ -686,87 +442,443 @@ class _LocalUserViewState extends State<LocalUserView> {
       },
     );
   }
-
-  void _showCommentBox(Function(String) onComment) {
-    showBottomSheet(
-        context: context,
-        // expand: false,
-        builder: (ctx) {
-          return CommentBox(
-              focused: true,
-              profilePhotoPath: '',
-              onCommentSent: (msg) {
-                onComment(msg);
-                // Navigator.of(context).pop();
-              });
-        });
-  }
 }
 
-class ReactionButtonEx extends StatelessWidget {
-  const ReactionButtonEx({Key? key, required this.onReaction})
-      : super(key: key);
+class LocalUserView extends StatefulWidget {
+  final RtcEngine? engine;
+  final String channelName;
+  final bool? isMicOn;
 
-  final Function(ReactionType) onReaction;
+  const LocalUserView(
+    this.engine,
+    this.channelName, {
+    Key? key,
+    this.isMicOn = false,
+  }) : super(key: key);
+
+  @override
+  State<LocalUserView> createState() => _LocalUserViewState();
+}
+
+class _LocalUserViewState extends State<LocalUserView> {
+  bool _isMicOn = true;
+
+  final ChatBloc _chatBloc = ChatBloc(injector.get());
+  final TextEditingController _textController = TextEditingController();
+  final FocusNode _textFocus = FocusNode();
+
+  final ValueNotifier<bool> _isTextFocusedNotifier = ValueNotifier(false);
+
+  final ValueNotifier<bool> _activeLiveNotifier = ValueNotifier(true);
+
+  @override
+  void initState() {
+    super.initState();
+    _textFocus.addListener(() {
+      // _isTextFocusedNotifier.value = _textFocus.hasFocus;
+    });
+    _chatBloc.add(FetchLiveChannelMessages(channelName: widget.channelName));
+  }
+
+  @override
+  void dispose() {
+    _chatBloc.close();
+    _activeLiveNotifier.value = true;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ReactionButton<ReactionType>(
-      onReactionChanged: (ReactionType? value) {},
-      shouldChangeReaction: false,
-      itemScale: 0.8,
-      reactions: [
-        Reaction(
-            icon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
-              child: Image.asset(
-                "assets/images/like.gif",
-                width: 32,
+    return BlocBuilder<CacheCubit, CacheState>(
+      bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
+      buildWhen: (p, c) => c is CachedUserDataFetched,
+      builder: (context, state) {
+        CachedUser userData = (state as CachedUserDataFetched).cachedUser;
+        return WillPopScope(
+          onWillPop: () async {
+            if (_activeLiveNotifier.value) {
+              _showCloseVideoDialog(context);
+              return false;
+            }
+            return true;
+          },
+          child: Stack(
+            // fit: StackFit.expand,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: WidgetsBinding.instance!.window.viewInsets.bottom),
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: const rtc_local_view.SurfaceView()),
               ),
-            ),
-            value: ReactionType.like),
-        Reaction(
-            icon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
-              child: Image.asset("assets/images/love.gif", width: 32),
-            ),
-            value: ReactionType.love),
-        Reaction(
-            icon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
-              child: Image.asset("assets/images/angry.gif", width: 32),
-            ),
-            value: ReactionType.angry),
-        Reaction(
-            icon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
-              child: Image.asset("assets/images/wow.gif", width: 32),
-            ),
-            value: ReactionType.wow),
-        Reaction(
-            icon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
-              child: Image.asset("assets/images/sad.gif", width: 32),
-            ),
-            value: ReactionType.sad),
-        Reaction(
-            icon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
-              child: Image.asset("assets/images/haha.gif", width: 32),
-            ),
-            value: ReactionType.haha),
-      ],
-      initialReaction: Reaction<ReactionType>(
-        value: ReactionType.like,
-        icon: const Icon(
-          Icons.emoji_emotions,
-          color: Colors.white,
-        ),
-      ),
-      boxColor: Colors.black.withOpacity(0.5),
-      boxRadius: 10,
-      boxDuration: const Duration(milliseconds: 300),
-      itemScaleDuration: const Duration(milliseconds: 200),
+              ValueListenableBuilder<bool>(
+                  valueListenable: _activeLiveNotifier,
+                  builder: (context, value, child) {
+                    return Visibility(
+                      visible: value,
+                      child: Stack(
+                        children: [
+                          Align(
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 35),
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(4.0),
+                                      color: Colors.red,
+                                      child: const Text("● Live",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                              Icons.group_outlined,
+                                              color: Colors.white,
+                                            )),
+                                        IconButton(
+                                            onPressed: () {
+                                              _showCloseVideoDialog(context);
+                                            },
+                                            icon: const Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                            )),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: BlocConsumer<ChatBloc, ChatState>(
+                                  bloc: _chatBloc,
+                                  buildWhen: (previous, current) {
+                                    return current
+                                        is LiveChannelMessagesFetched;
+                                  },
+                                  listener: (context, state) {
+                                    if (state is LiveChannelMessagesFetched) {
+                                      WidgetsBinding.instance
+                                          ?.addPostFrameCallback(
+                                              (_) => _scrollToBottom());
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    if (state is LiveChannelMessagesFetched) {
+                                      final List<LiveChatMessage> messages =
+                                          state.messages;
+                                      return ListView.builder(
+                                          controller: _scrollController,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: messages.length,
+                                          itemBuilder: (ctx, index) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    CircleImage(
+                                                      url: messages[index]
+                                                          .userCoverPhoto,
+                                                      withBaseUrl: false,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 16.0,
+                                                    ),
+                                                    Flexible(
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    0.1)),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              messages[index]
+                                                                  .username,
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                            Text(
+                                                              messages[index]
+                                                                  .message,
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ]),
+                                            );
+                                          });
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              // margin: const EdgeInsets.all(32.0),
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                              ),
+                              child: SizedBox(
+                                height: 50,
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Expanded(
+                                      child: KeyboardVisibilityBuilder(
+                                        builder: (BuildContext context,
+                                            Widget child,
+                                            bool isKeyboardVisible) {
+                                          WidgetsBinding.instance
+                                              ?.addPostFrameCallback(
+                                                  (timeStamp) {
+                                            _isTextFocusedNotifier.value =
+                                                isKeyboardVisible;
+                                          });
+                                          return child;
+                                        },
+                                        child: TextField(
+                                          controller: _textController,
+                                          focusNode: _textFocus,
+                                          textInputAction: TextInputAction.send,
+                                          keyboardType: TextInputType.name,
+                                          onSubmitted: (val) {
+                                            if (val.isNotEmpty) {
+                                              _chatBloc.add(
+                                                  SendLiveChannelMessage(
+                                                      message: LiveChatMessage(
+                                                        message: val,
+                                                        username:
+                                                            userData.username!,
+                                                        firstName:
+                                                            userData.firstname!,
+                                                        lastName:
+                                                            userData.lastname!,
+                                                        email: userData.email!,
+                                                        userCoverPhoto: userData
+                                                            .coverPhotoPath,
+                                                        userPhoto: userData
+                                                            .profilePhotoPath,
+                                                        userId: userData.id,
+                                                        timestamp: DateTime
+                                                                .now()
+                                                            .millisecondsSinceEpoch,
+                                                      ),
+                                                      channelName:
+                                                          widget.channelName));
+                                              _textController.clear();
+                                              _textFocus.unfocus();
+                                            }
+                                          },
+                                          maxLines: 1,
+                                          minLines: 1,
+                                          style: const TextStyle(
+                                              // height: 2,
+                                              fontSize: 14,
+                                              color: Colors.white),
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                              hintText: "Write comment here...",
+                                              hintStyle: TextStyle(
+                                                  color: Colors.white
+                                                      .withOpacity(0.5)),
+                                              border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(
+                                                      16.0),
+                                                  borderSide: const BorderSide(
+                                                      width: 1,
+                                                      color: Colors.white)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          16.0),
+                                                  borderSide: const BorderSide(
+                                                      width: 1,
+                                                      color: Colors.white)),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(16.0),
+                                                  borderSide: const BorderSide(width: 1, color: Colors.white))),
+                                        ),
+                                      ),
+                                    ),
+                                    ValueListenableBuilder<bool>(
+                                        valueListenable: _isTextFocusedNotifier,
+                                        builder: (context, value, snapshot) {
+                                          return Visibility(
+                                            visible: !value,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _isMicOn = !_isMicOn;
+                                                        widget.engine
+                                                            ?.enableLocalAudio(
+                                                                _isMicOn);
+                                                      });
+                                                    },
+                                                    icon: Icon(
+                                                      _isMicOn
+                                                          ? Icons.mic_rounded
+                                                          : Icons
+                                                              .mic_off_outlined,
+                                                      color: Colors.white,
+                                                    )),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      widget.engine
+                                                          ?.switchCamera();
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons
+                                                          .switch_camera_outlined,
+                                                      color: Colors.white,
+                                                    )),
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: const Icon(
+                                                      Icons
+                                                          .emoji_emotions_outlined,
+                                                      color: Colors.white,
+                                                    )),
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  })
+            ],
+          ),
+        );
+      },
     );
   }
+
+  void _showCloseVideoDialog(BuildContext context) {
+    AppUtils.showShowConfirmDialog(context,
+        message: "Are you sure you want to end this video?",
+        cancelButtonText: "Cancel",
+        confirmButtonText: "End Video", onConfirmed: () async {
+      await widget.engine?.destroy();
+      Navigator.of(context).pop();
+      _activeLiveNotifier.value = false;
+    }, onCancel: () {
+      Navigator.of(context).pop();
+    });
+  }
+}
+
+class KeyboardVisibilityBuilder extends StatefulWidget {
+  final Widget child;
+  final Widget Function(
+    BuildContext context,
+    Widget child,
+    bool isKeyboardVisible,
+  ) builder;
+
+  const KeyboardVisibilityBuilder({
+    Key? key,
+    required this.child,
+    required this.builder,
+  }) : super(key: key);
+
+  @override
+  _KeyboardVisibilityBuilderState createState() =>
+      _KeyboardVisibilityBuilderState();
+}
+
+class _KeyboardVisibilityBuilderState extends State<KeyboardVisibilityBuilder>
+    with WidgetsBindingObserver {
+  var _isKeyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final bottomInset = WidgetsBinding.instance?.window.viewInsets.bottom;
+    final newValue = bottomInset! > 0.0;
+    if (newValue != _isKeyboardVisible) {
+      setState(() {
+        _isKeyboardVisible = newValue;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.builder(
+        context,
+        widget.child,
+        _isKeyboardVisible,
+      );
 }

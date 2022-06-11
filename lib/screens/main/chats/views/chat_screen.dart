@@ -94,7 +94,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         builder: (context, state) {
                           if (state is ChatMessageLoading) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
                               child: ListView.separated(
                                 shrinkWrap: true,
                                 itemCount: 5,
@@ -123,7 +124,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             ));
                           }
                           if (state is ConversationsFetched) {
-                            List<Conversation> conversation = state.conversations;
+                            List<Conversation> conversation =
+                                state.conversations;
                             if (conversation.isEmpty) {
                               return Center(
                                   child: AppPromptWidget(
@@ -140,16 +142,14 @@ class _ChatScreenState extends State<ChatScreen> {
                               ));
                             }
                             return RefreshIndicator(
-                              onRefresh: () async{
+                              onRefresh: () async {
                                 _chatBloc.add(FetchConversationsEvent());
                               },
-                              child: Expanded(
-                                child: ListView.builder(
-                                  itemBuilder: (context, index) => ChatItem(
-                                      conversation: conversation[index],
-                                      userId: cachedUser.id),
-                                  itemCount: conversation.length,
-                                ),
+                              child: ListView.builder(
+                                itemBuilder: (context, index) => ChatItem(
+                                    conversation: conversation[index],
+                                    userId: cachedUser.id),
+                                itemCount: conversation.length,
                               ),
                             );
                           }
@@ -199,8 +199,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 16.0),
                           child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
                               itemCount: 40,
                               itemBuilder: (ctx, i) {
                                 return const ConnectsShimer();
@@ -240,17 +240,22 @@ class _ChatScreenState extends State<ChatScreen> {
                               return ListTile(
                                 onTap: () {
                                   Navigator.of(context).pop();
-                                  Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                      builder: (ctx) =>
-                                          MessagingScreen(
-                                            user: ConversationUser(
-                                              id:connections[index].id!,
-                                              profilePhotoPath: connections[index].profilePhotoPath,
-                                              username: connections[index].username,
-                                              firstname: connections[index].firstname,
-                                              lastname: connections[index].lastname
-                                            ),
-                                          )));
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (ctx) => MessagingScreen(
+                                                user: ConversationUser(
+                                                    id: connections[index].id!,
+                                                    profilePhotoPath:
+                                                        connections[index]
+                                                            .profilePhotoPath,
+                                                    username: connections[index]
+                                                        .username,
+                                                    firstname:
+                                                        connections[index]
+                                                            .firstname,
+                                                    lastname: connections[index]
+                                                        .lastname),
+                                              )));
                                 },
                                 leading: CircleImage(
                                   radius: 24,

@@ -192,6 +192,7 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                       bloc: _chatBloc,
                       listener: (context, state) {
                         if (state is AgoraTokenGotten) {
+                          cameraController?.dispose();
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => Meeting(
