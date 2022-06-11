@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ final _focusNode = FocusNode();
 
 class FeedDetailsScreen extends StatefulWidget {
   final int feedId;
+
   const FeedDetailsScreen({Key? key, required this.feedId}) : super(key: key);
 
   @override
@@ -101,7 +104,8 @@ class _FeedDetailsWidgetState extends State<FeedDetailsWidget> {
                       onCommentBoxClicked: () {
                         _focusNode.unfocus();
                         _focusNode.requestFocus();
-                      }, onUpdated: () {  },
+                      },
+                      onUpdated: () {},
                     ),
                     widget.feed.comments.isEmpty
                         ? const Center(child: Text('No Comments'))
@@ -125,25 +129,35 @@ class _FeedDetailsWidgetState extends State<FeedDetailsWidget> {
             ),
           ),
         ),
-        CommentBox(
-          profilePhotoPath: widget.feed.user!.profilePhotoPath,
-          onCommentSent: (text) {
-            widget.feed.comments.add(Comment(
-                id: 4,
-                userId: widget.feed.userId,
-                comment: text,
-                feedId: ' ${widget.feed.id}',
-                user: Poster(
-                    id: int.parse(widget.feed.userId),
-                    firstname: widget.feed.user!.firstname,
-                    lastname: widget.feed.user!.lastname,
-                    profilePhotoPath: widget.feed.user!.profilePhotoPath),
-                shouldLoad: true));
-            _commentScrollController.animateTo(
-              _commentScrollController.position.maxScrollExtent,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 300),
-            );
+        BlocBuilder<CacheCubit, CacheState>(
+          bloc: CacheCubit()..fetchCachedUserData(),
+          buildWhen: (_, state) => state is CachedUserDataFetched,
+          builder: (context, state) {
+            if (state is CachedUserDataFetched) {
+              var user = state.cachedUser;
+              return CommentBox(
+                profilePhotoPath: user.profilePhotoPath,
+                onCommentSent: (text) {
+                  widget.feed.comments.add(Comment(
+                      id: 4,
+                      userId: widget.feed.userId,
+                      comment: text,
+                      feedId: ' ${widget.feed.id}',
+                      user: Poster(
+                          id: int.parse(widget.feed.userId),
+                          firstname: widget.feed.user!.firstname,
+                          lastname: widget.feed.user!.lastname,
+                          profilePhotoPath: widget.feed.user!.profilePhotoPath),
+                      shouldLoad: true));
+                  _commentScrollController.animateTo(
+                    _commentScrollController.position.maxScrollExtent,
+                    curve: Curves.easeOut,
+                    duration: const Duration(milliseconds: 300),
+                  );
+                },
+              );
+            }
+            return const SizedBox.shrink();
           },
         )
       ],
@@ -172,10 +186,9 @@ class _CommentBoxState extends State<CommentBox> {
 
   final _commentBoxTextListener = ValueNotifier(false);
 
-
   @override
   void initState() {
-    if(widget.focused!)_focusNode.requestFocus();
+    if (widget.focused!) _focusNode.requestFocus();
     super.initState();
   }
 
@@ -192,6 +205,7 @@ class _CommentBoxState extends State<CommentBox> {
               CircleImage(
                 url: widget.profilePhotoPath!,
                 radius: 20,
+                withBaseUrl: false,
               ),
               const SizedBox(
                 width: 15,
@@ -283,14 +297,10 @@ class _CommentItemWidgetState extends State<CommentItemWidget> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundColor: AppColors.lightBlue,
-            radius: 20,
-            child: CircleAvatar(
-              backgroundImage:
-                  NetworkImage(widget.comment.user.profilePhotoPath!),
-              radius: 18,
-            ),
+          CircleImage(
+            url: widget.comment.user.profilePhotoPath!,
+            radius: 18,
+            withBaseUrl: false,
           ),
           const SizedBox(
             width: 10,
@@ -315,11 +325,13 @@ class _CommentItemWidgetState extends State<CommentItemWidget> {
                       bloc: _feedBloc,
                       listener: (_, state) {
                         if (state is CommentsSuccessState) {
+                          log("Comment sent: ${state.postCommentsResponse}");
                           if (widget.onCommentSent != null) {
                             widget.onCommentSent!();
                           }
                         }
                         if (state is CommentsFaliureState) {
+                          log("Comment Error: ${state.error}");
                           if (widget.onCommentSent != null) {
                             widget.onCommentSent!();
                           }
