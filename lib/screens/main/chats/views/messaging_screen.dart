@@ -153,6 +153,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
                       _scrollChatToBottom();
                     });
+                    // List<Message> messages = msgs.reversed.toList();
                     return Column(
                       children: [
                         if (messages.isEmpty)
@@ -170,18 +171,22 @@ class _MessagingScreenState extends State<MessagingScreen> {
                     if(messages.isNotEmpty)Expanded(
                         child: GroupedListView<Message, int>(
                           controller: _chatScrollController,
-                          shrinkWrap: true,
-                          elements: messages,
-                          groupBy: (message) => DateTime(message.createdAt.year,
-                              message.createdAt.month, message.createdAt.day)
-                              .millisecondsSinceEpoch,
-                          groupSeparatorBuilder: (groupByValue) => Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 16),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
+                            // shrinkWrap: true,
+                            // reverse: true,
+                            elements: messages,
+                            groupBy: (message) => DateTime(
+                                    message.createdAt.year,
+                                    message.createdAt.month,
+                                    message.createdAt.day)
+                                .millisecondsSinceEpoch,
+                            groupSeparatorBuilder: (groupByValue) => Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 16),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
                                     borderRadius: BorderRadius.circular(8.0)
                                 ),
                                 child: Padding(

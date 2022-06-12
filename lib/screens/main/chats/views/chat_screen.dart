@@ -201,7 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: 40,
+                              itemCount: 60,
                               itemBuilder: (ctx, i) {
                                 return const ConnectsShimer();
                               }),
@@ -234,7 +234,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           ));
                         }
                         return ListView.builder(
-                            shrinkWrap: true,
+                          // shrinkWrap: true,
                             itemCount: connections.length,
                             itemBuilder: (ctx, index) {
                               return ListTile(
