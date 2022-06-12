@@ -33,9 +33,7 @@ class _ChatItemState extends State<ChatItem> {
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
           builder: (context) => MessagingScreen(
-            conversation: widget.conversation,
-            user: user!
-          ),
+            conversationId: widget.conversation.id, user: user!),
         ));
       },
       child: Container(

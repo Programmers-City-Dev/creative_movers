@@ -140,8 +140,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             );
                           },
                           childCount: state.feedResponse.feeds.data.length,
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
                         ),
                       );
                     }

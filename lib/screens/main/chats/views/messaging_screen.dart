@@ -17,12 +17,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class MessagingScreen extends StatefulWidget {
-  final Conversation? conversation;
+  final int? conversationId;
   final ConversationUser user;
 
   const MessagingScreen({
     Key? key,
-    this.conversation,
+    this.conversationId,
     required this.user,
   }) : super(key: key);
 
@@ -48,13 +48,11 @@ class _MessagingScreenState extends State<MessagingScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.conversation?.id != null) {
-      conversationId = widget.conversation?.id;
-      _chatBloc.add(FetchConversationsMessagesEvent(
-          conversationId: conversationId!));
+    if (widget.conversationId != null) {
+      conversationId = widget.conversationId;
+      _chatBloc.add(
+          FetchConversationsMessagesEvent(conversationId: conversationId!));
     }
-
-
   }
 
   @override
@@ -147,7 +145,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 message: state.errorModel.errorMessage,
               ));
             }
-            if (state is ConversationMessagesFetched || widget.conversation == null) {
+            if (state is ConversationMessagesFetched ||
+                widget.conversationId == null) {
               return ValueListenableBuilder<List<Message>>(
                   valueListenable: _chatBloc.chatMessagesNotifier,
                   builder: (context, messages, snapshot) {
@@ -156,9 +155,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
                     });
                     return Column(
                       children: [
-                        if (messages.isEmpty) const Expanded(
-                          child:  Center(
-                            child: AppPromptWidget(
+                        if (messages.isEmpty)
+                          const Expanded(
+                            child: Center(
+                                child: AppPromptWidget(
                               canTryAgain: false,
                               isSvgResource: true,
                               imagePath: "assets/svgs/request.svg",

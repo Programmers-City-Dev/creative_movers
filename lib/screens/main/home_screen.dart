@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
     Future.delayed(const Duration(seconds: 4))
-        .then((value) => _showDialogIfNecesssary());
+        .then((value) => _showDialogIfNecessary());
     super.initState();
   }
 
@@ -348,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _showDialogIfNecesssary() {
+  _showDialogIfNecessary() {
     if (widget.showWelcomeDialog!) {
       showDialog(
           context: homeNavigatorKeys[0].currentState!.context,

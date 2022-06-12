@@ -7,6 +7,7 @@ import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/chat/live_chat_message.dart';
+import 'package:creative_movers/data/remote/repository/chat_repository.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
@@ -494,6 +495,8 @@ class _LocalUserViewState extends State<LocalUserView> {
       buildWhen: (p, c) => c is CachedUserDataFetched,
       builder: (context, state) {
         CachedUser userData = (state as CachedUserDataFetched).cachedUser;
+        ChatRepository(injector.get()).broadcastLiveVideo(
+            message: "${userData.fullname} started a live video.");
         return WillPopScope(
           onWillPop: () async {
             if (_activeLiveNotifier.value) {

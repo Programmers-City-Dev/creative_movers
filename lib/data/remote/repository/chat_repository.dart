@@ -180,11 +180,43 @@ class ChatRepository {
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: "Oops! unable to fetch conversation messages, try again",
+              errorMessage:
+                  "Oops! unable to fetch conversation messages, try again",
               data: null),
         );
       },
     );
   }
 
+  // Send chat message on the main chat screen
+  Future<State> broadcastLiveVideo(
+      {String? notifyFor = "all", required String message}) async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(Endpoints.notifyLiveVideo,
+          body: {"notify_for": notifyFor, "notify_message": message}),
+      successResponse: (data) {
+        return State<String?>.success(data != null ? "Success" : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER FROM SEND MESSAGE: ${response.data}');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage:
+                  "Oops! something went wrong notifying for live video",
+              data: null),
+        );
+      },
+    );
+  }
 }

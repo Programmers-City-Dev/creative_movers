@@ -243,6 +243,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   Navigator.of(context, rootNavigator: true)
                                       .push(MaterialPageRoute(
                                           builder: (ctx) => MessagingScreen(
+                                            conversationId:
+                                                    connections[index]
+                                                        .conversationId,
                                                 user: ConversationUser(
                                                     id: connections[index].id!,
                                                     profilePhotoPath:
@@ -254,7 +257,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                         connections[index]
                                                             .firstname,
                                                     lastname: connections[index]
-                                                        .lastname),
+                                                    .lastname),
                                               )));
                                 },
                                 leading: CircleImage(
@@ -263,7 +266,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   withBaseUrl: false,
                                 ),
                                 title: Text(
-                                  connections[index].fullname,
+                                  connections[index].fullName,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
