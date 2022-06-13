@@ -1,10 +1,8 @@
 
 import 'dart:developer' as logger;
-import 'dart:math';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
-import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -324,11 +322,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
 
   void _sendMessage(BuildContext context) {
     Message message = Message(
-        id: Random().nextInt(5),
+        id: 0,
         body: _textController.text,
-        conversationId: conversationId == null
-            ? '-1'
-            : conversationId.toString(),
+        conversationId:
+            conversationId == null ? '-1' : conversationId.toString(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         media: [],
