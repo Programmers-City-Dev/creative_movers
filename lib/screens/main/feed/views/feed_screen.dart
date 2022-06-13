@@ -56,6 +56,41 @@ class _FeedScreenState extends State<FeedScreen> {
         physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
+            SliverPersistentHeader(
+              // pinned: true,
+                floating: true,
+                delegate: SliverAppBarDelegate(
+                  PreferredSize(
+                    preferredSize: const Size.fromHeight(90),
+                    child: BlocBuilder<StatusBloc, StatusState>(
+                      bloc: statusBloc,
+                      builder: (context, state) {
+                        if (state is StatusLoadingState) {
+                          return const StatusShimmer();
+                        }
+                        if (state is StatusSuccessState) {
+                          return StatusViews(
+                            curvedBottom: true,
+                            viewStatusResponse: state.viewStatusResponse,
+                          );
+                        }
+                        if (state is StatusFaliureState) {
+                          return Center(
+                            child: Text(state.error),
+                          );
+                        }
+                        return const StatusShimmer();
+                      },
+                    ),
+                  ),
+                )),
+            SliverToBoxAdapter(child: PostCard(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const CreatePostScreen(),
+                ));
+              },
+            )),
             // SliverPersistentHeader(
             //     pinned: true,
             //     floating: true,
@@ -87,41 +122,7 @@ class _FeedScreenState extends State<FeedScreen> {
             // controller: _scrollController,
             physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverPersistentHeader(
-                  // pinned: true,
-                  floating: true,
-                  delegate: SliverAppBarDelegate(
-                    PreferredSize(
-                      preferredSize: const Size.fromHeight(90),
-                      child: BlocBuilder<StatusBloc, StatusState>(
-                        bloc: statusBloc,
-                        builder: (context, state) {
-                          if (state is StatusLoadingState) {
-                            return const StatusShimmer();
-                          }
-                          if (state is StatusSuccessState) {
-                            return StatusViews(
-                              curvedBottom: true,
-                              viewStatusResponse: state.viewStatusResponse,
-                            );
-                          }
-                          if (state is StatusFaliureState) {
-                            return Center(
-                              child: Text(state.error),
-                            );
-                          }
-                          return const StatusShimmer();
-                        },
-                      ),
-                    ),
-                  )),
-              SliverToBoxAdapter(child: PostCard(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreatePostScreen(),
-                  ));
-                },
-              )),
+
               SliverPadding(
                 padding: const EdgeInsets.all(8),
                 sliver: BlocBuilder<FeedBloc, FeedState>(

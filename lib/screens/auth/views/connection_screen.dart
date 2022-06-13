@@ -33,129 +33,134 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         bloc: _authBloc,
         listener: (context, state) {
           _listenToAccountTypeState(context, state);
+          //
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      SizedBox(
-                        height: 100,
-                      ),
-                      Text(
-                        'Add Connects',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      // Expanded(
-                      //     child: SearchField(
-                      //   hint: 'Search Contacts',
-                      // )),
-                    ],
-                  ),
-                  Text(
-                    widget.role == 'creative'
-                        ? 'We found some movers you might like to connect with'
-                        : 'We found some creatives you might like to connect with',
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w600),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Row(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: AppColors.lightGrey,
-                                shape: const StadiumBorder(),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16)),
-                            onPressed: () {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PaymentScreen()),
-                                  (route) => false);
-                            },
-                            child: Row(
-                              children: const [
-                                Text(
-                                  'Skip',
-                                  style: TextStyle(color: AppColors.textColor),
-                                ),
-                                Icon(
-                                  Icons.skip_next_outlined,
-                                  color: AppColors.textColor,
-                                ),
-                              ],
-                            )),
-                        const SizedBox(
+                      children: const [
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Text(
+                          'Add Connects',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
                           width: 10,
                         ),
-                        TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
-                                shape: const StadiumBorder(),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16)),
-                            onPressed: () {
-                              addConnections();
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (context) => const PaymentScreen(),
-                              // ));
-                            },
-                            child: const Text(
-                              'Add',
-                              style: TextStyle(color: AppColors.white),
-                            ))
+                        // Expanded(
+                        //     child: SearchField(
+                        //   hint: 'Search Contacts',
+                        // )),
                       ],
                     ),
-                  )
-                ],
+                    Text(
+                      widget.role == 'creative'
+                          ? 'We found some movers you might like to connect with'
+                          : 'We found some creatives you might like to connect with',
+                      style:
+                          const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: AppColors.lightGrey,
+                                  shape: const StadiumBorder(),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16)),
+                              onPressed: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PaymentScreen()),
+                                    (route) => false);
+                              },
+                              child: Row(
+                                children: const [
+                                  Text(
+                                    'Skip',
+                                    style:
+                                        TextStyle(color: AppColors.textColor),
+                                  ),
+                                  Icon(
+                                    Icons.skip_next_outlined,
+                                    color: AppColors.textColor,
+                                  ),
+                                ],
+                              )),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: AppColors.primaryColor,
+                                  shape: const StadiumBorder(),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16)),
+                              onPressed: () {
+                                addConnections();
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (context) => const PaymentScreen(),
+                                // ));
+                              },
+                              child: const Text(
+                                'Add',
+                                style: TextStyle(color: AppColors.white),
+                              ))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Divider(
-                thickness: 2,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(
+                  thickness: 2,
+                ),
               ),
-            ),
-            Expanded(
-                child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget.connections.length,
-              itemBuilder: (context, index) => ContactItem(
-                onTap: () {
-                  setState(() {
-                    if (myConnects.contains(widget.connections[index])) {
-                      myConnects.remove(widget.connections[index]);
-                      log(
-                        'MY CONNECTS: $myConnects',
-                      );
-                    } else {
-                      myConnects.add(widget.connections[index]);
-                      log(
-                        'MY CONNECTS: ${myConnects.length}',
-                      );
-                    }
-                    // isAdded = !isAdded;
-                  });
-                },
-                isAdded: myConnects.contains(widget.connections[index]),
-                connect: widget.connections[index],
-              ),
-            ))
-          ],
+              Expanded(
+                  child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: widget.connections.length,
+                itemBuilder: (context, index) => ContactItem(
+                  onTap: () {
+                    setState(() {
+                      if (myConnects.contains(widget.connections[index])) {
+                        myConnects.remove(widget.connections[index]);
+                        log(
+                          'MY CONNECTS: $myConnects',
+                        );
+                      } else {
+                        myConnects.add(widget.connections[index]);
+                        log(
+                          'MY CONNECTS: ${myConnects.length}',
+                        );
+                      }
+                      // isAdded = !isAdded;
+                    });
+                  },
+                  isAdded: myConnects.contains(widget.connections[index]),
+                  connect: widget.connections[index],
+                ),
+              ))
+            ],
+          ),
         ),
       ),
     );
