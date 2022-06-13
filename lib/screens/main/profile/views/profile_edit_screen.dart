@@ -5,7 +5,6 @@ import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
-import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/profile/views/edit_email_dialog.dart';
@@ -22,6 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../../../data/local/model/cached_user.dart';
 import 'edit_location_dialog.dart';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -63,6 +63,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   Future<void> _selectDate(BuildContext context, DateTime? dateOfBirth) async {
     final DateTime? picked = await showDatePicker(
         context: context,
+        confirmText: 'Ok',
+
         helpText: 'DATE OF BIRTH',
         initialDate: dateOfBirth ?? selectedDate,
         firstDate: DateTime(1, 8),

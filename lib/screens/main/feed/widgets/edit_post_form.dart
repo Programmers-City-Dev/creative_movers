@@ -6,6 +6,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import '../../../../blocs/feed/feed_bloc.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../widget/custom_button.dart';
+import 'image_picker_item.dart';
 
 class EditPostForm extends StatefulWidget {
   const EditPostForm({Key? key, required this.feed, required this.onSucces}) : super(key: key);
@@ -18,6 +19,8 @@ class EditPostForm extends StatefulWidget {
 
 class _EditPostFormState extends State<EditPostForm> {
   final _contentController = TextEditingController();
+  List<String> pickedImages = [];
+
   final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
 
   @override
@@ -83,7 +86,6 @@ class _EditPostFormState extends State<EditPostForm> {
               const SizedBox(
                 height: 10,
               ),
-
               Padding(
                 padding: EdgeInsets.only(
 
@@ -114,6 +116,67 @@ class _EditPostFormState extends State<EditPostForm> {
               const SizedBox(
                 height: 15,
               ),
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    _fetchMedia();
+                  },
+                  child: pickedImages.isNotEmpty
+                      ? Column(
+                    children: [
+                      SizedBox(
+                        height: 150,
+                        child: ListView.builder(
+                            physics:
+                            const BouncingScrollPhysics(),
+                            itemCount: pickedImages.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) =>
+                                ImagePickerItem(
+                                  image: pickedImages[index],
+                                  onClose: () {
+                                    setState(() {
+                                      pickedImages.remove(
+                                          pickedImages[index]);
+                                      // mediaFiles.removeAt(index);
+                                    });
+                                  },
+                                )),
+                      ),
+                      const Text(
+                        'Tap to add image',
+                        style: TextStyle(color: Colors.blueGrey),
+                      )
+                    ],
+                  )
+                      : Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Theme.of(context).cardColor),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/pngs/upload_image.png',
+                            height: 200,
+                          ),
+                          const Text(
+                            'Tap To Upload Image',
+                            style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 10,),
               CustomButton(
                 onTap: () {
                   if (_fieldKey.currentState!.validate()) {
@@ -135,4 +198,39 @@ class _EditPostFormState extends State<EditPostForm> {
       ),
     );
   }
+  void _fetchMedia() async {
+    var images = ['jpg', 'jpeg', 'png', 'webp', 'PNG'];
+    // var videos = ['mp4', 'mov'];
+    // var files = await AppUtils.fetchMedia(
+    //     allowMultiple: true,
+    //     onSelect: (result) {
+    //       if (result!.files.isNotEmpty) {
+    //         for (var file in result.files) {
+    //           if (images
+    //               .where((element) => element == file.extension)
+    //               .isNotEmpty) {
+    //             pickedImages.add(file.path!);
+    //
+    //             setState(() {});
+    //           }
+    //         }
+    //       }
+    //     });
+    await AppUtils.fetchMedia(
+        allowMultiple: true,
+        onSelect: (result) {
+          if (result!.files.isNotEmpty) {
+            for (var file in result.files) {
+              if (images
+                  .where((element) => element == file.extension)
+                  .isNotEmpty) {
+                pickedImages.add(file.path!);
+
+                setState(() {});
+              }
+            }
+          }
+        });
+  }
+
 }

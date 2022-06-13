@@ -26,7 +26,6 @@ class StatusViews extends StatefulWidget {
 class _StatusViewsState extends State<StatusViews> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.viewStatusResponse.activeStatus!.status.isNotEmpty ) {
       log(widget.viewStatusResponse.activeStatus!.status.length.toString());
@@ -62,7 +61,7 @@ class _StatusViewsState extends State<StatusViews> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             height: 90,
             padding: const EdgeInsets.all(8.0),
             child: Stack(
@@ -123,7 +122,8 @@ class _StatusViewsState extends State<StatusViews> {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ViewStatusScreen(
-                                status: (_list[index].status),
+                                alllStatus: _list,
+                                status: (_list[index].status), currentStatus: index,
                               ),
                             ));
                           },
