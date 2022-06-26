@@ -91,4 +91,6 @@ class Endpoints {
   static String chatConversations =
       '${Constants.baseUrl}api/chats/fetch_conversations';
   static String sendChatMessage = '${Constants.baseUrl}api/chats/send_message';
+  static String notifyLiveVideo =
+      '${Constants.baseUrl}api/connections/notify/live-video';
 }

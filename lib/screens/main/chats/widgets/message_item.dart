@@ -47,14 +47,14 @@ class _MessageItemState extends State<MessageItem> {
         if(widget.chatMessage.conversationId == "-1"){
           _chatBloc.add(SendChatMessage(
               message: ChatMessageRequest(
-                  userId: widget.otherUserId,
-                  message: widget.chatMessage.body)));
+                  userId: int.parse(widget.chatMessage.userId),
+                  message: widget.chatMessage.body!)));
         }else {
           _chatBloc.add(SendChatMessage(
               message: ChatMessageRequest(
-                  userId: widget.otherUserId,
+                  userId: int.parse(widget.chatMessage.userId),
                   conversationId: int.parse(widget.chatMessage.conversationId),
-                  message: widget.chatMessage.body)));
+                  message: widget.chatMessage.body!)));
         }
       }
     }
@@ -64,6 +64,7 @@ class _MessageItemState extends State<MessageItem> {
   Widget build(BuildContext context) {
     CachedUser cachedUser = _cacheCubit.cachedUser!;
     bool isForMe = widget.chatMessage.userId == cachedUser.id.toString();
+    log("IS FORMW: $isForMe");
     return Column(
       crossAxisAlignment:
           !isForMe ? CrossAxisAlignment.start : CrossAxisAlignment.end,
@@ -98,7 +99,7 @@ class _MessageItemState extends State<MessageItem> {
                             : AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
-                      widget.chatMessage.body,
+                      '${widget.chatMessage.body}',
                       style: TextStyle(
                           color: !isForMe
                               ? AppColors.PtextColor
@@ -185,19 +186,22 @@ class _MessageItemState extends State<MessageItem> {
           },
           builder: (context, state) {
             if (state is ChatMessageLoading) {
-              return const Text(
-                'Sending...',
-                style: TextStyle(fontSize: 12, color: AppColors.grey),
+              return const Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: Text(
+                  'Sending...',
+                  style: TextStyle(fontSize: 12, color: AppColors.grey),
+                ),
               );
             }
             if (state is ChatError) {
               return GestureDetector(
                 onTap: () {
                   if (_shouldLoad!) {
-                    // TODO: Send message event
                   }
                 },
                 child: Container(
+                  margin: const EdgeInsets.only(right: 16.0),
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8.0, vertical: 4.0),
                   decoration: BoxDecoration(
@@ -209,6 +213,7 @@ class _MessageItemState extends State<MessageItem> {
                         ),
                       )),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: const [
                       Icon(
                         Icons.refresh,
@@ -227,9 +232,14 @@ class _MessageItemState extends State<MessageItem> {
               );
             }
             if (state is ChatMessageSent) {
-              return Text(
-                AppUtils.getTime(widget.chatMessage.createdAt),
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              return Padding(
+                padding: isForMe
+                    ? const EdgeInsets.only(right: 16)
+                    : const EdgeInsets.only(left: 50),
+                child: Text(
+                  AppUtils.getTime(widget.chatMessage.createdAt),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
               );
             }
             return Padding(

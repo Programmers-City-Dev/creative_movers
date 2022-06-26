@@ -93,20 +93,20 @@ class Connections {
 }
 
 class Connection {
-  Connection({
-    this.id,
-    this.myId,
-    required this.userId,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.username,
-    required this.role,
-    required this.firstname,
-    required this.lastname,
-    required this.profilePhotoPath,
-    required this.connects,
-  });
+  Connection(
+      {this.id,
+      this.myId,
+      required this.userId,
+      required this.status,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.username,
+      required this.role,
+      required this.firstname,
+      required this.lastname,
+      required this.profilePhotoPath,
+      required this.connects,
+      this.conversationId});
 
   int? id;
   String? myId;
@@ -118,6 +118,7 @@ class Connection {
   String role;
   String firstname;
   String lastname;
+  int? conversationId;
   String profilePhotoPath;
   List<Connect> connects;
 
@@ -132,12 +133,13 @@ class Connection {
         role: json["role"],
         firstname: json["firstname"],
         lastname: json["lastname"],
-        profilePhotoPath: json["profile_photo_path"],
+        conversationId: json["conversation_id"],
         connects: List<Connect>.from(
             json["connects"].map((x) => Connect.fromJson(x))),
+        profilePhotoPath: json["profile_photo_path"],
       );
 
-  String get fullname => '$firstname $lastname';
+  String get fullName => '$firstname $lastname';
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -151,6 +153,7 @@ class Connection {
         "firstname": firstname,
         "lastname": lastname,
         "profile_photo_path": profilePhotoPath,
+        "conversation_id": conversationId,
         "connects": List<dynamic>.from(connects.map((x) => x.toJson())),
       };
 }

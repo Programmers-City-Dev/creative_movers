@@ -5,12 +5,14 @@ import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/routes.dart';
+import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.dart';
+import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
 import 'package:creative_movers/screens/widget/welcome_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,29 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const AccountSettingsScreen()
   ];
 
-  // final bottomNavItems = [
-  //   BottomNavigationBarItem(
-  //
-  //     icon: SvgPicture.asset(AppIcons.svgFeed,color: AppColors.primaryColor,),
-  //     activeIcon:  const NavSelectedIcon(label: 'FEED', strIcon: AppIcons.svgFeed,),
-  //     label: 'FEED',
-  //   ),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgStore,color: AppColors.primaryColor,),
-  //       activeIcon:  const NavSelectedIcon(label: 'BIZ PAGE', strIcon: AppIcons.svgStore,),
-  //       label: 'BUISNESS PAGE'),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgPeople,color: AppColors.primaryColor,),
-  //
-  //       activeIcon:  const NavSelectedIcon(label: 'CONTACT',strIcon: AppIcons.svgPeople,),
-  //       label: 'CONTACT'),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgMessage,color: AppColors.primaryColor,),
-  //
-  //       activeIcon:  const NavSelectedIcon(label: 'CHAT', strIcon: AppIcons.svgMessage,),
-  //       label: 'CHAT'),
-  // ];
-
   int _navIndex = 0;
   final NavBloc _navBloc = injector.get<NavBloc>();
 
@@ -79,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
     Future.delayed(const Duration(seconds: 4))
-        .then((value) => _showDialogIfNecesssary());
+        .then((value) => _showDialogIfNecessary());
     super.initState();
   }
 
@@ -94,156 +73,61 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       builder: (context, state) {
         return WillPopScope(
-          onWillPop: () async {
-            final isFirstRouteInCurrentTab =
-                !await homeNavigatorKeys[_navIndex].currentState!.maybePop();
-            debugPrint('isFirstRouteInCurrentTab: ' +
-                isFirstRouteInCurrentTab.toString());
-            // let system handle back button if we're on the first route
-            return isFirstRouteInCurrentTab;
-          },
-          child: Scaffold(
-              backgroundColor: AppColors.smokeWhite,
-              // appBar: AppBar(
-              //   elevation: 0,
-              //   primary: true,
-              //   actions: const [
-              //     Padding(
-              //       padding: EdgeInsets.all(8.0),
-              //       child: Icon(
-              //         Icons.search,
-              //         color: AppColors.textColor,
-              //       ),
-              //     ),
-              //     Padding(
-              //       padding: EdgeInsets.all(8.0),
-              //       child: Icon(
-              //         Icons.notifications,
-              //         color: AppColors.textColor,
-              //       ),
-              //     ),
-              //   ],
-              //   leading: const Icon(
-              //     Icons.menu_outlined,
-              //     color: AppColors.textColor,
-              //   ),
-              //   title: const Text(
-              //     'Creative Movers',
-              //     style: TextStyle(color: AppColors.textColor),
-              //   ),
-              //   backgroundColor: AppColors.white,
-              // ),
-              body: IndexedStack(index: _navIndex, children: <Widget>[
-                _buildOffstageNavigator(0),
-                _buildOffstageNavigator(1),
-                _buildOffstageNavigator(2),
-                _buildOffstageNavigator(3),
-                _buildOffstageNavigator(4),
-              ]),
-              bottomNavigationBar: GNav(
-                  haptic: true, // haptic feedback
-                  tabBorderRadius: 15,
-                  // tabActiveBorder:
-                  //     Border.all(color: AppColors.black, width: 1), // tab button border
-                  // tabBorder:
-                  //     Border.all(color: Colors.grey, width: 1), // tab button border
-                  // tabShadow: [
-                  //   BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
-                  // ], // tab button shadow
-                  curve: Curves.linear, // tab animation curves
-                  duration: const Duration(
-                      milliseconds: 200), // tab animation duration
-                  gap: 8, // the tab button gap between icon and text
-                  color: AppColors.primaryColor, // unselected icon color
-                  activeColor:
-                      AppColors.primaryColor, // selected icon and text color
-                  iconSize: 18,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  backgroundColor: AppColors.white,
-                  onTabChange: (index) {
+            onWillPop: () async {
+              final isFirstRouteInCurrentTab =
+                  !await homeNavigatorKeys[_navIndex].currentState!.maybePop();
+              debugPrint('isFirstRouteInCurrentTab: ' +
+                  isFirstRouteInCurrentTab.toString());
+              // let system handle back button if we're on the first route
+              return isFirstRouteInCurrentTab;
+            },
+            child: Scaffold(
+                backgroundColor: AppColors.smokeWhite,
+                body: IndexedStack(index: _navIndex, children: <Widget>[
+                  _buildOffstageNavigator(0),
+                  _buildOffstageNavigator(1),
+                  _buildOffstageNavigator(2),
+                  _buildOffstageNavigator(3),
+                  _buildOffstageNavigator(4),
+                ]),
+                bottomNavigationBar: BottomNavigationBar(
+                  selectedItemColor: AppColors.primaryColor,
+                  unselectedItemColor: AppColors.grey,
+                  selectedLabelStyle:
+                      const TextStyle(fontWeight: FontWeight.bold),
+                  currentIndex: _navIndex,
+                  type: BottomNavigationBarType.fixed,
+                  onTap: (index) {
                     setState(() {
                       _navBloc.add(SwitchNavEvent(index));
                     });
                   },
-                  selectedIndex: _navIndex,
-                  tabMargin: const EdgeInsets.symmetric(
-                      vertical: 8, horizontal: 0), // tab button icon size
-                  tabBackgroundColor: AppColors.primaryColor
-                      .withOpacity(0.3), // selected tab background color
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 8), // navigation bar padding
-                  tabs: [
-                    GButton(
-                      icon: Icons.home,
-                      text: 'Feeds',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/feed.svg',
-                        color: AppColors.primaryColor,
-                        width: 24,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.rss_feed_outlined),
+                      label: 'FEED',
                     ),
-                    GButton(
-                      icon: Icons.business,
-                      text: 'Biz Page',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/biz.svg',
-                        color: AppColors.primaryColor,
-                        width: 24,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.wallet_travel),
+                      label: 'Biz Page',
                     ),
-                    GButton(
-                      icon: Icons.group_outlined,
-                      text: 'Connects',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/group.svg',
-                        color: AppColors.primaryColor,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.supervised_user_circle_outlined),
+                      label: 'Connects',
                     ),
-                    GButton(
-                      icon: Icons.chat_sharp,
-                      text: 'Chats',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/chats.svg',
-                        color: AppColors.primaryColor,
-                        width: 24,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.messenger_outlined),
+                      label: 'Chats',
                     ),
-                    GButton(
-                      icon: Icons.person,
-                      text: 'Profile',
-                      borderRadius: BorderRadius.circular(4),
-                      leading: BlocBuilder<CacheCubit, CacheState>(
-                        bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
-                        builder: (context, state) {
-                          if (state is CachedUserDataFetched) {
-                            return CircleAvatar(
-                              radius: 14,
-                              backgroundImage: NetworkImage(
-                                  state.cachedUser.profilePhotoPath!),
-                            );
-                          }
-                          return const CircleAvatar(
-                            radius: 14,
-                            backgroundImage:
-                                AssetImage('assets/images/slide_i.png'),
-                          );
-                        },
-                      ),
-                    )
-                  ])),
-        );
+                    BottomNavigationBarItem(
+                        icon: CircleAvatar(
+                          radius: 14,
+                          backgroundImage:
+                              AssetImage('assets/images/slide_i.png'),
+                        ),
+                        label: 'Profile'),
+                  ],
+                )));
       },
     );
   }
@@ -348,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _showDialogIfNecesssary() {
+  _showDialogIfNecessary() {
     if (widget.showWelcomeDialog!) {
       showDialog(
           context: homeNavigatorKeys[0].currentState!.context,

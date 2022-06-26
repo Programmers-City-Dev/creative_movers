@@ -201,7 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: 40,
+                              itemCount: 60,
                               itemBuilder: (ctx, i) {
                                 return const ConnectsShimer();
                               }),
@@ -234,17 +234,23 @@ class _ChatScreenState extends State<ChatScreen> {
                           ));
                         }
                         return ListView.builder(
-                            shrinkWrap: true,
+                          // shrinkWrap: true,
                             itemCount: connections.length,
                             itemBuilder: (ctx, index) {
                               return ListTile(
                                 onTap: () {
+                                  log("ID Chaek: ${connections[index].toJson()}");
                                   Navigator.of(context).pop();
                                   Navigator.of(context, rootNavigator: true)
                                       .push(MaterialPageRoute(
                                           builder: (ctx) => MessagingScreen(
+                                                conversationId:
+                                                    connections[index]
+                                                        .conversationId,
                                                 user: ConversationUser(
-                                                    id: connections[index].id!,
+                                                    id: int.parse(
+                                                        connections[index]
+                                                            .userId),
                                                     profilePhotoPath:
                                                         connections[index]
                                                             .profilePhotoPath,
@@ -255,7 +261,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                             .firstname,
                                                     lastname: connections[index]
                                                         .lastname),
-                                              )));
+                                          )));
                                 },
                                 leading: CircleImage(
                                   radius: 24,
@@ -263,7 +269,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   withBaseUrl: false,
                                 ),
                                 title: Text(
-                                  connections[index].fullname,
+                                  connections[index].fullName,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),

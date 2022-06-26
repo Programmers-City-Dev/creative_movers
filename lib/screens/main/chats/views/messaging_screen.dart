@@ -1,10 +1,8 @@
 
 import 'dart:developer' as logger;
-import 'dart:math';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
-import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -17,12 +15,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class MessagingScreen extends StatefulWidget {
-  final Conversation? conversation;
+  final int? conversationId;
   final ConversationUser user;
 
   const MessagingScreen({
     Key? key,
-    this.conversation,
+    this.conversationId,
     required this.user,
   }) : super(key: key);
 
@@ -43,18 +41,16 @@ class _MessagingScreenState extends State<MessagingScreen> {
   ValueNotifier<bool> noTextNotifier = ValueNotifier(true);
 
   int? conversationId;
-  late int otherUserId;
+  // late int otherUserId;
 
   @override
   void initState() {
     super.initState();
-    if (widget.conversation?.id != null) {
-      conversationId = widget.conversation?.id;
-      _chatBloc.add(FetchConversationsMessagesEvent(
-          conversationId: conversationId!));
+    if (widget.conversationId != null) {
+      conversationId = widget.conversationId;
+      _chatBloc.add(
+          FetchConversationsMessagesEvent(conversationId: conversationId!));
     }
-
-
   }
 
   @override
@@ -147,18 +143,21 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 message: state.errorModel.errorMessage,
               ));
             }
-            if (state is ConversationMessagesFetched || widget.conversation == null) {
+            if (state is ConversationMessagesFetched ||
+                widget.conversationId == null) {
               return ValueListenableBuilder<List<Message>>(
                   valueListenable: _chatBloc.chatMessagesNotifier,
                   builder: (context, messages, snapshot) {
                     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
                       _scrollChatToBottom();
                     });
+                    // List<Message> messages = msgs.reversed.toList();
                     return Column(
                       children: [
-                        if (messages.isEmpty) const Expanded(
-                          child:  Center(
-                            child: AppPromptWidget(
+                        if (messages.isEmpty)
+                          const Expanded(
+                            child: Center(
+                                child: AppPromptWidget(
                               canTryAgain: false,
                               isSvgResource: true,
                               imagePath: "assets/svgs/request.svg",
@@ -170,18 +169,22 @@ class _MessagingScreenState extends State<MessagingScreen> {
                     if(messages.isNotEmpty)Expanded(
                         child: GroupedListView<Message, int>(
                           controller: _chatScrollController,
-                          shrinkWrap: true,
-                          elements: messages,
-                          groupBy: (message) => DateTime(message.createdAt.year,
-                              message.createdAt.month, message.createdAt.day)
-                              .millisecondsSinceEpoch,
-                          groupSeparatorBuilder: (groupByValue) => Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 16),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
+                            // shrinkWrap: true,
+                            // reverse: true,
+                            elements: messages,
+                            groupBy: (message) => DateTime(
+                                    message.createdAt.year,
+                                    message.createdAt.month,
+                                    message.createdAt.day)
+                                .millisecondsSinceEpoch,
+                            groupSeparatorBuilder: (groupByValue) => Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 16),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
                                     borderRadius: BorderRadius.circular(8.0)
                                 ),
                                 child: Padding(
@@ -290,8 +293,11 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                               milliseconds: 2000),
                                           child: GestureDetector(
                                             onTap: () {
-                                              _sendMessage(context);
-                                            },
+                                                    if (_textController
+                                                        .text.isNotEmpty) {
+                                                      _sendMessage(context);
+                                                    }
+                                                  },
                                             child: const Icon(
                                               Icons.send_rounded,
                                             ),
@@ -319,20 +325,18 @@ class _MessagingScreenState extends State<MessagingScreen> {
 
   void _sendMessage(BuildContext context) {
     Message message = Message(
-        id: Random().nextInt(5),
+        id: 0,
         body: _textController.text,
-        conversationId: conversationId == null
-            ? '-1'
-            : conversationId.toString(),
+        conversationId:
+            conversationId == null ? '-1' : conversationId.toString(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         media: [],
         status: 'unread',
-        userId: injector.get<CacheCubit>().cachedUser!.id.toString(),
+        userId: widget.user.id.toString(),
         profilePhotoPath:
             injector.get<CacheCubit>().cachedUser!.profilePhotoPath,
-      shouldLoad: true
-    );
+        shouldLoad: true);
     _chatBloc.pushMessage(message);
     _textController.clear();
   }

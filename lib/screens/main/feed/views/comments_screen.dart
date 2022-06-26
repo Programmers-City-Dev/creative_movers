@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -90,27 +92,38 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     ),
                   ),
                 ),
-                CommentBox(
-                  profilePhotoPath: state.cachedUser.profilePhotoPath,
-                  onCommentSent: (text) {
-                    setState(() {});
-                    widget.feed.comments.add(Comment(
-                        id: 4,
-                        userId: widget.feed.userId,
-                        comment: text,
-                        feedId: ' ${widget.feed.id}',
-                        user: Poster(
-                            id: int.parse(widget.feed.userId),
-                            firstname: widget.feed.user!.firstname,
-                            lastname: widget.feed.user!.lastname,
-                            profilePhotoPath:
-                                widget.feed.user!.profilePhotoPath),
-                        shouldLoad: true));
-                    _commentScrollController.animateTo(
-                      _commentScrollController.position.maxScrollExtent,
-                      curve: Curves.easeOut,
-                      duration: const Duration(milliseconds: 300),
-                    );
+                BlocBuilder<CacheCubit, CacheState>(
+                  bloc: CacheCubit()..fetchCachedUserData(),
+                  buildWhen: (_, state) => state is CachedUserDataFetched,
+                  builder: (context, state) {
+                    if(state is CachedUserDataFetched){
+                      var user = state.cachedUser;
+                      return CommentBox(
+                        profilePhotoPath: user.profilePhotoPath,
+                        onCommentSent: (text) {
+                          setState(() {});
+                          widget.feed.comments.add(Comment(
+                              id: 4,
+                              userId: widget.feed.userId,
+                              comment: text,
+                              feedId: ' ${widget.feed.id}',
+                              user: Poster(
+                                  id: int.parse(widget.feed.userId),
+                                  firstname: state.cachedUser.firstname!,
+                                  lastname: state.cachedUser.lastname!,
+                                  profilePhotoPath:
+                                  state.cachedUser.profilePhotoPath),
+                              shouldLoad: true));
+                          _commentScrollController.animateTo(
+                            _commentScrollController.position.maxScrollExtent,
+                            curve: Curves.easeOut,
+                            duration: const Duration(milliseconds: 300),
+                          );
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+
                   },
                 )
                 // Container(

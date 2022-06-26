@@ -47,7 +47,6 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: CustomFeedAppBar(
         username: username,
       ),
@@ -57,7 +56,7 @@ class _FeedScreenState extends State<FeedScreen> {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverPersistentHeader(
-              // pinned: true,
+                // pinned: true,
                 floating: true,
                 delegate: SliverAppBarDelegate(
                   PreferredSize(
@@ -122,7 +121,6 @@ class _FeedScreenState extends State<FeedScreen> {
             // controller: _scrollController,
             physics: const BouncingScrollPhysics(),
             slivers: [
-
               SliverPadding(
                 padding: const EdgeInsets.all(8),
                 sliver: BlocBuilder<FeedBloc, FeedState>(
@@ -136,12 +134,13 @@ class _FeedScreenState extends State<FeedScreen> {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             return NewPostItem(
-                              feed: state.feedResponse.feeds.data[index], onUpdated: () { feedBloc.add(GetFeedEvent());  },
+                              feed: state.feedResponse.feeds.data[index],
+                              onUpdated: () {
+                                feedBloc.add(const GetFeedEvent());
+                              },
                             );
                           },
                           childCount: state.feedResponse.feeds.data.length,
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
                         ),
                       );
                     }
@@ -238,6 +237,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 .toList()
                                 .length;
                             return Stack(
+                              clipBehavior: Clip.none,
                               children: [
                                 GestureDetector(
                                   child: const Icon(
@@ -254,16 +254,27 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 ),
                                 unreadNotifications > 0
                                     ? Positioned(
-                                        top: 0,
-                                        right: 0,
+                                        top: -10,
+                                        right: -5,
                                         child: Container(
-                                          height: 10,
-                                          width: 10,
+                                          // height: 10,
+                                          // width: 10,
                                           decoration: const BoxDecoration(
                                               color: Colors.red,
                                               shape: BoxShape.circle),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Text(
+                                              unreadNotifications > 9
+                                                  ? "9+"
+                                                  : '$unreadNotifications',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
                                         ),
-                                      )
+                                )
                                     : const SizedBox.shrink()
                               ],
                             );

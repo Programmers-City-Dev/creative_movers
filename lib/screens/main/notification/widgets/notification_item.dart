@@ -4,6 +4,7 @@ import 'package:creative_movers/data/remote/model/notifications_response.dart'
     as notification;
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
+import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -36,9 +37,9 @@ class _NotificationItemState extends State<NotificationItem> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  backgroundImage:
-                      CachedNetworkImageProvider(notifier.avatar ?? ''),
+                CircleImage(
+                  url: notifier.avatar,
+                  withBaseUrl: false,
                   radius: 20,
                 ),
                 const SizedBox(
