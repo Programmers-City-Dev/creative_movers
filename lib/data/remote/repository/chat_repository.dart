@@ -253,4 +253,32 @@ class ChatRepository {
       },
     );
   }
+
+  Future<State> updateUserStatus(String status) async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(Endpoints.userStatus, body: {"status": status}),
+      successResponse: (data) {
+        return State<String?>.success(data != null ? data["message"] : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER FROM SEND MESSAGE: ${response.data}');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: "Oops! something went wrong",
+              data: null),
+        );
+      },
+    );
+  }
 }

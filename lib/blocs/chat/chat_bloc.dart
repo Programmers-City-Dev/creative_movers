@@ -37,6 +37,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<SendChatMessage>(_mapSendChatMessageEventToState);
     on<FetchConversationsEvent>(_mapFetchConversationsEventToState);
     on<FetchOnlineUsersEvent>(_mapFetchOnlineUsersEventToState);
+    on<UpdateUserStatusEvent>(_mapUpdateUserStatusEventToState);
     on<FetchConversationsMessagesEvent>(
         _mapFetchConversationsMessagesEventToEvent);
     on<LiveChatMessagesFetchedEvent>(
@@ -224,6 +225,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ServerErrorModel errorModel = ServerErrorModel(
           statusCode: 404, errorMessage: "Oops! an error occurred, try again!");
       emit(ChatError(errorModel: errorModel));
+    }
+  }
+
+  FutureOr<void> _mapUpdateUserStatusEventToState(
+      UpdateUserStatusEvent event, Emitter<ChatState> emit) async {
+    try {
+      var state = await chatRepository.updateUserStatus(event.status);
+      if (state is SuccessState) {
+        log("${state.value}");
+      } else if (state is ErrorState) {
+        log("Error updating user status: ${state.value}");
+      }
+    } catch (e) {
+      log("Error updating user status: $e");
     }
   }
 }

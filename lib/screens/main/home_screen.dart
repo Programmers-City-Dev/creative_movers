@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -41,7 +42,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final screens = [
     const FeedScreen(),
     const MyPageTab(),
@@ -55,12 +56,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
     _navBloc.add(SwitchNavEvent(_navIndex));
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
     Future.delayed(const Duration(seconds: 4))
         .then((value) => _showDialogIfNecessary());
-    super.initState();
   }
 
   @override
@@ -268,6 +270,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ))));
     }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    log("APP STATE: $state");
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+
+    if (isBackground) {
+      injector
+          .get<ChatBloc>()
+          .add(const UpdateUserStatusEvent(status: "offline"));
+    } else {
+      injector
+          .get<ChatBloc>()
+          .add(const UpdateUserStatusEvent(status: "online"));
+    }
+
+    /* if (isBackground) {
+      // service.stop();
+    } else {
+      // service.start();
+    }*/
   }
 }
 

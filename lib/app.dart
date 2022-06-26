@@ -9,7 +9,9 @@ final GlobalKey<NavigatorState> mainNavKey = GlobalKey<NavigatorState>();
 class CreativeMoversApp extends StatelessWidget {
   final AppConfig appConfig;
   final Widget defaultScreen;
-  const CreativeMoversApp({Key? key, required this.appConfig, required this.defaultScreen})
+
+  const CreativeMoversApp(
+      {Key? key, required this.appConfig, required this.defaultScreen})
       : super(key: key);
 
   @override
@@ -35,16 +37,14 @@ class CreativeMoversApp extends StatelessWidget {
         Locale('ru', ''),
       ],
       theme: ThemeData(
-        fontFamily: "Poppins",
+          fontFamily: "Poppins",
           pageTransitionsTheme: const PageTransitionsTheme(
-        builders: {
-          TargetPlatform.android: ZoomPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        },
-      )),
+            builders: {
+              TargetPlatform.android: ZoomPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            },
+          )),
       home: defaultScreen,
     );
   }
-
-  
 }

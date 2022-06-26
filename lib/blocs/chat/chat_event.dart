@@ -79,13 +79,23 @@ class ListenToChatEvent extends ChatEvent {
   List<Object> get props => [conversationId, channelName];
 }
 
-class ConversationMessagesFetchedEvent extends ChatEvent{
+class ConversationMessagesFetchedEvent extends ChatEvent {
   final int id;
   final String channel;
   final List<Message> messages;
 
-  const ConversationMessagesFetchedEvent({required this.id, required this.channel, required this.messages});
+  const ConversationMessagesFetchedEvent(
+      {required this.id, required this.channel, required this.messages});
 
   @override
   List<Object> get props => [id, channel, messages];
+}
+
+class UpdateUserStatusEvent extends ChatEvent {
+  final String status;
+
+  const UpdateUserStatusEvent({required this.status});
+
+  @override
+  List<Object> get props => [status];
 }

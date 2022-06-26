@@ -99,4 +99,5 @@ class Endpoints {
   static String notifyLiveVideo =
       '${Constants.baseUrl}api/connections/notify/live-video';
   static String onlineUsers = '${Constants.baseUrl}api/user/online-users';
+  static String userStatus = '${Constants.baseUrl}api/user/update-status';
 }
