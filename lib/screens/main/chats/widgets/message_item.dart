@@ -39,20 +39,20 @@ class _MessageItemState extends State<MessageItem> {
   @override
   void initState() {
     super.initState();
+    // log("SEND TO: ${widget.otherUserId}");
     _cacheCubit.fetchCachedUserData();
     _shouldLoad = widget.shouldLoad;
     if (_shouldLoad != null) {
-      log("SHOULD LOAD: ${widget.chatMessage.shouldLoad}");
       if (_shouldLoad!) {
         if(widget.chatMessage.conversationId == "-1"){
           _chatBloc.add(SendChatMessage(
               message: ChatMessageRequest(
-                  userId: int.parse(widget.chatMessage.userId),
+                  userId: widget.otherUserId,
                   message: widget.chatMessage.body!)));
         }else {
           _chatBloc.add(SendChatMessage(
               message: ChatMessageRequest(
-                  userId: int.parse(widget.chatMessage.userId),
+                  userId: widget.otherUserId,
                   conversationId: int.parse(widget.chatMessage.conversationId),
                   message: widget.chatMessage.body!)));
         }

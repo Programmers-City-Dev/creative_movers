@@ -8,6 +8,7 @@ import 'package:creative_movers/data/remote/model/chat/chat_message_response.dar
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation_messages_response.dart';
 import 'package:creative_movers/data/remote/model/chat/conversations_response.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
@@ -97,10 +98,11 @@ class ChatRepository {
   //Retrieve all chat conversations to be displayed on the chat tab
   Future<State> fetchChatConversations() async {
     return SimplifyApiConsuming.makeRequest(
-      () =>
-          httpClient.post(Endpoints.chatConversations),
+          () => httpClient.post(Endpoints.chatConversations),
       successResponse: (data) {
-        return State<List<Conversation>?>.success(data != null ? ConversationsResponse.fromMap(data).conversations : null);
+        return State<List<Conversation>?>.success(data != null
+            ? ConversationsResponse.fromMap(data).conversations
+            : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -125,7 +127,8 @@ class ChatRepository {
   }
 
   // Send chat message on the main chat screen
-  Future<State> sendChatMessage({required List<File> files, required ChatMessageRequest message}) async {
+  Future<State> sendChatMessage(
+      {required List<File> files, required ChatMessageRequest message}) async {
     log("CONVO ID: ${message.toMap()}");
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.sendChatMessage, body: message.toMap()),
@@ -156,14 +159,13 @@ class ChatRepository {
   }
 
   // Fetch messages for a particular conversation
-  Future<State> fetchChatConversationMessages(int conversationId) async{
+  Future<State> fetchChatConversationMessages(int conversationId) async {
     return SimplifyApiConsuming.makeRequest(
-          () =>
-          httpClient.post(Endpoints.fetchConversationMessages, body: {
-            "conversation_id": conversationId
-          }),
+      () => httpClient.post(Endpoints.fetchConversationMessages,
+          body: {"conversation_id": conversationId}),
       successResponse: (data) {
-        return State<ConversationMessagesResponse?>.success(data != null ? ConversationMessagesResponse.fromMap(data) : null);
+        return State<ConversationMessagesResponse?>.success(
+            data != null ? ConversationMessagesResponse.fromMap(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -182,6 +184,38 @@ class ChatRepository {
               statusCode: response.statusCode!,
               errorMessage:
                   "Oops! unable to fetch conversation messages, try again",
+              data: null),
+        );
+      },
+    );
+  }
+
+  // Fetch online users
+  Future<State> get fetchOnlineUsers async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(Endpoints.onlineUsers),
+      successResponse: (data) {
+        return State<List<ConversationUser>?>.success(data != null
+            ? List<ConversationUser>.from(
+                data["online_users"].map((x) => ConversationUser.fromMap(x)))
+            : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: "Oops! unable to fetch online users, try again",
               data: null),
         );
       },

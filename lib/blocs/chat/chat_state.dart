@@ -73,7 +73,7 @@ class ChatMessageSent extends ChatState {
   List<Object> get props => [chatMessageResponse];
 }
 
-class ConversationsFetched extends ChatState{
+class ConversationsFetched extends ChatState {
   final List<Conversation> conversations;
 
   const ConversationsFetched({required this.conversations});
@@ -82,15 +82,23 @@ class ConversationsFetched extends ChatState{
   List<Object> get props => [conversations];
 }
 
-class ConversationMessagesFetched extends ChatState{
+class ConversationMessagesFetched extends ChatState {
   final int id;
   final String channel;
   final List<Message> messages;
 
-  const ConversationMessagesFetched({required this.id, required this.channel, required this.messages});
+  const ConversationMessagesFetched(
+      {required this.id, required this.channel, required this.messages});
 
   @override
   List<Object> get props => [id, channel, messages];
-
 }
 
+class OnlineUsersFetched extends ChatState {
+  final List<ConversationUser> users;
+
+  const OnlineUsersFetched(this.users);
+
+  @override
+  List<Object> get props => [users];
+}

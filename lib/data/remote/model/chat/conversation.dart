@@ -78,50 +78,63 @@ class Conversation {
 
 
 class ConversationUser {
-  ConversationUser({
-    required this.id,
-    this.firstname,
-    this.lastname,
-    required this.username,
-    required this.profilePhotoPath,
-  });
+  ConversationUser(
+      {required this.id,
+      this.firstname,
+      this.lastname,
+      required this.username,
+      required this.profilePhotoPath,
+      this.updatedAt,
+      this.status});
 
   int id;
   String? firstname;
   String? lastname;
   String username;
   String? profilePhotoPath;
+  DateTime? updatedAt;
+  String? status;
 
-  ConversationUser copyWith({
-    int? id,
-    String? firstname,
-    String? lastname,
-    String? username,
-    String? profilePhotoPath,
-  }) =>
+  ConversationUser copyWith(
+          {int? id,
+          String? firstname,
+          String? lastname,
+          String? username,
+          String? profilePhotoPath,
+          DateTime? updatedAt,
+          String? status}) =>
       ConversationUser(
         id: id ?? this.id,
         firstname: firstname ?? this.firstname,
         lastname: lastname ?? this.lastname,
         username: username ?? this.username,
         profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
+        updatedAt: updatedAt ?? this.updatedAt,
+        status: status ?? this.status,
       );
 
   factory ConversationUser.fromMap(Map<String, dynamic> json) => ConversationUser(
     id: json["id"],
-    firstname: json["firstname"],
-    lastname: json["lastname"],
-    username: json["username"],
-    profilePhotoPath: json["profile_photo_path"],
-  );
+        firstname: json["firstname"],
+        lastname: json["lastname"],
+        username: json["username"],
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        profilePhotoPath: json["profile_photo_path"],
+        status: json["status"],
+      );
 
-  Map<String, dynamic> toMap() => {
-    "id":id,
-    "firstname": firstname,
-    "lastname": lastname,
-    "username": username,
-    "profile_photo_path": profilePhotoPath,
-  };
+  Map<String, dynamic> toMap() =>
+      {
+        "id": id,
+        "firstname": firstname,
+        "lastname": lastname,
+        "username": username,
+        "updated_at": updatedAt != null ? updatedAt!.toIso8601String() : null,
+        "profile_photo_path": profilePhotoPath,
+        "status": status,
+      };
 }
 
 

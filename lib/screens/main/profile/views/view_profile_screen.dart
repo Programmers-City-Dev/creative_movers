@@ -438,8 +438,9 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                             ],
                                           ),
                                           onTap: () {
-                                            _connectsBloc.add(FollowEvent(user_id: '15'));
-                                          },
+                                            _connectsBloc
+                                              .add(FollowEvent(userId: '15'));
+                                        },
                                         ),
                                       ],
                                     )),

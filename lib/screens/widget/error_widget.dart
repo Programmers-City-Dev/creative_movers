@@ -29,15 +29,16 @@ class AppPromptWidget extends StatelessWidget {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          isSvgResource!
-              ? SvgPicture.asset(
-                  imagePath ?? 'assets/svgs/server_error.svg',
-                  width: 150,
-                )
-              : Image.asset(
-                  imagePath ?? 'assets/pngs/sorry.png',
-                  height: 150,
-                ),
+          if (imagePath != null)
+            isSvgResource!
+                ? SvgPicture.asset(
+                    imagePath ?? 'assets/svgs/server_error.svg',
+                    width: 150,
+                  )
+                : Image.asset(
+                    imagePath ?? 'assets/pngs/sorry.png',
+                    height: 150,
+                  ),
           if (title != null)
             Column(
               children: [

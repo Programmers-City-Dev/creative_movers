@@ -13,6 +13,7 @@ import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.dart';
 import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
+import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/welcome_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,28 +103,42 @@ class _HomeScreenState extends State<HomeScreen> {
                       _navBloc.add(SwitchNavEvent(index));
                     });
                   },
-                  items: const [
-                    BottomNavigationBarItem(
+                  items: [
+                    const BottomNavigationBarItem(
                       icon: Icon(Icons.rss_feed_outlined),
                       label: 'FEED',
                     ),
-                    BottomNavigationBarItem(
+                    const BottomNavigationBarItem(
                       icon: Icon(Icons.wallet_travel),
                       label: 'Biz Page',
                     ),
-                    BottomNavigationBarItem(
+                    const BottomNavigationBarItem(
                       icon: Icon(Icons.supervised_user_circle_outlined),
                       label: 'Connects',
                     ),
-                    BottomNavigationBarItem(
+                    const BottomNavigationBarItem(
                       icon: Icon(Icons.messenger_outlined),
                       label: 'Chats',
                     ),
                     BottomNavigationBarItem(
-                        icon: CircleAvatar(
-                          radius: 14,
-                          backgroundImage:
-                              AssetImage('assets/images/slide_i.png'),
+                        icon: BlocProvider.value(
+                          value: injector.get<CacheCubit>(),
+                          child: BlocBuilder<CacheCubit, CacheState>(
+                            builder: (context, state) {
+                              var cachedUser =
+                                  context.watch<CacheCubit>().cachedUser;
+                              return cachedUser == null
+                                  ? const CircleAvatar(
+                                      radius: 14,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/slide_i.png'),
+                                    )
+                                  : CircleImage(
+                                      url: cachedUser.profilePhotoPath,
+                                      withBaseUrl: false,
+                                    );
+                            },
+                          ),
                         ),
                         label: 'Profile'),
                   ],

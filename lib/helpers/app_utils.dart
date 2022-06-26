@@ -88,7 +88,26 @@ class AppUtils {
     return formatter.format(date);
   }
 
-    static String getTimeAgo(DateTime dateTime) {
+  static String getLastSeen(DateTime date) {
+    String lastSeen = "";
+
+    if (date.year == DateTime.now().year) {
+      String d = DateFormat("E, MMM d").format(date);
+      if (date.day == DateTime.now().day) {
+        lastSeen = 'Today ';
+      } else if (date.day == DateTime.now().day - 1) {
+        lastSeen = 'Yesterday ';
+      } else {
+        lastSeen = d;
+      }
+      String time = getTime(date);
+      return lastSeen + " @ " + time;
+    }
+    String time = getTime(date);
+    return lastSeen + " @ " + time;
+  }
+
+  static String getTimeAgo(DateTime dateTime) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     // DateTime dateTime = DateTime.parse(date);

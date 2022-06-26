@@ -136,8 +136,8 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                                 ? InkWell(
                               onTap: () {
                                 _connectsBloc2.add(FollowEvent(
-                                    user_id: widget.result.id
-                                        .toString()));
+                                    userId: widget.result.id
+                                                        .toString()));
                               },
                               child: SvgPicture.asset(
                                 'assets/svgs/added.svg',
@@ -147,8 +147,8 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                                 : InkWell(
                               onTap: () {
                                 _connectsBloc2.add(FollowEvent(
-                                    user_id: widget.result.id
-                                        .toString()));
+                                    userId: widget.result.id
+                                                        .toString()));
                               },
                               child: const Icon(
                                 Icons.person_add,

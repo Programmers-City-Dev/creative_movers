@@ -1,9 +1,12 @@
-
 import 'dart:developer' as logger;
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
+import 'package:creative_movers/blocs/profile/profile_bloc.dart';
+import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
+import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/chats/widgets/message_item.dart';
@@ -41,6 +44,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
   ValueNotifier<bool> noTextNotifier = ValueNotifier(true);
 
   int? conversationId;
+
   // late int otherUserId;
 
   @override
@@ -60,21 +64,21 @@ class _MessagingScreenState extends State<MessagingScreen> {
         backgroundColor: AppColors.smokeWhite,
         appBar: AppBar(
           // actions: [
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const Icon(
-            //     Icons.phone_rounded,
-            //   ),
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.only(right: 5),
-            //   child: IconButton(
-            //     onPressed: () {},
-            //     icon: const Icon(
-            //       Icons.videocam_rounded,
-            //     ),
-            //   ),
-            // )
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(
+          //     Icons.phone_rounded,
+          //   ),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 5),
+          //   child: IconButton(
+          //     onPressed: () {},
+          //     icon: const Icon(
+          //       Icons.videocam_rounded,
+          //     ),
+          //   ),
+          // )
           // ],
           elevation: 1,
           iconTheme: const IconThemeData(color: AppColors.textColor),
@@ -105,7 +109,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                             color: AppColors.primaryColor),
                       ),
                       Text(
-                        '@${widget.user.username}',
+                        _status(widget.user),
                         style: const TextStyle(
                             fontSize: 10, color: AppColors.primaryColor),
                       ),
@@ -163,12 +167,13 @@ class _MessagingScreenState extends State<MessagingScreen> {
                               imagePath: "assets/svgs/request.svg",
                               title: "Empty conversation",
                               message:
-                              "Start a new conversation by sending a message.",
+                                  "Start a new conversation by sending a message.",
                             )),
-                        ),
-                    if(messages.isNotEmpty)Expanded(
-                        child: GroupedListView<Message, int>(
-                          controller: _chatScrollController,
+                          ),
+                        if (messages.isNotEmpty)
+                          Expanded(
+                              child: GroupedListView<Message, int>(
+                            controller: _chatScrollController,
                             // shrinkWrap: true,
                             // reverse: true,
                             elements: messages,
@@ -185,39 +190,42 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                       horizontal: 16, vertical: 16),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 4.0),
-                                  child: Text(
-                                    AppUtils.getGroupLabel(groupByValue),
-                                    style: const TextStyle(
-                                        color:
-                                        AppColors.primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
+                                      borderRadius: BorderRadius.circular(8.0)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 4.0),
+                                    child: Text(
+                                      AppUtils.getGroupLabel(groupByValue),
+                                      style: const TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          itemBuilder: (context, message) => MessageItem(
-                            chatMessage: message,
-                            shouldLoad: message.shouldLoad,
-                            otherUserId:widget.user.id,
-                            onMessageSent: (msg) {
-                              conversationId = int.parse(msg.conversationId);
-                              _chatBloc.resetChatMessage(msg, message.id);
-                            },
-                            onDeleteMessage: (message) {},
-                          ),
-                          itemComparator: (item1, item2) =>
-                              item1.createdAt.millisecondsSinceEpoch.compareTo(
-                                  item2.createdAt.millisecondsSinceEpoch), // optional
-                          useStickyGroupSeparators: true, // optional
-                          floatingHeader: true, // optional
-                          order: GroupedListOrder.ASC, // optional
-                        )),
+                              ],
+                            ),
+                            itemBuilder: (context, message) => MessageItem(
+                              chatMessage: message,
+                              shouldLoad: message.shouldLoad,
+                              otherUserId: widget.user.id,
+                              onMessageSent: (msg) {
+                                conversationId = int.parse(msg.conversationId);
+                                _chatBloc.resetChatMessage(msg, message.id);
+                              },
+                              onDeleteMessage: (message) {},
+                            ),
+                            itemComparator: (item1, item2) => item1
+                                .createdAt.millisecondsSinceEpoch
+                                .compareTo(
+                                    item2.createdAt.millisecondsSinceEpoch),
+                            // optional
+                            useStickyGroupSeparators: true,
+                            // optional
+                            floatingHeader: true,
+                            // optional
+                            order: GroupedListOrder.ASC, // optional
+                          )),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -249,8 +257,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                             filled: true,
                                             hintText: "Type your message",
                                             hintStyle: TextStyle(
-                                              fontStyle: FontStyle.italic
-                                            ),
+                                                fontStyle: FontStyle.italic),
                                             fillColor: AppColors.white,
                                             contentPadding: EdgeInsets.zero,
                                             border: OutlineInputBorder(
@@ -272,7 +279,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                             ),
                             Container(
                                 margin:
-                                const EdgeInsets.only(right: 8, bottom: 16),
+                                    const EdgeInsets.only(right: 8, bottom: 16),
                                 height: 45,
                                 width: 45,
                                 child: FloatingActionButton(
@@ -282,33 +289,33 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                       builder: (context, value, snapshot) {
                                         return value
                                             ? AnimatedContainer(
-                                          duration: const Duration(
-                                              milliseconds: 2000),
-                                          child: const Icon(
-                                            Icons.mic_rounded,
-                                          ),
-                                        )
+                                                duration: const Duration(
+                                                    milliseconds: 2000),
+                                                child: const Icon(
+                                                  Icons.mic_rounded,
+                                                ),
+                                              )
                                             : AnimatedContainer(
-                                          duration: const Duration(
-                                              milliseconds: 2000),
-                                          child: GestureDetector(
-                                            onTap: () {
+                                                duration: const Duration(
+                                                    milliseconds: 2000),
+                                                child: GestureDetector(
+                                                  onTap: () {
                                                     if (_textController
                                                         .text.isNotEmpty) {
                                                       _sendMessage(context);
                                                     }
                                                   },
-                                            child: const Icon(
-                                              Icons.send_rounded,
-                                            ),
-                                          ),
-                                        );
+                                                  child: const Icon(
+                                                    Icons.send_rounded,
+                                                  ),
+                                                ),
+                                              );
                                       }),
                                 ))
                           ],
                         ),
-                    ],);
-
+                      ],
+                    );
                   });
             }
             return const SizedBox.shrink();
@@ -317,9 +324,9 @@ class _MessagingScreenState extends State<MessagingScreen> {
   }
 
   void _scrollChatToBottom() {
-    if(_chatScrollController.hasClients) {
+    if (_chatScrollController.hasClients) {
       _chatScrollController
-        .jumpTo(_chatScrollController.position.maxScrollExtent + 100);
+          .jumpTo(_chatScrollController.position.maxScrollExtent + 100);
     }
   }
 
@@ -339,5 +346,13 @@ class _MessagingScreenState extends State<MessagingScreen> {
         shouldLoad: true);
     _chatBloc.pushMessage(message);
     _textController.clear();
+  }
+
+  String _status(ConversationUser user) {
+    if (user.status == "online") {
+      return "Online";
+    } else {
+      return AppUtils.getLastSeen(user.updatedAt!);
+    }
   }
 }

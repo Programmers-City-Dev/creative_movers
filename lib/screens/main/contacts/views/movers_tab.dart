@@ -63,8 +63,8 @@ class _ConnectsTabState extends State<ConnectsTab>
           );
         } else if (state is ConnectsSuccesState) {
           if (mainList.isEmpty) {
-            filterList = state.getConnectsResponse.connections.connectionList;
-            mainList = state.getConnectsResponse.connections.connectionList;
+            filterList = state.connectsResponse.connections.connectionList;
+            mainList = state.connectsResponse.connections.connectionList;
           }
 
           return Container(

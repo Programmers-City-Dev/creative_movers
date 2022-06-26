@@ -36,6 +36,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<SendLiveChannelMessage>(_mapSendLiveChannelMessageToState);
     on<SendChatMessage>(_mapSendChatMessageEventToState);
     on<FetchConversationsEvent>(_mapFetchConversationsEventToState);
+    on<FetchOnlineUsersEvent>(_mapFetchOnlineUsersEventToState);
     on<FetchConversationsMessagesEvent>(
         _mapFetchConversationsMessagesEventToEvent);
     on<LiveChatMessagesFetchedEvent>(
@@ -107,7 +108,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ChatMessageResponse messageSent = state.value;
         emit(ChatMessageSent(chatMessageResponse: messageSent));
       } else if (state is ErrorState) {
-
         ServerErrorModel errorModel = state.value;
         emit(ChatError(errorModel: errorModel));
       }
@@ -177,9 +177,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             var message =
                 ChatData.fromMap(jsonDecode(pusherEvent.data!)["chat_data"])
                     .message;
-            if(message.userId != userId.toString()) {
-              chatMessagesNotifier.value = List<Message>.from(chatMessagesNotifier.value
-              ..add(message));
+            if (message.userId != userId.toString()) {
+              chatMessagesNotifier.value =
+                  List<Message>.from(chatMessagesNotifier.value..add(message));
             }
             // chatMessagesNotifier.notifyListeners();
             // add(ConversationMessagesFetchedEvent(
@@ -196,15 +196,34 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void pushMessage(Message message) {
-    chatMessagesNotifier.value = List<Message>.from(chatMessagesNotifier.value
-      ..add(message));
+    chatMessagesNotifier.value =
+        List<Message>.from(chatMessagesNotifier.value..add(message));
   }
 
   void resetChatMessage(Message message, int messageId) {
-    int index = chatMessagesNotifier.value.indexWhere((element) => element.id == messageId);
+    int index = chatMessagesNotifier.value
+        .indexWhere((element) => element.id == messageId);
     List<Message> messages = chatMessagesNotifier.value;
-    messages[index] = message..shouldLoad=false;
+    messages[index] = message..shouldLoad = false;
     // messages.removeAt(index);
     chatMessagesNotifier.value = List<Message>.from(messages);
+  }
+
+  FutureOr<void> _mapFetchOnlineUsersEventToState(
+      FetchOnlineUsersEvent event, Emitter<ChatState> emit) async {
+    emit(ChatMessageLoading());
+    try {
+      var state = await chatRepository.fetchOnlineUsers;
+      if (state is SuccessState) {
+        List<ConversationUser> users = state.value;
+        emit(OnlineUsersFetched(users));
+      } else if (state is ErrorState) {
+        emit(ChatError(errorModel: state.value));
+      }
+    } catch (e) {
+      ServerErrorModel errorModel = ServerErrorModel(
+          statusCode: 404, errorMessage: "Oops! an error occurred, try again!");
+      emit(ChatError(errorModel: errorModel));
+    }
   }
 }

@@ -11,8 +11,13 @@ class Endpoints {
       '${Constants.baseUrl}api/user/fetch_category';
   static String accountTypeEndpoint =
       '${Constants.baseUrl}api/user/account-type';
+
+  //------------------Connections_______________________-
   static String addConnectionEndpoint =
       '${Constants.baseUrl}api/user/choose-connection';
+  static String suggestedConnects =
+      '${Constants.baseUrl}api/connections/fetch-sugesstions';
+
   static String logoutEndpoint = '${Constants.baseUrl}api/user/logout';
   static String resetPasswordEndpoint =
       '${Constants.baseUrl}api/reset-password';
@@ -93,4 +98,5 @@ class Endpoints {
   static String sendChatMessage = '${Constants.baseUrl}api/chats/send_message';
   static String notifyLiveVideo =
       '${Constants.baseUrl}api/connections/notify/live-video';
+  static String onlineUsers = '${Constants.baseUrl}api/user/online-users';
 }

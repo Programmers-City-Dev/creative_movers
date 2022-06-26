@@ -58,7 +58,7 @@ class SendChatMessage extends ChatEvent{
 
 class FetchConversationsEvent extends ChatEvent{}
 
-class FetchConversationsMessagesEvent extends ChatEvent{
+class FetchConversationsMessagesEvent extends ChatEvent {
   final int conversationId;
 
   const FetchConversationsMessagesEvent({required this.conversationId});
@@ -67,7 +67,9 @@ class FetchConversationsMessagesEvent extends ChatEvent{
   List<Object> get props => [conversationId];
 }
 
-class ListenToChatEvent extends ChatEvent{
+class FetchOnlineUsersEvent extends ChatEvent {}
+
+class ListenToChatEvent extends ChatEvent {
   final int conversationId;
   final String channelName;
 

@@ -6,17 +6,14 @@ abstract class ConnectsEvent extends Equatable {
 
 class AddConnectsEvent extends ConnectsEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 class GetConnectsEvent extends ConnectsEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 class GetPendingRequestEvent extends ConnectsEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 class SearchEvent extends ConnectsEvent {
@@ -24,36 +21,40 @@ class SearchEvent extends ConnectsEvent {
   final String? role;
   final String? searchValue;
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 
-  SearchEvent(this.role, this.searchValue);
+  const SearchEvent(this.role, this.searchValue);
 }
 class RequestReactEvent extends ConnectsEvent {
 
-  final String? connection_id;
+  final String? connectionId;
   final String? action;
+
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 
-  RequestReactEvent(this.connection_id, this.action);
+  const RequestReactEvent(this.connectionId, this.action);
 }
 class SendRequestEvent extends ConnectsEvent {
 
-  final String? user_id;
-  @override
-  // TODO: implement props
-  List<Object?> get props =>[user_id];
+  final String? userId;
 
-  SendRequestEvent(this.user_id);
+  @override
+  List<Object?> get props => [userId];
+
+  const SendRequestEvent(this.userId);
 }
-class FollowEvent extends ConnectsEvent{
-  String user_id;
 
-  FollowEvent({required this.user_id});
+class FollowEvent extends ConnectsEvent {
+  final String userId;
+
+  const FollowEvent({required this.userId});
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [user_id];
+  List<Object?> get props => [userId];
+}
+
+class GetSuggestedConnectsEvent extends ConnectsEvent {
+  @override
+  List<Object?> get props => [];
 }
