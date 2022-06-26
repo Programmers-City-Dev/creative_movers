@@ -2,7 +2,6 @@ import 'package:creative_movers/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// import 'package:paybliz/presenter/view/screens/home/views/home_screen.dart';
 
 final GlobalKey<NavigatorState> mainNavKey = GlobalKey<NavigatorState>();
 
