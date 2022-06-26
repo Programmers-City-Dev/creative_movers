@@ -239,15 +239,18 @@ class _ChatScreenState extends State<ChatScreen> {
                             itemBuilder: (ctx, index) {
                               return ListTile(
                                 onTap: () {
+                                  log("ID Chaek: ${connections[index].toJson()}");
                                   Navigator.of(context).pop();
                                   Navigator.of(context, rootNavigator: true)
                                       .push(MaterialPageRoute(
                                           builder: (ctx) => MessagingScreen(
-                                            conversationId:
+                                                conversationId:
                                                     connections[index]
                                                         .conversationId,
                                                 user: ConversationUser(
-                                                    id: connections[index].id!,
+                                                    id: int.parse(
+                                                        connections[index]
+                                                            .userId),
                                                     profilePhotoPath:
                                                         connections[index]
                                                             .profilePhotoPath,
@@ -257,8 +260,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                         connections[index]
                                                             .firstname,
                                                     lastname: connections[index]
-                                                    .lastname),
-                                              )));
+                                                        .lastname),
+                                          )));
                                 },
                                 leading: CircleImage(
                                   radius: 24,

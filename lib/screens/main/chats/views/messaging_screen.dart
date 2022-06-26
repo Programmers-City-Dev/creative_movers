@@ -41,7 +41,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
   ValueNotifier<bool> noTextNotifier = ValueNotifier(true);
 
   int? conversationId;
-  late int otherUserId;
+  // late int otherUserId;
 
   @override
   void initState() {
@@ -293,8 +293,11 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                               milliseconds: 2000),
                                           child: GestureDetector(
                                             onTap: () {
-                                              _sendMessage(context);
-                                            },
+                                                    if (_textController
+                                                        .text.isNotEmpty) {
+                                                      _sendMessage(context);
+                                                    }
+                                                  },
                                             child: const Icon(
                                               Icons.send_rounded,
                                             ),
@@ -330,11 +333,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
         updatedAt: DateTime.now(),
         media: [],
         status: 'unread',
-        userId: injector.get<CacheCubit>().cachedUser!.id.toString(),
+        userId: widget.user.id.toString(),
         profilePhotoPath:
             injector.get<CacheCubit>().cachedUser!.profilePhotoPath,
-      shouldLoad: true
-    );
+        shouldLoad: true);
     _chatBloc.pushMessage(message);
     _textController.clear();
   }

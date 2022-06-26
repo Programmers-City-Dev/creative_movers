@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/blocs/base_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
@@ -17,7 +18,7 @@ part 'profile_event.dart';
 
 part 'profile_state.dart';
 
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
+class ProfileBloc extends BaseBloc<ProfileEvent, ProfileState> {
   String username = '';
   String firstname = '';
 

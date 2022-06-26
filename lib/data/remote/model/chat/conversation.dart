@@ -127,22 +127,21 @@ class ConversationUser {
 
 
 class Message {
-  Message({
-    required this.id,
-    required this.userId,
-    required this.body,
-    required this.conversationId,
-    required this.media,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    this.profilePhotoPath,
-    this.shouldLoad
-  });
+  Message(
+      {required this.id,
+      required this.userId,
+      this.body,
+      required this.conversationId,
+      required this.media,
+      required this.status,
+      required this.createdAt,
+      required this.updatedAt,
+      this.profilePhotoPath,
+      this.shouldLoad});
 
   int id;
   String userId;
-  String body;
+  String? body;
   String conversationId;
   List<dynamic> media;
   String? profilePhotoPath;
@@ -151,9 +150,9 @@ class Message {
   DateTime updatedAt;
   bool? shouldLoad;
 
-  Message copyWith({
-    int? id,
-    String? userId,
+  Message copyWith(
+          {int? id,
+          String? userId,
     String? body,
     String? conversationId,
     List<String>? media,
