@@ -79,7 +79,6 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit(GetPageFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -105,7 +104,7 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit( CreatePageFailureState(error: 'Oops Something went wrong'));
-      // TODO
+
     }
   }
 
@@ -149,7 +148,6 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit(PageFeedsFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
   void _mapFollowPageEvent(
@@ -165,7 +163,6 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit(PageFeedsFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 }

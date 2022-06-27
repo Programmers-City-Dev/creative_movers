@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+import '../../../widget/image_previewer.dart';
+
 class MediaDisplayItem extends StatefulWidget {
   const MediaDisplayItem({Key? key, required this.media}) : super(key: key);
 
@@ -45,13 +47,26 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
   @override
   Widget build(BuildContext context) {
     return widget.media.type == 'image'
-        ? Container(
-            height: 250,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(widget.media.mediaPath))),
-          )
+        ? GestureDetector(
+      onTap:  () => showDialog(
+        context: context,
+        // isDismissible: false,
+        // enableDrag: false,
+        barrierDismissible: true,
+        builder: (context) => ImagePreviewer(
+          imageUrl: widget.media.mediaPath,
+          heroTag: "cover_photo",
+          tightMode: true,
+        ),
+      ),
+          child: Container(
+              height: 250,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(widget.media.mediaPath))),
+            ),
+        )
         : FutureBuilder<Uint8List?>(
             future: VideoThumbnail.thumbnailData(
               video: widget.media.mediaPath,

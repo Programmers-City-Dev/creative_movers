@@ -29,14 +29,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     on<EditFeedEvent>(_mapEditFeedEventToState);
   }
 
-
   Future<FutureOr<void>> _mapDeleteFeedEventToState(
       DeleteFeedEvent event, Emitter<FeedState> emit) async {
     try {
       emit(DeleteFeedLoadingState());
-      var response =
-      await feedRepository.deletePost(
-          feed_id: event.feed_id);
+      var response = await feedRepository.deletePost(feed_id: event.feed_id);
       if (response is SuccessState) {
         emit(DeleteFeedSuccessState(likeResponse: response.value));
       }
@@ -57,18 +54,21 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       var response = await feedRepository.editFeed(
         feed_id: event.feed_id,
         page_id: event.pageId,
-        content: event.content,);
+        content: event.content,
+        media: event.media,
+      );
       if (response is SuccessState) {
         emit(EditFeedSuccessState(feedResponse: response.value));
       }
       if (response is ErrorState) {
         ServerErrorModel serverErrorModel = response.value;
+        log(serverErrorModel.data.toString());
+
         emit(EditFeedFaliureState(error: serverErrorModel.errorMessage));
       }
     } catch (e) {
       log(e.toString());
       emit(EditFeedFaliureState(error: "Ooops Something went wrong. $e ."));
-      // TODO
     }
   }
 
@@ -104,6 +104,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       }
       if (response is ErrorState) {
         ServerErrorModel serverErrorModel = response.value;
+        log(serverErrorModel.data.toString());
         emit(FeedFaliureState(error: serverErrorModel.errorMessage));
       }
     } catch (e) {
@@ -165,11 +166,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   }
 }
 
-
-
-
-
-
 //
 // Future<FutureOr<void>> _mapLikeEventToState(
 //     AddFeedEvent event, Emitter<FeedState> emit) async {
@@ -189,7 +185,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 //     }
 //   } catch (e) {
 //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-//     
+//
 //   }
 // }
 //
@@ -211,7 +207,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 //     }
 //   } catch (e) {
 //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-//     
+//
 //   }
 // }
 //
@@ -233,7 +229,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 //     }
 //   } catch (e) {
 //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-//     
+//
 //   }
 // }
 // Future<FutureOr<void>> _mapGetLikesEventToState(
@@ -254,6 +250,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 //     }
 //   } catch (e) {
 //     emit(FeedFaliureState(error: "Ooops Something went wrong."));
-//     
+//
 //   }
 // }

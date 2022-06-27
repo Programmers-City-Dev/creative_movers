@@ -36,7 +36,7 @@ class AppPromptWidget extends StatelessWidget {
                 )
               : Image.asset(
                   imagePath ?? 'assets/pngs/sorry.png',
-                  height: 150,
+                  height: 160,
                 ),
           if (title != null)
             Column(
@@ -51,7 +51,7 @@ class AppPromptWidget extends StatelessWidget {
                       fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
               ],
             ),
@@ -61,18 +61,17 @@ class AppPromptWidget extends StatelessWidget {
                 Text(
                   message!,
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.blueGrey),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 10,
                 ),
               ],
             ),
           if (canTryAgain!)
             Column(
               children: [
-                const SizedBox(
-                  height: 16,
-                ),
+
                 OutlinedButton(
                     onPressed: onTap,
                     style: OutlinedButton.styleFrom(

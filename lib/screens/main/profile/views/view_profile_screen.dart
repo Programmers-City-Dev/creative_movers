@@ -20,6 +20,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import '../../../../helpers/paths.dart';
+
 class ViewProfileScreen extends StatefulWidget {
   const ViewProfileScreen({Key? key, this.user_id}) : super(key: key);
   final int? user_id;
@@ -296,8 +299,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           Row(
                                             mainAxisSize: MainAxisSize.min,
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            children:  [
+                                                MainAxisAlignment.start,
+                                            children: [
                                               const Icon(
                                                 Icons.person,
                                                 color: AppColors.primaryColor,
@@ -310,7 +313,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                 style: const TextStyle(
                                                     fontSize: 13,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -393,123 +396,156 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                           listener: (context, state) {
                             listenToRequestReactState(context, state);
                           },
-                          builder: (context, _connectstate){ return Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        CustomButton(
-                                          height: 50,
-                                          child:   _connectstate is FollowLoadingState ?
-                                          const SizedBox(height:20,width:20,child: CircularProgressIndicator(color: Colors.white,),) :
-                                          _connectstate is FollowSuccesState ?
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  AppIcons.svgFollowing,
-                                                  color: Colors.white),
-
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-
-                                              const Text('Following'),
-                                            ],
-                                          ):   Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  AppIcons.svgFollowing,
-                                                  color: Colors.white),
-
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-
-                                              const Text('Follow'),
-                                            ],
-                                          ),
-                                          onTap: () {
-                                            _connectsBloc.add(FollowEvent(user_id: '15'));
-                                          },
-                                        ),
-                                      ],
-                                    )),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Expanded(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                      children: [
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        SizedBox(
-                                          height: 50,
-                                          child: TextButton(
-                                              style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                  AppColors.lightBlue),
-                                              onPressed: () {
-                                                _connectsBloc.add(SendRequestEvent(user.id.toString()));
-                                                log(_connectstate.toString());
-                                              },
-                                              child: _connectstate is SendRequestLoadingState?
-                                              const SizedBox(height:20,width:20,child: CircularProgressIndicator(color: Colors.blue,),) :
-                                              _connectstate is SendRequestSuccesState ?
-                                            Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    AppIcons.svgConnects,
-                                                    color: AppColors.primaryColor,
+                          builder: (context, _connectstate) {
+                            return Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      CustomButton(
+                                        height: 50,
+                                        child: _connectstate
+                                                is FollowLoadingState
+                                            ? const SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            : _connectstate is FollowSuccesState
+                                                ? Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                          AppIcons.svgFollowing,
+                                                          color: Colors.white),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      const Text('Following'),
+                                                    ],
+                                                  )
+                                                : Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                          AppIcons.svgFollowing,
+                                                          color: Colors.white),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      const Text('Follow'),
+                                                    ],
                                                   ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  const Text('Connected'),
-                                                ],
-                                              ): Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    AppIcons.svgConnects,
-                                                    color: AppColors.primaryColor,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  const Text('Connect'),
-                                                ],
-                                              )),
-                                        ),
-                                      ],
-                                    ))
-                              ],
-                            ),
-                          );},
-
+                                        onTap: () {
+                                          _connectsBloc
+                                              .add(FollowEvent(user_id: '15'));
+                                        },
+                                      ),
+                                    ],
+                                  )),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                      child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      SizedBox(
+                                        height: 50,
+                                        child: TextButton(
+                                            style: TextButton.styleFrom(
+                                                backgroundColor:
+                                                    AppColors.lightBlue),
+                                            onPressed: () {
+                                              _connectsBloc.add(
+                                                  SendRequestEvent(
+                                                      user.id.toString()));
+                                              log(_connectstate.toString());
+                                            },
+                                            child: _connectstate
+                                                    is SendRequestLoadingState
+                                                ? const SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Colors.blue,
+                                                    ),
+                                                  )
+                                                : _connectstate
+                                                        is SendRequestSuccesState
+                                                    ? Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            AppIcons
+                                                                .svgConnects,
+                                                            color: AppColors
+                                                                .primaryColor,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          const Text(
+                                                              'Connected'),
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            AppIcons
+                                                                .svgConnects,
+                                                            color: AppColors
+                                                                .primaryColor,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          const Text('Connect'),
+                                                        ],
+                                                      )),
+                                      ),
+                                    ],
+                                  ))
+                                ],
+                              ),
+                            );
+                          },
                         ),
+                        const SizedBox(height: 18,),
+
                         const Text(
                           'CONNECTS',
                           style: TextStyle(
+                            fontSize: 16,
                               color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.w700),
                         ),
+                        const SizedBox(height: 10,),
                         user.connections!.isNotEmpty
                             ? Container(
-                                height: 60,
+                                height: 120,
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -522,12 +558,57 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                             Padding(
                                           padding:
                                               const EdgeInsets.only(right: 8),
-                                          child: CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                              user.connections![index]
-                                                  ["profile_photo_path"],
+                                          child: SizedBox(
+                                            width: 120,
+                                            child: GestureDetector(
+                                              // onTap: () {
+                                              //   Navigator.of(context)
+                                              //       .pushNamed(viewProfilePath, arguments: {
+                                              //     "user_id": int.parse(user.connections![index]['id'].toString())
+                                              //
+                                              //   });
+                                              // },
+                                              child: Card(
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                                                shadowColor: AppColors.smokeWhite,
+                                                child: Center(
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      CircleAvatar(
+                                                        radius:25 ,
+                                                        backgroundColor: Colors.blueAccent,
+                                                        child: CircleAvatar(
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                            user.connections![index]
+                                                                [
+                                                                "profile_photo_path"],
+                                                          ),
+                                                          radius: 23,
+                                                        ),
+                                                      ),
+                                                      Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(5.0),
+                                                          child: Text(
+                                                              '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',style: const TextStyle(fontSize: 11),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                        ),
+                                                      ),
+                                                      Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(1.0),
+                                                          child: Text(
+                                                            '${user.connections![index]['role']}',style: const TextStyle(fontSize: 10,color: Colors.blueGrey),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                        ),
+                                                      )
+
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                            radius: 25,
                                           ),
                                         ),
                                       ),
@@ -540,10 +621,11 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                             style: TextButton.styleFrom(
                                                 backgroundColor:
                                                     AppColors.lightBlue,
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 10)),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10)),
                                           )
-                                        : SizedBox.shrink(),
+                                        : const SizedBox.shrink(),
                                   ],
                                 ),
                               )
@@ -553,7 +635,6 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   child: Text('No Connections'),
                                 ),
                               ),
-
 
                         const SizedBox(
                           height: 16,
@@ -606,7 +687,6 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
             );
           }
 
-
           if (state is ProfileErrorState) {
             return AppPromptWidget(
               title: "Unable to load profile",
@@ -630,29 +710,25 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
   void listenToRequestReactState(BuildContext context, ConnectsState state) {
     if (state is FollowLoadingState) {}
     if (state is FollowSuccesState) {
-
-        // reaction = state.reactResponse.message!;
-        // acceptState = AcceptState.idle;
-        // declineState = DeclineState.idle;
-        AppUtils.showCustomToast('Following');
-
+      // reaction = state.reactResponse.message!;
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
+      AppUtils.showCustomToast('Following');
     }
     if (state is FollowFailureState) {
       // setState(() {
-        AppUtils.showCustomToast(state.error);
-        // acceptState = AcceptState.idle;
-        // declineState = DeclineState.idle;
+      AppUtils.showCustomToast(state.error);
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
       // });
     }
 
     if (state is SendRequestLoadingState) {}
     if (state is SendRequestSuccesState) {
-
       // reaction = state.reactResponse.message!;
       // acceptState = AcceptState.idle;
       // declineState = DeclineState.idle;
       AppUtils.showCustomToast('Request sent');
-
     }
     if (state is SendRequestFailureState) {
       // setState(() {
@@ -661,7 +737,5 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
       // declineState = DeclineState.idle;
       // });
     }
-
-
   }
 }

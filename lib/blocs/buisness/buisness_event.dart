@@ -118,7 +118,7 @@ class FollowPageEvent extends BuisnessEvent {
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [page_id];
 }
 
 // class

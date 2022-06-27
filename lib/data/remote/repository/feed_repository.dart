@@ -336,7 +336,7 @@ class FeedRepository {
     String? page_id,
     required String feed_id,
     required String content,
-    // required List<String> media,
+    required List<String> media,
   }) async {
     var formData = FormData.fromMap({
       "type" :'user_feed',
@@ -344,12 +344,12 @@ class FeedRepository {
       "feed_id" :feed_id,
       "content" :content,
     });
-    // log("IMAGES: $media");
-    // for (var file in media) {
-    //   formData.files.addAll([
-    //     MapEntry("media", await MultipartFile.fromFile(file)),
-    //   ]);
-    // }
+    log("IMAGES: $media");
+    for (var file in media) {
+      formData.files.addAll([
+        MapEntry("media", await MultipartFile.fromFile(file)),
+      ]);
+    }
     return SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(Endpoints.editFeedEndpoint, body:formData),
       successResponse: (data) {

@@ -1,4 +1,5 @@
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
+import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -6,6 +7,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import '../../../../blocs/feed/feed_bloc.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../widget/custom_button.dart';
+import '../models/mediaitem_model.dart';
 import 'image_picker_item.dart';
 
 class EditPostForm extends StatefulWidget {
@@ -21,6 +23,8 @@ class EditPostForm extends StatefulWidget {
 class _EditPostFormState extends State<EditPostForm> {
   final _contentController = TextEditingController();
   List<String> pickedImages = [];
+  List<MediaItemModel> mediaItems = [];
+  List<String> mediaFiles = [];
 
   final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
 
@@ -39,8 +43,7 @@ class _EditPostFormState extends State<EditPostForm> {
       bloc: _feedBloc,
       listener: (context, state) {
         if (state is EditFeedLoadingState) {
-          AppUtils.showAnimatedProgressDialog(context,
-              title: "Updating, please wait...");
+          AppUtils.showAnimatedProgressDialog(context, title: "Updating, please wait...");
         }
         if (state is EditFeedSuccessState) {
           widget.onSucces();
@@ -109,28 +112,37 @@ class _EditPostFormState extends State<EditPostForm> {
                   onTap: () {
                     _fetchMedia();
                   },
-                  child: pickedImages.isNotEmpty
+                  child: mediaItems.isNotEmpty
                       ? Column(
                           children: [
-                            SizedBox(
-                              height: 150,
-                              child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: pickedImages.length,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) =>
-                                      ImagePickerItem(
-                                        image: pickedImages[index],
-                                        onClose: () {
-                                          setState(() {
-                                            pickedImages
-                                                .remove(pickedImages[index]);
-                                            // mediaFiles.removeAt(index);
-                                          });
-                                        },
-                                      )),
-                            ),
+                            Container(
+                                height: 150,
+                                child: ListView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: mediaItems.length,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) => mediaItems[index]
+                                        .mediaType ==
+                                        MediaType.image
+                                        ? ImagePickerItem(
+                                      image: mediaItems[index].path,
+                                      onClose: () {
+                                        setState(() {
+                                          mediaItems.remove(mediaItems[index]);
+                                          mediaFiles.removeAt(index);
+                                        });
+                                      },
+                                    )
+                                        : VideoPickerItem(
+                                      path: mediaItems[index].path!,
+                                      onClose: () {
+                                        setState(() {
+                                          mediaFiles.removeAt(index);
+                                          mediaItems.remove(mediaItems[index]);
+                                        });
+                                      },
+                                    ))),
                             const Text(
                               'Tap to add image',
                               style: TextStyle(color: Colors.blueGrey),
@@ -172,7 +184,8 @@ class _EditPostFormState extends State<EditPostForm> {
                         content: _contentController.text,
                         pageId: widget.feed.type == 'page_feed'
                             ? widget.feed.pageId
-                            : null));
+                            : null,
+                        media: mediaFiles));
 
                     // _profileBloc.add(UpdateProfileEvent(phone: _phoneNumberController.text));
                     // _authBloc.add(ForgotPasswordEvent(email: _phoneNumberController.text));
@@ -190,23 +203,8 @@ class _EditPostFormState extends State<EditPostForm> {
 
   void _fetchMedia() async {
     var images = ['jpg', 'jpeg', 'png', 'webp', 'PNG'];
-    // var videos = ['mp4', 'mov'];
-    // var files = await AppUtils.fetchMedia(
-    //     allowMultiple: true,
-    //     onSelect: (result) {
-    //       if (result!.files.isNotEmpty) {
-    //         for (var file in result.files) {
-    //           if (images
-    //               .where((element) => element == file.extension)
-    //               .isNotEmpty) {
-    //             pickedImages.add(file.path!);
-    //
-    //             setState(() {});
-    //           }
-    //         }
-    //       }
-    //     });
-    await AppUtils.fetchMedia(
+    var videos = ['mp4', 'mov'];
+    var files = await AppUtils.fetchMedia(
         allowMultiple: true,
         onSelect: (result) {
           if (result!.files.isNotEmpty) {
@@ -214,7 +212,18 @@ class _EditPostFormState extends State<EditPostForm> {
               if (images
                   .where((element) => element == file.extension)
                   .isNotEmpty) {
-                pickedImages.add(file.path!);
+                mediaItems.add(MediaItemModel(
+                    mediaType: MediaType.image, path: file.path));
+                mediaFiles.add(file.path!);
+
+                setState(() {});
+              } else if (videos
+                  .where((element) => element == file.extension)
+                  .isNotEmpty) {
+                mediaItems.add(MediaItemModel(
+                    mediaType: MediaType.video, path: file.path));
+                mediaFiles.add(file.path!);
+                // log('VIDEO ${mediaFiles[0].file?.filename}');
 
                 setState(() {});
               }

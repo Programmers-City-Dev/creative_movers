@@ -42,7 +42,8 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
       bloc: _buisnessBloc,
       builder: (context, state) {
         if (state is GetPageLoadingState) {
-        return  Container(child: Center(child: const CircularProgressIndicator()));
+          return Container(
+              child: Center(child: const CircularProgressIndicator()));
         }
         if (state is GetPageSuccesState) {
           _buisnessBloc2.add(PageFeedsEvent(widget.page_id.toString()));
@@ -50,18 +51,18 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     height: 250,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         color: Colors.black,
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(state.getPageResponse.page?.photoPath != null
+                            image: NetworkImage(state
+                                        .getPageResponse.page?.photoPath !=
+                                    null
                                 ? state.getPageResponse.page!.photoPath!
                                 : 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'))),
                     child: Stack(
@@ -70,10 +71,10 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
                                   colors: [
-                                    AppColors.black.withOpacity(1),
-                                    AppColors.black.withOpacity(0.5),
-                                    AppColors.black.withOpacity(0.3)
-                                  ],
+                                AppColors.black.withOpacity(1),
+                                AppColors.black.withOpacity(0.5),
+                                AppColors.black.withOpacity(0.3)
+                              ],
                                   begin: Alignment.bottomCenter,
                                   end: Alignment.topCenter)),
                         ),
@@ -86,7 +87,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                   state.getPageResponse.page!.name,
+                                    state.getPageResponse.page!.name,
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 20),
                                   ),
@@ -100,21 +101,21 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                         providers: const [
                                           NetworkImage(
                                               'https://encrypted-tbn0.gstatic.com/imag'
-                                                  'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                                  'IsMSaTdFerTaA&usqp=CAU'),
+                                              'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
+                                              'IsMSaTdFerTaA&usqp=CAU'),
                                           NetworkImage(
                                               'https://encrypted-tbn0.gstatic.com/imag'
-                                                  'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                                  'IsMSaTdFerTaA&usqp=CAU'),
+                                              'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
+                                              'IsMSaTdFerTaA&usqp=CAU'),
                                           NetworkImage(
                                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                                'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                                'LZKNzyR9E9kzjH55-w&usqp=CAU',
+                                            'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
+                                            'LZKNzyR9E9kzjH55-w&usqp=CAU',
                                           ),
                                           NetworkImage(
                                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                                'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                                'LZKNzyR9E9kzjH55-w&usqp=CAU',
+                                            'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
+                                            'LZKNzyR9E9kzjH55-w&usqp=CAU',
                                           )
                                         ],
                                         totalCount: 5,
@@ -128,33 +129,51 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            AboutPageScreen(
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                AboutPageScreen(
                                               page: state.getPageResponse.page!,
                                             ),
-                                      ));
-                                    },
-                                    child: Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.arrow_back,
-                                          color: AppColors.white,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          'More about Creative Movers',
-                                          style: TextStyle(
+                                          ));
+                                        },
+                                        child: Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.arrow_back,
                                               color: AppColors.white,
-                                              fontSize: 13),
-                                        )
-                                      ],
-                                    ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              'More about Creative Movers',
+                                              style: TextStyle(
+                                                  color: AppColors.white,
+                                                  fontSize: 13),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Center(
+                                        child: TextButton(
+                                            style: TextButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                                shape: const StadiumBorder()),
+                                            onPressed: () {},
+                                            child: const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: Text('Follow'),
+                                            )),
+                                      )
+                                    ],
                                   )
                                 ],
                               ),
@@ -162,103 +181,116 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 16,),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16),
+                    child: Text('About Page',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  '756+ ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
-                                ),
-                                const Text(
-                                  'Followers ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 13,
-                                      color: AppColors.textColor),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                CustomButton(
-                                  height: 50,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SvgPicture.asset(AppIcons.svgFollowing,
-                                          color: Colors.white),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      const Text('Follow'),
-                                    ],
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ],
-                            )),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Center(
-                                  child: Column(
-                                    children: const [
-                                      Text(
-                                        '454+ ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16),
-                                      ),
-                                      Text(
-                                        'Connections ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 13,
-                                            color: AppColors.textColor),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 50,
-                                  child: TextButton(
-                                      style: TextButton.styleFrom(
-                                          backgroundColor: AppColors.lightBlue),
-                                      onPressed: () {},
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SvgPicture.asset(
-                                            AppIcons.svgConnects,
-                                            color: AppColors.primaryColor,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text('Connect'),
-                                        ],
-                                      )),
-                                ),
-                              ],
-                            ))
-                      ],
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      state.getPageResponse.page!.description,
+                      style:
+                          const TextStyle(color: Colors.blueGrey, fontSize: 14),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(16),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Expanded(
+                  //           child: Column(
+                  //             mainAxisSize: MainAxisSize.min,
+                  //             children: [
+                  //               const Text(
+                  //                 '756+ ',
+                  //                 style: TextStyle(
+                  //                     fontWeight: FontWeight.w500,
+                  //                     fontSize: 16),
+                  //               ),
+                  //               const Text(
+                  //                 'Followers ',
+                  //                 style: TextStyle(
+                  //                     fontWeight: FontWeight.w500,
+                  //                     fontSize: 13,
+                  //                     color: AppColors.textColor),
+                  //               ),
+                  //               const SizedBox(
+                  //                 height: 5,
+                  //               ),
+                  //               CustomButton(
+                  //                 height: 50,
+                  //                 child: Row(
+                  //                   mainAxisSize: MainAxisSize.min,
+                  //                   children: [
+                  //                     SvgPicture.asset(AppIcons.svgFollowing,
+                  //                         color: Colors.white),
+                  //                     SizedBox(
+                  //                       width: 5,
+                  //                     ),
+                  //                     const Text('Follow'),
+                  //                   ],
+                  //                 ),
+                  //                 onTap: () {},
+                  //               ),
+                  //             ],
+                  //           )),
+                  //       const SizedBox(
+                  //         width: 15,
+                  //       ),
+                  //       Expanded(
+                  //           child: Column(
+                  //             mainAxisSize: MainAxisSize.min,
+                  //             crossAxisAlignment: CrossAxisAlignment.stretch,
+                  //             children: [
+                  //               Center(
+                  //                 child: Column(
+                  //                   children: const [
+                  //                     Text(
+                  //                       '454+ ',
+                  //                       style: TextStyle(
+                  //                           fontWeight: FontWeight.w500,
+                  //                           fontSize: 16),
+                  //                     ),
+                  //                     Text(
+                  //                       'Connections ',
+                  //                       style: TextStyle(
+                  //                           fontWeight: FontWeight.w500,
+                  //                           fontSize: 13,
+                  //                           color: AppColors.textColor),
+                  //                     ),
+                  //                     SizedBox(
+                  //                       height: 5,
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: 50,
+                  //                 child: TextButton(
+                  //                     style: TextButton.styleFrom(
+                  //                         backgroundColor: AppColors.lightBlue),
+                  //                     onPressed: () {},
+                  //                     child: Row(
+                  //                       mainAxisSize: MainAxisSize.min,
+                  //                       children: [
+                  //                         SvgPicture.asset(
+                  //                           AppIcons.svgConnects,
+                  //                           color: AppColors.primaryColor,
+                  //                         ),
+                  //                         const SizedBox(
+                  //                           width: 10,
+                  //                         ),
+                  //                         const Text('Connect'),
+                  //                       ],
+                  //                     )),
+                  //               ),
+                  //             ],
+                  //           ))
+                  //     ],
+                  //   ),
+                  // ),
                   BlocBuilder<BuisnessBloc, BuisnessState>(
                     bloc: _buisnessBloc2,
                     builder: (context, state) {
@@ -268,30 +300,33 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                       if (state is PageFeedsSuccesState) {
                         return state.feedsResponse.feeds.data.isNotEmpty
                             ? ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount:
-                          state.feedsResponse.feeds.data.length,
-                          itemBuilder: (context, index) =>
-                              NewPostItem(
-                                  feed:
-                                  state.feedsResponse.feeds.data[index], onUpdated: () {  },),
-                        )
-                            : const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: Text('You have no feeds yet ..'),
-                          ),
-                        );
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount:
+                                    state.feedsResponse.feeds.data.length,
+                                itemBuilder: (context, index) => NewPostItem(
+                                  feed: state.feedsResponse.feeds.data[index],
+                                  onUpdated: () {},
+                                ),
+                              )
+                            :  Center(
+                                child: AppPromptWidget(
+                                canTryAgain: true,
+                                imagePath: 'assets/pngs/empty.png',
+                                  message: 'There are no feeds here.',
+                                  buttonText: 'Refresh',
+                                  onTap: (){
+                                    _buisnessBloc.add(GetPageEvent(widget.page_id.toString()));
+
+                                  },
+                              ));
                       }
                       if (state is PageFeedsFailureState) {
                         return AppPromptWidget(
                           isSvgResource: true,
                           message: state.error,
-                          onTap: () =>
-                              _buisnessBloc
-                                  .add(
-                                  PageFeedsEvent(widget.page_id.toString())),
+                          onTap: () => _buisnessBloc
+                              .add(PageFeedsEvent(widget.page_id.toString())),
                         );
                       }
                       return FeedLoader();
@@ -303,9 +338,10 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
           );
         }
         if (state is GetPageFailureState) {
-          return Center(child: Text(state.error),);
-        }
-        else {
+          return Center(
+            child: Text(state.error),
+          );
+        } else {
           return Center(child: CircularProgressIndicator());
         }
       },

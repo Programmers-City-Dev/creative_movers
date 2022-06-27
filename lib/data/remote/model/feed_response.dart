@@ -45,7 +45,7 @@ class AddedFeed {
     this.id,
   });
 
-  int? userId;
+  String? userId;
   String? type;
   String? content;
   String? media;
