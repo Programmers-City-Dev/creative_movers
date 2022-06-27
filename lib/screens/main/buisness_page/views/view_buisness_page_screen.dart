@@ -10,6 +10,7 @@ import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/image_list.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +49,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
         if (state is GetPageSuccesState) {
           _buisnessBloc2.add(PageFeedsEvent(widget.page_id.toString()));
           return Scaffold(
+            backgroundColor: AppColors.smokeWhite,
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
@@ -182,18 +184,33 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                     ),
                   ),
                   const SizedBox(height: 16,),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 16),
-                    child: Text('About Page',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      state.getPageResponse.page!.description,
-                      style:
-                          const TextStyle(color: Colors.blueGrey, fontSize: 14),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.all(16),
+                   padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration:  BoxDecoration(color: AppColors.white,borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                    const Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Text('About Page',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ExpandableText(
+
+                        state.getPageResponse.page!.description,
+                        style:
+                        const TextStyle(color: Colors.blueGrey, fontSize: 14),
+                        expandText: 'Read more',
+                        maxLines: 5,
+                      ),
+                    ),
+
+                  ],),),
+
                   // Padding(
                   //   padding: const EdgeInsets.all(16),
                   //   child: Row(

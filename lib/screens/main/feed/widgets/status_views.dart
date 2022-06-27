@@ -136,7 +136,7 @@ class _StatusViewsState extends State<StatusViews> {
                             padding: 4,
                             seenColor: Colors.grey,
                             unSeenColor: AppColors.primaryColor,
-                            centerImageUrl: _list[index].profilePhotoPath,
+                            centerImageUrl: _list[index].status[0].file.toString(),
                           ),
                         ),
                       ),
