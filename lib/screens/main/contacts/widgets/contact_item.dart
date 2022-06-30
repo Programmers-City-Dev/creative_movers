@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +54,10 @@ class _ContactItemState extends State<ContactItem> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    log(' ID :${widget.connection.user_connect_id}');
                     Navigator.of(context)
                         .pushNamed(viewProfilePath, arguments: {
-                      "user_id": int.parse(widget.connection.myId.toString())
+                      "user_id": widget.connection.user_connect_id
                     });
                   },
                   child: Text(
@@ -130,8 +133,10 @@ class _ContactItemState extends State<ContactItem> {
                       builder: (context) => MessagingScreen(
                         conversationId: widget.connection.conversationId,
                         user: ConversationUser(
-                            id:int.parse( widget.connection.userId),
+                            id:widget.connection.user_connect_id,
                             username: widget.connection.username,
+                            firstname: widget.connection.firstname,
+                            lastname: widget.connection.lastname,
                             profilePhotoPath: widget.connection.profilePhotoPath),
                       ),
                     ));

@@ -1,3 +1,4 @@
+import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
@@ -5,6 +6,7 @@ import 'package:creative_movers/screens/main/status/views/add_status_screen.dart
 import 'package:creative_movers/screens/main/status/views/status_media_preview.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateStoryDialog extends StatefulWidget {
   const CreateStoryDialog({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    ;
+    var _statusBloc = context.read<StatusBloc>();
     return Scaffold(
       backgroundColor: AppColors.smokeWhite,
       body: Container(
@@ -84,7 +86,10 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => AddStatusScreen(),
+                                builder: (context) => BlocProvider.value(
+                                  value: _statusBloc,
+                                  child: const AddStatusScreen(),
+                                ),
                               ));
                             },
                             child: Card(

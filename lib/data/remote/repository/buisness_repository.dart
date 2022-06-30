@@ -187,14 +187,45 @@ class BuisnessRepository {
       },
     );
   }
+
   Future<State> followPage(String page_id) {
     return SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(Endpoints.followPageEndpoint,body: {
             "page_id":page_id
           }),
       successResponse: (data) {
-        return State<BuisnessProfile?>.success(
-            data != null ? BuisnessProfile.fromJson(data) : null);
+        return State<String?>.success(
+            data != null ? data['message'] : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+  Future<State> likePage(String page_id) {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(Endpoints.likePageEndpoint,body: {
+        "page_id":page_id
+      }),
+      successResponse: (data) {
+        return State<String?>.success(
+            data != null ? data['message'] : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

@@ -96,6 +96,7 @@ class Connection {
   Connection(
       {this.id,
       this.myId,
+      required this.user_connect_id,
       required this.userId,
       required this.status,
       required this.createdAt,
@@ -111,6 +112,7 @@ class Connection {
   int? id;
   String? myId;
   String userId;
+  int user_connect_id;
   String status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -125,6 +127,7 @@ class Connection {
   factory Connection.fromJson(Map<String, dynamic> json) => Connection(
         id: json["id"],
         myId: json["my_id"],
+        user_connect_id: json["user_connect_id"],
         userId: json["user_id"],
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -145,6 +148,7 @@ class Connection {
         "id": id,
         "my_id": myId,
         "user_id": userId,
+        "user_connect_id": user_connect_id,
         "status": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),

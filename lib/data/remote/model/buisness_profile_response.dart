@@ -115,6 +115,11 @@ class Investment {
     "updated_at": updatedAt.toIso8601String(),
   };
 }
+
+BusinessPage businessPageFromJson(String str) => BusinessPage.fromJson(json.decode(str));
+
+String businessPageToJson(BusinessPage data) => json.encode(data.toJson());
+
 class BusinessPage {
   BusinessPage({
     required this.id,
@@ -124,11 +129,15 @@ class BusinessPage {
     required this.category,
     required this.estCapital,
     required this.description,
-     this.photoPath,
-    this.contact,
     this.website,
+    this.contact,
+    this.photoPath,
     required this.createdAt,
     required this.updatedAt,
+    required this.followers,
+    required this.likes,
+    this.isLiked,
+    this.isFollowing,
   });
 
   int id;
@@ -138,11 +147,15 @@ class BusinessPage {
   List<String> category;
   String estCapital;
   String description;
+  dynamic website;
+  dynamic contact;
   String? photoPath;
   DateTime createdAt;
   DateTime updatedAt;
-  String? website;
-  String? contact;
+  List<Follower>? followers;
+  List<Like>? likes;
+  bool? isLiked;
+  bool? isFollowing;
 
   factory BusinessPage.fromJson(Map<String, dynamic> json) => BusinessPage(
     id: json["id"],
@@ -152,11 +165,15 @@ class BusinessPage {
     category: List<String>.from(json["category"].map((x) => x)),
     estCapital: json["est_capital"],
     description: json["description"],
+    website: json["website"],
+    contact: json["contact"],
     photoPath: json["photo_path"],
-    website: json["website"] == null ? null : json["website"],
-    contact: json["contact"] == null ? null : json["contact"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
+    followers:json["followers"] != null ? List<Follower>.from(json["followers"].map((x) => Follower.fromJson(x))):null,
+    likes: json["followers"] != null ? List<Like>.from(json["likes"].map((x) => Like.fromJson(x))):null,
+    isLiked: json["is_liked"],
+    isFollowing: json["is_following"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -164,14 +181,107 @@ class BusinessPage {
     "user_id": userId,
     "name": name,
     "stage": stage,
-    "category": category,
+    "category": List<dynamic>.from(category.map((x) => x)),
     "est_capital": estCapital,
     "description": description,
+    "website": website,
+    "contact": contact,
     "photo_path": photoPath,
-    "website": website == null ? null : website,
-    "contact": contact == null ? null : contact,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "followers": List<Follower>.from(followers!.map((x) => x.toJson())),
+    "likes": List<dynamic>.from(likes!.map((x) => x.toJson())),
+    "is_liked": isLiked,
+    "is_following": isFollowing,
+  };
+}
+
+class Follower {
+  Follower({
+    required this.id,
+    required this.userId,
+    required this.pageId,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.role,
+    required this.username,
+    required this.firstname,
+    required this.lastname,
+    required this.biodata,
+    required this.profilePhotoPath,
+  });
+
+  int id;
+  String userId;
+  String pageId;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String role;
+  String username;
+  String firstname;
+  String lastname;
+  String biodata;
+  String profilePhotoPath;
+
+  factory Follower.fromJson(Map<String, dynamic> json) => Follower(
+    id: json["id"],
+    userId: json["user_id"],
+    pageId: json["page_id"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    role: json["role"],
+    username: json["username"],
+    firstname: json["firstname"],
+    lastname: json["lastname"],
+    biodata: json["biodata"],
+    profilePhotoPath: json["profile_photo_path"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "page_id": pageId,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "role": role,
+    "username": username,
+    "firstname": firstname,
+    "lastname": lastname,
+    "biodata": biodata,
+    "profile_photo_path": profilePhotoPath,
+  };
+}
+
+class Like {
+  Like({
+    required this.id,
+    required this.userId,
+    required this.pageId,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  int id;
+  String userId;
+  String pageId;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  factory Like.fromJson(Map<String, dynamic> json) => Like(
+    id: json["id"],
+    userId: json["user_id"],
+    pageId: json["page_id"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "page_id": pageId,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };
 }
+
 
