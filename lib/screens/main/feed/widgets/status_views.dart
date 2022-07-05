@@ -132,7 +132,12 @@ class _StatusViewsState extends State<StatusViews> {
                         padding: const EdgeInsets.only(right: 8.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).push(
+
+                                MaterialPageRoute(
+                                  fullscreenDialog: true,
+                              maintainState: true,
+
                               builder: (context) => ViewStatusScreen(
                                 alllStatus: _list,
                                 status: (_list[index].status),

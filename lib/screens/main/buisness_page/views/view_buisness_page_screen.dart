@@ -279,9 +279,11 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
 
                                     ],
                                   ),
+
                                   const SizedBox(
                                     height: 5,
                                   ),
+
                                   // Row(
                                   //   mainAxisAlignment:
                                   //       MainAxisAlignment.spaceBetween,

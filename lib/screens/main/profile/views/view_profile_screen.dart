@@ -393,6 +393,9 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
 
                         BlocConsumer<ConnectsBloc, ConnectsState>(
                           bloc: _connectsBloc,
+                          // buildWhen: (prevState,currentState){
+                          //   return state is FollowLoadingState ||state is   FollowFailureState||state is   FollowSuccesState;
+                          // },
                           listener: (context, state) {
                             listenToRequestReactState(context, state);
                           },
@@ -459,6 +462,14 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   const SizedBox(
                                     width: 15,
                                   ),
+
+
+
+
+
+
+
+
                                   Expanded(
                                       child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -542,6 +553,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w700),
                         ),
+
                         const SizedBox(height: 10,),
                         user.connections!.isNotEmpty
                             ? Container(
@@ -639,6 +651,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         const SizedBox(
                           height: 16,
                         ),
+
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         //   children: const [

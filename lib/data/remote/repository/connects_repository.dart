@@ -186,6 +186,7 @@ class ConnectsRepository {
     );
   }
 
+
   Future<State> follow_request({String? user_id, }) async {
 
     return await SimplifyApiConsuming.makeRequest(
@@ -198,7 +199,7 @@ class ConnectsRepository {
       ),
       successResponse: (data) {
         return State<ReactResponse?>.success(
-            data != null ? ReactResponse.fromJson(data) : null);
+           null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

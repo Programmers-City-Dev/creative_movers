@@ -400,7 +400,7 @@ class _NewPostItemState extends State<NewPostItem> {
                                       AppColors.black.withOpacity(0.8),
                                   padding: EdgeInsets.zero,
                                   label: Text(
-                                    '${pageIndex + 1}/${mediaList.length} ',
+                                    '${pageIndex + 1}/${widget.feed.media.length} ',
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                         fontSize: 10,

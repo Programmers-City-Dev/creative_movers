@@ -1,11 +1,8 @@
 import 'dart:developer';
-
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:flutter/material.dart';
 import 'package:image_stack/image_stack.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
 import '../../../../helpers/paths.dart';
 import '../../../widget/image_previewer.dart';
 import '../../chats/views/messaging_screen.dart';
@@ -113,15 +110,15 @@ class _ContactItemState extends State<ContactItem> {
                             widget.connection.connects.isNotEmpty
                                 ? widget.connection.connects[0].firstname
                                 : '',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           widget.connection.connects.length > 1
                               ? Text(
                                   '+${widget.connection.connects.length - 1}')
-                              : Text(''),
+                              : const Text(''),
                         ],
                       )
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),
@@ -142,24 +139,31 @@ class _ContactItemState extends State<ContactItem> {
                     ));
               } else {}
             },
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+
             itemBuilder: (context) => <PopupMenuEntry<String>>[
+
               PopupMenuItem<String>(
                   padding: const EdgeInsets.all(10),
                   onTap: () {
 
                   },
                   value: 'message',
+
                   child: Row(
                     children: const [
+
                       Icon(Icons.sms_rounded,color: Colors.blueGrey,size: 20,),
+
                       SizedBox(
                         width: 8,
                       ),
                       Text('Message ',style: TextStyle(fontSize: 14,color: Colors.blueGrey),),
                     ],
                   )),
+
+
+
               PopupMenuItem<String>(
                   padding: const EdgeInsets.all(10),
                   value: 'remove',
@@ -175,6 +179,7 @@ class _ContactItemState extends State<ContactItem> {
                       ],
                     ),
                   )),
+
             ],
           )
         ],

@@ -38,15 +38,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         iconTheme: const IconThemeData(color: AppColors.textColor),
         backgroundColor: AppColors.white,
         title: const Text('Comments'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.send),
-              onPressed: () {},
-            ),
-          )
-        ],
+
       ),
       body: BlocBuilder<CacheCubit, CacheState>(
         bloc: injector.get<CacheCubit>(),
