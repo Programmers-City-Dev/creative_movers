@@ -35,13 +35,13 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
    Color( 0xFF000000,)
   ];
   List<int> theme = [
-    0xFFC2185B,
-    0xFFC2185B,
-    0xFFCB6716,
-    0xFFCB1616,
-    0xFF16A102,
-    0xFFDB06E3,
-    0xFF000000
+    0xffC2185B,
+    0xffC2185B,
+    0xffCB6716,
+    0xffCB1616,
+    0xff16A102,
+    0xffDB06E3,
+    0xff000000
 
     // Colors.lightBlue,
     // Color(0xFFC2185B),
@@ -180,8 +180,13 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     if (_statusController.text.isEmpty) {
       AppUtils.showCustomToast('Add a text');
     } else {
+      log(theme[colorIndex].toRadixString(16));
+
       _statusBloc.add(UploadStatusEvent(
-          text: _statusController.text, bg_color: theme[colorIndex].toString() , font_name: font));
+
+          text: _statusController.text, bg_color: theme[colorIndex].toRadixString(16), font_name: font)
+
+      );
     }
   }
 

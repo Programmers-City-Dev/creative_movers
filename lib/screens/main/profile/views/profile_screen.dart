@@ -465,12 +465,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             Padding(
                                           padding:
                                               const EdgeInsets.only(right: 8),
-                                          child: CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                              user.connections![index]
-                                                  ["profile_photo_path"],
+                                          child: GestureDetector(
+                                            // onTap: () {
+                                            //   Navigator.of(context)
+                                            //       .pushNamed(viewProfilePath, arguments: {
+                                            //     "user_id": int.parse(user.connections![index]['id'].toString())
+                                            //
+                                            //   });
+                                            // },
+                                            child: Card(
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                                              shadowColor: AppColors.smokeWhite,
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius:25 ,
+                                                      backgroundColor: Colors.blueAccent,
+                                                      child: CircleAvatar(
+                                                        backgroundImage:
+                                                        NetworkImage(
+                                                          user.connections![index]
+                                                          [
+                                                          "profile_photo_path"],
+                                                        ),
+                                                        radius: 23,
+                                                      ),
+                                                    ),
+                                                    Center(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(5.0),
+                                                        child: Text(
+                                                          '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',style: const TextStyle(fontSize: 11),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                      ),
+                                                    ),
+                                                    Center(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(1.0),
+                                                        child: Text(
+                                                          '${user.connections![index]['role']}',style: const TextStyle(fontSize: 10,color: Colors.blueGrey),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                      ),
+                                                    )
+
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                            radius: 25,
                                           ),
                                         ),
                                       ),
@@ -483,7 +525,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             style: TextButton.styleFrom(
                                                 backgroundColor:
                                                     AppColors.lightBlue,
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     vertical: 10)),
                                           )
                                         : SizedBox.shrink(),

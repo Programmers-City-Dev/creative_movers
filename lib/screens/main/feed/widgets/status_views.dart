@@ -266,7 +266,8 @@ class _StatusViewsState extends State<StatusViews> {
                                             child: CircleAvatar(
                                           radius: 21,
                                           backgroundColor: Color(int.parse(
-                                              _list[index].status.last.bgColor!)),
+                                              _list[index].status.last.bgColor!,radix: 16)),
+
                                           child: Center(
                                               child: SizedBox(
                                                   height: 23,
@@ -284,6 +285,7 @@ class _StatusViewsState extends State<StatusViews> {
                                                     maxLines: 4,
                                                     textAlign: TextAlign.center,
                                                   )))),
+
                                         )))
                                   ],
                                 ),
