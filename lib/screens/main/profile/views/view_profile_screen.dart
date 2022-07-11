@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:creative_movers/app.dart';
-import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
@@ -21,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../../../helpers/paths.dart';
 
 class ViewProfileScreen extends StatefulWidget {
   const ViewProfileScreen({Key? key, this.user_id}) : super(key: key);
@@ -34,6 +32,9 @@ class ViewProfileScreen extends StatefulWidget {
 class _ViewProfileScreenState extends State<ViewProfileScreen> {
   final _profileBloc = injector.get<ProfileBloc>();
   final _connectsBloc = ConnectsBloc();
+  late bool isFollowing;
+
+  late bool isConnected;
 
   @override
   void initState() {
@@ -48,14 +49,20 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.smokeWhite,
-      body: BlocBuilder<ProfileBloc, ProfileState>(
+      body: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (ctx,state){
+          if (state is ProfileLoadedState) {
+            User user = state.user;
+            log('ISFOLLOWING ${user.isFollowing.toString()}');
+            log('ISCONNECTED ${user.isConnected.toString()}');
+            isFollowing = user.isFollowing!;
+            isConnected = user.isConnected!;}
+        },
         bloc: _profileBloc,
         builder: (context, state) {
           if (state is ProfileLoadedState) {
             User user = state.user;
-            // injector
-            //     .get<CacheCubit>()
-            //     .updateCachedUserData(user.toCachedUser());
+
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,170 +398,157 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                           height: 16,
                         ),
 
-                        BlocConsumer<ConnectsBloc, ConnectsState>(
-                          bloc: _connectsBloc,
-                          // buildWhen: (prevState,currentState){
-                          //   return state is FollowLoadingState ||state is   FollowFailureState||state is   FollowSuccesState;
-                          // },
-                          listener: (context, state) {
-                            listenToRequestReactState(context, state);
-                          },
-                          builder: (context, _connectstate) {
-                            return Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
+
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              BlocConsumer<ConnectsBloc, ConnectsState>(
+                                bloc: _connectsBloc,
+                                listener: (context, state) {
+                                  listenToFOllowState(context, state);
+                                },
+                                buildWhen: (prevstate, currentState) {
+                                  return currentState
+                                  is FollowLoadingState ||
+                                      currentState is FollowSuccesState ||
+                                      currentState is FollowFailureState;
+                                },
+                                builder: (context, state) {
+                                  return Expanded(
                                       child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      CustomButton(
-                                        height: 50,
-                                        child: _connectstate
-                                                is FollowLoadingState
-                                            ? const SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            : _connectstate is FollowSuccesState
-                                                ? Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                          AppIcons.svgFollowing,
-                                                          color: Colors.white),
-                                                      const SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      const Text('Following'),
-                                                    ],
-                                                  )
-                                                : Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                          AppIcons.svgFollowing,
-                                                          color: Colors.white),
-                                                      const SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      const Text('Follow'),
-                                                    ],
-                                                  ),
-                                        onTap: () {
-                                          _connectsBloc
-                                              .add(FollowEvent(user_id: '15'));
-                                        },
-                                      ),
-                                    ],
-                                  )),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-
-
-
-
-
-
-
-
-                                  Expanded(
-                                      child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      SizedBox(
-                                        height: 50,
-                                        child: TextButton(
-                                            style: TextButton.styleFrom(
-                                                backgroundColor:
-                                                    AppColors.lightBlue),
-                                            onPressed: () {
-                                              _connectsBloc.add(
-                                                  SendRequestEvent(
-                                                      user.id.toString()));
-                                              log(_connectstate.toString());
-                                            },
-                                            child: _connectstate
-                                                    is SendRequestLoadingState
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          CustomButton(
+                                            height: 50,
+                                            child: state
+                                            is FollowLoadingState
                                                 ? const SizedBox(
-                                                    height: 20,
-                                                    width: 20,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: Colors.blue,
-                                                    ),
-                                                  )
-                                                : _connectstate
-                                                        is SendRequestSuccesState
-                                                    ? Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            AppIcons
-                                                                .svgConnects,
-                                                            color: AppColors
-                                                                .primaryColor,
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          const Text(
-                                                              'Connected'),
-                                                        ],
-                                                      )
-                                                    : Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            AppIcons
-                                                                .svgConnects,
-                                                            color: AppColors
-                                                                .primaryColor,
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          const Text('Connect'),
-                                                        ],
-                                                      )),
-                                      ),
-                                    ],
-                                  ))
-                                ],
+                                              height: 20,
+                                              width: 20,
+                                              child:
+                                              CircularProgressIndicator(
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                                : Row(
+                                              mainAxisSize:
+                                              MainAxisSize.min,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    AppIcons.svgFollowing,
+                                                    color: Colors.white),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(isFollowing
+                                                    ? 'Unfollow'
+                                                    : 'Follow'),
+                                              ],
+                                            ),
+                                            onTap: () {
+                                              _connectsBloc.add(
+                                                  FollowEvent(user_id: '15'));
+                                            },
+                                          ),
+                                        ],
+                                      ));
+                                },
                               ),
-                            );
-                          },
+                              const SizedBox(
+                                width: 15,
+                              ),
+
+                              //CONNECTS BUTTON
+
+                              BlocConsumer<ConnectsBloc, ConnectsState>(
+                                bloc: _connectsBloc,
+                                listener: (context, state) {
+                                  listenToConnectState(context, state);
+                                },
+                                buildWhen: (prevstate, currentState) {
+                                  return currentState
+                                  is SendRequestLoadingState ||
+                                      currentState is SendRequestSuccesState ||
+                                      currentState is SendRequestFailureState;
+                                },
+                                builder: (context, connectState) {
+                                  return Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                        children: [
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                    backgroundColor:
+                                                    AppColors.lightBlue),
+                                                onPressed: () {
+                                                  _connectsBloc.add(
+                                                      SendRequestEvent(
+                                                          user.id.toString()));
+                                                },
+                                                child: connectState
+                                                is SendRequestLoadingState
+                                                    ? const SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child:
+                                                  CircularProgressIndicator(
+                                                    color: Colors.blue,
+                                                  ),
+                                                )
+                                                    : Row(
+                                                  mainAxisSize:
+                                                  MainAxisSize.min,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      AppIcons
+                                                          .svgConnects,
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(isConnected
+                                                        ? 'Disconnect'
+                                                        : 'Connect'),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
+                                      ));
+                                },
+                              )
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 18,),
+                        const SizedBox(
+                          height: 18,
+                        ),
 
                         const Text(
                           'CONNECTS',
                           style: TextStyle(
-                            fontSize: 16,
+                              fontSize: 16,
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w700),
                         ),
 
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         user.connections!.isNotEmpty
                             ? Container(
                                 height: 120,
@@ -582,20 +576,26 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                               // },
                                               child: Card(
                                                 elevation: 0,
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                                                shadowColor: AppColors.smokeWhite,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6)),
+                                                shadowColor:
+                                                    AppColors.smokeWhite,
                                                 child: Center(
                                                   child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
                                                       CircleAvatar(
-                                                        radius:25 ,
-                                                        backgroundColor: Colors.blueAccent,
+                                                        radius: 25,
+                                                        backgroundColor:
+                                                            Colors.blueAccent,
                                                         child: CircleAvatar(
                                                           backgroundImage:
                                                               NetworkImage(
-                                                            user.connections![index]
-                                                                [
+                                                            user.connections![
+                                                                    index][
                                                                 "profile_photo_path"],
                                                           ),
                                                           radius: 23,
@@ -603,19 +603,42 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                       ),
                                                       Center(
                                                         child: Padding(
-                                                          padding: const EdgeInsets.all(5.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
                                                           child: Text(
-                                                              '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',style: const TextStyle(fontSize: 11),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                            '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        11),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
                                                         ),
                                                       ),
                                                       Center(
                                                         child: Padding(
-                                                          padding: const EdgeInsets.all(1.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(1.0),
                                                           child: Text(
-                                                            '${user.connections![index]['role']}',style: const TextStyle(fontSize: 10,color: Colors.blueGrey),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                            '${user.connections![index]['role']}',
+                                                            style: const TextStyle(
+                                                                fontSize: 10,
+                                                                color: Colors
+                                                                    .blueGrey),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
                                                         ),
                                                       )
-
                                                     ],
                                                   ),
                                                 ),
@@ -720,24 +743,14 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
     );
   }
 
-  void listenToRequestReactState(BuildContext context, ConnectsState state) {
-    if (state is FollowLoadingState) {}
-    if (state is FollowSuccesState) {
-      // reaction = state.reactResponse.message!;
-      // acceptState = AcceptState.idle;
-      // declineState = DeclineState.idle;
-      AppUtils.showCustomToast('Following');
-    }
-    if (state is FollowFailureState) {
-      // setState(() {
-      AppUtils.showCustomToast(state.error);
-      // acceptState = AcceptState.idle;
-      // declineState = DeclineState.idle;
-      // });
-    }
+  void listenToConnectState(BuildContext context, ConnectsState state) {
+
 
     if (state is SendRequestLoadingState) {}
     if (state is SendRequestSuccesState) {
+      setState(() {
+        isConnected = !isConnected;
+      });
       // reaction = state.reactResponse.message!;
       // acceptState = AcceptState.idle;
       // declineState = DeclineState.idle;
@@ -750,5 +763,27 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
       // declineState = DeclineState.idle;
       // });
     }
+  }
+  void listenToFOllowState(BuildContext context, ConnectsState state) {
+    if (state is FollowLoadingState) {}
+    if (state is FollowSuccesState) {
+      setState(() {
+        isFollowing = !isFollowing;
+      });
+      // reaction = state.reactResponse.message!;
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
+
+      AppUtils.showCustomToast('Following');
+    }
+    if (state is FollowFailureState) {
+      // setState(() {
+      AppUtils.showCustomToast(state.error);
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
+      // });
+    }
+
+
   }
 }

@@ -451,7 +451,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         user.connections!.isNotEmpty
-                            ? Container(
+                            ? SizedBox(
                                 height: 60,
                                 child: Row(
                                   children: [
@@ -528,7 +528,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 padding: const EdgeInsets.symmetric(
                                                     vertical: 10)),
                                           )
-                                        : SizedBox.shrink(),
+                                        : const SizedBox.shrink(),
                                   ],
                                 ),
                               )
