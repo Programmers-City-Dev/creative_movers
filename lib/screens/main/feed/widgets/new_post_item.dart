@@ -136,7 +136,7 @@ class _NewPostItemState extends State<NewPostItem> {
                                 ? Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         ViewBuisnessPageScreen(
-                                            page_id: widget.feed.page!.id
+                                            pageId: widget.feed.page!.id
                                                 .toString()),
                                   ))
                                 : Navigator.of(context).push(MaterialPageRoute(
@@ -195,8 +195,7 @@ class _NewPostItemState extends State<NewPostItem> {
                       bloc: feedBloc,
                       listener: (context, state) {
                         if (state is DeleteFeedLoadingState) {
-                          AppUtils.showAnimatedProgressDialog(
-                              context,
+                          AppUtils.showAnimatedProgressDialog(context,
                               title: "Deleting Post, please wait...");
                         }
                         if (state is DeleteFeedSuccessState) {

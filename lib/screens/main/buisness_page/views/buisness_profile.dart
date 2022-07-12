@@ -100,7 +100,8 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                   children: [
                     Text(
                       ' ${widget.profile.profile.firstname} ${widget.profile.profile.lastname}',
-                      style:  const TextStyle(fontWeight: FontWeight.w700,fontSize:15),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15),
                     ),
                     const SizedBox(
                       width: 5,
@@ -167,7 +168,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                   height: 5,
                                 ),
                                 Expanded(child: SizedBox()),
-                                widget.profile.profile.pages.length >=5
+                                widget.profile.profile.pages.length >= 5
                                     ? const Text(
                                         'View more',
                                         style: TextStyle(
@@ -181,8 +182,8 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                             ),
                             pages.isNotEmpty
                                 ? Container(
-                              height: 130,
-                                  child: ListView.builder(
+                                    height: 130,
+                                    child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       physics: NeverScrollableScrollPhysics(),
@@ -218,8 +219,8 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                       const EdgeInsets.all(5),
                                                   decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(10),
+                                                          BorderRadius.circular(
+                                                              10),
                                                       image: DecorationImage(
                                                           fit: BoxFit.cover,
                                                           image: NetworkImage(widget
@@ -232,11 +233,9 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                               ? widget
                                                                   .profile
                                                                   .profile
-                                                                  .pages[
-                                                                      index]
+                                                                  .pages[index]
                                                                   .photoPath!
                                                               : 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'))),
-
                                                 ),
                                                 const SizedBox(
                                                   height: 5,
@@ -247,8 +246,8 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                     left: 5,
                                                   ),
                                                   child: Text(
-                                                      widget.profile.profile
-                                                                .pages[index].name,
+                                                    widget.profile.profile
+                                                        .pages[index].name,
                                                     style: const TextStyle(
                                                         fontSize: 12),
                                                     overflow:
@@ -261,8 +260,10 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                     left: 5,
                                                   ),
                                                   child: Text(
-                                                      widget.profile.profile
-                                                          .pages[index]
+                                                    widget
+                                                        .profile
+                                                        .profile
+                                                        .pages[index]
                                                         .category[0],
                                                     style: const TextStyle(
                                                         fontSize: 10,
@@ -277,7 +278,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                         ),
                                       ),
                                     ),
-                                )
+                                  )
                                 : const NoPageWidget(),
                             const SizedBox(
                               height: 10,
@@ -424,7 +425,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                 .push(MaterialPageRoute(
                                               builder: (context) =>
                                                   ViewBuisnessPageScreen(
-                                                      page_id: state
+                                                      pageId: state
                                                           .buisnessProfile
                                                           .sugestedpages[index]
                                                           .id

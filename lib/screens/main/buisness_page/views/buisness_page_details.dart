@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/resources/app_icons.dart';
@@ -18,12 +17,10 @@ class BuisnessScreen extends StatefulWidget {
 
 BuisnessBloc _buisnessBloc = BuisnessBloc();
 
-class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProviderStateMixin{
-
+class _BuisnessScreenState extends State<BuisnessScreen>
+    with SingleTickerProviderStateMixin {
   int selectedIndex = 0;
-  List<Widget> pages =  [];
-
-
+  List<Widget> pages = [];
 
   late TabController _tabController;
 
@@ -38,7 +35,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProv
     pages = [
       MyPageTab(),
       ViewBuisnessPageScreen(
-        page_id: widget.page.id.toString(),
+        pageId: widget.page.id.toString(),
       )
     ];
   }

@@ -52,7 +52,7 @@ class AppRoutes {
       var userId = getArgument(context)['user_id'];
 
       return ViewProfileScreen(
-        user_id: userId,
+        userId: userId,
       );
     },
     profileEditPath: (_) => const ProfileEditScreen()
