@@ -12,6 +12,7 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -206,12 +207,7 @@ class LiveStreamWidget extends StatelessWidget {
             child: RemoteUserView(engine, channelName, _remoteUid),
           ),
         if (!widget.isBroadcaster && _remoteUid == null)
-          const Center(
-            child: Text(
-              'Please wait for remote Host starts the Livestream',
-              textAlign: TextAlign.center,
-            ),
-          ),
+          const LiveEndedWidget(),
         if (widget.isBroadcaster)
           Align(
             alignment: Alignment.center,
@@ -250,6 +246,12 @@ class RemoteUserView extends StatefulWidget {
 
 class _RemoteUserViewState extends State<RemoteUserView> {
   final ChatBloc _chatBloc = ChatBloc(injector.get());
+  final TextEditingController _textController = TextEditingController();
+  final FocusNode _textFocus = FocusNode();
+
+  final ValueNotifier<bool> _isTextFocusedNotifier = ValueNotifier(false);
+
+  final ValueNotifier<bool> _activeLiveNotifier = ValueNotifier(true);
 
   @override
   void initState() {
@@ -275,169 +277,305 @@ class _RemoteUserViewState extends State<RemoteUserView> {
             rtc_remote_view.SurfaceView(
                 uid: widget.remoteUid!, channelId: widget.channelName),
             Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: BlocConsumer<ChatBloc, ChatState>(
-                        bloc: _chatBloc,
-                        buildWhen: (previous, current) {
-                          return current is LiveChannelMessagesFetched;
-                        },
-                        listener: (context, state) {
-                          if (state is LiveChannelMessagesFetched) {
-                            WidgetsBinding.instance?.addPostFrameCallback(
-                                (_) => _scrollToBottom());
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is LiveChannelMessagesFetched) {
-                            final List<LiveChatMessage> messages =
-                                state.messages;
-                            return ListView.builder(
-                                controller: _scrollController,
-                                physics: const BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: messages.length,
-                                itemBuilder: (ctx, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleImage(
-                                            url: messages[index].userCoverPhoto,
-                                            withBaseUrl: false,
-                                          ),
-                                          const SizedBox(
-                                            width: 16.0,
-                                          ),
-                                          Flexible(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  color: Colors.white
-                                                      .withOpacity(0.1)),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    messages[index].username,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
-                                                  Text(
-                                                    messages[index].message,
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
+                alignment: Alignment.topCenter,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 35, left: 8),
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4.0),
+                        color: Colors.red,
+                        child: const Text("● Live",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                )),
+            Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: BlocConsumer<ChatBloc, ChatState>(
+                            bloc: _chatBloc,
+                            buildWhen: (previous, current) {
+                              return current is LiveChannelMessagesFetched;
+                            },
+                            listener: (context, state) {
+                              if (state is LiveChannelMessagesFetched) {
+                                WidgetsBinding.instance?.addPostFrameCallback(
+                                    (_) => _scrollToBottom());
+                              }
+                            },
+                            builder: (context, state) {
+                              if (state is LiveChannelMessagesFetched) {
+                                final List<LiveChatMessage> messages =
+                                    state.messages;
+                                return ListView.builder(
+                                    controller: _scrollController,
+                                    physics: const BouncingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: messages.length,
+                                    itemBuilder: (ctx, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CircleImage(
+                                                url: messages[index]
+                                                    .userCoverPhoto,
+                                                withBaseUrl: false,
                                               ),
-                                            ),
-                                          ),
-                                        ]),
-                                  );
+                                              const SizedBox(
+                                                width: 16.0,
+                                              ),
+                                              Flexible(
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      color: Colors.white
+                                                          .withOpacity(0.1)),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        messages[index]
+                                                            .username,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      Text(
+                                                        messages[index].message,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ]),
+                                      );
+                                    });
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ),
+                      ),
+                      // Container(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   margin: const EdgeInsets.all(32.0),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.black.withOpacity(0.5),
+                      //     borderRadius: BorderRadius.circular(16.0),
+                      //   ),
+                      //   child: Column(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       ListView(
+                      //         // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //         children: [
+                      //           IconButton(
+                      //               onPressed: () {},
+                      //               icon: const Icon(
+                      //                 Icons.emoji_emotions_outlined,
+                      //                 color: Colors.white,
+                      //               )),
+                      //           FloatingActionButton(
+                      //             onPressed: () {
+                      //               widget.engine?.stopPreview();
+                      //               widget.engine?.leaveChannel();
+                      //               widget.engine?.destroy();
+                      //               Navigator.of(context).pop();
+                      //             },
+                      //             backgroundColor: Colors.red,
+                      //             child: const Icon(
+                      //               Icons.call_end,
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //           IconButton(
+                      //               onPressed: () {
+                      //                 showBottomSheet(
+                      //                     context: context,
+                      //                     // expand: false,
+                      //                     builder: (ctx) {
+                      //                       return CommentBox(
+                      //                           focused: true,
+                      //                           profilePhotoPath: '',
+                      //                           onCommentSent: (msg) {
+                      //                             _chatBloc.add(
+                      //                                 SendLiveChannelMessage(
+                      //                                     message: LiveChatMessage(
+                      //                                       message: msg,
+                      //                                       username:
+                      //                                           userData.username!,
+                      //                                       firstName:
+                      //                                           userData.firstname!,
+                      //                                       lastName:
+                      //                                           userData.lastname!,
+                      //                                       email: userData.email!,
+                      //                                       userCoverPhoto: userData
+                      //                                           .coverPhotoPath,
+                      //                                       userPhoto: userData
+                      //                                           .profilePhotoPath,
+                      //                                       userId: userData.id,
+                      //                                       timestamp: DateTime
+                      //                                               .now()
+                      //                                           .millisecondsSinceEpoch,
+                      //                                     ),
+                      //                                     channelName:
+                      //                                         widget.channelName));
+                      //                             Navigator.of(context).pop();
+                      //                           });
+                      //                     });
+                      //               },
+                      //               icon: const Icon(
+                      //                 Icons.messenger_rounded,
+                      //                 color: Colors.white,
+                      //               ))
+                      //         ],
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    // margin: const EdgeInsets.all(32.0),
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                    ),
+                    child: SizedBox(
+                      height: 50,
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: KeyboardVisibilityBuilder(
+                              builder: (BuildContext context, Widget child,
+                                  bool isKeyboardVisible) {
+                                WidgetsBinding.instance
+                                    ?.addPostFrameCallback((timeStamp) {
+                                  _isTextFocusedNotifier.value =
+                                      isKeyboardVisible;
                                 });
-                          }
-                          return const SizedBox.shrink();
-                        },
+                                return child;
+                              },
+                              child: TextField(
+                                controller: _textController,
+                                focusNode: _textFocus,
+                                textInputAction: TextInputAction.send,
+                                keyboardType: TextInputType.name,
+                                onSubmitted: (val) {
+                                  if (val.isNotEmpty) {
+                                    _chatBloc.add(SendLiveChannelMessage(
+                                        message: LiveChatMessage(
+                                          message: val,
+                                          username: userData.username!,
+                                          firstName: userData.firstname!,
+                                          lastName: userData.lastname!,
+                                          email: userData.email!,
+                                          userCoverPhoto:
+                                              userData.coverPhotoPath,
+                                          userPhoto: userData.profilePhotoPath,
+                                          userId: userData.id,
+                                          timestamp: DateTime.now()
+                                              .millisecondsSinceEpoch,
+                                        ),
+                                        channelName: widget.channelName));
+                                    _textController.clear();
+                                    _textFocus.unfocus();
+                                  }
+                                },
+                                maxLines: 1,
+                                minLines: 1,
+                                style: const TextStyle(
+                                    // height: 2,
+                                    fontSize: 14,
+                                    color: Colors.white),
+                                decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    hintText: "Write comment here...",
+                                    hintStyle: TextStyle(
+                                        color: Colors.white.withOpacity(0.5)),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
+                                        borderSide: const BorderSide(
+                                            width: 1, color: Colors.white)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
+                                        borderSide: const BorderSide(
+                                            width: 1, color: Colors.white)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
+                                        borderSide: const BorderSide(
+                                            width: 1, color: Colors.white))),
+                              ),
+                            ),
+                          ),
+                          ValueListenableBuilder<bool>(
+                              valueListenable: _isTextFocusedNotifier,
+                              builder: (context, value, snapshot) {
+                                return Visibility(
+                                  visible: !value,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.emoji_emotions_outlined,
+                                            color: Colors.white,
+                                          )),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ],
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    margin: const EdgeInsets.all(32.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListView(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.emoji_emotions_outlined,
-                                  color: Colors.white,
-                                )),
-                            FloatingActionButton(
-                              onPressed: () {
-                                widget.engine?.stopPreview();
-                                widget.engine?.leaveChannel();
-                                widget.engine?.destroy();
-                                Navigator.of(context).pop();
-                              },
-                              backgroundColor: Colors.red,
-                              child: const Icon(
-                                Icons.call_end,
-                                color: Colors.white,
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  showBottomSheet(
-                                      context: context,
-                                      // expand: false,
-                                      builder: (ctx) {
-                                        return CommentBox(
-                                            focused: true,
-                                            profilePhotoPath: '',
-                                            onCommentSent: (msg) {
-                                              _chatBloc.add(
-                                                  SendLiveChannelMessage(
-                                                      message: LiveChatMessage(
-                                                        message: msg,
-                                                        username:
-                                                            userData.username!,
-                                                        firstName:
-                                                            userData.firstname!,
-                                                        lastName:
-                                                            userData.lastname!,
-                                                        email: userData.email!,
-                                                        userCoverPhoto: userData
-                                                            .coverPhotoPath,
-                                                        userPhoto: userData
-                                                            .profilePhotoPath,
-                                                        userId: userData.id,
-                                                        timestamp: DateTime
-                                                                .now()
-                                                            .millisecondsSinceEpoch,
-                                                      ),
-                                                      channelName:
-                                                          widget.channelName));
-                                              Navigator.of(context).pop();
-                                            });
-                                      });
-                                },
-                                icon: const Icon(
-                                  Icons.messenger_rounded,
-                                  color: Colors.white,
-                                ))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
           ],
         );
       },
@@ -548,9 +686,11 @@ class _LocalUserViewState extends State<LocalUserView> {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _showInviteDialog(context);
+                                            },
                                             icon: const Icon(
-                                              Icons.group_outlined,
+                                              Icons.person_add_outlined,
                                               color: Colors.white,
                                             )),
                                         IconButton(
@@ -829,6 +969,126 @@ class _LocalUserViewState extends State<LocalUserView> {
     }, onCancel: () {
       Navigator.of(context).pop();
     });
+  }
+
+  void _showInviteDialog(BuildContext context) {
+    ChatBloc chatBloc = ChatBloc(injector.get());
+    int value = 0;
+    final _inviteTypeNotifier = ValueNotifier<int>(0);
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text("Invite"),
+            content: ValueListenableBuilder<int>(
+                valueListenable: _inviteTypeNotifier,
+                builder: (context, val, child) {
+                  logger.log("VAL: $value");
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text("Invite your contacts to join this video"),
+                      const SizedBox(height: 10),
+                      RadioListTile<int>(
+                          value: 0,
+                          groupValue: value,
+                          onChanged: (v) {
+                            value = v!;
+                            _inviteTypeNotifier.value = 0;
+                          },
+                          title: const Text("Invite by Followers")),
+                      RadioListTile<int>(
+                          value: 1,
+                          groupValue: value,
+                          onChanged: (v) {
+                            value = v!;
+                            _inviteTypeNotifier.value = 1;
+                          },
+                          title: const Text("Invite by Connects")),
+                      RadioListTile<int>(
+                          value: 2,
+                          groupValue: value,
+                          onChanged: (v) {
+                            value = v!;
+                            _inviteTypeNotifier.value = 2;
+                          },
+                          title: const Text("Invite All")),
+                    ],
+                  );
+                }),
+            actions: [
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              ),
+              BlocConsumer<ChatBloc, ChatState>(
+                bloc: chatBloc,
+                listener: (context, state) {
+                  if (state is InviteSent) {
+                    Navigator.of(ctx).pop();
+                    AppUtils.showCustomToast("Invitation sent successfully");
+                  }
+                  if (state is ChatError) {
+                    AppUtils.showCustomToast(state.errorModel.errorMessage);
+                  }
+                },
+                builder: (context, state) {
+                  return TextButton(
+                    child: Text(
+                      state is ChatMessageLoading ? "Inviting..." : "Invite",
+                      style: const TextStyle(color: AppColors.primaryColor),
+                    ),
+                    onPressed: state is ChatMessageLoading
+                        ? null
+                        : () {
+                            chatBloc.add(SendInviteEvent(
+                                channelName: widget.channelName,
+                                inviteType: value == 0
+                                    ? "followers"
+                                    : value == 1
+                                        ? "connections"
+                                        : "all"));
+                          },
+                  );
+                },
+              ),
+            ],
+          );
+        });
+  }
+}
+
+class LiveEndedWidget extends StatelessWidget {
+  const LiveEndedWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      color: AppColors.primaryColor.withOpacity(0.2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.stop_screen_share,
+            size: 100,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 10),
+          const Text("This Live has ended",
+              style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 10),
+          TextButton(
+            child: const Text("Close"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
 
