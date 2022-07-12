@@ -102,3 +102,12 @@ class OnlineUsersFetched extends ChatState {
   @override
   List<Object> get props => [users];
 }
+
+class InviteSent extends ChatState {
+  final String message;
+
+  const InviteSent({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

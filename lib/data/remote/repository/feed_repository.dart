@@ -19,19 +19,20 @@ class FeedRepository {
 
   Future<State> adFeed({
     required String type,
-    String? page_id,
+    String? pageId,
     required String content,
     required List<String> media,
   }) async {
     var formData = FormData.fromMap({
       "type": type,
-      "page_id": page_id,
+      "page_id": pageId,
       "content": content,
     });
     log("IMAGES: $media");
     for (var file in media) {
+      var multipartFile = await MultipartFile.fromFile(file);
       formData.files.addAll([
-        MapEntry("media", await MultipartFile.fromFile(file)),
+        MapEntry("media[]", multipartFile),
       ]);
     }
     return SimplifyApiConsuming.makeRequest(

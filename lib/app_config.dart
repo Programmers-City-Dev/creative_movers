@@ -14,14 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-  debugPrint('Handling a background message ${message.messageId}');
-  PushNotificationService.showBackgroundNotification(message);
-}
-
   List<CameraDescription> cameras=[];
 enum Flavor { dev, prod }
 
@@ -50,8 +42,6 @@ class AppConfig {
 
   Future<void> _setup() async {
     await Firebase.initializeApp();
-    // Set the background messaging handler early on, as a named top-level function
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     cameras = await availableCameras();
     await PushNotificationService.initialise();
     var pusherService = await PusherService.getInstance;

@@ -40,7 +40,6 @@ class _SearchScreenState extends State<SearchScreen> {
         bloc: _connectsBloc,
         listener: (context, state) {
           _listenToSearchState(context,state);
-          // TODO: implement listener
         },
         child: SafeArea(
           child: Container(

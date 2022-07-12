@@ -13,6 +13,7 @@ import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart'
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.dart';
+import 'package:creative_movers/screens/main/widgets/deeplink/deep_link_listener.dart';
 import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/welcome_dialog.dart';
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    _navBloc.add(SwitchNavEvent(_navIndex));
+    _navBloc.add(OpenHomeTabEvent());
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
     Future.delayed(const Duration(seconds: 4))
@@ -70,8 +71,20 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return BlocConsumer<NavBloc, NavState>(
       bloc: _navBloc,
       listener: (context, state) {
-        if (state is BuyerNavItemSelected) {
-          _navIndex = state.selectedIndex;
+        if (state is OpenHomeTabState) {
+          _navIndex = 0;
+        }
+        if (state is OpenBizTabState) {
+          _navIndex = 1;
+        }
+        if (state is OpenConnectsTabState) {
+          _navIndex = 2;
+        }
+        if (state is OpenChatsTabState) {
+          _navIndex = 3;
+        }
+        if (state is OpenProfileTabState) {
+          _navIndex = 4;
         }
       },
       builder: (context, state) {
@@ -101,9 +114,23 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   currentIndex: _navIndex,
                   type: BottomNavigationBarType.fixed,
                   onTap: (index) {
-                    setState(() {
-                      _navBloc.add(SwitchNavEvent(index));
-                    });
+                    switch (index) {
+                      case 0:
+                        _navBloc.add(OpenHomeTabEvent());
+                        break;
+                      case 1:
+                        _navBloc.add(OpenBizTabEvent());
+                        break;
+                      case 2:
+                        _navBloc.add(OpenConnectsTabEvent());
+                        break;
+                      case 3:
+                        _navBloc.add(OpenChatsTabEvent());
+                        break;
+                      case 4:
+                        _navBloc.add(OpenProfileTabEvent());
+                        break;
+                    }
                   },
                   items: [
                     const BottomNavigationBarItem(
@@ -160,91 +187,54 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Widget _buildOffstageNavigator(int index) {
     var routeBuilders = _routeBuilders(context, index);
     return Offstage(
-      offstage: _navBloc.currentTabIndex != index,
-      child: Navigator(
-        key: homeNavigatorKeys[index],
-        // observers: [MyRouteObserver()],
-        onGenerateRoute: (routeSettings) {
-          debugPrint('Navigating to: ${routeSettings.name} --------------- ');
-          debugPrint(
-              'Navigating to: ${routeSettings.arguments} --------------- ');
+      offstage: _navIndex != index,
+      child: DeepLinkListener(
+        navigatorKey: homeNavigatorKeys[index],
+        actWhen: deepLinkActWhenList[index],
+        child: Navigator(
+          key: homeNavigatorKeys[index],
+          // observers: [MyRouteObserver()],
+          onGenerateRoute: (routeSettings) {
+            debugPrint('Navigating to: ${routeSettings.name} --------------- ');
+            debugPrint(
+                'Navigating to: ${routeSettings.arguments} --------------- ');
 
-          PageTransitionType? transitionType;
-          var arguments = routeSettings.arguments;
-          if (arguments != null) {
-            var args = arguments as Map;
-            transitionType = args['transition-type'];
-            log("Transition:$transitionType");
-          }
+            PageTransitionType? transitionType;
+            var arguments = routeSettings.arguments;
+            if (arguments != null) {
+              var args = arguments as Map;
+              transitionType = args['transition-type'];
+              log("Transition:$transitionType");
+            }
 
-          if (transitionType != null) {
-            return PageTransition(
-              child: Builder(builder: (context) {
-                if (routeSettings.name == '/') {
-                  return routeBuilders[routeSettings.name]!(context);
-                } else {
-                  return AppRoutes.routes[routeSettings.name]!(context);
-                }
-              }),
-              type: transitionType,
-              alignment: Alignment.center,
-              childCurrent: const SizedBox.shrink(),
-              settings: routeSettings,
-              // duration: Duration(milliseconds: 300),
-            );
-          }
+            if (transitionType != null) {
+              return PageTransition(
+                child: Builder(builder: (context) {
+                  if (routeSettings.name == '/') {
+                    return routeBuilders[routeSettings.name]!(context);
+                  } else {
+                    return AppRoutes.routes[routeSettings.name]!(context);
+                  }
+                }),
+                type: transitionType,
+                alignment: Alignment.center,
+                childCurrent: const SizedBox.shrink(),
+                settings: routeSettings,
+                // duration: Duration(milliseconds: 300),
+              );
+            }
 
-          return CupertinoPageRoute(
-              builder: (context) {
-                if (routeSettings.name == '/') {
-                  return routeBuilders[routeSettings.name]!(context);
-                } else {
-                  return AppRoutes.routes[routeSettings.name]!(context);
-                }
-              },
-              settings: routeSettings);
-
-          // return PageRouteBuilder(
-          //     settings:
-          //         routeSettings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-          //     pageBuilder: (_, __, ___) {
-          //       if (routeSettings.name == '/') {
-          //         return routeBuilders[routeSettings.name]!(context);
-          //       } else {
-          //         return BuyerRoutes.routes[routeSettings.name]!(context);
-          //       }
-          //     },
-          //     transitionsBuilder: (_, a, __, c) =>
-          //         FadeTransition(opacity: a, child: c));
-          // Unknown route
-          // return MaterialPageRoute(builder: (_) => UnknownPage());
-
-          // return PageRouteBuilder(
-          //     pageBuilder: (context, anim1, anim2) {
-          //       if (routeSettings.name == '/') {
-          //         return routeBuilders[routeSettings.name]!(context);
-          //       } else {
-          //         return BuyerRoutes.routes[routeSettings.name]!(context);
-          //       }
-          //     },
-          //     transitionsBuilder:
-          //         (context, animation, secondaryAnimation, child) => index == 2
-          //             ? SlideTransition(
-          //                 position: Tween<Offset>(
-          //                   begin: const Offset(0.0, 1.0),
-          //                   end: const Offset(0.0, 0.0),
-          //                 ).animate(animation),
-          //                 child: child)
-          //             : SlideTransition(
-          //                 position: Tween<Offset>(
-          //                   begin: const Offset(1.0, 0.0),
-          //                   end: const Offset(0.0, 0.0),
-          //                 ).animate(animation),
-          //                 child: child),
-          //     settings: routeSettings,
-          //     reverseTransitionDuration: Duration(milliseconds: 200),
-          //     transitionDuration: Duration(milliseconds: 200));
-        },
+            return CupertinoPageRoute(
+                builder: (context) {
+                  if (routeSettings.name == '/') {
+                    return routeBuilders[routeSettings.name]!(context);
+                  } else {
+                    return AppRoutes.routes[routeSettings.name]!(context);
+                  }
+                },
+                settings: routeSettings);
+          },
+        ),
       ),
     );
   }
@@ -271,6 +261,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ))));
     }
   }
+
+  List<bool Function()> deepLinkActWhenList = [
+    () => injector<NavBloc>().state is OpenHomeTabState,
+    () => injector<NavBloc>().state is OpenBizTabState,
+    () => injector<NavBloc>().state is OpenConnectsTabState,
+    () => injector<NavBloc>().state is OpenChatsTabState,
+    () => injector<NavBloc>().state is OpenProfileTabState,
+  ];
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {

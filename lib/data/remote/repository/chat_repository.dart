@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/chat/chat_message_request.dart';
 import 'package:creative_movers/data/remote/model/chat/chat_message_response.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
@@ -13,6 +14,7 @@ import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/chat/live_chat_message.dart';
@@ -98,7 +100,7 @@ class ChatRepository {
   //Retrieve all chat conversations to be displayed on the chat tab
   Future<State> fetchChatConversations() async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpClient.post(Endpoints.chatConversations),
+      () => httpClient.post(Endpoints.chatConversations),
       successResponse: (data) {
         return State<List<Conversation>?>.success(data != null
             ? ConversationsResponse.fromMap(data).conversations
@@ -259,6 +261,41 @@ class ChatRepository {
       () => httpClient.post(Endpoints.userStatus, body: {"status": status}),
       successResponse: (data) {
         return State<String?>.success(data != null ? data["message"] : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER FROM SEND MESSAGE: ${response.data}');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: "Oops! something went wrong",
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State?> sendInvite(String inviteType, String channelName) async {
+    String? firstname = await StorageHelper.getString(StorageKeys.firstname);
+    String? lastname = await StorageHelper.getString(StorageKeys.lastname);
+    log("Type: $inviteType, Channel: $channelName", name: "SEND INVITE");
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(Endpoints.notifyLiveVideo, body: {
+        "notify_for": inviteType,
+        "notify_message": "$firstname $lastname has started a live video, join them now!",
+        "channel": channelName
+      }),
+      successResponse: (data) {
+        return State<String?>.success(data != null ? "Invitation sent successfully" : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

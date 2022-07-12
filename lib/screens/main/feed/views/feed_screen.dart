@@ -151,7 +151,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               child: AppPromptWidget(
                                 isSvgResource: true,
                                 message: state.error,
-                                onTap: () => feedBloc.add(GetFeedEvent()),
+                                onTap: () => feedBloc.add(const GetFeedEvent()),
                               )));
                     }
                     return const SliverToBoxAdapter(child: SizedBox.shrink());

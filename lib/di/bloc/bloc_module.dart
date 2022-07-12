@@ -8,9 +8,13 @@ import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/blocs/status/status_bloc.dart';
+import 'package:creative_movers/data/local/repository/deep_link/deep_link_repository.dart';
+import 'package:creative_movers/data/local/repository/deep_link/deep_link_repository_impl.dart';
 import 'package:get_it/get_it.dart';
 
 Future<void> init(GetIt injector) async {
+  injector.registerLazySingleton<DeepLinkRepo>(() => DeepLinkRepoImpl());
+
 //DEPENDENCIES RELATED TO AUTH
   _injectDependenciesRelatedToAuth(injector);
 

@@ -5,7 +5,7 @@ import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/live/views/join_meeting.dart';
+import 'package:creative_movers/screens/main/live/views/live_stream.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +32,7 @@ class _LiveStreamHomeScreenState extends State<LiveStreamHomeScreen> {
     return Scaffold(
         body: !ready && widget.isBroadcaster
             ? const LiveStreamPrepScreen()
-            : Meeting(
+            : LiveStream(
                 isBroadcaster: widget.isBroadcaster,
               ));
   }
@@ -195,7 +195,7 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                           cameraController?.dispose();
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => Meeting(
+                                  builder: (context) => LiveStream(
                                       isBroadcaster: true,
                                       token: state.token,
                                       isFrontCamera: _isFrontCamera,

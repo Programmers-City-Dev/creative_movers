@@ -193,8 +193,8 @@ class ContentData {
   String? userId;
   String? type;
   String? content;
-  DateTime updatedAt;
-  DateTime createdAt;
+  DateTime? updatedAt;
+  DateTime? createdAt;
   int? id;
   int? pageId;
 
@@ -222,8 +222,8 @@ class ContentData {
         type: json["type"],
         pageId: json["page_id"],
         content: json["content"],
-        updatedAt: DateTime.parse(json["updated_at"]),
-        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt:json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         id: json["id"],
       );
 
@@ -231,8 +231,8 @@ class ContentData {
         "user_id": userId,
         "type": type,
         "content": content,
-        "updated_at": updatedAt.toIso8601String(),
-        "created_at": createdAt.toIso8601String(),
+        "updated_at":updatedAt == null ? null : updatedAt!.toIso8601String(),
+        "created_at":createdAt==null ? null : createdAt!.toIso8601String(),
         "id": id,
         "page_id": pageId,
       };

@@ -9,15 +9,15 @@ import 'package:image_stack/image_stack.dart';
 
 enum ConnectState { idle, success, loading }
 
-class ResultItem extends StatefulWidget {
-  const ResultItem({Key? key, required this.result}) : super(key: key);
-  final Result result;
+class SearchResultItem extends StatefulWidget {
+  const SearchResultItem({Key? key, required this.result}) : super(key: key);
+  final SearchResult result;
 
   @override
-  _ResultItemState createState() => _ResultItemState();
+  _SearchResultItemState createState() => _SearchResultItemState();
 }
 
-class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMixin{
+class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepAliveClientMixin{
   List<String> images = [
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
@@ -261,7 +261,7 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
 
 class StackedImages extends StatefulWidget {
   const StackedImages({Key? key, required this.user}) : super(key: key);
-  final Result user;
+  final SearchResult user;
 
 
   @override

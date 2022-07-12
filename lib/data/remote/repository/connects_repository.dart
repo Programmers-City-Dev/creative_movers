@@ -207,9 +207,9 @@ class ConnectsRepository {
         Endpoints.suggestedConnects,
       ),
       successResponse: (data) {
-        return State<List<Connection>?>.success(data != null
-            ? List<Connection>.from(
-                data["suggested"].map((e) => Connection.fromJson(e)))
+        return State<List<SearchResult>?>.success(data != null
+            ? List<SearchResult>.from(
+                data["suggested"].map((e) => SearchResult.fromJson(e)))
             : null);
       },
       statusCodeSuccess: 200,

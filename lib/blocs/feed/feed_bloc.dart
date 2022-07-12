@@ -78,7 +78,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     try {
       var response = await feedRepository.adFeed(
           type: event.type,
-          page_id: event.pageId,
+          pageId: event.pageId,
           content: event.content,
           media: event.media);
       if (response is SuccessState) {

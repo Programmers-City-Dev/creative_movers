@@ -24,7 +24,7 @@ class ConnectsSuccesState extends ConnectsState {
 }
 
 class SuggestedConnectsSuccessState extends ConnectsState {
-  final List<Connection> connections;
+  final List<SearchResult> connections;
 
   const SuggestedConnectsSuccessState({required this.connections});
 

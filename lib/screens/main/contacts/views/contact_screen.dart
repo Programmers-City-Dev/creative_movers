@@ -22,7 +22,7 @@ class ContactScreen extends StatefulWidget {
 
 class _ContactScreenState extends State<ContactScreen>
     with SingleTickerProviderStateMixin {
-  ConnectsBloc _connectsBloc = ConnectsBloc();
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
 
   int selectedIndex = 0;
   String userType = 'connects';

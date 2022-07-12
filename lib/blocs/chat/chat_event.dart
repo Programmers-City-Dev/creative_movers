@@ -99,3 +99,13 @@ class UpdateUserStatusEvent extends ChatEvent {
   @override
   List<Object> get props => [status];
 }
+
+class SendInviteEvent extends ChatEvent {
+  final String inviteType;
+  final String channelName;
+
+  const SendInviteEvent({required this.inviteType, required this.channelName});
+
+  @override
+  List<Object> get props => [inviteType, channelName];
+}
