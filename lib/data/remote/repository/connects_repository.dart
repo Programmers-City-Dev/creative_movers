@@ -168,16 +168,16 @@ class ConnectsRepository {
     );
   }
 
-  Future<State> followRequest({
-    String? userId,
-  }) async {
+
+  Future<State> follow_request({String? userId, }) async {
+
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.followEndpoint, body: {
         "user_id": userId,
       }),
       successResponse: (data) {
         return State<ReactResponse?>.success(
-            data != null ? ReactResponse.fromJson(data) : null);
+           null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

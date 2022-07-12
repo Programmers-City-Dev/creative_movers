@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddStatusScreen extends StatefulWidget {
+
   const AddStatusScreen({Key? key}) : super(key: key);
 
   @override
@@ -29,28 +30,39 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
         'Poppins',
     'Segoe',
   ];
-  List<Color> theme = [
-    Colors.lightBlue,
-    Color(0xFFC2185B),
-    // Color(0xFF),
-    // Color(0xFF),
-    // Color(0xFF),
-    // Color(0xFF),
-    // Color(0xFF),
-    // Color(0xFF),
-    // Colors.amberAccent,
-    Colors.purple,
-    Colors.grey,
-    Colors.green,
-    Colors.cyan,
-    Colors.blueGrey
+
+  List<Color> colors =[
+   Color( 0xFF000000,)
+  ];
+  List<int> theme = [
+    0xffC2185B,
+    0xffC2185B,
+    0xffCB6716,
+    0xffCB1616,
+    0xff16A102,
+    0xffDB06E3,
+    0xff000000
+
+    // Colors.lightBlue,
+    // Color(0xFFC2185B),
+    // // Color(0xFF),
+    // // Color(0xFF),
+    // // Color(0xFF),
+    // // Color(0xFF),
+    // // Color(0xFF),
+    // // Color(0xFF),
+    // // Colors.amberAccent,
+    // Colors.purple,
+    // Colors.grey,
+    // Colors.green,
+    // Colors.cyan,
+    // Colors.blueGrey
   ];
 
   final _statusController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // changeSystemColor(bgColor);
   }
@@ -63,7 +75,7 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
         _listenToUploadStatusStates(context, state);
       },
       child: Scaffold(
-        backgroundColor: theme[colorIndex],
+        backgroundColor: Color(theme[colorIndex]),
         floatingActionButton: Visibility(
           visible: _statusController.text.isNotEmpty,
           child: FloatingActionButton(
@@ -139,7 +151,6 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     // final random = Random();
 
     setState(() {
-      log(theme.map((e) => e.value.toRadixString(16)).toString());
 
       if (colorIndex != theme.length - 1) {
         colorIndex += 1;
@@ -169,8 +180,13 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     if (_statusController.text.isEmpty) {
       AppUtils.showCustomToast('Add a text');
     } else {
+      log(theme[colorIndex].toRadixString(16));
+
       _statusBloc.add(UploadStatusEvent(
-          text: _statusController.text, bg_color: theme[colorIndex].toString() , font_name: font));
+
+          text: _statusController.text, bg_color: theme[colorIndex].toRadixString(16), font_name: font)
+
+      );
     }
   }
 
@@ -185,13 +201,20 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     }
 
     if (state is AddStatusSuccessState) {
-      Navigator.pop(context);
+      context.read<StatusBloc>().add(GetStatusEvent());
+      Navigator.popUntil(context,(route) => route.isFirst );
+
+      // Navigator.popAndPushNamed(context,'/home/feeds');
       // Navigator.of(context).pushNamed(feedsPath);
-      _statusBloc.add(GetStatusEvent());
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      ));
-      _statusBloc.add(GetStatusEvent());
+      // Navigator.of(context).push(MaterialPageRoute(
+      //   builder: (context) => HomeScreen(),
+      // ));
+      // _statusBloc.add(GetStatusEvent());
+
     }
+  }
+  bool untill (Route route){
+    route.settings.copyWith(arguments: {'showWelcomeDialog':true}) ;
+    return route.isFirst;
   }
 }

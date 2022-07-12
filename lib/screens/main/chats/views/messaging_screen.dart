@@ -2,11 +2,7 @@ import 'dart:developer' as logger;
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
-import 'package:creative_movers/blocs/profile/profile_bloc.dart';
-import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
-import 'package:creative_movers/data/remote/model/register_response.dart';
-import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/chats/widgets/message_item.dart';
@@ -136,16 +132,16 @@ class _MessagingScreenState extends State<MessagingScreen> {
             if (state is ChatError) {
               return Center(
                   child: AppPromptWidget(
-                onTap: () {
-                  _chatBloc.add(FetchConversationsMessagesEvent(
-                      conversationId: conversationId!));
-                },
-                canTryAgain: true,
-                isSvgResource: true,
-                imagePath: "assets/svgs/request.svg",
-                title: "Something went wrong",
-                message: state.errorModel.errorMessage,
-              ));
+                    onTap: () {
+                      _chatBloc.add(FetchConversationsMessagesEvent(
+                          conversationId: conversationId!));
+                    },
+                    canTryAgain: true,
+                    isSvgResource: true,
+                    imagePath: "assets/svgs/request.svg",
+                    title: "Something went wrong",
+                    message: state.errorModel.errorMessage,
+                  ));
             }
             if (state is ConversationMessagesFetched ||
                 widget.conversationId == null) {
@@ -250,7 +246,9 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                         focusNode: _focusNode,
                                         onChanged: (val) {
                                           noTextNotifier.value =
-                                              val.isEmpty || val.trim().isEmpty;
+                                              val.isEmpty || val
+                                                  .trim()
+                                                  .isEmpty;
                                         },
                                         controller: _textController,
                                         decoration: const InputDecoration(
@@ -335,14 +333,17 @@ class _MessagingScreenState extends State<MessagingScreen> {
         id: 0,
         body: _textController.text,
         conversationId:
-            conversationId == null ? '-1' : conversationId.toString(),
+        conversationId == null ? '-1' : conversationId.toString(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         media: [],
         status: 'unread',
         userId: widget.user.id.toString(),
         profilePhotoPath:
-            injector.get<CacheCubit>().cachedUser!.profilePhotoPath,
+        injector
+            .get<CacheCubit>()
+            .cachedUser!
+            .profilePhotoPath,
         shouldLoad: true);
     _chatBloc.pushMessage(message);
     _textController.clear();

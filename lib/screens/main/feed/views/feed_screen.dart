@@ -68,9 +68,12 @@ class _FeedScreenState extends State<FeedScreen> {
                           return const StatusShimmer();
                         }
                         if (state is StatusSuccessState) {
-                          return StatusViews(
-                            curvedBottom: true,
-                            viewStatusResponse: state.viewStatusResponse,
+                          return BlocProvider.value(
+                            value: statusBloc,
+                            child: StatusViews(
+                              curvedBottom: true,
+                              viewStatusResponse: state.viewStatusResponse,
+                            ),
                           );
                         }
                         if (state is StatusFaliureState) {
@@ -274,7 +277,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             ),
                                           ),
                                         ),
-                                )
+                                      )
                                     : const SizedBox.shrink()
                               ],
                             );

@@ -70,7 +70,8 @@ class Endpoints {
   static String pageSuggestionEndpoint =
       '${Constants.baseUrl}api/user/fetch-sugeested-business-page';
   static String pageFeedsEndpoint = '${Constants.baseUrl}api/feed/page/fetch';
-  static String followPageEndpoint = '${Constants.baseUrl}api/user/create-page';
+  static String followPageEndpoint = '${Constants.baseUrl}api/feed/page/follow';
+  static String likePageEndpoint = '${Constants.baseUrl}api/feed/page/like';
   static String getPageEndpoint =
       '${Constants.baseUrl}api/user/fetch-business-page-details';
 

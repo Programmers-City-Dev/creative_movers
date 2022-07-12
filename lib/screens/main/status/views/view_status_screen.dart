@@ -33,6 +33,7 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
     pageController = PageController(initialPage: widget.currentStatus);
     currentStatus = widget.currentStatus;
 
+
     //Looping through all the status for each user
     for (Status eachStatus in widget.alllStatus!) {
       //List of converted status element for a user
@@ -45,7 +46,8 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
           status.file == null
               ? StoryItem.text(
                   title: status.text!,
-                  backgroundColor: Colors.blue,
+                  textStyle: TextStyle(fontFamily: status.fontName,fontSize: 18),
+                  backgroundColor: Color(int.parse(status.bgColor!,radix: 16)),
                 )
               : status.mediaType == 'image'
                   ? StoryItem.pageImage(

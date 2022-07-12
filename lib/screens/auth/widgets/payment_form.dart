@@ -59,15 +59,19 @@ class _PaymentFormState extends State<PaymentForm> {
             const SizedBox(
               height: 18,
             ),
-            PaymentOptionsWidget(
-              includeTrial: widget.isFirstTime,
-              onSelected: (type, amount, duration) {
-                paymentType = type;
-                paymentAmount = amount;
-                mDuration = duration;
-              },
+            Expanded(
+              child: PaymentOptionsWidget(
+                includeTrial: widget.isFirstTime,
+                onSelected: (type, amount, duration) {
+                  paymentType = type;
+                  paymentAmount = amount;
+                  mDuration = duration;
+                },
+              ),
             ),
-            const Spacer(),
+            const SizedBox(height: 18,),
+
+            // const Spacer(),
             BlocListener<PaymentBloc, PaymentState>(
               bloc: injector.get<PaymentBloc>(),
               listener: (context, state) {
@@ -185,7 +189,7 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      // height: MediaQuery.of(context).size.height * 0.5,
       child: ListView(
         // shrinkWrap: true,
         children: [

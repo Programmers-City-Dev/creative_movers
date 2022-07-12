@@ -51,6 +51,8 @@ class User {
       {required this.id,
       this.firstname,
       this.lastname,
+      this.isFollowing,
+      this.isConnected,
       required this.username,
       required this.email,
       required this.phone,
@@ -103,6 +105,8 @@ class User {
   final String? country;
   final String? state;
   final String? ethnicity;
+  final bool? isFollowing;
+  final bool? isConnected;
 
   User copyWith({
     int? id,
@@ -131,6 +135,7 @@ class User {
     String? country,
     String? state,
     String? ethnicity,
+    bool? isFollowing,
   }) =>
       User(
         id: id ?? this.id,
@@ -155,10 +160,13 @@ class User {
         countryId: countryId ?? this.countryId,
         followers: followers ?? this.followers,
         following: following ?? this.following,
+        isFollowing: isFollowing ?? this.isFollowing,
+        isConnected: isConnected ?? this.isConnected,
         connections: connections ?? this.connections,
         country: country ?? this.country,
         state: country ?? this.state,
         ethnicity: ethnicity ?? this.ethnicity,
+
       );
 
   factory User.fromMap(Map<String, dynamic> json) => User(
@@ -176,6 +184,8 @@ class User {
         role: json["role"],
         payStatus: json["pay_status"] == null ? null : json["pay_status"],
         regStatus: json["reg_status"] == null ? null : json["reg_status"],
+        isFollowing: json["is_following"] == null ? null : json["is_following"],
+        isConnected: json["is_connected"] == null ? null : json["is_connected"],
         currentTeamId: json["current_team_id"],
         profilePhotoPath: json["profile_photo_path"],
         biodata: json["biodata"],
@@ -229,6 +239,8 @@ class User {
         "following": following == null
             ? null
             : List<dynamic>.from(following!.map((x) => x)),
+        "isFollowing": isFollowing ?? null,
+        "is_connected": isConnected ?? null,
         "connections": connections == null
             ? null
             : List<dynamic>.from(connections!.map((x) => x)),
