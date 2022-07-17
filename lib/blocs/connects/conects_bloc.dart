@@ -19,9 +19,6 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       ConnectsRepository(HttpHelper());
 
   ConnectsBloc() : super(ConnectsInitial()) {
-    on<ConnectsEvent>((event, emit) {
-      // TODO: implement event handler
-    });
 
     on<GetConnectsEvent>(_mapGetConnectsEventToState);
     on<SearchEvent>(_mapSearchEventToState);
@@ -44,8 +41,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
         emit(ConnectsFailureState(error: errorModel.errorMessage));
       }
     } catch (e) {
-      emit(ConnectsFailureState(error: 'Oops Something went wrong'));
-      // TODO
+      emit(const ConnectsFailureState(error: 'Oops Something went wrong'));
     }
   }
 
@@ -62,16 +58,15 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       }
     } catch (e) {
       emit(PendingRequestFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
-
 
   FutureOr<void> _mapSearchEventToState(
       SearchEvent event, Emitter<ConnectsState> emit) async {
     emit(SearchLoadingState());
     try {
-      var state = await connectsRepository.search(searchValue: event.searchValue,role: event.role);
+      var state = await connectsRepository.search(
+          searchValue: event.searchValue, role: event.role);
       if (state is SuccessState) {
         emit(SearchSuccesState(searchResponse: state.value));
       } else if (state is ErrorState) {
@@ -80,7 +75,6 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       }
     } catch (e) {
       emit(SearchFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -98,10 +92,8 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       }
     } catch (e) {
       emit(RequestReactFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
-
 
   FutureOr<void> _mapSendRequestEventToState(
       SendRequestEvent event, Emitter<ConnectsState> emit) async {
@@ -118,10 +110,8 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       }
     } catch (e) {
       emit(SendRequestFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
-
 
   FutureOr<void> _mapFollowEventToState(
       FollowEvent event, Emitter<ConnectsState> emit) async {

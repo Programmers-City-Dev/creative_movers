@@ -164,7 +164,7 @@ class _StatusViewsState extends State<StatusViews> {
                                     )
                                   : FutureBuilder<Uint8List?>(
                                       future: VideoThumbnail.thumbnailData(
-                                        video: _list[index].status.last.file!,
+                                        video: _list[index].status.last.file ?? '',
                                         imageFormat: ImageFormat.JPEG,
                                         maxWidth: 24,
                                         maxHeight: 24,

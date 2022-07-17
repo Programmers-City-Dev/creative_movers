@@ -8,14 +8,13 @@ import 'package:creative_movers/services/remote_configs_service.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:creative_movers/di/injector.dart' as di;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
   List<CameraDescription> cameras=[];
-enum Flavor { dev, prod }
+enum Flavor { dev, staging, prod }
 
 class AppConfig {
   final String appName;
@@ -34,7 +33,9 @@ class AppConfig {
   Future<void> _init() async {
     if (flavor == Flavor.dev) {
       Constants.setEnvironmentVariables(Flavor.dev);
-    } else {
+    } else if(flavor == Flavor.staging) {
+      Constants.setEnvironmentVariables(Flavor.staging);
+    }else{
       Constants.setEnvironmentVariables(Flavor.prod);
     }
     _setup();
@@ -52,7 +53,7 @@ class AppConfig {
     await di.setup();
     var stripeKey =
         FirebaseRemoteConfig.instance.getString("stripe_publishable_key");
-    // Stripe.publishableKey = stripeKey;
+    Stripe.publishableKey = stripeKey;
     var firstScreen = await AppUtils.getFirstScreen();
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));

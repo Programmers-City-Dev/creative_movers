@@ -312,314 +312,346 @@ class _RemoteUserViewState extends State<RemoteUserView> {
       buildWhen: (p, c) => c is CachedUserDataFetched,
       builder: (context, state) {
         CachedUser userData = (state as CachedUserDataFetched).cachedUser;
-        return Stack(
-          children: [
-            rtc_remote_view.SurfaceView(
-                uid: widget.remoteUid!, channelId: widget.channelName),
-            Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 35, left: 8),
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(4.0),
-                        color: Colors.red,
-                        child: const Text("● Live",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                    ],
-                  ),
-                )),
-            Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: BlocConsumer<ChatBloc, ChatState>(
-                            bloc: _chatBloc,
-                            buildWhen: (previous, current) {
-                              return current is LiveChannelMessagesFetched;
-                            },
-                            listener: (context, state) {
-                              if (state is LiveChannelMessagesFetched) {
-                                WidgetsBinding.instance?.addPostFrameCallback(
-                                    (_) => _scrollToBottom());
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is LiveChannelMessagesFetched) {
-                                final List<LiveChatMessage> messages =
-                                    state.messages;
-                                return ListView.builder(
-                                    controller: _scrollController,
-                                    physics: const BouncingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: messages.length,
-                                    itemBuilder: (ctx, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0),
-                                        child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CircleImage(
-                                                url: messages[index]
-                                                    .userCoverPhoto,
-                                                withBaseUrl: false,
-                                              ),
-                                              const SizedBox(
-                                                width: 16.0,
-                                              ),
-                                              Flexible(
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                      color: Colors.white
-                                                          .withOpacity(0.1)),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        messages[index]
-                                                            .username,
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      Text(
-                                                        messages[index].message,
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ],
+        return WillPopScope(
+          onWillPop: () async {
+            if (_activeLiveNotifier.value) {
+              _showCloseVideoDialog(context);
+              return false;
+            }
+            return true;
+          },
+          child: Stack(
+            children: [
+              rtc_remote_view.SurfaceView(
+                  uid: widget.remoteUid!, channelId: widget.channelName),
+              Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 35, left: 8),
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(4.0),
+                          color: Colors.red,
+                          child: const Text("● Live",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  )),
+              Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: BlocConsumer<ChatBloc, ChatState>(
+                              bloc: _chatBloc,
+                              buildWhen: (previous, current) {
+                                return current is LiveChannelMessagesFetched;
+                              },
+                              listener: (context, state) {
+                                if (state is LiveChannelMessagesFetched) {
+                                  WidgetsBinding.instance?.addPostFrameCallback(
+                                      (_) => _scrollToBottom());
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state is LiveChannelMessagesFetched) {
+                                  final List<LiveChatMessage> messages =
+                                      state.messages;
+                                  return ListView.builder(
+                                      controller: _scrollController,
+                                      physics: const BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: messages.length,
+                                      itemBuilder: (ctx, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CircleImage(
+                                                  url: messages[index]
+                                                      .userCoverPhoto,
+                                                  withBaseUrl: false,
+                                                ),
+                                                const SizedBox(
+                                                  width: 16.0,
+                                                ),
+                                                Flexible(
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
+                                                        color: Colors.white
+                                                            .withOpacity(0.1)),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          messages[index]
+                                                              .username,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .white),
+                                                        ),
+                                                        Text(
+                                                          messages[index]
+                                                              .message,
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ]),
-                                      );
-                                    });
-                              }
-                              return const SizedBox.shrink();
-                            },
-                          ),
-                        ),
-                      ),
-                      // Container(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   margin: const EdgeInsets.all(32.0),
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.black.withOpacity(0.5),
-                      //     borderRadius: BorderRadius.circular(16.0),
-                      //   ),
-                      //   child: Column(
-                      //     mainAxisSize: MainAxisSize.min,
-                      //     children: [
-                      //       ListView(
-                      //         // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //         children: [
-                      //           IconButton(
-                      //               onPressed: () {},
-                      //               icon: const Icon(
-                      //                 Icons.emoji_emotions_outlined,
-                      //                 color: Colors.white,
-                      //               )),
-                      //           FloatingActionButton(
-                      //             onPressed: () {
-                      //               widget.engine?.stopPreview();
-                      //               widget.engine?.leaveChannel();
-                      //               widget.engine?.destroy();
-                      //               Navigator.of(context).pop();
-                      //             },
-                      //             backgroundColor: Colors.red,
-                      //             child: const Icon(
-                      //               Icons.call_end,
-                      //               color: Colors.white,
-                      //             ),
-                      //           ),
-                      //           IconButton(
-                      //               onPressed: () {
-                      //                 showBottomSheet(
-                      //                     context: context,
-                      //                     // expand: false,
-                      //                     builder: (ctx) {
-                      //                       return CommentBox(
-                      //                           focused: true,
-                      //                           profilePhotoPath: '',
-                      //                           onCommentSent: (msg) {
-                      //                             _chatBloc.add(
-                      //                                 SendLiveChannelMessage(
-                      //                                     message: LiveChatMessage(
-                      //                                       message: msg,
-                      //                                       username:
-                      //                                           userData.username!,
-                      //                                       firstName:
-                      //                                           userData.firstname!,
-                      //                                       lastName:
-                      //                                           userData.lastname!,
-                      //                                       email: userData.email!,
-                      //                                       userCoverPhoto: userData
-                      //                                           .coverPhotoPath,
-                      //                                       userPhoto: userData
-                      //                                           .profilePhotoPath,
-                      //                                       userId: userData.id,
-                      //                                       timestamp: DateTime
-                      //                                               .now()
-                      //                                           .millisecondsSinceEpoch,
-                      //                                     ),
-                      //                                     channelName:
-                      //                                         widget.channelName));
-                      //                             Navigator.of(context).pop();
-                      //                           });
-                      //                     });
-                      //               },
-                      //               icon: const Icon(
-                      //                 Icons.messenger_rounded,
-                      //                 color: Colors.white,
-                      //               ))
-                      //         ],
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    // margin: const EdgeInsets.all(32.0),
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                    ),
-                    child: SizedBox(
-                      height: 50,
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: KeyboardVisibilityBuilder(
-                              builder: (BuildContext context, Widget child,
-                                  bool isKeyboardVisible) {
-                                WidgetsBinding.instance
-                                    ?.addPostFrameCallback((timeStamp) {
-                                  _isTextFocusedNotifier.value =
-                                      isKeyboardVisible;
-                                });
-                                return child;
+                                              ]),
+                                        );
+                                      });
+                                }
+                                return const SizedBox.shrink();
                               },
-                              child: TextField(
-                                controller: _textController,
-                                focusNode: _textFocus,
-                                textInputAction: TextInputAction.send,
-                                keyboardType: TextInputType.name,
-                                onSubmitted: (val) {
-                                  if (val.isNotEmpty) {
-                                    _chatBloc.add(SendLiveChannelMessage(
-                                        message: LiveChatMessage(
-                                          message: val,
-                                          username: userData.username!,
-                                          firstName: userData.firstname!,
-                                          lastName: userData.lastname!,
-                                          email: userData.email!,
-                                          userCoverPhoto:
-                                              userData.coverPhotoPath,
-                                          userPhoto: userData.profilePhotoPath,
-                                          userId: userData.id,
-                                          timestamp: DateTime.now()
-                                              .millisecondsSinceEpoch,
-                                        ),
-                                        channelName: widget.channelName));
-                                    _textController.clear();
-                                    _textFocus.unfocus();
-                                  }
-                                },
-                                maxLines: 1,
-                                minLines: 1,
-                                style: const TextStyle(
-                                    // height: 2,
-                                    fontSize: 14,
-                                    color: Colors.white),
-                                decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    hintText: "Write comment here...",
-                                    hintStyle: TextStyle(
-                                        color: Colors.white.withOpacity(0.5)),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
-                                        borderSide: const BorderSide(
-                                            width: 1, color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
-                                        borderSide: const BorderSide(
-                                            width: 1, color: Colors.white)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
-                                        borderSide: const BorderSide(
-                                            width: 1, color: Colors.white))),
-                              ),
                             ),
                           ),
-                          ValueListenableBuilder<bool>(
-                              valueListenable: _isTextFocusedNotifier,
-                              builder: (context, value, snapshot) {
-                                return Visibility(
-                                  visible: !value,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.emoji_emotions_outlined,
-                                            color: Colors.white,
-                                          )),
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ],
+                        ),
+                        // Container(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   margin: const EdgeInsets.all(32.0),
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.black.withOpacity(0.5),
+                        //     borderRadius: BorderRadius.circular(16.0),
+                        //   ),
+                        //   child: Column(
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     children: [
+                        //       ListView(
+                        //         // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //         children: [
+                        //           IconButton(
+                        //               onPressed: () {},
+                        //               icon: const Icon(
+                        //                 Icons.emoji_emotions_outlined,
+                        //                 color: Colors.white,
+                        //               )),
+                        //           FloatingActionButton(
+                        //             onPressed: () {
+                        //               widget.engine?.stopPreview();
+                        //               widget.engine?.leaveChannel();
+                        //               widget.engine?.destroy();
+                        //               Navigator.of(context).pop();
+                        //             },
+                        //             backgroundColor: Colors.red,
+                        //             child: const Icon(
+                        //               Icons.call_end,
+                        //               color: Colors.white,
+                        //             ),
+                        //           ),
+                        //           IconButton(
+                        //               onPressed: () {
+                        //                 showBottomSheet(
+                        //                     context: context,
+                        //                     // expand: false,
+                        //                     builder: (ctx) {
+                        //                       return CommentBox(
+                        //                           focused: true,
+                        //                           profilePhotoPath: '',
+                        //                           onCommentSent: (msg) {
+                        //                             _chatBloc.add(
+                        //                                 SendLiveChannelMessage(
+                        //                                     message: LiveChatMessage(
+                        //                                       message: msg,
+                        //                                       username:
+                        //                                           userData.username!,
+                        //                                       firstName:
+                        //                                           userData.firstname!,
+                        //                                       lastName:
+                        //                                           userData.lastname!,
+                        //                                       email: userData.email!,
+                        //                                       userCoverPhoto: userData
+                        //                                           .coverPhotoPath,
+                        //                                       userPhoto: userData
+                        //                                           .profilePhotoPath,
+                        //                                       userId: userData.id,
+                        //                                       timestamp: DateTime
+                        //                                               .now()
+                        //                                           .millisecondsSinceEpoch,
+                        //                                     ),
+                        //                                     channelName:
+                        //                                         widget.channelName));
+                        //                             Navigator.of(context).pop();
+                        //                           });
+                        //                     });
+                        //               },
+                        //               icon: const Icon(
+                        //                 Icons.messenger_rounded,
+                        //                 color: Colors.white,
+                        //               ))
+                        //         ],
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      // margin: const EdgeInsets.all(32.0),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                      ),
+                      child: SizedBox(
+                        height: 50,
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              child: KeyboardVisibilityBuilder(
+                                builder: (BuildContext context, Widget child,
+                                    bool isKeyboardVisible) {
+                                  WidgetsBinding.instance
+                                      ?.addPostFrameCallback((timeStamp) {
+                                    _isTextFocusedNotifier.value =
+                                        isKeyboardVisible;
+                                  });
+                                  return child;
+                                },
+                                child: TextField(
+                                  controller: _textController,
+                                  focusNode: _textFocus,
+                                  textInputAction: TextInputAction.send,
+                                  keyboardType: TextInputType.name,
+                                  onSubmitted: (val) {
+                                    if (val.isNotEmpty) {
+                                      _chatBloc.add(SendLiveChannelMessage(
+                                          message: LiveChatMessage(
+                                            message: val,
+                                            username: userData.username!,
+                                            firstName: userData.firstname!,
+                                            lastName: userData.lastname!,
+                                            email: userData.email!,
+                                            userCoverPhoto:
+                                                userData.coverPhotoPath,
+                                            userPhoto:
+                                                userData.profilePhotoPath,
+                                            userId: userData.id,
+                                            timestamp: DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                          ),
+                                          channelName: widget.channelName));
+                                      _textController.clear();
+                                      _textFocus.unfocus();
+                                    }
+                                  },
+                                  maxLines: 1,
+                                  minLines: 1,
+                                  style: const TextStyle(
+                                      // height: 2,
+                                      fontSize: 14,
+                                      color: Colors.white),
+                                  decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                      hintText: "Write comment here...",
+                                      hintStyle: TextStyle(
+                                          color: Colors.white.withOpacity(0.5)),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                          borderSide: const BorderSide(
+                                              width: 1, color: Colors.white)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                          borderSide: const BorderSide(
+                                              width: 1, color: Colors.white)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                          borderSide: const BorderSide(
+                                              width: 1, color: Colors.white))),
+                                ),
+                              ),
+                            ),
+                            ValueListenableBuilder<bool>(
+                                valueListenable: _isTextFocusedNotifier,
+                                builder: (context, value, snapshot) {
+                                  return Visibility(
+                                    visible: !value,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                              Icons.emoji_emotions_outlined,
+                                              color: Colors.white,
+                                            )),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
+  }
+
+  void _showCloseVideoDialog(BuildContext context) {
+    AppUtils.showShowConfirmDialog(context,
+        message: "Are you sure you want to leave this live?",
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Leave Video", onConfirmed: () async {
+      await widget.engine?.destroy();
+      Navigator.of(context)
+        ..pop()
+        ..pop();
+      _activeLiveNotifier.value = false;
+    }, onCancel: () {
+      Navigator.of(context).pop();
+    });
   }
 }
 
@@ -1023,7 +1055,9 @@ class _LocalUserViewState extends State<LocalUserView> {
         cancelButtonText: "Cancel",
         confirmButtonText: "End Video", onConfirmed: () async {
       await widget.engine?.destroy();
-      Navigator.of(context).pop();
+      Navigator.of(context)
+        ..pop()
+        ..pop();
       _activeLiveNotifier.value = false;
     }, onCancel: () {
       Navigator.of(context).pop();

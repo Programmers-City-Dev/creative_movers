@@ -14,6 +14,17 @@
         },
         {
             
+            "name": "staging",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging"
+            ]
+        },
+        {
+            
             "name": "prod",
             "request": "launch",
             "type": "dart",

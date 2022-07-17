@@ -29,9 +29,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   void initState() {
     injector.get<CacheCubit>().fetchCachedUserData();
-    _paymentBloc
-    .add(
-        const GetSubscriptionInfoEvent());
+    _paymentBloc.add(const GetSubscriptionInfoEvent());
     super.initState();
   }
 
@@ -302,8 +300,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                       children: [
                                         BlocBuilder<PaymentBloc, PaymentState>(
                                             bloc: _paymentBloc,
-                                              // ..add(
-                                              //     const GetSubscriptionInfoEvent()),
+                                            // ..add(
+                                            //     const GetSubscriptionInfoEvent()),
                                             builder: (context, state) {
                                               if (state
                                                   is SubscriptionLoadedState) {
@@ -372,7 +370,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              injector.get<PaymentBloc>().add(
+                                  CreatePaymentIntentEvent(int.parse("7"),
+                                      "usd", "1", "account_activation"));
+                            },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 8.0),

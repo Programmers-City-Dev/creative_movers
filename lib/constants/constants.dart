@@ -8,10 +8,13 @@ class Constants {
   static void setEnvironmentVariables(Flavor flavor) {
     switch (flavor) {
       case Flavor.dev:
-        _config = _Config.debugConstants;
+        _config = _Config.devConstants;
         break;
       case Flavor.prod:
         _config = _Config.prodConstants;
+        break;
+      case Flavor.staging:
+        _config = _Config.stagingConstants;
         break;
     }
   }
@@ -45,13 +48,21 @@ class _Config {
   static const sentryEnv = "SENTRY_ENV";
   static const flavor = "ENV";
 
-  static Map<String, dynamic> debugConstants = {
+  static Map<String, dynamic> stagingConstants = {
     baseUrl: "https://staging.creativemovers.app/",
+    buildGradient: "staging",
+    sentryDSN: '',
+    sentryEnv: 'dev',
+    flavor: Flavor.staging
+  };
+  static Map<String, dynamic> devConstants = {
+    baseUrl: "https://dev.creativemovers.app/",
     buildGradient: "dev",
     sentryDSN: '',
     sentryEnv: 'dev',
     flavor: Flavor.dev
   };
+
   static Map<String, dynamic> prodConstants = {
     baseUrl: "https://creativemovers.app/",
     buildGradient: "production",

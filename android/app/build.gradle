@@ -77,6 +77,11 @@ lintOptions {
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
         }
+        staging {
+            dimension "creative_movers"
+            applicationIdSuffix ".staging"
+            versionNameSuffix "-staging"
+        }
         prod {
             dimension "creative_movers"
         }
