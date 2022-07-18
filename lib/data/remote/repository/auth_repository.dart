@@ -31,6 +31,7 @@ class AuthRepository {
       required String username,
       String? deviceToken,
       String? platform}) async {
+
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.registerEndpoint, body: {
         "email": email,

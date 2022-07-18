@@ -33,7 +33,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
   final _connectsBloc = ConnectsBloc();
   late bool isFollowing;
 
-  late bool isConnected;
+  late String isConnected;
 
   @override
   void initState() {
@@ -399,7 +399,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         ),
 
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -515,9 +515,13 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                       const SizedBox(
                                                         width: 10,
                                                       ),
-                                                      Text(isConnected
+                                                      Text(isConnected ==
+                                                              'Connected'
                                                           ? 'Disconnect'
-                                                          : 'Connect'),
+                                                          : isConnected ==
+                                                                  'Pending'
+                                                              ? 'Cancel Request'
+                                                              : 'Connect'),
                                                     ],
                                                   )),
                                       ),
@@ -528,6 +532,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                             ],
                           ),
                         ),
+
                         const SizedBox(
                           height: 18,
                         ),
@@ -741,12 +746,12 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
     if (state is SendRequestLoadingState) {}
     if (state is SendRequestSuccesState) {
       setState(() {
-        isConnected = !isConnected;
+        isConnected = state.reactResponse.message!;
       });
       // reaction = state.reactResponse.message!;
       // acceptState = AcceptState.idle;
       // declineState = DeclineState.idle;
-      AppUtils.showCustomToast('Request sent');
+      AppUtils.showCustomToast(state.reactResponse.message!);
     }
     if (state is SendRequestFailureState) {
       // setState(() {
@@ -767,7 +772,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
       // acceptState = AcceptState.idle;
       // declineState = DeclineState.idle;
 
-      AppUtils.showCustomToast('Following');
+      AppUtils.showCustomToast(state.reactResponse.message!);
     }
     if (state is FollowFailureState) {
       // setState(() {

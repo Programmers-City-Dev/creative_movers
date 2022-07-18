@@ -106,7 +106,7 @@ class User {
   final String? state;
   final String? ethnicity;
   final bool? isFollowing;
-  final bool? isConnected;
+  final String? isConnected;
 
   User copyWith({
     int? id,
@@ -136,6 +136,7 @@ class User {
     String? state,
     String? ethnicity,
     bool? isFollowing,
+    final String? isConnected
   }) =>
       User(
         id: id ?? this.id,
