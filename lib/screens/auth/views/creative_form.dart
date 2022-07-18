@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
@@ -281,6 +282,8 @@ class _CreativeFormState extends State<CreativeForm> {
 
     if (state is AccountTypeFailureState) {
       Navigator.pop(context);
+      log("Error creating creative account: ${state.error}",
+          name: "CREATIVE FORM");
       CustomSnackBar.showError(context, message: state.error);
     }
 
