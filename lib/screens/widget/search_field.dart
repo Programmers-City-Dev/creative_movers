@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField(
-      {Key? key, this.onChanged, this.controller, this.onSubmitted, this.hint})
+      {Key? key, this.onChanged, this.controller, this.onSubmitted, this.hint, this.radius})
       : super(key: key);
   final void Function(String?)? onChanged;
   final void Function(String?)? onSubmitted;
   final String? hint;
   final TextEditingController? controller;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class SearchField extends StatelessWidget {
             color: AppColors.textColor,
           ),
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular( radius==null ?30:0),
               borderSide: BorderSide.none),
         ),
       ),
