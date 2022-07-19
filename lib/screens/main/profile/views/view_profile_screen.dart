@@ -534,17 +534,26 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         ),
 
                         const SizedBox(
-                          height: 18,
+                          height: 16,
                         ),
 
-                        const Text(
-                          'CONNECTS',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w700),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'CONNECTS',
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            TextButton(
+                                onPressed: () {},
+                                child: const Text("View All",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.primaryColor))),
+                          ],
                         ),
-
                         const SizedBox(
                           height: 10,
                         ),
@@ -647,19 +656,19 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                         ),
                                       ),
                                     ),
-                                    user.connections!.length > 6
-                                        ? TextButton(
-                                            onPressed: () {},
-                                            child: Text(
-                                                '+${user.connections!.length - 6}'),
-                                            style: TextButton.styleFrom(
-                                                backgroundColor:
-                                                    AppColors.lightBlue,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10)),
-                                          )
-                                        : const SizedBox.shrink(),
+                                    // user.connections!.length > 6
+                                    //     ? TextButton(
+                                    //         onPressed: () {},
+                                    //         child: Text(
+                                    //             '+${user.connections!.length - 6}'),
+                                    //         style: TextButton.styleFrom(
+                                    //             backgroundColor:
+                                    //                 AppColors.lightBlue,
+                                    //             padding:
+                                    //                 const EdgeInsets.symmetric(
+                                    //                     vertical: 10)),
+                                    //       )
+                                    //     : const SizedBox.shrink(),
                                   ],
                                 ),
                               )

@@ -457,7 +457,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onPressed: () {},
                                 child: const Text("View All",
                                     style: TextStyle(
-                                        fontSize: 13,
+                                        fontSize: 16,
                                         color: AppColors.primaryColor))),
                           ],
                         ),
