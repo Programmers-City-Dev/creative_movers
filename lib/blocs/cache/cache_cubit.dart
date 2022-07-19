@@ -5,6 +5,7 @@ import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 part 'cache_state.dart';
 
@@ -22,7 +23,7 @@ class CacheCubit extends Cubit<CacheState> {
         emit(CachedUserDataFetched(cachedUser: cachedUser));
       }
     } catch (e) {
-      print("ERROR FETCHING: $e");
+      debugPrint("ERROR FETCHING: $e");
     }
   }
 
@@ -31,10 +32,15 @@ class CacheCubit extends Cubit<CacheState> {
       await injector.get<CacheCachedUserDao>().insert(cachedUser);
       var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
       CachedUser user = dataList.first;
+      this.cachedUser = user;
       log("INSERT: ${user.toMap()}");
       emit(CachedUserDataFetched(cachedUser: user));
     } catch (e) {
-      print("ERROR UPDATING: $e");
+      debugPrint("ERROR UPDATING: $e");
     }
+  }
+
+  void clearCacheStorage() {
+    injector.get<CacheCachedUserDao>().deleteAll();
   }
 }

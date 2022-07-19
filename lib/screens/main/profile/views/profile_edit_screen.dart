@@ -64,7 +64,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     final DateTime? picked = await showDatePicker(
         context: context,
         confirmText: 'Ok',
-
         helpText: 'DATE OF BIRTH',
         initialDate: dateOfBirth ?? selectedDate,
         firstDate: DateTime(1, 8),
@@ -702,9 +701,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         injector
             .get<CacheCubit>()
             .updateCachedUserData(list.first.copyWith(profilePhotoPath: photo));
+        log("USER UPDATE 2: ${list.first.toMap()}");
       } else {
         var user = list.first.copyWith(coverPhotoPath: photo);
-        // log("USER DATA: ${user.toMap()}");
+        log("USER UPDATE 1: ${user.toMap()}");
 
         // log("COVER RETURNED WITH: $photo");
         injector.get<CacheCubit>().updateCachedUserData(user);

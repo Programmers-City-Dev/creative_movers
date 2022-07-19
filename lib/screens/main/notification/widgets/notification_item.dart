@@ -4,6 +4,7 @@ import 'package:creative_movers/data/remote/model/notifications_response.dart'
     as notification;
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
+import 'package:creative_movers/screens/main/live/views/live_stream.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -86,14 +87,19 @@ class _NotificationItemState extends State<NotificationItem> {
             context: mainNavKey.currentState!.context,
             builder: (_) {
               return Container(
-                decoration: BoxDecoration(),
                 child: FeedDetailsScreen(
                   feedId: contentData.id!,
                 ),
               );
             });
       }
-    } else if (notificationType == "") {}
+    } else if (notificationType == "live_video") {
+      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+          builder: ((context) => LiveStream(
+                isBroadcaster: false,
+                channel: widget.notificationData.data.content.data.channelId,
+              ))));
+    }
   }
 
   String _getPostDescription(
@@ -110,6 +116,8 @@ class _NotificationItemState extends State<NotificationItem> {
       } else {
         return "$name posted on your profile feed";
       }
+    } else if (type == "live_video") {
+      return "$name started started a live video.";
     } else {
       return "";
     }

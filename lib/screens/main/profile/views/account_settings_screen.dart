@@ -568,6 +568,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   void clearCache() {
     StorageHelper.remove(StorageKeys.token);
     StorageHelper.setBoolean(StorageKeys.stayLoggedIn, false);
+    injector.get<CacheCubit>().clearCacheStorage();
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }

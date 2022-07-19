@@ -108,36 +108,35 @@ class User {
   final bool? isFollowing;
   final String? isConnected;
 
-  User copyWith({
-    int? id,
-    String? firstname,
-    String? lastname,
-    String? username,
-    String? email,
-    String? phone,
-    DateTime? dob,
-    DateTime? emailVerifiedAt,
-    String? role,
-    String? payStatus,
-    String? regStatus,
-    String? gender,
-    String? currentTeamId,
-    String? profilePhotoPath,
-    String? biodata,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? apiToken,
-    String? coverPhotoPath,
-    dynamic countryId,
-    List<dynamic>? followers,
-    List<dynamic>? following,
-    List<Connect>? connections,
-    String? country,
-    String? state,
-    String? ethnicity,
-    bool? isFollowing,
-    final String? isConnected
-  }) =>
+  User copyWith(
+          {int? id,
+          String? firstname,
+          String? lastname,
+          String? username,
+          String? email,
+          String? phone,
+          DateTime? dob,
+          DateTime? emailVerifiedAt,
+          String? role,
+          String? payStatus,
+          String? regStatus,
+          String? gender,
+          String? currentTeamId,
+          String? profilePhotoPath,
+          String? biodata,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? apiToken,
+          String? coverPhotoPath,
+          dynamic countryId,
+          List<dynamic>? followers,
+          List<dynamic>? following,
+          List<Connect>? connections,
+          String? country,
+          String? state,
+          String? ethnicity,
+          bool? isFollowing,
+          final String? isConnected}) =>
       User(
         id: id ?? this.id,
         firstname: firstname ?? this.firstname,
@@ -167,7 +166,6 @@ class User {
         country: country ?? this.country,
         state: country ?? this.state,
         ethnicity: ethnicity ?? this.ethnicity,
-
       );
 
   factory User.fromMap(Map<String, dynamic> json) => User(
@@ -203,7 +201,9 @@ class User {
         followers: json["followers"] == null
             ? null
             : List<dynamic>.from(json["followers"].map((x) => x)),
-        // following: json["following"] == null ?null : List<dynamic>.from(json["following"].map((x) => x)),
+        following: json["following"] == null
+            ? null
+            : List<dynamic>.from(json["following"].map((x) => x)),
         connections: json["connections"] == null
             ? null
             : List<dynamic>.from(json["connections"].map((x) => x)),

@@ -185,6 +185,7 @@ class ContentData {
       {required this.userId,
       required this.type,
       required this.content,
+      this.channelId,
       required this.updatedAt,
       required this.createdAt,
       required this.id,
@@ -193,6 +194,7 @@ class ContentData {
   String? userId;
   String? type;
   String? content;
+  String? channelId;
   DateTime? updatedAt;
   DateTime? createdAt;
   int? id;
@@ -202,6 +204,7 @@ class ContentData {
     String? userId,
     String? type,
     String? content,
+    String? channelId,
     DateTime? updatedAt,
     DateTime? createdAt,
     int? id,
@@ -211,6 +214,7 @@ class ContentData {
         userId: userId ?? this.userId,
         type: type ?? this.type,
         content: content ?? this.content,
+        channelId: channelId ?? this.channelId,
         updatedAt: updatedAt ?? this.updatedAt,
         createdAt: createdAt ?? this.createdAt,
         id: id ?? this.id,
@@ -222,8 +226,13 @@ class ContentData {
         type: json["type"],
         pageId: json["page_id"],
         content: json["content"],
-        updatedAt:json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        channelId: json["channel"],
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
         id: json["id"],
       );
 
@@ -231,8 +240,9 @@ class ContentData {
         "user_id": userId,
         "type": type,
         "content": content,
-        "updated_at":updatedAt == null ? null : updatedAt!.toIso8601String(),
-        "created_at":createdAt==null ? null : createdAt!.toIso8601String(),
+        "channel": channelId,
+        "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "id": id,
         "page_id": pageId,
       };

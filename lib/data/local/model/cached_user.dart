@@ -1,8 +1,10 @@
 // To parse this JSON data, do
 //
 //     final cachedUser = cachedUserFromMap(jsonString);
-class CachedUser {
-  CachedUser( {
+import 'package:equatable/equatable.dart';
+
+class CachedUser extends Equatable {
+  CachedUser({
     required this.id,
     this.firstname,
     this.lastname,
@@ -166,4 +168,28 @@ class CachedUser {
       };
 
   String get fullname => '$firstname $lastname';
+
+  @override
+  List<Object?> get props => [
+        id,
+        firstname,
+        lastname,
+        username,
+        email,
+        phone,
+        emailVerifiedAt,
+        role,
+        payStatus,
+        regStatus,
+        currentTeamId,
+        profilePhotoPath,
+        coverPhotoPath,
+        biodata,
+        status,
+        createdAt,
+        updatedAt,
+        apiToken,
+        country,
+        state,
+      ];
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/data/remote/model/payment_history_data.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
@@ -61,6 +62,11 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         "metadata": {
           "order_id": orderId,
           "email": email,
+          "app_env": Constants.getFlavor == "dev"
+              ? "dev"
+              : Constants.getFlavor == "staging"
+                  ? "staging"
+                  : "prod",
           "amount": amount.toString(),
           "duration": duration,
           "payment_for": paymentFor

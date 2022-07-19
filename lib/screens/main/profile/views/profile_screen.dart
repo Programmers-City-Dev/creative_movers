@@ -444,15 +444,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(
                           height: 16,
                         ),
-                        const Text(
-                          'CONNECTS',
-                          style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'CONNECTS',
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            TextButton(
+                                onPressed: () {},
+                                child: const Text("View All",
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: AppColors.primaryColor))),
+                          ],
                         ),
                         user.connections!.isNotEmpty
                             ? SizedBox(
-                                height: 60,
+                                height: 100,
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -475,40 +486,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             // },
                                             child: Card(
                                               elevation: 0,
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
                                               shadowColor: AppColors.smokeWhite,
                                               child: Center(
                                                 child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     CircleAvatar(
-                                                      radius:25 ,
-                                                      backgroundColor: Colors.blueAccent,
+                                                      radius: 25,
+                                                      backgroundColor:
+                                                          Colors.blueAccent,
                                                       child: CircleAvatar(
                                                         backgroundImage:
-                                                        NetworkImage(
-                                                          user.connections![index]
-                                                          [
-                                                          "profile_photo_path"],
+                                                            NetworkImage(
+                                                          user.connections![
+                                                                  index][
+                                                              "profile_photo_path"],
                                                         ),
                                                         radius: 23,
                                                       ),
                                                     ),
                                                     Center(
                                                       child: Padding(
-                                                        padding: const EdgeInsets.all(5.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
                                                         child: Text(
-                                                          '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',style: const TextStyle(fontSize: 11),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                          '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 11),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
                                                       ),
                                                     ),
                                                     Center(
                                                       child: Padding(
-                                                        padding: const EdgeInsets.all(1.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(1.0),
                                                         child: Text(
-                                                          '${user.connections![index]['role']}',style: const TextStyle(fontSize: 10,color: Colors.blueGrey),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                                          '${user.connections![index]['role']}',
+                                                          style: const TextStyle(
+                                                              fontSize: 10,
+                                                              color: Colors
+                                                                  .blueGrey),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
                                                       ),
                                                     )
-
                                                   ],
                                                 ),
                                               ),
@@ -525,8 +560,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             style: TextButton.styleFrom(
                                                 backgroundColor:
                                                     AppColors.lightBlue,
-                                                padding: const EdgeInsets.symmetric(
-                                                    vertical: 10)),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10)),
                                           )
                                         : const SizedBox.shrink(),
                                   ],
@@ -698,7 +734,7 @@ class UserMetricsOverview extends StatelessWidget {
               ),
             ),
             const Text(
-              "Follwing",
+              "Following",
               style: TextStyle(fontSize: 13),
             ),
           ],
