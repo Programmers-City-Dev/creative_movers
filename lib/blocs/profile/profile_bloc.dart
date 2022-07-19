@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/blocs/base_bloc.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/update_profile_response.dart';
 import 'package:creative_movers/data/remote/repository/profile_repository.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
 
@@ -15,7 +18,7 @@ part 'profile_event.dart';
 
 part 'profile_state.dart';
 
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
+class ProfileBloc extends BaseBloc<ProfileEvent, ProfileState> {
   String username = '';
   String firstname = '';
 
@@ -31,8 +34,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
   }
 
-  FutureOr<void> _mapGetUsernameToState(
-      GetUsernameEvent event, Emitter<ProfileState> emit) async {
+  FutureOr<void> _mapGetUsernameToState(GetUsernameEvent event,
+      Emitter<ProfileState> emit) async {
     var s = await StorageHelper.getString(StorageKeys.username);
     username = s!;
     var firstName = await StorageHelper.getString(StorageKeys.firstname);
@@ -40,12 +43,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(UsernameFetchedState(username));
   }
 
-  FutureOr<void> _mapFetchUserProfileEventToEvent(
-      FetchUserProfileEvent event, Emitter<ProfileState> emit) async {
+  FutureOr<void> _mapFetchUserProfileEventToEvent(FetchUserProfileEvent event,
+      Emitter<ProfileState> emit) async {
     try {
       emit(ProfileLoading());
       var state = await profileRepository.fetchUserProfile(event.userId);
       if (state is SuccessState) {
+        User user = state.value;
+        if (event.userId == null) {
+          injector.get<CacheCubit>().updateCachedUserData(user.toCachedUser());
+        }
         emit(ProfileLoadedState(user: state.value));
       }
       if (state is ErrorState) {
@@ -90,6 +97,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           ethnicity: event.ethnicity,
           imagePath: event.imagePath,
           country: event.country,
+          state: event.state,
           firstNAme: event.firstName,
           lastName: event.lastName);
       if (state is SuccessState) {

@@ -34,6 +34,7 @@ class _PaymentFormState extends State<PaymentForm> {
 
   @override
   Widget build(BuildContext context) {
+    final _trialPaymentBloc = PaymentBloc(injector.get());
     return Form(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -58,15 +59,19 @@ class _PaymentFormState extends State<PaymentForm> {
             const SizedBox(
               height: 18,
             ),
-            PaymentOptionsWidget(
-              includeTrial: widget.isFirstTime,
-              onSelected: (type, amount, duration) {
-                paymentType = type;
-                paymentAmount = amount;
-                mDuration = duration;
-              },
+            Expanded(
+              child: PaymentOptionsWidget(
+                includeTrial: widget.isFirstTime,
+                onSelected: (type, amount, duration) {
+                  paymentType = type;
+                  paymentAmount = amount;
+                  mDuration = duration;
+                },
+              ),
             ),
-            const Spacer(),
+            const SizedBox(height: 18,),
+
+            // const Spacer(),
             BlocListener<PaymentBloc, PaymentState>(
               bloc: injector.get<PaymentBloc>(),
               listener: (context, state) {
@@ -91,7 +96,12 @@ class _PaymentFormState extends State<PaymentForm> {
                         context: context,
                         builder: (context) => WillPopScope(
                             onWillPop: () => Future.value(false),
-                            child: const DetailsSavedDialog()),
+                            child: DetailsSavedDialog(
+                              paymentMode: selectedPaymentMode,
+                              paymentType: paymentType,
+                              paymentAmount: paymentAmount,
+                              duration: mDuration,
+                                isFirstTime: widget.isFirstTime)),
                         barrierDismissible: false);
                   } else {
                     Navigator.of(context)
@@ -104,25 +114,46 @@ class _PaymentFormState extends State<PaymentForm> {
                   }
                 }
               },
-              child: CustomButton(
-                child: const Text('CONTINUE'),
-                onTap: () async {
-                  if (paymentType == 'paid') {
-                    injector.get<PaymentBloc>().add(CreatePaymentIntentEvent(
-                        int.parse(paymentAmount),
-                        "usd",
-                        mDuration,
-                        "account_activation"));
-                  } else {
-                    await Future.delayed(const Duration(seconds: 1));
-                    showDialog(
-                      context: context,
-                      builder: (context) => const DetailsSavedDialog(),
-                      barrierDismissible: false,
+              child: BlocConsumer<PaymentBloc, PaymentState>(
+                  bloc: _trialPaymentBloc,
+                  listener: (context, state) {
+                    if (state is PaymentConfirmedState) {
+                      Navigator.of(context).pop();
+                      showDialog(
+                          context: context,
+                          builder: (context) => WillPopScope(
+                              onWillPop: () => Future.value(false),
+                              child: DetailsSavedDialog(
+                                paymentMode: selectedPaymentMode,
+                              paymentType: paymentType,
+                              paymentAmount: paymentAmount,
+                              duration: mDuration,
+                              isFirstTime: widget.isFirstTime,)),
+                          barrierDismissible: false);
+                    }
+                    if (state is PaymentFailureState) {
+                      Navigator.of(context).pop();
+                      AppUtils.showCustomToast(state.error);
+                    }
+                    if (state is PaymentProcessingState) {
+                      AppUtils.showAnimatedProgressDialog(context,
+                          title: "Processing request, please wait...");
+                    }
+                  },
+                  builder: (context, snapshot) {
+                    return CustomButton(
+                      child: const Text('CONTINUE'),
+                      onTap: () async {
+                        if (paymentType == 'paid') {
+                          injector.get<PaymentBloc>().add(
+                              CreatePaymentIntentEvent(int.parse(paymentAmount),
+                                  "usd", mDuration, "account_activation"));
+                        } else {
+                          _trialPaymentBloc.add(StartFreeTrialEvent());
+                        }
+                      },
                     );
-                  }
-                },
-              ),
+                  }),
             )
           ],
         ),
@@ -158,7 +189,7 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      // height: MediaQuery.of(context).size.height * 0.5,
       child: ListView(
         // shrinkWrap: true,
         children: [

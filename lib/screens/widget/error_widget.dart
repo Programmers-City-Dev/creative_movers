@@ -8,15 +8,17 @@ class AppPromptWidget extends StatelessWidget {
   final String? imagePath;
   final bool? isSvgResource;
   final bool? canTryAgain;
+  final String? buttonText;
 
   const AppPromptWidget({
     Key? key,
-    this.message = 'Ooops an error occured',
+    this.message = 'Oops an error occured',
     this.title,
     this.onTap,
     this.imagePath,
     this.isSvgResource = false,
     this.canTryAgain = true,
+    this.buttonText
   }) : super(key: key);
 
   @override
@@ -27,15 +29,16 @@ class AppPromptWidget extends StatelessWidget {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          isSvgResource!
-              ? SvgPicture.asset(
-                  imagePath ?? 'assets/svgs/server_error.svg',
-                  width: 150,
-                )
-              : Image.asset(
-                  imagePath ?? 'assets/pngs/sorry.png',
-                  height: 150,
-                ),
+          if (imagePath != null)
+            isSvgResource!
+                ? SvgPicture.asset(
+                    imagePath ?? 'assets/svgs/server_error.svg',
+                    width: 150,
+                  )
+                : Image.asset(
+                    imagePath ?? 'assets/pngs/sorry.png',
+                    height: 150,
+                  ),
           if (title != null)
             Column(
               children: [
@@ -49,7 +52,7 @@ class AppPromptWidget extends StatelessWidget {
                       fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
               ],
             ),
@@ -59,24 +62,23 @@ class AppPromptWidget extends StatelessWidget {
                 Text(
                   message!,
                   textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.blueGrey),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 10,
                 ),
               ],
             ),
           if (canTryAgain!)
             Column(
               children: [
-                const SizedBox(
-                  height: 16,
-                ),
+
                 OutlinedButton(
                     onPressed: onTap,
                     style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16))),
-                    child: const Text("Try again")),
+                    child: Text( buttonText ?? "Try again")),
               ],
             )
         ],

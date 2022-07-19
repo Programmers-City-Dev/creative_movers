@@ -71,7 +71,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 height:40 ,
                 child: ListView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                  shrinkWrap: true,
                   children: [
@@ -83,7 +83,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                         });
                       },
                       child: Chip(
-                          padding: EdgeInsets.all(7),
+                          padding: const EdgeInsets.all(7),
                           avatar: SvgPicture.asset(
                             AppIcons.svgPeople,
                             color: userType == 'home'
@@ -113,7 +113,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                         });
                       },
                       child: Chip(
-                          padding: EdgeInsets.all(7),
+                          padding: const EdgeInsets.all(7),
                           avatar: SvgPicture.asset(
                             AppIcons.svgPeople,
                             color: userType == 'following'

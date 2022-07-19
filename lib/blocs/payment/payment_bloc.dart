@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/data/remote/model/payment_history_data.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
@@ -25,6 +26,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     on<MakePaymentEvent>(_mapMakePaymentEventToState);
     on<GetSubscriptionInfoEvent>(_mapGetSubscriptionInfoEventToState);
     on<GetPaymentHistoryEvent>(_mapGetPaymentHistoryEventToState);
+    on<StartFreeTrialEvent>(_mapStartFreeTrialEventToState);
   }
 
   Future<Either<String, String>> makePayment(String secret) async {
@@ -39,11 +41,11 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         merchantDisplayName: "Creative Movers Pay",
       ));
 
+      // await Stripe.instance.presentPaymentSheet();
       await Stripe.instance.presentPaymentSheet();
-      // await Stripe.instance.presentPaymentSheet(parameters: secret);
       return const Right("Payment successful");
     } catch (e) {
-      print("Payment error: $e");
+      log("Payment error: $e", name: "PaymentBloc");
       return const Left("Unable to process payment");
     }
   }
@@ -60,6 +62,11 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         "metadata": {
           "order_id": orderId,
           "email": email,
+          "app_env": Constants.getFlavor == "dev"
+              ? "dev"
+              : Constants.getFlavor == "staging"
+                  ? "staging"
+                  : "prod",
           "amount": amount.toString(),
           "duration": duration,
           "payment_for": paymentFor
@@ -149,6 +156,22 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     } catch (e) {
       emit(const PaymentHistoryLoadErrorState(
           "Could not load payment history data at the moment"));
+    }
+  }
+
+  FutureOr<void> _mapStartFreeTrialEventToState(
+      StartFreeTrialEvent event, Emitter<PaymentState> emit) async {
+    try {
+      emit(PaymentProcessingState());
+      var response = await repository.startFreeTrial();
+      if (response is ErrorState) {
+        ServerErrorModel errorModel = response.value;
+        emit(PaymentFailureState(errorModel.errorMessage));
+      } else if (response is SuccessState) {
+        emit(const PaymentConfirmedState("Free trial confirmed"));
+      }
+    } catch (e) {
+      emit(const PaymentFailureState("Unable to complete request, try again!"));
     }
   }
 }

@@ -91,7 +91,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       BioDataEvent event, Emitter<AuthState> emit) async {
     emit(BioDataLoadingState());
     try {
-      var state = await authRepository.post_biodata(
+      var state = await authRepository.postBiodata(
           firstname: event.firstname,
           lastname: event.lastname,
           phoneNumber: event.phoneNumber,
@@ -170,7 +170,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(LogoutFaliureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -187,7 +186,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(CategoryFaliureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -205,8 +203,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(ForgotPasswordFailureState(error: 'Oops Something went wrong '));
-      // TODO
-
     }
   }
 
@@ -226,7 +222,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(ResetPasswordFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -243,7 +238,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(ConfirmTokenFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 }

@@ -15,6 +15,7 @@ class SearchResultScreen extends StatefulWidget {
 class _SearchResultScreenState extends State<SearchResultScreen> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.white,
@@ -34,7 +35,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> with AutomaticK
                   physics: const BouncingScrollPhysics(),
                   itemCount: widget.searchResponse.users.length,
                   shrinkWrap: true,
-                  itemBuilder: (context, index) =>  ResultItem(result: widget.searchResponse.users[index],),
+                  itemBuilder: (context, index) =>  SearchResultItem(result: widget.searchResponse.users[index],),
                 ),
               ):
                   Expanded(child: Center(child: Text('No results for your search..'),))

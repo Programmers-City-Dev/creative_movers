@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
+import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
@@ -36,7 +39,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   void initState() {
-    feedBloc.add(GetFeedEvent());
+    feedBloc.add(const GetFeedEvent());
     statusBloc.add(GetStatusEvent());
     super.initState();
   }
@@ -44,7 +47,6 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: CustomFeedAppBar(
         username: username,
       ),
@@ -53,6 +55,44 @@ class _FeedScreenState extends State<FeedScreen> {
         physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
+            SliverPersistentHeader(
+                // pinned: true,
+                floating: true,
+                delegate: SliverAppBarDelegate(
+                  PreferredSize(
+                    preferredSize: const Size.fromHeight(90),
+                    child: BlocBuilder<StatusBloc, StatusState>(
+                      bloc: statusBloc,
+                      builder: (context, state) {
+                        if (state is StatusLoadingState) {
+                          return const StatusShimmer();
+                        }
+                        if (state is StatusSuccessState) {
+                          return BlocProvider.value(
+                            value: statusBloc,
+                            child: StatusViews(
+                              curvedBottom: true,
+                              viewStatusResponse: state.viewStatusResponse,
+                            ),
+                          );
+                        }
+                        if (state is StatusFaliureState) {
+                          return Center(
+                            child: Text(state.error),
+                          );
+                        }
+                        return const StatusShimmer();
+                      },
+                    ),
+                  ),
+                )),
+            SliverToBoxAdapter(child: PostCard(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const CreatePostScreen(),
+                ));
+              },
+            )),
             // SliverPersistentHeader(
             //     pinned: true,
             //     floating: true,
@@ -77,45 +117,13 @@ class _FeedScreenState extends State<FeedScreen> {
         body: RefreshIndicator(
           onRefresh: (() async {
             await Future.delayed(const Duration(seconds: 1));
-            feedBloc.add(GetFeedEvent());
+            feedBloc.add(const GetFeedEvent());
             statusBloc.add(GetStatusEvent());
-
           }),
           child: CustomScrollView(
             // controller: _scrollController,
             physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverPersistentHeader(
-                  // pinned: true,
-                  floating: true,
-                  delegate: SliverAppBarDelegate(
-                    PreferredSize(
-                      preferredSize: const Size.fromHeight(90),
-                      child: BlocBuilder<StatusBloc, StatusState>(
-                        bloc: statusBloc,
-                        builder: (context, state) {
-                          if(state is StatusLoadingState){
-                            return const StatusShimmer();
-                          }if (state is StatusSuccessState){
-                              return  StatusViews(
-                              curvedBottom: true, viewStatusResponse: state.viewStatusResponse,
-                            );
-                          }if (state is StatusFaliureState){
-                            return   Center(child: Text(state.error),);
-                          }
-                          return const StatusShimmer();
-
-                        },
-                      ),
-                    ),
-                  )),
-              SliverToBoxAdapter(child: PostCard(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreatePostScreen(),
-                  ));
-                },
-              )),
               SliverPadding(
                 padding: const EdgeInsets.all(8),
                 sliver: BlocBuilder<FeedBloc, FeedState>(
@@ -130,11 +138,12 @@ class _FeedScreenState extends State<FeedScreen> {
                           (BuildContext context, int index) {
                             return NewPostItem(
                               feed: state.feedResponse.feeds.data[index],
+                              onUpdated: () {
+                                feedBloc.add(const GetFeedEvent());
+                              },
                             );
                           },
                           childCount: state.feedResponse.feeds.data.length,
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
                         ),
                       );
                     }
@@ -145,7 +154,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               child: AppPromptWidget(
                                 isSvgResource: true,
                                 message: state.error,
-                                onTap: () => feedBloc.add(GetFeedEvent()),
+                                onTap: () => feedBloc.add(const GetFeedEvent()),
                               )));
                     }
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -217,17 +226,77 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ));
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.notifications_rounded,
-                        color: AppColors.black,
+                    BlocProvider.value(
+                      value: injector.get<NotificationBloc>()
+                        ..add(FetchUserNotificationsEvent()),
+                      child: BlocBuilder<NotificationBloc, NotificationState>(
+                        builder: (context, state) {
+                          var notifications =
+                              context.watch<NotificationBloc>().notifications;
+                          if (state is UserNotificationsLoadedState) {
+                            int unreadNotifications = notifications
+                                .where((notification) =>
+                                    notification.readAt == null)
+                                .toList()
+                                .length;
+                            return Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                GestureDetector(
+                                  child: const Icon(
+                                    Icons.notifications_rounded,
+                                    color: AppColors.black,
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const NotificationScreen(),
+                                    ));
+                                  },
+                                ),
+                                unreadNotifications > 0
+                                    ? Positioned(
+                                        top: -10,
+                                        right: -5,
+                                        child: Container(
+                                          // height: 10,
+                                          // width: 10,
+                                          decoration: const BoxDecoration(
+                                              color: Colors.red,
+                                              shape: BoxShape.circle),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Text(
+                                              unreadNotifications > 9
+                                                  ? "9+"
+                                                  : '$unreadNotifications',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink()
+                              ],
+                            );
+                          }
+                          return IconButton(
+                            icon: const Icon(
+                              Icons.notifications_rounded,
+                              color: AppColors.black,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const NotificationScreen(),
+                              ));
+                            },
+                          );
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => NotificationScreen(),
-                        ));
-                      },
-                    ),
+                    )
                   ],
                 ),
               ],

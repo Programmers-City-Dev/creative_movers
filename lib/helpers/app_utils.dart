@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:creative_movers/models/ethnicity.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
@@ -11,15 +12,37 @@ import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class AppUtils {
+
   AppUtils._();
+
+  static List<EthnicityModel> get ethnicities {
+    Map<String, dynamic> _data = {
+      "Mixed / Multiple ethnic groups": [
+        "White and Black Caribbean",
+        "White and Black African",
+        "White and Asian",
+        "Other Mixed / Multiple ethnic background",
+      ],
+      "Black / African / Caribbean / Black British": [
+        "African",
+        "Caribbean",
+        "Other Black / African / Caribbean background",
+      ],
+      "Any other ethnic group": ["Any other ethnic group"]
+    };
+
+    List<EthnicityModel> list = [];
+    _data.forEach((k, v) => list.add(EthnicityModel(title: k, values: v)));
+    return list;
+  }
 
   static Future<Widget> getFirstScreen() async {
     bool isFirstTimeUser =
@@ -60,7 +83,31 @@ class AppUtils {
     return toBeginningOfSentenceCase(s)!;
   }
 
-  static String getTime(DateTime dateTime) {
+  static String getTime(DateTime date) {
+    final DateFormat formatter = DateFormat.jm();
+    return formatter.format(date);
+  }
+
+  static String getLastSeen(DateTime date) {
+    String lastSeen = "";
+
+    if (date.year == DateTime.now().year) {
+      String d = DateFormat("E, MMM d").format(date);
+      if (date.day == DateTime.now().day) {
+        lastSeen = 'Today ';
+      } else if (date.day == DateTime.now().day - 1) {
+        lastSeen = 'Yesterday ';
+      } else {
+        lastSeen = d;
+      }
+      String time = getTime(date);
+      return lastSeen + " @ " + time;
+    }
+    String time = getTime(date);
+    return lastSeen + " @ " + time;
+  }
+
+  static String getTimeAgo(DateTime dateTime) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     // DateTime dateTime = DateTime.parse(date);
@@ -532,6 +579,17 @@ class AppUtils {
     return DateFormat("MMMM dd, yyyy hh:mm a").format(createdAt);
   }
 
+  static String formatTimeAgo(DateTime date) {
+    if (date.day == DateTime.now().day) {
+      return 'Today ${DateFormat("hh:mm a").format(date)}';
+    } else if (date.day == DateTime.now().day - 1) {
+      return 'Yesterday ${DateFormat("hh:mm a").format(date)}';
+    }
+
+    return DateFormat.yMMMEd()
+        .format(date);
+  }
+
   static String getGroupLabel(int groupByValue) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(groupByValue);
     if (date.day == DateTime.now().day) {
@@ -542,6 +600,42 @@ class AppUtils {
 
     return DateFormat.yMMMEd()
         .format(DateTime.fromMillisecondsSinceEpoch(groupByValue));
+  }
+
+  static Future<void> launchInAppBrowser(
+      BuildContext context, String url) async {
+    try {
+      return launch(
+        url,
+        customTabsOption: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: false,
+          enableUrlBarHiding: false,
+          showPageTitle: false,
+          animation: CustomTabsSystemAnimation.slideIn(),
+          extraCustomTabs: const <String>[
+            'org.mozilla.firefox',
+            'com.microsoft.emmx',
+          ],
+        ),
+        safariVCOption: SafariViewControllerOption(
+          preferredBarTintColor: Theme.of(context).primaryColor,
+          preferredControlTintColor: Colors.white,
+          barCollapsingEnabled: true,
+          entersReaderIfAvailable: false,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e) {
+// An exception is thrown if browser app is not installed on Android device.
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
+  static String formatDateTime(int? t) {
+    return DateFormat("E MMM d, yyyy・h:mm a")
+        .format(DateTime.fromMillisecondsSinceEpoch(t!));
   }
 }
 

@@ -19,6 +19,7 @@ class SimplifyApiConsuming {
   ///@Param [statusCodeSuccess] an [int] status code to validate success of the request, if [isStatusCode] == true
   ///@Param [successResponse] a [Function] to execute if request is successful, must have a return statement
   /// Returns [Future<ResponseModel>]
+  ///
   static Future<State> makeRequest(
       Future<Response<dynamic>> Function() requestFunction,
       {bool isStatusCode = true,
@@ -39,7 +40,7 @@ class SimplifyApiConsuming {
             data: null),
       );
     } on DioError catch (e) {
-      print("dio error request is ${e.response}");
+      print("dio error request is:  ${e.response?.requestOptions.queryParameters}");
       if (dioErrorResponse != null) {
         return dioErrorResponse(e.response!);
       } else {
@@ -61,6 +62,9 @@ class SimplifyApiConsuming {
     }
   }
 
+
+
+
   static Future<State> _makeRequest(
       Future<Response> requestFunction(),
       bool isStatusCode,
@@ -68,6 +72,7 @@ class SimplifyApiConsuming {
       State successResponse(dynamic data),
       State errorResponse(Response data)) async {
     var response = await requestFunction();
+
 
     if (isStatusCode) {
       return _handleResponseBasedOnStatusCode(
@@ -77,6 +82,12 @@ class SimplifyApiConsuming {
           response, successResponse, errorResponse);
     }
   }
+
+
+
+
+
+
 
   static State _handleResponseBasedOnStatusCode(
       Response response,

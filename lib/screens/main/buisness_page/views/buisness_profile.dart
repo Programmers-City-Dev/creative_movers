@@ -1,9 +1,7 @@
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
-import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,8 +35,8 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
     _buisnessBloc.add(PageSuggestionsEvent());
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
-    if (widget.profile.profile.pages.length > 2) {
-      pages = widget.profile.profile.pages.getRange(0, 2).toList();
+    if (widget.profile.profile.pages.length > 5) {
+      pages = widget.profile.profile.pages.getRange(0, 5).toList();
     } else {
       pages = widget.profile.profile.pages;
     }
@@ -102,7 +100,8 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                   children: [
                     Text(
                       ' ${widget.profile.profile.firstname} ${widget.profile.profile.lastname}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15),
                     ),
                     const SizedBox(
                       width: 5,
@@ -127,10 +126,10 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                 ),
                 Text(
                   widget.profile.profile.biodata,
-                  style: const TextStyle(fontSize: 13,color: Colors.grey),
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
                 widget.profile.profile.role == 'creative'
                     ? Container(
@@ -139,21 +138,37 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                           children: [
                             const Text(
                               'Buisness Category',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                             Wrap(
                                 spacing: 5,
                                 children: widget.profile.profile.categories
-                                    .map((e) => Chip(label: Text(e)))
+                                    .map((e) => Chip(
+                                          label: Text(
+                                            e,
+                                            style: const TextStyle(
+                                                color: Colors.blueGrey),
+                                          ),
+                                          backgroundColor: Colors.grey.shade200,
+                                        ))
                                     .toList()),
+                            const SizedBox(
+                              height: 16,
+                            ),
                             Row(
                               children: [
                                 const Text(
                                   'Buisness Pages',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16),
+                                ),
+                                const SizedBox(
+                                  height: 5,
                                 ),
                                 Expanded(child: SizedBox()),
-                                widget.profile.profile.pages.length > 3
+                                widget.profile.profile.pages.length >= 5
                                     ? const Text(
                                         'View more',
                                         style: TextStyle(
@@ -166,39 +181,49 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                               height: 10,
                             ),
                             pages.isNotEmpty
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: pages.length,
-                                    itemBuilder: (context, index) => InkWell(
-                                      onTap: () {
-                                        // Navigator.pop(context);
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              BuisnessPageScreen(
-                                            page: pages[index],
-                                          ),
-                                        ));
-                                      },
-                                      child: Container(
-                                        color: AppColors.white,
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5),
-                                        padding: const EdgeInsets.all(10),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: NetworkImage(
-                                                          // ''
-                                                          widget
+                                ? Container(
+                                    height: 130,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: pages.length,
+                                      itemBuilder: (context, index) => InkWell(
+                                        onTap: () {
+                                          // Navigator.pop(context);
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                BuisnessPageScreen(
+                                              page: pages[index],
+                                            ),
+                                          ));
+                                        },
+                                        child: Card(
+                                          elevation: 0,
+                                          // shadowColor: AppColors.smokeWhite,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6)),
+                                          child: SizedBox(
+                                            width: 110,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  width: 110,
+                                                  height: 70,
+                                                  margin:
+                                                      const EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: NetworkImage(widget
                                                                       .profile
                                                                       .profile
                                                                       .pages[
@@ -210,22 +235,46 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                                   .profile
                                                                   .pages[index]
                                                                   .photoPath!
-                                                              : 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'
-
-                                                          // widget.profile.profile.pages[index].,
-                                                          ))),
+                                                              : 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'))),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 5,
+                                                  ),
+                                                  child: Text(
+                                                    widget.profile.profile
+                                                        .pages[index].name,
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 5,
+                                                  ),
+                                                  child: Text(
+                                                    widget
+                                                        .profile
+                                                        .profile
+                                                        .pages[index]
+                                                        .category[0],
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.blueGrey),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              widget.profile.profile
-                                                  .pages[index].name,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12),
-                                            )
-                                          ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -242,7 +291,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                 ));
                               },
                               child: Container(
-                                color: Colors.grey.shade200,
+                                color: Colors.white,
                                 padding: const EdgeInsets.all(10),
                                 child: Row(
                                   children: [
@@ -264,7 +313,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                     const Text(
                                       'CREATE A BUISNESS PAGE',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
                                           color: AppColors.primaryColor,
                                           fontSize: 12),
                                     )
@@ -305,7 +354,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text(
@@ -352,134 +401,166 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                               height: 5,
                             ),
                             SizedBox(
-                              height: 80,
+                              height: 130,
                               child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount:
                                     state.buisnessProfile.sugestedpages.length,
                                 scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              ViewBuisnessPageScreen(
-                                                  page_id: state.buisnessProfile
-                                                      .sugestedpages[index].id
-                                                      .toString()),
-                                        ));
-                                      },
-                                      child: Container(
-                                        width: 100,
-                                        height: 60,
-                                        margin: EdgeInsets.only(right: 5),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  state
+                                itemBuilder: (context, index) => Card(
+                                  elevation: 0,
+                                  // shadowColor: AppColors.smokeWhite,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  child: SizedBox(
+                                    width: 110,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewBuisnessPageScreen(
+                                                      pageId: state
+                                                          .buisnessProfile
+                                                          .sugestedpages[index]
+                                                          .id
+                                                          .toString()),
+                                            ));
+                                          },
+                                          child: Container(
+                                            width: 100,
+                                            height: 70,
+                                            margin: const EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                      state
+                                                                  .buisnessProfile
+                                                                  .sugestedpages[
+                                                                      index]
+                                                                  .photoPath ==
+                                                              null
+                                                          ? 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'
+                                                          : state
                                                               .buisnessProfile
                                                               .sugestedpages[
                                                                   index]
-                                                              .photoPath ==
-                                                          null
-                                                      ? 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'
-                                                      : state
-                                                          .buisnessProfile
-                                                          .sugestedpages[index]
-                                                          .photoPath!,
-                                                ))),
-                                        // child: Stack(
-                                        //   children: [
-                                        //     Container(
-                                        //       decoration: BoxDecoration(
-                                        //           gradient: LinearGradient(
-                                        //               colors: [
-                                        //                 AppColors.black.withOpacity(1),
-                                        //                 AppColors.black.withOpacity(0.5),
-                                        //                 AppColors.black.withOpacity(0.3)
-                                        //               ],
-                                        //               begin: Alignment.bottomCenter,
-                                        //               end: Alignment.topCenter)),
-                                        //     ),
-                                        //     Align(
-                                        //         alignment: Alignment.bottomLeft,
-                                        //         child: Padding(
-                                        //           padding: const EdgeInsets.all(16),
-                                        //           child: Column(
-                                        //             crossAxisAlignment:
-                                        //             CrossAxisAlignment.start,
-                                        //             mainAxisSize: MainAxisSize.min,
-                                        //             children: const [
-                                        //               Text(
-                                        //                 ' widget.page.name',
-                                        //                 style: TextStyle(
-                                        //                     color: Colors.white,
-                                        //                     fontSize: 20),
-                                        //               ),
-                                        //               SizedBox(
-                                        //                 height: 5,
-                                        //               ),
-                                        //               // Row(
-                                        //               //   children: [
-                                        //               //     ImageStack.providers(
-                                        //               //       imageBorderWidth: 1,
-                                        //               //       providers: const [
-                                        //               //         NetworkImage(
-                                        //               //             'https://encrypted-tbn0.gstatic.com/imag'
-                                        //               //                 'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                        //               //                 'IsMSaTdFerTaA&usqp=CAU'),
-                                        //               //         NetworkImage(
-                                        //               //             'https://encrypted-tbn0.gstatic.com/imag'
-                                        //               //                 'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                        //               //                 'IsMSaTdFerTaA&usqp=CAU'),
-                                        //               //         NetworkImage(
-                                        //               //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                        //               //               'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                        //               //               'LZKNzyR9E9kzjH55-w&usqp=CAU',
-                                        //               //         ),
-                                        //               //         NetworkImage(
-                                        //               //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                        //               //               'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                        //               //               'LZKNzyR9E9kzjH55-w&usqp=CAU',
-                                        //               //         )
-                                        //               //       ],
-                                        //               //       totalCount: 5,
-                                        //               //       imageCount: 5,
-                                        //               //     ),
-                                        //               //     SizedBox(
-                                        //               //       width: 10,
-                                        //               //     ),
-                                        //               //   ],
-                                        //               // ),
-                                        //               SizedBox(
-                                        //                 height: 5,
-                                        //               ),
-                                        //             ],
-                                        //           ),
-                                        //         ))
-                                        //   ],
-                                        // ),
-                                      ),
+                                                              .photoPath!,
+                                                    ))),
+                                            // child: Stack(
+                                            //   children: [
+                                            //     Container(
+                                            //       decoration: BoxDecoration(
+                                            //           gradient: LinearGradient(
+                                            //               colors: [
+                                            //                 AppColors.black.withOpacity(1),
+                                            //                 AppColors.black.withOpacity(0.5),
+                                            //                 AppColors.black.withOpacity(0.3)
+                                            //               ],
+                                            //               begin: Alignment.bottomCenter,
+                                            //               end: Alignment.topCenter)),
+                                            //     ),
+                                            //     Align(
+                                            //         alignment: Alignment.bottomLeft,
+                                            //         child: Padding(
+                                            //           padding: const EdgeInsets.all(16),
+                                            //           child: Column(
+                                            //             crossAxisAlignment:
+                                            //             CrossAxisAlignment.start,
+                                            //             mainAxisSize: MainAxisSize.min,
+                                            //             children: const [
+                                            //               Text(
+                                            //                 ' widget.page.name',
+                                            //                 style: TextStyle(
+                                            //                     color: Colors.white,
+                                            //                     fontSize: 20),
+                                            //               ),
+                                            //               SizedBox(
+                                            //                 height: 5,
+                                            //               ),
+                                            //               // Row(
+                                            //               //   children: [
+                                            //               //     ImageStack.providers(
+                                            //               //       imageBorderWidth: 1,
+                                            //               //       providers: const [
+                                            //               //         NetworkImage(
+                                            //               //             'https://encrypted-tbn0.gstatic.com/imag'
+                                            //               //                 'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
+                                            //               //                 'IsMSaTdFerTaA&usqp=CAU'),
+                                            //               //         NetworkImage(
+                                            //               //             'https://encrypted-tbn0.gstatic.com/imag'
+                                            //               //                 'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
+                                            //               //                 'IsMSaTdFerTaA&usqp=CAU'),
+                                            //               //         NetworkImage(
+                                            //               //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
+                                            //               //               'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
+                                            //               //               'LZKNzyR9E9kzjH55-w&usqp=CAU',
+                                            //               //         ),
+                                            //               //         NetworkImage(
+                                            //               //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
+                                            //               //               'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
+                                            //               //               'LZKNzyR9E9kzjH55-w&usqp=CAU',
+                                            //               //         )
+                                            //               //       ],
+                                            //               //       totalCount: 5,
+                                            //               //       imageCount: 5,
+                                            //               //     ),
+                                            //               //     SizedBox(
+                                            //               //       width: 10,
+                                            //               //     ),
+                                            //               //   ],
+                                            //               // ),
+                                            //               SizedBox(
+                                            //                 height: 5,
+                                            //               ),
+                                            //             ],
+                                            //           ),
+                                            //         ))
+                                            //   ],
+                                            // ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 5,
+                                          ),
+                                          child: Text(
+                                            state.buisnessProfile
+                                                .sugestedpages[index].name,
+                                            style:
+                                                const TextStyle(fontSize: 12),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 5,
+                                          ),
+                                          child: Text(
+                                            state
+                                                .buisnessProfile
+                                                .sugestedpages[index]
+                                                .category[0],
+                                            style: const TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.blueGrey),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      state.buisnessProfile.sugestedpages[index]
-                                          .name,
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ),
                             )
@@ -487,7 +568,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                         ),
                       );
                     }
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   },
                 ),
               ],

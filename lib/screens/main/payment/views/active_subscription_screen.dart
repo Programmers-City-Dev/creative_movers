@@ -84,7 +84,9 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                           : 'Subscription',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  subtitle: Text('Monthly Subscription'),
+                                  subtitle: Text(subscription.status == "trial"
+                                      ? "Free trial"
+                                      : 'Monthly Subscription'),
                                   trailing: Text('\$${subscription.amount}'),
                                 ),
                                 ListTile(
@@ -109,12 +111,16 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                     decoration: BoxDecoration(
                                         color: subscription.status == "active"
                                             ? AppColors.lightBlue
-                                            : AppColors.red,
+                                            : subscription.status == "trial"
+                                                ? Colors.orange
+                                                : AppColors.red,
                                         borderRadius: BorderRadius.circular(5)),
                                     child: Text(
                                       subscription.status == "active"
                                           ? 'Active'
-                                          : 'Inactive',
+                                          : subscription.status == "trial"
+                                              ? "Free Trial"
+                                              : 'Inactive',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -132,9 +138,13 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                             height: 16,
                           ),
                           CustomButton(
-                            child: Text(
-                                subscription.subType.toLowerCase() == 'new'
-                                    ? 'Topup Subscription'
+                            child: Text(subscription.subType.toLowerCase() ==
+                                    'new'
+                                ? 'Topup Subscription'
+                                : subscription.subType.toLowerCase() == 'new' &&
+                                        subscription.type.toLowerCase() ==
+                                            "free_trial"
+                                    ? "Subscribe Now"
                                     : 'Renew Subscription'),
                             onTap: () {
                               Navigator.of(context).pushNamed('/payment');

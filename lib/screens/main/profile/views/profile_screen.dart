@@ -1,13 +1,10 @@
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
-import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/paths.dart';
-import 'package:creative_movers/main.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
@@ -21,23 +18,23 @@ import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key, this.user_id}) : super(key: key);
-  final int? user_id;
+  const ProfileScreen({Key? key, this.userId}) : super(key: key);
+  final int? userId;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _profileBloc = injector.get<ProfileBloc>();
+  late final _profileBloc = injector.get<ProfileBloc>();
 
   @override
   void initState() {
     super.initState();
-    log(widget.user_id.toString());
-    widget.user_id == null
+    log(widget.userId.toString());
+    widget.userId == null
         ? _profileBloc.add(const FetchUserProfileEvent())
-        : _profileBloc.add(FetchUserProfileEvent(widget.user_id));
+        : _profileBloc.add(FetchUserProfileEvent(widget.userId));
   }
 
   @override
@@ -49,9 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, state) {
           if (state is ProfileLoadedState) {
             User user = state.user;
-            injector
-                .get<CacheCubit>()
-                .updateCachedUserData(user.toCachedUser());
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,26 +61,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 250,
                             color: AppColors.primaryColor,
                             // decoration: BoxDecoration(image: ()),
-                            child: Hero(
-                              tag: "cover_photo",
-                              child: GestureDetector(
-                                onTap: user.coverPhotoPath != null
-                                    ? () => showDialog(
-                                          context: mainNavKey.currentContext!,
-                                          // isDismissible: false,
-                                          // enableDrag: false,
-                                          barrierDismissible: true,
-                                          builder: (context) => ImagePreviewer(
-                                            imageUrl: user.coverPhotoPath!,
-                                            heroTag: "cover_photo",
-                                            tightMode: true,
-                                          ),
-                                        )
-                                    : null,
-                                child: WidgetNetworkImage(
-                                  image: user.coverPhotoPath,
-                                  fit: BoxFit.cover,
-                                ),
+                            child: GestureDetector(
+                              onTap: user.coverPhotoPath != null
+                                  ? () => showDialog(
+                                        context: mainNavKey.currentContext!,
+                                        // isDismissible: false,
+                                        // enableDrag: false,
+                                        barrierDismissible: true,
+                                        builder: (context) => ImagePreviewer(
+                                          imageUrl: user.coverPhotoPath!,
+                                          heroTag: "cover_photo",
+                                          tightMode: true,
+                                        ),
+                                      )
+                                  : null,
+                              child: WidgetNetworkImage(
+                                image: user.coverPhotoPath,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
@@ -453,15 +444,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(
                           height: 16,
                         ),
-                        const Text(
-                          'CONNECTS',
-                          style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'CONNECTS',
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            TextButton(
+                                onPressed: () {},
+                                child: const Text("View All",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.primaryColor))),
+                          ],
                         ),
                         user.connections!.isNotEmpty
-                            ? Container(
-                                height: 60,
+                            ? SizedBox(
+                                height: 100,
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -474,12 +476,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             Padding(
                                           padding:
                                               const EdgeInsets.only(right: 8),
-                                          child: CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                              user.connections![index]
-                                                  ["profile_photo_path"],
+                                          child: GestureDetector(
+                                            // onTap: () {
+                                            //   Navigator.of(context)
+                                            //       .pushNamed(viewProfilePath, arguments: {
+                                            //     "user_id": int.parse(user.connections![index]['id'].toString())
+                                            //
+                                            //   });
+                                            // },
+                                            child: Card(
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              shadowColor: AppColors.smokeWhite,
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 25,
+                                                      backgroundColor:
+                                                          Colors.blueAccent,
+                                                      child: CircleAvatar(
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                          user.connections![
+                                                                  index][
+                                                              "profile_photo_path"],
+                                                        ),
+                                                        radius: 23,
+                                                      ),
+                                                    ),
+                                                    Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Text(
+                                                          '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 11),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(1.0),
+                                                        child: Text(
+                                                          '${user.connections![index]['role']}',
+                                                          style: const TextStyle(
+                                                              fontSize: 10,
+                                                              color: Colors
+                                                                  .blueGrey),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                            radius: 25,
                                           ),
                                         ),
                                       ),
@@ -492,10 +560,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             style: TextButton.styleFrom(
                                                 backgroundColor:
                                                     AppColors.lightBlue,
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 10)),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10)),
                                           )
-                                        : SizedBox.shrink(),
+                                        : const SizedBox.shrink(),
                                   ],
                                 ),
                               )
@@ -665,7 +734,7 @@ class UserMetricsOverview extends StatelessWidget {
               ),
             ),
             const Text(
-              "Follwing",
+              "Following",
               style: TextStyle(fontSize: 13),
             ),
           ],

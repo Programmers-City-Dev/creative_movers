@@ -1,3 +1,4 @@
+import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -8,7 +9,7 @@ import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
 class EditGenderDialog extends StatefulWidget {
-  final VoidCallback onSuccess;
+  final Function(User) onSuccess;
   const EditGenderDialog({Key? key, required this.onSuccess}) : super(key: key);
 
   @override
@@ -16,7 +17,6 @@ class EditGenderDialog extends StatefulWidget {
 }
 
 class _EditGenderDialogState extends State<EditGenderDialog> {
-  final _phoneNumberController = TextEditingController();
   final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
   final _profileBloc = ProfileBloc(injector.get());
   List<String> genders = ['Male' , 'Female'];
@@ -36,7 +36,7 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
         }
         if (state is ProfileUpdateLoadedState) {
 
-          widget.onSuccess();
+          widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
           AppUtils.showCustomToast(

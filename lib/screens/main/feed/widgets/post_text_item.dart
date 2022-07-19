@@ -1,7 +1,6 @@
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostTextItem extends StatelessWidget {
@@ -43,7 +42,7 @@ class PostTextItem extends StatelessWidget {
               ),
               Text(feed!.content!),
               Text(
-                AppUtils.getTime(feed!.createdAt),
+                AppUtils.getTimeAgo(feed!.createdAt),
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],

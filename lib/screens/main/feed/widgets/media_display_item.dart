@@ -1,15 +1,14 @@
 
-import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:chewie/chewie.dart';
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
-import 'package:creative_movers/data/remote/model/media.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_preview_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../../../widget/image_previewer.dart';
 
 class MediaDisplayItem extends StatefulWidget {
   const MediaDisplayItem({Key? key, required this.media}) : super(key: key);
@@ -48,13 +47,26 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
   @override
   Widget build(BuildContext context) {
     return widget.media.type == 'image'
-        ? Container(
-            height: 250,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(widget.media.mediaPath))),
-          )
+        ? GestureDetector(
+      onTap:  () => showDialog(
+        context: context,
+        // isDismissible: false,
+        // enableDrag: false,
+        barrierDismissible: true,
+        builder: (context) => ImagePreviewer(
+          imageUrl: widget.media.mediaPath,
+          heroTag: "cover_photo",
+          tightMode: true,
+        ),
+      ),
+          child: Container(
+              height: 250,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(widget.media.mediaPath))),
+            ),
+        )
         : FutureBuilder<Uint8List?>(
             future: VideoThumbnail.thumbnailData(
               video: widget.media.mediaPath,
@@ -95,12 +107,10 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                     ),
                   ]);
                 } else {
-                  return  Container(   color: AppColors.black,child: Center(child: CircularProgressIndicator()) );
+                  return  Container(   color: AppColors.black,child: const Center(child: CircularProgressIndicator()) );
                 }
               } else {
-                return Container(
-
-                    child:Text(snapshot.error.toString()));
+                return Text(snapshot.error.toString());
               }
             });
   }

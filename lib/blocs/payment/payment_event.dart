@@ -42,3 +42,5 @@ class GetPaymentHistoryEvent extends PaymentEvent {
   @override
   List<Object> get props => [];
 }
+
+class StartFreeTrialEvent extends PaymentEvent{}

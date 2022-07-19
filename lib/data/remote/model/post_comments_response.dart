@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
 
 PostCommentResponse postCommentResponseFromJson(String str) =>
     PostCommentResponse.fromJson(json.decode(str));

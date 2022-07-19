@@ -6,7 +6,6 @@ import 'dart:convert';
 
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 
-import 'feedsResponse.dart';
 
 GetPageResponse getPageResponseFromJson(String str) => GetPageResponse.fromJson(json.decode(str));
 

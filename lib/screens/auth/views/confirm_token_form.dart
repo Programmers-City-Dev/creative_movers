@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -7,41 +6,32 @@ import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_countdown_timer/index.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ConfirmTokenForm extends StatefulWidget {
-  const ConfirmTokenForm({Key? key, required this.onFinish, required this.email}) : super(key: key);
+  const ConfirmTokenForm(
+      {Key? key, required this.onFinish, required this.email})
+      : super(key: key);
   final VoidCallback onFinish;
-  final String email ;
+  final String email;
 
   @override
   _ConfirmTokenFormState createState() => _ConfirmTokenFormState();
 }
 
 class _ConfirmTokenFormState extends State<ConfirmTokenForm> {
-  AuthBloc _authBloc = AuthBloc();
+  final AuthBloc _authBloc = AuthBloc();
   bool isLoading = false;
   int _counter = 30;
-
-
-  final _countDownController = CountdownTimerController(
-    endTime: DateTime.now().millisecondsSinceEpoch + 1000 * 12,
-  );
-  final _countDown = CountdownController(duration: const Duration(seconds: 10));
-  Countdown timer = Countdown(
-    countdownController:
-        CountdownController(duration: const Duration(seconds: 10)),
-  );
-  late Timer countdown;
 
   final _pinController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  Timer? timer;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startTimer();
   }
@@ -125,15 +115,15 @@ class _ConfirmTokenFormState extends State<ConfirmTokenForm> {
             ),
             Center(
                 child: BlocConsumer<AuthBloc, AuthState>(
-                  bloc: _authBloc,
+              bloc: _authBloc,
               listener: (context, state) {
-               _listenToForgotPasswordState(context, state);
+                _listenToForgotPasswordState(context, state);
               },
               builder: (context, state) {
-                if (state is ForgotPasswordLoadingState){
-                 return const Text('Resending PIN....');
+                if (state is ForgotPasswordLoadingState) {
+                  return const Text('Resending PIN....');
                 }
-                if(state is ForgotPasswordSuccessState){
+                if (state is ForgotPasswordSuccessState) {
                   return Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -143,46 +133,19 @@ class _ConfirmTokenFormState extends State<ConfirmTokenForm> {
                       _counter > 0
                           ? Text('Resend code in $_counter secs')
                           : InkWell(
-                        child: const Text(
-                          'RESEND CODE',
-                          style: TextStyle(color: AppColors.primaryColor),
-                        ),
-                        onTap: () {
-
-                          _authBloc.add(ForgotPasswordEvent(email: 'cdc'));
-
-                        },
-                      ),
+                              child: const Text(
+                                'RESEND CODE',
+                                style: TextStyle(color: AppColors.primaryColor),
+                              ),
+                              onTap: () {
+                                _authBloc
+                                    .add(ForgotPasswordEvent(email: 'cdc'));
+                              },
+                            ),
                     ],
                   );
                 }
-                if(state is ForgotPasswordFailureState){
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        width: 5,
-                      ),
-
-                      _counter != 0
-                          ? Text('Resend code in $_counter ')
-                          : InkWell(
-                        child: const Text(
-                          'RESEND CODE',
-                          style: TextStyle(color: AppColors.primaryColor),
-                        ),
-                        onTap: () {
-
-
-                          _authBloc.add(ForgotPasswordEvent(email: widget.email));
-
-
-                        },
-                      ),
-
-                    ],
-                  );
-                }else{
+                if (state is ForgotPasswordFailureState) {
                   return Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -192,19 +155,39 @@ class _ConfirmTokenFormState extends State<ConfirmTokenForm> {
                       _counter != 0
                           ? Text('Resend code in $_counter ')
                           : InkWell(
-                        child: const Text(
-                          'RESEND CODE',
-                          style: TextStyle(color: AppColors.primaryColor),
-                        ),
-                        onTap: () {
-                          _authBloc.add(ForgotPasswordEvent(email: widget.email));
-
-                        },
+                              child: const Text(
+                                'RESEND CODE',
+                                style: TextStyle(color: AppColors.primaryColor),
+                              ),
+                              onTap: () {
+                                _authBloc.add(
+                                    ForgotPasswordEvent(email: widget.email));
+                              },
+                            ),
+                    ],
+                  );
+                } else {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        width: 5,
                       ),
+                      _counter != 0
+                          ? Text('Resend code in $_counter ')
+                          : InkWell(
+                              child: const Text(
+                                'RESEND CODE',
+                                style: TextStyle(color: AppColors.primaryColor),
+                              ),
+                              onTap: () {
+                                _authBloc.add(
+                                    ForgotPasswordEvent(email: widget.email));
+                              },
+                            ),
                     ],
                   );
                 }
-
               },
             )),
             const SizedBox(
@@ -255,9 +238,9 @@ class _ConfirmTokenFormState extends State<ConfirmTokenForm> {
       });
     }
   }
+
   void _listenToForgotPasswordState(BuildContext context, AuthState state) {
     if (state is ForgotPasswordLoadingState) {
-
     } else if (state is ForgotPasswordSuccessState) {
       _counter = 30;
       AppUtils.showCustomToast('PIN SENT..');
@@ -268,21 +251,21 @@ class _ConfirmTokenFormState extends State<ConfirmTokenForm> {
   }
 
   void startTimer() {
-
-    countdown = Timer.periodic(const Duration(milliseconds: 100*30), (timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 100 * 30), (timer) {
       setState(() {
         if (_counter > 0) {
           _counter--;
-        }else{
+        } else {
           timer.cancel();
         }
       });
     });
-
   }
 
   void restarTimer() {
-    countdown.cancel();
-    startTimer();
+    if (timer != null) {
+      timer!.cancel();
+      startTimer();
+    }
   }
 }

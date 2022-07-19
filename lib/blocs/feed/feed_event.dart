@@ -5,39 +5,71 @@ abstract class FeedEvent extends Equatable {
 }
 
 class AddFeedEvent extends FeedEvent {
-  String type;
+  final String type;
+  final String? pageId;
+  final String content;
+  final List<String> media;
+
+  const AddFeedEvent(
+      {required this.type,
+      this.pageId,
+      required this.content,
+      required this.media});
+
+  @override
+  List<Object?> get props => [type, pageId, content, media];
+}
+
+class GetFeedEvent extends FeedEvent {
+  const GetFeedEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FetchFeedItemEvent extends FeedEvent {
+  final int feedId;
+
+  const FetchFeedItemEvent(this.feedId);
+
+  @override
+  List<Object?> get props => [feedId];
+}
+
+class CommentEvent extends FeedEvent {
+  final String feedId;
+  final String comment;
+
+  const CommentEvent({required this.feedId, required this.comment});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class LikeEvent extends FeedEvent {
+  final String feeId;
+  const LikeEvent({required this.feeId});
+
+  @override
+  List<Object?> get props => [feeId];
+}
+
+class EditFeedEvent extends FeedEvent {
+  String feed_id;
   String? pageId;
   String content;
   List<String> media;
 
 
-  AddFeedEvent({required this.type, this.pageId, required this.content, required this.media});
+  EditFeedEvent({required this.feed_id, this.pageId, required this.content, required this.media});
 
   @override
-  List<Object?> get props => [type,pageId,content,media];
+  List<Object?> get props => [feed_id,pageId,content,media];
 }
 
-class GetFeedEvent extends FeedEvent {
-
-
-
-  GetFeedEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-class CommentEvent extends FeedEvent {
- final String feed_id;
- final String comment;
-
-  CommentEvent({required this.feed_id, required this.comment});
-
-  @override
-  List<Object?> get props => [];
-}
-class LikeEvent extends FeedEvent {
- final String feed_id;
- LikeEvent({required this.feed_id});
+class DeleteFeedEvent extends FeedEvent {
+  final String feed_id;
+  const DeleteFeedEvent({required this.feed_id});
 
   @override
   List<Object?> get props => [];

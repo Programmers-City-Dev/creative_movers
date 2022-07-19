@@ -20,7 +20,7 @@ class PaymentRepository {
   Future<State> createPaymentIntent(Map body) async {
     log("SECRETE:${FirebaseRemoteConfig.instance.getString('stripe_secret_key')}");
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.stripe_intent,
+      () => httpClient.post(Endpoints.stripeIntent,
           body: body,
           options: Options(headers: {
             "Authorization":
@@ -70,7 +70,7 @@ class PaymentRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER FROM FETCH SUBSCRIPTION');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -87,6 +87,35 @@ class PaymentRepository {
       successResponse: (data) {
         return State<PaymentHistoryResponse?>.success(
             PaymentHistoryResponse.fromMap(data));
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+   Future<State> startFreeTrial() async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(Endpoints.startFreeTrial),
+      successResponse: (data) {
+        return State<String?>.success(
+            "Free trial activation successful");
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

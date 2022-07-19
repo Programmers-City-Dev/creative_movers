@@ -60,7 +60,6 @@ class _MoverFormState extends State<MoverForm>
       bloc: _authBloc,
       listener: (context, state) {
         _listenToAccountTypeState(context, state);
-        // TODO: implement listener
       },
       child: Form(
         key: myFormKey,

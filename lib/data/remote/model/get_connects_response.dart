@@ -93,24 +93,26 @@ class Connections {
 }
 
 class Connection {
-  Connection({
-    this.id,
-    this.myId,
-    required this.userId,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.username,
-    required this.role,
-    required this.firstname,
-    required this.lastname,
-    required this.profilePhotoPath,
-    required this.connects,
-  });
+  Connection(
+      {this.id,
+      this.myId,
+      required this.user_connect_id,
+      required this.userId,
+      required this.status,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.username,
+      required this.role,
+      required this.firstname,
+      required this.lastname,
+      required this.profilePhotoPath,
+      required this.connects,
+      this.conversationId});
 
   int? id;
   String? myId;
   String userId;
+  int user_connect_id;
   String status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -118,12 +120,14 @@ class Connection {
   String role;
   String firstname;
   String lastname;
+  int? conversationId;
   String profilePhotoPath;
   List<Connect> connects;
 
   factory Connection.fromJson(Map<String, dynamic> json) => Connection(
         id: json["id"],
         myId: json["my_id"],
+        user_connect_id: json["user_connect_id"],
         userId: json["user_id"],
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -132,15 +136,19 @@ class Connection {
         role: json["role"],
         firstname: json["firstname"],
         lastname: json["lastname"],
-        profilePhotoPath: json["profile_photo_path"],
+        conversationId: json["conversation_id"],
         connects: List<Connect>.from(
             json["connects"].map((x) => Connect.fromJson(x))),
+        profilePhotoPath: json["profile_photo_path"],
       );
+
+  String get fullName => '$firstname $lastname';
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "my_id": myId,
         "user_id": userId,
+        "user_connect_id": user_connect_id,
         "status": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
@@ -149,6 +157,7 @@ class Connection {
         "firstname": firstname,
         "lastname": lastname,
         "profile_photo_path": profilePhotoPath,
+        "conversation_id": conversationId,
         "connects": List<dynamic>.from(connects.map((x) => x.toJson())),
       };
 }

@@ -1,8 +1,7 @@
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CommentItem extends StatelessWidget {
   const CommentItem({Key? key, required this.comment}) : super(key: key);
@@ -11,7 +10,7 @@ class CommentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -23,7 +22,7 @@ class CommentItem extends StatelessWidget {
               radius: 18,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Expanded(
@@ -34,7 +33,7 @@ class CommentItem extends StatelessWidget {
             children: [
               Text(
                 ' ${comment.user.firstname} ${comment.user.lastname}',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(comment.comment),
               const SizedBox(
@@ -44,7 +43,7 @@ class CommentItem extends StatelessWidget {
                 children: [
                    Text(
                      comment.createdAt != null?
-                    AppUtils.getTime(comment.createdAt!):'1 sec ago',
+                    AppUtils.getTimeAgo(comment.createdAt!):'1 sec ago',
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   // const SizedBox(

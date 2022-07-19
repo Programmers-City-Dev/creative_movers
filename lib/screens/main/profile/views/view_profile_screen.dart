@@ -1,9 +1,11 @@
 import 'dart:developer';
 
-import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/app.dart';
+import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
@@ -18,11 +20,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../../../main.dart';
-
 class ViewProfileScreen extends StatefulWidget {
-  const ViewProfileScreen({Key? key, this.user_id}) : super(key: key);
-  final int? user_id;
+  const ViewProfileScreen({Key? key, this.userId}) : super(key: key);
+  final int? userId;
 
   @override
   _ViewProfileScreenState createState() => _ViewProfileScreenState();
@@ -30,28 +30,39 @@ class ViewProfileScreen extends StatefulWidget {
 
 class _ViewProfileScreenState extends State<ViewProfileScreen> {
   final _profileBloc = injector.get<ProfileBloc>();
+  final _connectsBloc = ConnectsBloc();
+  late bool isFollowing;
+
+  late String isConnected;
 
   @override
   void initState() {
     super.initState();
-    log(widget.user_id.toString());
-    widget.user_id == null
+    log(widget.userId.toString());
+    widget.userId == null
         ? _profileBloc.add(const FetchUserProfileEvent())
-        : _profileBloc.add(FetchUserProfileEvent(widget.user_id));
+        : _profileBloc.add(FetchUserProfileEvent(widget.userId));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.smokeWhite,
-      body: BlocBuilder<ProfileBloc, ProfileState>(
+      body: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (ctx, state) {
+          if (state is ProfileLoadedState) {
+            User user = state.user;
+            log('ISFOLLOWING ${user.isFollowing.toString()}');
+            log('ISCONNECTED ${user.isConnected.toString()}');
+            isFollowing = user.isFollowing!;
+            isConnected = user.isConnected!;
+          }
+        },
         bloc: _profileBloc,
         builder: (context, state) {
           if (state is ProfileLoadedState) {
             User user = state.user;
-            // injector
-            //     .get<CacheCubit>()
-            //     .updateCachedUserData(user.toCachedUser());
+
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,16 +83,16 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                               child: GestureDetector(
                                 onTap: user.coverPhotoPath != null
                                     ? () => showDialog(
-                                  context: mainNavKey.currentContext!,
-                                  // isDismissible: false,
-                                  // enableDrag: false,
-                                  barrierDismissible: true,
-                                  builder: (context) => ImagePreviewer(
-                                    imageUrl: user.coverPhotoPath!,
-                                    heroTag: "cover_photo",
-                                    tightMode: true,
-                                  ),
-                                )
+                                          context: mainNavKey.currentContext!,
+                                          // isDismissible: false,
+                                          // enableDrag: false,
+                                          barrierDismissible: true,
+                                          builder: (context) => ImagePreviewer(
+                                            imageUrl: user.coverPhotoPath!,
+                                            heroTag: "cover_photo",
+                                            tightMode: true,
+                                          ),
+                                        )
                                     : null,
                                 child: WidgetNetworkImage(
                                   image: user.coverPhotoPath,
@@ -105,17 +116,17 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                       GestureDetector(
                                         onTap: user.profilePhotoPath != null
                                             ? () => showMaterialModalBottomSheet(
-                                            context: mainNavKey
-                                                .currentContext!,
-                                            isDismissible: false,
-                                            enableDrag: false,
-                                            expand: false,
-                                            builder: (context) =>
-                                                ImagePreviewer(
-                                                    heroTag:
-                                                    "profile_photo",
-                                                    imageUrl: user
-                                                        .profilePhotoPath!))
+                                                context: mainNavKey
+                                                    .currentContext!,
+                                                isDismissible: false,
+                                                enableDrag: false,
+                                                expand: false,
+                                                builder: (context) =>
+                                                    ImagePreviewer(
+                                                        heroTag:
+                                                            "profile_photo",
+                                                        imageUrl: user
+                                                            .profilePhotoPath!))
                                             : null,
                                         child: CircleImage(
                                           url: user.profilePhotoPath,
@@ -131,7 +142,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           bottom: 7,
                                           child: GestureDetector(
                                             onTap: () {
-                                              print("Testing");
+                                              debugPrint("Testing");
                                               showCupertinoModalPopup(
                                                   context: context,
                                                   builder: (context) {
@@ -143,8 +154,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                                 0xFF8F8F8F),
                                                             fontSize: 14,
                                                             fontWeight:
-                                                            FontWeight
-                                                                .w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                       actions: [
                                                         CupertinoActionSheetAction(
@@ -164,26 +175,26 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                           },
                                                           child: Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                12.0),
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        12.0),
                                                             child: Row(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
                                                               children: const [
                                                                 Text(
                                                                   'Take Photo',
                                                                   style:
-                                                                  TextStyle(
+                                                                      TextStyle(
                                                                     color: Color(
                                                                         0xFF181818),
                                                                     fontSize:
-                                                                    16,
+                                                                        16,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                                        FontWeight
+                                                                            .w400,
                                                                   ),
                                                                 ),
                                                                 Icon(
@@ -198,7 +209,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                         CupertinoActionSheetAction(
                                                           onPressed: () async {
                                                             Navigator.of(
-                                                                context)
+                                                                    context)
                                                                 .pop();
 
                                                             // final pickedFile =
@@ -216,26 +227,26 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                           },
                                                           child: Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                12.0),
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        12.0),
                                                             child: Row(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
                                                               children: const [
                                                                 Text(
                                                                   'Photo Library',
                                                                   style:
-                                                                  TextStyle(
+                                                                      TextStyle(
                                                                     color: Color(
                                                                         0xFF181818),
                                                                     fontSize:
-                                                                    16,
+                                                                        16,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                                        FontWeight
+                                                                            .w400,
                                                                   ),
                                                                 ),
                                                                 Icon(
@@ -247,74 +258,9 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                             ),
                                                           ),
                                                         ),
-                                                        // if (profile.photo != null &&
-                                                        //     profile.photo != '')
-                                                        //   BlocProvider<ProfileEditCubit>(
-                                                        //     create: (context) =>
-                                                        //         di.injector<ProfileEditCubit>(),
-                                                        //     child: BlocConsumer<ProfileEditCubit,
-                                                        //         ProfileEditState>(
-                                                        //       listener: (context, state) {
-                                                        //         if (state is ProfileEditSuccess) {
-                                                        //           profileBloc.add(
-                                                        //             ProfileLoad(
-                                                        //               profile: state.profile,
-                                                        //             ),
-                                                        //           );
-                                                        //           Navigator.of(context).pop();
-                                                        //         } else if (state
-                                                        //             is ProfileEditError) {
-                                                        //           print(state.errorModel);
-                                                        //           DROFlushBar.error(
-                                                        //             context: context,
-                                                        //             message: state
-                                                        //                 .errorModel.errorMessage,
-                                                        //           );
-                                                        //         }
-                                                        //       },
-                                                        //       builder: (context, state) =>
-                                                        //           CupertinoActionSheetAction(
-                                                        //         onPressed: () async {
-                                                        //           Navigator.of(context).pop();
-
-                                                        //           //remove image
-                                                        //           // ProfileEditCubit cubit =
-                                                        //           //     di.injector<
-                                                        //           //         ProfileEditCubit>();
-
-                                                        //           // cubit.removePhoto(
-                                                        //           //   profile: profile,
-                                                        //           // );
-                                                        //         },
-                                                        //         child: Padding(
-                                                        //           padding:
-                                                        //               const EdgeInsets.symmetric(
-                                                        //                   horizontal: 12.0),
-                                                        //           child: Row(
-                                                        //             mainAxisAlignment:
-                                                        //                 MainAxisAlignment
-                                                        //                     .spaceBetween,
-                                                        //             children: const [
-                                                        //               Text(
-                                                        //                 'Remove Photo',
-                                                        //                 style: TextStyle(
-                                                        //                   color: Colors.red,
-                                                        //                   fontSize: 16,
-                                                        //                   fontWeight:
-                                                        //                       FontWeight.w400,
-                                                        //                 ),
-                                                        //               ),
-                                                        //               Icon(Icons.delete,
-                                                        //                   color: Colors.red)
-                                                        //             ],
-                                                        //           ),
-                                                        //         ),
-                                                        //       ),
-                                                        //     ),
-                                                        //   )
                                                       ],
                                                       cancelButton:
-                                                      CupertinoActionSheetAction(
+                                                          CupertinoActionSheetAction(
                                                         onPressed: () {
                                                           Navigator.of(context)
                                                               .pop();
@@ -333,7 +279,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                             child: const CircleAvatar(
                                               radius: 25,
                                               backgroundColor:
-                                              AppColors.lightBlue,
+                                                  AppColors.lightBlue,
                                               child: CircleAvatar(
                                                 radius: 22,
                                                 child: Icon(
@@ -352,36 +298,36 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                       alignment: Alignment.centerRight,
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(
                                             height: 32,
                                           ),
-                                          // Row(
-                                          //   mainAxisSize: MainAxisSize.min,
-                                          //   mainAxisAlignment:
-                                          //   MainAxisAlignment.start,
-                                          //   children: const [
-                                          //     Icon(
-                                          //       Icons.near_me_rounded,
-                                          //       color: AppColors.primaryColor,
-                                          //     ),
-                                          //     SizedBox(
-                                          //       width: 5,
-                                          //     ),
-                                          //     Text(
-                                          //       'Carlifonia, Badwin park',
-                                          //       style: TextStyle(
-                                          //           fontSize: 13,
-                                          //           fontWeight:
-                                          //           FontWeight.w600),
-                                          //     ),
-                                          //   ],
-                                          // ),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(
+                                                Icons.person,
+                                                color: AppColors.primaryColor,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                user.username,
+                                                style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ],
+                                          ),
                                           Row(
                                             // mainAxisSize: MainAxisSize.min,
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             children: [
                                               const Icon(
                                                 Icons.person,
@@ -394,10 +340,10 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                               Text(
                                                 user.role!.toUpperCase(),
                                                 style: const TextStyle(
-                                                  color: AppColors.textColor,
+                                                    color: AppColors.textColor,
                                                     fontSize: 16,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.w600),
                                               ),
                                             ],
                                           ),
@@ -451,43 +397,87 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         const SizedBox(
                           height: 16,
                         ),
+
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                  child: Column(
+                              BlocConsumer<ConnectsBloc, ConnectsState>(
+                                bloc: _connectsBloc,
+                                listener: (context, state) {
+                                  listenToFOllowState(context, state);
+                                },
+                                buildWhen: (prevstate, currentState) {
+                                  return currentState is FollowLoadingState ||
+                                      currentState is FollowSuccesState ||
+                                      currentState is FollowFailureState;
+                                },
+                                builder: (context, state) {
+                                  return Expanded(
+                                      child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-
                                       const SizedBox(
                                         height: 5,
                                       ),
                                       CustomButton(
                                         height: 50,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            SvgPicture.asset(AppIcons.svgFollowing,
-                                                color: Colors.white),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            const Text('Follow'),
-                                          ],
-                                        ),
-                                        onTap: () {},
+                                        child: state is FollowLoadingState
+                                            ? const SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            : Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      AppIcons.svgFollowing,
+                                                      color: Colors.white),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(isFollowing
+                                                      ? 'Unfollow'
+                                                      : 'Follow'),
+                                                ],
+                                              ),
+                                        onTap: () {
+                                          _connectsBloc.add(
+                                              const FollowEvent(userId: '15'));
+                                        },
                                       ),
                                     ],
-                                  )),
+                                  ));
+                                },
+                              ),
                               const SizedBox(
                                 width: 15,
                               ),
-                              Expanded(
-                                  child: Column(
+
+                              //CONNECTS BUTTON
+
+                              BlocConsumer<ConnectsBloc, ConnectsState>(
+                                bloc: _connectsBloc,
+                                listener: (context, state) {
+                                  listenToConnectState(context, state);
+                                },
+                                buildWhen: (prevstate, currentState) {
+                                  return currentState
+                                          is SendRequestLoadingState ||
+                                      currentState is SendRequestSuccesState ||
+                                      currentState is SendRequestFailureState;
+                                },
+                                builder: (context, connectState) {
+                                  return Expanded(
+                                      child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       const SizedBox(
                                         height: 5,
@@ -496,82 +486,203 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                         height: 50,
                                         child: TextButton(
                                             style: TextButton.styleFrom(
-                                                backgroundColor: AppColors.lightBlue),
-                                            onPressed: () {},
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                SvgPicture.asset(
-                                                  AppIcons.svgConnects,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                const Text('Connect'),
-                                              ],
-                                            )),
+                                                backgroundColor:
+                                                    AppColors.lightBlue),
+                                            onPressed: () {
+                                              _connectsBloc.add(
+                                                  SendRequestEvent(
+                                                      user.id.toString()));
+                                            },
+                                            child: connectState
+                                                    is SendRequestLoadingState
+                                                ? const SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Colors.blue,
+                                                    ),
+                                                  )
+                                                : Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        AppIcons.svgConnects,
+                                                        color: AppColors
+                                                            .primaryColor,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(isConnected ==
+                                                              'Connected'
+                                                          ? 'Disconnect'
+                                                          : isConnected ==
+                                                                  'Pending'
+                                                              ? 'Cancel Request'
+                                                              : 'Connect'),
+                                                    ],
+                                                  )),
                                       ),
                                     ],
-                                  ))
-                            ],
-                          ),
-                        ),
-                        const Text(
-                          'CONNECTS',
-                          style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        user.connections!.isNotEmpty
-                            ? Container(
-                          height: 60,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: user.connections?.length,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) =>
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(right: 8),
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                            user.connections![index]
-                                            ["profile_photo_path"],
-                                          ),
-                                          radius: 25,
-                                        ),
-                                      ),
-                                ),
-                              ),
-                              user.connections!.length > 6
-                                  ? TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                    '+${user.connections!.length - 6}'),
-                                style: TextButton.styleFrom(
-                                    backgroundColor:
-                                    AppColors.lightBlue,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10)),
+                                  ));
+                                },
                               )
-                                  : SizedBox.shrink(),
                             ],
                           ),
-                        )
-                            : const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text('No Connections'),
-                          ),
                         ),
+
                         const SizedBox(
                           height: 16,
                         ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'CONNECTS',
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            TextButton(
+                                onPressed: () {},
+                                child: const Text("View All",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.primaryColor))),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        user.connections!.isNotEmpty
+                            ? SizedBox(
+                                height: 120,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount: user.connections?.length,
+                                        scrollDirection: Axis.horizontal,
+                                        physics: const BouncingScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) =>
+                                            Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8),
+                                          child: SizedBox(
+                                            width: 120,
+                                            child: GestureDetector(
+                                              // onTap: () {
+                                              //   Navigator.of(context)
+                                              //       .pushNamed(viewProfilePath, arguments: {
+                                              //     "user_id": int.parse(user.connections![index]['id'].toString())
+                                              //
+                                              //   });
+                                              // },
+                                              child: Card(
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6)),
+                                                shadowColor:
+                                                    AppColors.smokeWhite,
+                                                child: Center(
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      CircleAvatar(
+                                                        radius: 25,
+                                                        backgroundColor:
+                                                            Colors.blueAccent,
+                                                        child: CircleAvatar(
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                            user.connections![
+                                                                    index][
+                                                                "profile_photo_path"],
+                                                          ),
+                                                          radius: 23,
+                                                        ),
+                                                      ),
+                                                      Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: Text(
+                                                            '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        11),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(1.0),
+                                                          child: Text(
+                                                            '${user.connections![index]['role']}',
+                                                            style: const TextStyle(
+                                                                fontSize: 10,
+                                                                color: Colors
+                                                                    .blueGrey),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // user.connections!.length > 6
+                                    //     ? TextButton(
+                                    //         onPressed: () {},
+                                    //         child: Text(
+                                    //             '+${user.connections!.length - 6}'),
+                                    //         style: TextButton.styleFrom(
+                                    //             backgroundColor:
+                                    //                 AppColors.lightBlue,
+                                    //             padding:
+                                    //                 const EdgeInsets.symmetric(
+                                    //                     vertical: 10)),
+                                    //       )
+                                    //     : const SizedBox.shrink(),
+                                  ],
+                                ),
+                              )
+                            : const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('No Connections'),
+                                ),
+                              ),
+
+                        const SizedBox(
+                          height: 16,
+                        ),
+
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         //   children: const [
@@ -619,6 +730,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
               ),
             );
           }
+
           if (state is ProfileErrorState) {
             return AppPromptWidget(
               title: "Unable to load profile",
@@ -637,5 +749,46 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
         },
       ),
     );
+  }
+
+  void listenToConnectState(BuildContext context, ConnectsState state) {
+    if (state is SendRequestLoadingState) {}
+    if (state is SendRequestSuccesState) {
+      setState(() {
+        isConnected = state.reactResponse.message!;
+      });
+      // reaction = state.reactResponse.message!;
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
+      AppUtils.showCustomToast(state.reactResponse.message!);
+    }
+    if (state is SendRequestFailureState) {
+      // setState(() {
+      AppUtils.showCustomToast(state.error);
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
+      // });
+    }
+  }
+
+  void listenToFOllowState(BuildContext context, ConnectsState state) {
+    if (state is FollowLoadingState) {}
+    if (state is FollowSuccesState) {
+      setState(() {
+        isFollowing = !isFollowing;
+      });
+      // reaction = state.reactResponse.message!;
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
+
+      AppUtils.showCustomToast(state.reactResponse.message!);
+    }
+    if (state is FollowFailureState) {
+      // setState(() {
+      AppUtils.showCustomToast(state.error);
+      // acceptState = AcceptState.idle;
+      // declineState = DeclineState.idle;
+      // });
+    }
   }
 }

@@ -1,8 +1,6 @@
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_stack/image_stack.dart';
 
 class AboutPageScreen extends StatefulWidget {
   const AboutPageScreen({Key? key, required this.page}) : super(key: key);

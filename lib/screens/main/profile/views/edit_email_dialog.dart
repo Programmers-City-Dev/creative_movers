@@ -1,6 +1,6 @@
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -10,7 +10,6 @@ import '../../../../data/remote/model/register_response.dart';
 import '../../../../di/injector.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
-import '../../../widget/custom_button.dart';
 
 class EditEmailDialog extends StatefulWidget {
   final Function(User user) onSuccess;
@@ -34,7 +33,6 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
     super.initState();
     _emailController.text = widget.initialEmail ?? '';
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(

@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
-import 'package:creative_movers/data/remote/model/add_feed_response.dart';
-import 'package:creative_movers/data/remote/model/feedsResponse.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/upload_status_response.dart';
@@ -38,7 +36,7 @@ class StatusRepository{
     }
 
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.upload_status_endpoint, body:formData),
+          () => httpHelper.post(Endpoints.uploadStatusEndpoint, body:formData),
       successResponse: (data) {
         return State<UploadStatusResponse?>.success(
             data != null ? UploadStatusResponse.fromJson(data) : null);
@@ -67,7 +65,7 @@ class StatusRepository{
 
   Future<State> getStatus() async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.get(Endpoints.get_status_endpoint),
+          () => httpHelper.get(Endpoints.getStatusEndpoint),
       successResponse: (data) {
         return State<ViewStatusResponse?>.success(
             data != null ? ViewStatusResponse.fromJson(data) : null);

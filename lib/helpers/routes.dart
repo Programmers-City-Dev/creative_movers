@@ -31,23 +31,31 @@ class AppRoutes {
     },
     chatsPath: (context) => const ChatScreen(),
     paymentPath: (context) {
-       bool isFirstTime = getArgument(context)['isFirstTime'] ?? false;
-      return PaymentScreen(isFirstTime: isFirstTime,);
+      bool isFirstTime = getArgument(context)['isFirstTime'] ?? false;
+      return PaymentScreen(
+        isFirstTime: isFirstTime,
+      );
     },
     subscriptionPath: (context) => const ActiveSubscriptionScreen(),
     paymentHistoryPath: (context) => const PaymentHistoryScreen(),
     accountSettingsPath: (context) => const AccountSettingsScreen(),
     loginPath: (context) => const LoginScreen(),
     inviteContactsPath: (_) => const InviteContactScreen(),
-    profilePath: (context)  {
+    profilePath: (context) {
       var userId = getArgument(context)['user_id'];
 
-      return  ProfileScreen(user_id: userId,);},
-    viewProfilePath: (context)  {
+      return ProfileScreen(
+        userId: userId,
+      );
+    },
+    viewProfilePath: (context) {
       var userId = getArgument(context)['user_id'];
 
-      return  ViewProfileScreen(user_id: userId,);},
-    profileEditPath: (_) => ProfileEditScreen()
+      return ViewProfileScreen(
+        userId: userId,
+      );
+    },
+    profileEditPath: (_) => const ProfileEditScreen()
   };
 }
 

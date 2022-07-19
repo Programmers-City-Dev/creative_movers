@@ -20,16 +20,20 @@ class RemoteConfigsService {
     ));
   }
 
-  Future<Map> retrieveSecrets() async {
+  Future<void> retrieveSecrets() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
-    var res = await remoteConfig.fetchAndActivate();
-    final Map<String, String> secrets = {
-      'stripe_publishable_key':
-          remoteConfig.getString('stripe_publishable_key'),
-      'stripe_secret_key': remoteConfig.getString('stripe_secret_key'),
-      'one_signal_key': remoteConfig.getString('one_signal_key'),
-    };
+    try {
+      await remoteConfig.fetchAndActivate();
+      // final Map<String, String> secrets = {
+      //   'stripe_publishable_key':
+      //       remoteConfig.getString('stripe_publishable_key'),
+      //   'stripe_secret_key': remoteConfig.getString('stripe_secret_key'),
+      //   'one_signal_key': remoteConfig.getString('one_signal_key'),
+      // };
 
-    return secrets;
+      // return secrets;
+    } catch (e) {
+      log("Firebase remote exception: $e");
+    }
   }
 }

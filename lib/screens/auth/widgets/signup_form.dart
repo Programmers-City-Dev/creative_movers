@@ -6,11 +6,9 @@ import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/extension.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/form_field.dart';
-import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/gestures.dart';
@@ -34,8 +32,6 @@ class _SignupFormState extends State<SignupForm> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +173,6 @@ class _SignupFormState extends State<SignupForm> {
       _showErrorToast(state.error);
     }
     if (state is RegistrationSuccessState) {
-
       cacheToken(state.response);
       Navigator.of(context).pop();
 
@@ -213,8 +208,10 @@ class _SignupFormState extends State<SignupForm> {
       StorageHelper.setString(StorageKeys.token, response.user.apiToken!);
       StorageHelper.setString(StorageKeys.username, response.user.username);
       // StorageHelper.setString(StorageKeys.firstname, response.user.firstname!);
-    }   catch (e) {
-      log('ERROR $e',);
+    } catch (e) {
+      log(
+        'ERROR $e',
+      );
       // TODO
     }
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
@@ -227,6 +224,5 @@ class _SignupFormState extends State<SignupForm> {
         confirmButtonText: '',
         onConfirmed: () {},
         onCancel: () {});
-
   }
 }

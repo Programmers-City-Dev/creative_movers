@@ -25,4 +25,6 @@ class StorageKeys {
   static const String firsTimeUser = "firstTimeUser";
 
   static const String email = "email";
+
+  static String lastname = 'FIRSTNAME';
 }

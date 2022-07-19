@@ -1,4 +1,4 @@
-
+import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
@@ -7,7 +7,6 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/main.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
@@ -25,9 +24,12 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
+  final _paymentBloc = PaymentBloc(injector.get());
+
   @override
   void initState() {
     injector.get<CacheCubit>().fetchCachedUserData();
+    _paymentBloc.add(const GetSubscriptionInfoEvent());
     super.initState();
   }
 
@@ -188,42 +190,42 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 8.0),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Icon(Icons.notifications,
-                                            size: 25,
-                                            color: AppColors.textColor),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          'Notification',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor),
-                                        ),
-                                      ],
-                                    ),
-                                    const Icon(Icons.chevron_right_rounded,
-                                        size: 30, color: AppColors.textColor),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {},
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.symmetric(
+                          //         vertical: 16, horizontal: 8.0),
+                          //     child: Center(
+                          //       child: Row(
+                          //         mainAxisAlignment:
+                          //             MainAxisAlignment.spaceBetween,
+                          //         children: [
+                          //           Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: const [
+                          //               Icon(Icons.notifications,
+                          //                   size: 25,
+                          //                   color: AppColors.textColor),
+                          //               SizedBox(
+                          //                 width: 16,
+                          //               ),
+                          //               Text(
+                          //                 'Notification',
+                          //                 style: TextStyle(
+                          //                     fontSize: 16,
+                          //                     fontWeight: FontWeight.w600,
+                          //                     color: AppColors.textColor),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           const Icon(Icons.chevron_right_rounded,
+                          //               size: 30, color: AppColors.textColor),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context)
@@ -296,21 +298,64 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8),
-                                          decoration: BoxDecoration(
-                                              color: AppColors.lightBlue,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          child: const Text(
-                                            'Active',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.textColor),
-                                          ),
-                                        ),
+                                        BlocBuilder<PaymentBloc, PaymentState>(
+                                            bloc: _paymentBloc,
+                                            // ..add(
+                                            //     const GetSubscriptionInfoEvent()),
+                                            builder: (context, state) {
+                                              if (state
+                                                  is SubscriptionLoadedState) {
+                                                var subscription = state
+                                                    .data.user!.subscription;
+                                                if (subscription != null) {
+                                                  return Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 8),
+                                                    decoration: BoxDecoration(
+                                                        color: subscription
+                                                                    .status ==
+                                                                "active"
+                                                            ? AppColors
+                                                                .lightBlue
+                                                            : subscription
+                                                                        .status ==
+                                                                    "trial"
+                                                                ? Colors.orange
+                                                                : AppColors.red,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: Text(
+                                                      subscription.status ==
+                                                              "active"
+                                                          ? 'Active'
+                                                          : subscription
+                                                                      .status ==
+                                                                  "trial"
+                                                              ? "Free Trial"
+                                                              : 'Inactive',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: subscription
+                                                                      .status ==
+                                                                  "active"
+                                                              ? AppColors
+                                                                  .textColor
+                                                              : AppColors
+                                                                  .white),
+                                                    ),
+                                                  );
+                                                }
+                                              }
+                                              if (state
+                                                  is SubscriptionLoadingState) {
+                                                return const Text('...');
+                                              }
+                                              return SizedBox.fromSize();
+                                            }),
                                         const SizedBox(
                                           width: 8,
                                         ),
@@ -325,7 +370,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              injector.get<PaymentBloc>().add(
+                                  CreatePaymentIntentEvent(int.parse("7"),
+                                      "usd", "1", "account_activation"));
+                            },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 8.0),
@@ -519,6 +568,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   void clearCache() {
     StorageHelper.remove(StorageKeys.token);
     StorageHelper.setBoolean(StorageKeys.stayLoggedIn, false);
+    injector.get<CacheCubit>().clearCacheStorage();
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }

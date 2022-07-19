@@ -1,16 +1,22 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/routes.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen.dart';
+import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
+import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.dart';
+import 'package:creative_movers/screens/main/widgets/deeplink/deep_link_listener.dart';
+import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
+import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/welcome_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +34,16 @@ List<GlobalKey<NavigatorState>> homeNavigatorKeys = [
 ];
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, this.showWelcomeDialog = false})
+      : super(key: key);
+
+  final bool? showWelcomeDialog;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final screens = [
     const FeedScreen(),
     const MyPageTab(),
@@ -43,37 +52,18 @@ class _HomeScreenState extends State<HomeScreen> {
     const AccountSettingsScreen()
   ];
 
-  // final bottomNavItems = [
-  //   BottomNavigationBarItem(
-  //
-  //     icon: SvgPicture.asset(AppIcons.svgFeed,color: AppColors.primaryColor,),
-  //     activeIcon:  const NavSelectedIcon(label: 'FEED', strIcon: AppIcons.svgFeed,),
-  //     label: 'FEED',
-  //   ),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgStore,color: AppColors.primaryColor,),
-  //       activeIcon:  const NavSelectedIcon(label: 'BIZ PAGE', strIcon: AppIcons.svgStore,),
-  //       label: 'BUISNESS PAGE'),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgPeople,color: AppColors.primaryColor,),
-  //
-  //       activeIcon:  const NavSelectedIcon(label: 'CONTACT',strIcon: AppIcons.svgPeople,),
-  //       label: 'CONTACT'),
-  //   BottomNavigationBarItem(
-  //       icon: SvgPicture.asset(AppIcons.svgMessage,color: AppColors.primaryColor,),
-  //
-  //       activeIcon:  const NavSelectedIcon(label: 'CHAT', strIcon: AppIcons.svgMessage,),
-  //       label: 'CHAT'),
-  // ];
-
   int _navIndex = 0;
   final NavBloc _navBloc = injector.get<NavBloc>();
 
   @override
   void initState() {
-    _navBloc.add(SwitchNavEvent(_navIndex));
-    injector.get<ProfileBloc>().add(GetUsernameEvent());
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+    _navBloc.add(OpenHomeTabEvent());
+    injector.get<ProfileBloc>().add(GetUsernameEvent());
+    injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
+    Future.delayed(const Duration(seconds: 4))
+        .then((value) => _showDialogIfNecessary());
   }
 
   @override
@@ -81,161 +71,107 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocConsumer<NavBloc, NavState>(
       bloc: _navBloc,
       listener: (context, state) {
-        if (state is BuyerNavItemSelected) {
-          _navIndex = state.selectedIndex;
+        if (state is OpenHomeTabState) {
+          _navIndex = 0;
+        }
+        if (state is OpenBizTabState) {
+          _navIndex = 1;
+        }
+        if (state is OpenConnectsTabState) {
+          _navIndex = 2;
+        }
+        if (state is OpenChatsTabState) {
+          _navIndex = 3;
+        }
+        if (state is OpenProfileTabState) {
+          _navIndex = 4;
         }
       },
       builder: (context, state) {
         return WillPopScope(
-          onWillPop: () async {
-            final isFirstRouteInCurrentTab =
-                !await homeNavigatorKeys[_navIndex].currentState!.maybePop();
-            debugPrint('isFirstRouteInCurrentTab: ' +
-                isFirstRouteInCurrentTab.toString());
-            // let system handle back button if we're on the first route
-            return isFirstRouteInCurrentTab;
-          },
-          child: Scaffold(
-              backgroundColor: AppColors.smokeWhite,
-              // appBar: AppBar(
-              //   elevation: 0,
-              //   primary: true,
-              //   actions: const [
-              //     Padding(
-              //       padding: EdgeInsets.all(8.0),
-              //       child: Icon(
-              //         Icons.search,
-              //         color: AppColors.textColor,
-              //       ),
-              //     ),
-              //     Padding(
-              //       padding: EdgeInsets.all(8.0),
-              //       child: Icon(
-              //         Icons.notifications,
-              //         color: AppColors.textColor,
-              //       ),
-              //     ),
-              //   ],
-              //   leading: const Icon(
-              //     Icons.menu_outlined,
-              //     color: AppColors.textColor,
-              //   ),
-              //   title: const Text(
-              //     'Creative Movers',
-              //     style: TextStyle(color: AppColors.textColor),
-              //   ),
-              //   backgroundColor: AppColors.white,
-              // ),
-              body: IndexedStack(index: _navIndex, children: <Widget>[
-                _buildOffstageNavigator(0),
-                _buildOffstageNavigator(1),
-                _buildOffstageNavigator(2),
-                _buildOffstageNavigator(3),
-                _buildOffstageNavigator(4),
-              ]),
-              bottomNavigationBar: GNav(
-                  haptic: true, // haptic feedback
-                  tabBorderRadius: 15,
-                  // tabActiveBorder:
-                  //     Border.all(color: AppColors.black, width: 1), // tab button border
-                  // tabBorder:
-                  //     Border.all(color: Colors.grey, width: 1), // tab button border
-                  // tabShadow: [
-                  //   BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
-                  // ], // tab button shadow
-                  curve: Curves.linear, // tab animation curves
-                  duration: const Duration(
-                      milliseconds: 200), // tab animation duration
-                  gap: 8, // the tab button gap between icon and text
-                  color: AppColors.primaryColor, // unselected icon color
-                  activeColor:
-                      AppColors.primaryColor, // selected icon and text color
-                  iconSize: 18,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  backgroundColor: AppColors.white,
-                  onTabChange: (index) {
-                    setState(() {
-                      _navBloc.add(SwitchNavEvent(index));
-                    });
+            onWillPop: () async {
+              final isFirstRouteInCurrentTab =
+                  !await homeNavigatorKeys[_navIndex].currentState!.maybePop();
+              debugPrint('isFirstRouteInCurrentTab: ' +
+                  isFirstRouteInCurrentTab.toString());
+              // let system handle back button if we're on the first route
+              return isFirstRouteInCurrentTab;
+            },
+            child: Scaffold(
+                backgroundColor: AppColors.smokeWhite,
+                body: IndexedStack(index: _navIndex, children: <Widget>[
+                  _buildOffstageNavigator(0),
+                  _buildOffstageNavigator(1),
+                  _buildOffstageNavigator(2),
+                  _buildOffstageNavigator(3),
+                  _buildOffstageNavigator(4),
+                ]),
+                bottomNavigationBar: BottomNavigationBar(
+                  selectedItemColor: AppColors.primaryColor,
+                  unselectedItemColor: AppColors.grey,
+                  selectedLabelStyle:
+                      const TextStyle(fontWeight: FontWeight.bold),
+                  currentIndex: _navIndex,
+                  type: BottomNavigationBarType.fixed,
+                  onTap: (index) {
+                    switch (index) {
+                      case 0:
+                        _navBloc.add(OpenHomeTabEvent());
+                        break;
+                      case 1:
+                        _navBloc.add(OpenBizTabEvent());
+                        break;
+                      case 2:
+                        _navBloc.add(OpenConnectsTabEvent());
+                        break;
+                      case 3:
+                        _navBloc.add(OpenChatsTabEvent());
+                        break;
+                      case 4:
+                        _navBloc.add(OpenProfileTabEvent());
+                        break;
+                    }
                   },
-                  tabMargin: const EdgeInsets.symmetric(
-                      vertical: 8, horizontal: 0), // tab button icon size
-                  tabBackgroundColor: AppColors.primaryColor
-                      .withOpacity(0.3), // selected tab background color
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 8), // navigation bar padding
-                  tabs: [
-                    GButton(
-                      icon: Icons.home,
-                      text: 'Feeds',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/feed.svg',
-                        color: AppColors.primaryColor,
-                        width: 24,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                  items: [
+                    const BottomNavigationBarItem(
+                      icon: Icon(Icons.rss_feed_outlined),
+                      label: 'FEED',
                     ),
-                    GButton(
-                      icon: Icons.business,
-                      text: 'Biz Page',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/biz.svg',
-                        color: AppColors.primaryColor,
-                        width: 24,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                    const BottomNavigationBarItem(
+                      icon: Icon(Icons.wallet_travel),
+                      label: 'Biz Page',
                     ),
-                    GButton(
-                      icon: Icons.group_outlined,
-                      text: 'Connects',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/group.svg',
-                        color: AppColors.primaryColor,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                    const BottomNavigationBarItem(
+                      icon: Icon(Icons.supervised_user_circle_outlined),
+                      label: 'Connects',
                     ),
-                    GButton(
-                      icon: Icons.chat_sharp,
-                      text: 'Chats',
-                      leading: SvgPicture.asset(
-                        'assets/svgs/chats.svg',
-                        color: AppColors.primaryColor,
-                        width: 24,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      borderRadius: BorderRadius.circular(4),
+                    const BottomNavigationBarItem(
+                      icon: Icon(Icons.messenger_outlined),
+                      label: 'Chats',
                     ),
-                    GButton(
-                      icon: Icons.person,
-                      text: 'Profile',
-                      borderRadius: BorderRadius.circular(4),
-                      leading: BlocBuilder<CacheCubit, CacheState>(
-                        bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
-                        builder: (context, state) {
-                          if (state is CachedUserDataFetched) {
-                            return CircleAvatar(
-                              radius: 14,
-                              backgroundImage: NetworkImage(
-                                  state.cachedUser.profilePhotoPath!),
-                            );
-                          }
-                          return const CircleAvatar(
-                            radius: 14,
-                            backgroundImage:
-                                AssetImage('assets/images/slide_i.png'),
-                          );
-                        },
-                      ),
-                    )
-                  ])),
-        );
+                    BottomNavigationBarItem(
+                        icon: BlocProvider.value(
+                          value: injector.get<CacheCubit>(),
+                          child: BlocBuilder<CacheCubit, CacheState>(
+                            builder: (context, state) {
+                              var cachedUser =
+                                  context.watch<CacheCubit>().cachedUser;
+                              return cachedUser == null
+                                  ? const CircleAvatar(
+                                      radius: 14,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/slide_i.png'),
+                                    )
+                                  : CircleImage(
+                                      url: cachedUser.profilePhotoPath,
+                                      withBaseUrl: false,
+                                    );
+                            },
+                          ),
+                        ),
+                        label: 'Profile'),
+                  ],
+                )));
       },
     );
   }
@@ -251,92 +187,114 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildOffstageNavigator(int index) {
     var routeBuilders = _routeBuilders(context, index);
     return Offstage(
-      offstage: _navBloc.currentTabIndex != index,
-      child: Navigator(
-        key: homeNavigatorKeys[index],
-        // observers: [MyRouteObserver()],
-        onGenerateRoute: (routeSettings) {
-          print('Navigating to: ${routeSettings.name} --------------- ');
-          print('Navigating to: ${routeSettings.arguments} --------------- ');
+      offstage: _navIndex != index,
+      child: DeepLinkListener(
+        navigatorKey: homeNavigatorKeys[index],
+        actWhen: deepLinkActWhenList[index],
+        child: Navigator(
+          key: homeNavigatorKeys[index],
+          // observers: [MyRouteObserver()],
+          onGenerateRoute: (routeSettings) {
+            debugPrint('Navigating to: ${routeSettings.name} --------------- ');
+            debugPrint(
+                'Navigating to: ${routeSettings.arguments} --------------- ');
 
-          PageTransitionType? transitionType;
-          var arguments = routeSettings.arguments;
-          if (arguments != null) {
-            var args = arguments as Map;
-            transitionType = args['transition-type'];
-            log("Transition:$transitionType");
-          }
+            PageTransitionType? transitionType;
+            var arguments = routeSettings.arguments;
+            if (arguments != null) {
+              var args = arguments as Map;
+              transitionType = args['transition-type'];
+              log("Transition:$transitionType");
+            }
 
-          if (transitionType != null) {
-            return PageTransition(
-              child: Builder(builder: (context) {
-                if (routeSettings.name == '/') {
-                  return routeBuilders[routeSettings.name]!(context);
-                } else {
-                  return AppRoutes.routes[routeSettings.name]!(context);
-                }
-              }),
-              type: transitionType,
-              alignment: Alignment.center,
-              childCurrent: const SizedBox.shrink(),
-              settings: routeSettings,
-              // duration: Duration(milliseconds: 300),
-            );
-          }
+            if (transitionType != null) {
+              return PageTransition(
+                child: Builder(builder: (context) {
+                  if (routeSettings.name == '/') {
+                    return routeBuilders[routeSettings.name]!(context);
+                  } else {
+                    return AppRoutes.routes[routeSettings.name]!(context);
+                  }
+                }),
+                type: transitionType,
+                alignment: Alignment.center,
+                childCurrent: const SizedBox.shrink(),
+                settings: routeSettings,
+                // duration: Duration(milliseconds: 300),
+              );
+            }
 
-          return CupertinoPageRoute(
-              builder: (context) {
-                if (routeSettings.name == '/') {
-                  return routeBuilders[routeSettings.name]!(context);
-                } else {
-                  return AppRoutes.routes[routeSettings.name]!(context);
-                }
-              },
-              settings: routeSettings);
-
-          // return PageRouteBuilder(
-          //     settings:
-          //         routeSettings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-          //     pageBuilder: (_, __, ___) {
-          //       if (routeSettings.name == '/') {
-          //         return routeBuilders[routeSettings.name]!(context);
-          //       } else {
-          //         return BuyerRoutes.routes[routeSettings.name]!(context);
-          //       }
-          //     },
-          //     transitionsBuilder: (_, a, __, c) =>
-          //         FadeTransition(opacity: a, child: c));
-          // Unknown route
-          // return MaterialPageRoute(builder: (_) => UnknownPage());
-
-          // return PageRouteBuilder(
-          //     pageBuilder: (context, anim1, anim2) {
-          //       if (routeSettings.name == '/') {
-          //         return routeBuilders[routeSettings.name]!(context);
-          //       } else {
-          //         return BuyerRoutes.routes[routeSettings.name]!(context);
-          //       }
-          //     },
-          //     transitionsBuilder:
-          //         (context, animation, secondaryAnimation, child) => index == 2
-          //             ? SlideTransition(
-          //                 position: Tween<Offset>(
-          //                   begin: const Offset(0.0, 1.0),
-          //                   end: const Offset(0.0, 0.0),
-          //                 ).animate(animation),
-          //                 child: child)
-          //             : SlideTransition(
-          //                 position: Tween<Offset>(
-          //                   begin: const Offset(1.0, 0.0),
-          //                   end: const Offset(0.0, 0.0),
-          //                 ).animate(animation),
-          //                 child: child),
-          //     settings: routeSettings,
-          //     reverseTransitionDuration: Duration(milliseconds: 200),
-          //     transitionDuration: Duration(milliseconds: 200));
-        },
+            return CupertinoPageRoute(
+                builder: (context) {
+                  if (routeSettings.name == '/') {
+                    return routeBuilders[routeSettings.name]!(context);
+                  } else {
+                    return AppRoutes.routes[routeSettings.name]!(context);
+                  }
+                },
+                settings: routeSettings);
+          },
+        ),
       ),
     );
+  }
+
+  _showDialogIfNecessary() {
+    if (widget.showWelcomeDialog!) {
+      showDialog(
+          context: homeNavigatorKeys[0].currentState!.context,
+          builder: (_) => Dialog(
+              insetPadding: const EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: WelcomeDialog(
+                    onNavigate: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => const ProfileEditScreen()));
+                      // _navBloc.add(SwitchNavEvent(4));
+                      // Navigator.of(homeNavigatorKeys[4].currentState!.context)
+                      //     .pushNamed(profileEditPath);
+                    },
+                  ))));
+    }
+  }
+
+  List<bool Function()> deepLinkActWhenList = [
+    () => injector<NavBloc>().state is OpenHomeTabState,
+    () => injector<NavBloc>().state is OpenBizTabState,
+    () => injector<NavBloc>().state is OpenConnectsTabState,
+    () => injector<NavBloc>().state is OpenChatsTabState,
+    () => injector<NavBloc>().state is OpenProfileTabState,
+  ];
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    log("APP STATE: $state");
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+
+    if (isBackground) {
+      injector
+          .get<ChatBloc>()
+          .add(const UpdateUserStatusEvent(status: "offline"));
+    } else {
+      injector
+          .get<ChatBloc>()
+          .add(const UpdateUserStatusEvent(status: "online"));
+    }
+
+    /* if (isBackground) {
+      // service.stop();
+    } else {
+      // service.start();
+    }*/
   }
 }
 

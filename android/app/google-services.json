@@ -30,6 +30,85 @@
             {
               "client_id": "508407963112-c68kei1ubik41mhq55aii5baq28deisc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "508407963112-i12e6pnpe1ader4j1rg62611vo5ggrvl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.creativemovers.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508407963112:android:9a60ebfa14a2d29fa0185d",
+        "android_client_info": {
+          "package_name": "com.creativemovers.app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508407963112-c68kei1ubik41mhq55aii5baq28deisc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuYFr3VV0jZ1ckv49TRletv08ds2mTVFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508407963112-c68kei1ubik41mhq55aii5baq28deisc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "508407963112-i12e6pnpe1ader4j1rg62611vo5ggrvl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.creativemovers.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508407963112:android:cc9aa7450b0ec25ea0185d",
+        "android_client_info": {
+          "package_name": "com.creativemovers.app.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508407963112-c68kei1ubik41mhq55aii5baq28deisc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuYFr3VV0jZ1ckv49TRletv08ds2mTVFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508407963112-c68kei1ubik41mhq55aii5baq28deisc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "508407963112-i12e6pnpe1ader4j1rg62611vo5ggrvl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.creativemovers.app"
+              }
             }
           ]
         }

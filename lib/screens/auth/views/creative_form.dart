@@ -1,18 +1,16 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
-import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -284,6 +282,8 @@ class _CreativeFormState extends State<CreativeForm> {
 
     if (state is AccountTypeFailureState) {
       Navigator.pop(context);
+      log("Error creating creative account: ${state.error}",
+          name: "CREATIVE FORM");
       CustomSnackBar.showError(context, message: state.error);
     }
 

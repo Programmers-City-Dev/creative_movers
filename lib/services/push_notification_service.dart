@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:creative_movers/blocs/deep_link/deep_link_cubit.dart';
+import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/models/deep_link_data.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -73,6 +77,8 @@ class PushNotificationService {
     //   sound: true,
     // );
 
+    FirebaseMessaging.onBackgroundMessage(_showBackgroundNotification);
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       // log('A new onMessageOpenedApp event was published!: ${message.data}');
       RemoteNotification? notification = message.notification;
@@ -87,8 +93,6 @@ class PushNotificationService {
               channel.id,
               channel.name,
               channelDescription: channel.description,
-              // TODO add a proper drawable resource to android, for now using
-              //      one that already exists in example app.
               icon: 'launch_background',
             ),
           ),
@@ -97,11 +101,21 @@ class PushNotificationService {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      log('A new onMessageOpenedApp event was published!: ${message.notification!.body}');
+      // log('A new onMessageOpenedApp event was published!: ${message.notification!.body}');
+      log("Live Video: ${message.data}", name: "Notification");
 
-      var data = message.data;
-      String type = data['type'];
-      if (type == "thought") {
+      // Map<String, dynamic> data = message.data;
+      // String type = data['type'];
+      // if (type == "live_video") {
+      //   log("Live Video: ${type}", name: "Notification");
+      // }
+
+      DeepLinkData? payloadNotif = _decodeNotificationData(message);
+      if (payloadNotif != null) {
+        log("Live Video: ${message.data["type"]}", name: "Notification");
+        injector<DeepLinkCubit>().saveRecentNotification(payloadNotif);
+        // DeeplinkAnalyticEvents()
+        //     .appOpenedFromPushNotification(type: payloadNotification.type??'');
       }
     });
 
@@ -109,7 +123,14 @@ class PushNotificationService {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        log('A new getInitialMessage event was published!: ${message.data}');
+        // log('A new getInitialMessage event was published!: ${message.data}');
+        DeepLinkData? payloadNotification = _decodeNotificationData(message);
+        // FlutterToast.showToast(msg: '$payloadNotification');
+        if (payloadNotification != null) {
+          injector<DeepLinkCubit>().saveRecentNotification(payloadNotification);
+          // DeeplinkAnalyticEvents()
+          //     .appOpenedFromPushNotification(type: payloadNotification.type??'');
+        }
       }
     });
   }
@@ -118,26 +139,49 @@ class PushNotificationService {
     return await _fcm.getToken();
   }
 
-  static void showBackgroundNotification(RemoteMessage message) {
-    log('A new onMessageOpenedApp event was published!: ${message.data}');
-    // RemoteNotification? notification = message.notification;
-    // AndroidNotification? android = message.notification?.android;
-    // if (notification != null && android != null && !kIsWeb) {
-    //   flutterLocalNotificationsPlugin.show(
-    //     notification.hashCode,
-    //     notification.title,
-    //     notification.body,
-    //     NotificationDetails(
-    //       android: AndroidNotificationDetails(
-    //         channel.id,
-    //         channel.name,
-    //         channelDescription: channel.description,
-    //         // TODO add a proper drawable resource to android, for now using
-    //         //      one that already exists in example app.
-    //         icon: 'launch_background',
-    //       ),
-    //     ),
-    //   );
-    // }
+  static DeepLinkData? _decodeNotificationData(RemoteMessage notification) {
+    try {
+      if (notification.data.isNotEmpty) {
+        final Map<String, dynamic> map = notification.data;
+        return DeepLinkData.fromMap(map);
+      } else {
+        // final Map<String, dynamic> map =
+        // jsonDecode(notification.rawPayload!['custom'].toString());
+        // return DeepLinkData.fromMap(map['a']);
+      }
+    } catch (e) {
+      debugPrint('not error ' + e.toString());
+    }
+
+    return null;
   }
+}
+
+Future<void> _showBackgroundNotification(RemoteMessage message) async {
+  log('A new BackgroundNotification event was published!: ${message.data}');
+// RemoteNotification? notification = message.notification;
+// AndroidNotification? android = message.notification?.android;
+// if (notification != null && android != null && !kIsWeb) {
+//   flutterLocalNotificationsPlugin.show(
+//     notification.hashCode,
+//     notification.title,
+//     notification.body,
+//     NotificationDetails(
+//       android: AndroidNotificationDetails(
+//         channel.id,
+//         channel.name,
+//         channelDescription: channel.description,
+//         // TODO add a proper drawable resource to android, for now using
+//         //      one that already exists in example app.
+//         icon: 'launch_background',
+//       ),
+//     ),
+//   );
+// }
+
+//   // If you're going to use other Firebase services in the background, such as Firestore,
+//   // make sure you call `initializeApp` before using other Firebase services.
+//   await Firebase.initializeApp();
+//   debugPrint('Handling a background message ${message.messageId}');
+//   PushNotificationService.showBackgroundNotification(message);
 }

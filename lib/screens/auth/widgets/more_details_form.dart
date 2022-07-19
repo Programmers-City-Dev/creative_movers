@@ -1,5 +1,7 @@
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
@@ -25,7 +27,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
   final _phoneNumberController = TextEditingController();
   final _bioDataController = TextEditingController();
   final AuthBloc _authBloc = AuthBloc();
-   String image = '';
+  String image = '';
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,11 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(child: AddImageWidget(onUpload: _fetchImage,imagePath: image,)),
+                        Center(
+                            child: AddImageWidget(
+                          onUpload: _fetchImage,
+                          imagePath: image,
+                        )),
                         const SizedBox(
                           height: 16,
                         ),
@@ -134,11 +140,11 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
                 boxShadow: [BoxShadow(color: Colors.blue, blurRadius: 30)],
                 borderRadius: BorderRadius.only()),
           ),
-           // Positioned(
-           //    top: -50,
-           //    left: 0,
-           //    right: 0,
-           //    child: Center(child: AddImageWidget(onUpload: _fetchImage,imagePath: image,)))
+          // Positioned(
+          //    top: -50,
+          //    left: 0,
+          //    right: 0,
+          //    child: Center(child: AddImageWidget(onUpload: _fetchImage,imagePath: image,)))
         ],
       ),
     );
@@ -147,7 +153,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
   void _postBioData() {
     if (_formKey.currentState!.validate()) {
       _authBloc.add(BioDataEvent(
-          image: image.isNotEmpty?image:null,
+          image: image.isNotEmpty ? image : null,
           firstname: _firstNameController.text.toString(),
           lastname: _lastNameController.text.toString(),
           phoneNumber: _phoneNumberController.text.toString(),
@@ -166,21 +172,28 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
     }
 
     if (state is BioDataSuccesState) {
+      StorageHelper.setString(
+          StorageKeys.firstname, _firstNameController.text.toString().trim());
+      StorageHelper.setString(
+          StorageKeys.lastname, _lastNameController.text.toString().trim());
+
+          
       Navigator.pop(context);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) =>  AccountTypeScreen(categories:state.bioDataResponse.category),
+            builder: (context) =>
+                AccountTypeScreen(categories: state.bioDataResponse.category),
           ),
           (route) => false);
     }
   }
+
   void _fetchImage() async {
     var images = await AppUtils.fetchImages(allowMultiple: false);
     if (images.isNotEmpty) {
       setState(() {
         image = images[0];
       });
-
     }
   }
 }

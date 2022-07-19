@@ -1,0 +1,93 @@
+{
+  "version": "0.2.0",
+    "configurations": [
+        {
+            
+            "name": "dev",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev"
+            ]
+        },
+        {
+            
+            "name": "staging",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging"
+            ]
+        },
+        {
+            
+            "name": "prod",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
+        },
+        {
+            
+            "name": "creative_movers_dev_1",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "192.168.145.69:5555",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev"
+            ]
+        },
+        {
+            "name": "creative_movers_dev_2",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5554",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev"
+            ]
+        },
+        {
+            "name": "creative_movers_prod_1",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "192.168.69.221:5555",
+            "program": "lib/main_prod.dart",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
+        },
+        {
+            "name": "creative_movers_prod_2",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "078193723A000647",
+            "program": "lib/main_prod.dart",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "creative_movers_dev",
+            "configurations": ["creative_movers_dev_1","creative_movers_dev_2"]
+        },
+        {
+            "name": "creative_movers_prod",
+            "configurations": ["creative_movers_prod_1","creative_movers_prod_2"]
+        }
+    ]
+}

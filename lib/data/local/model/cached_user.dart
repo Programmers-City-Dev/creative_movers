@@ -1,12 +1,16 @@
 // To parse this JSON data, do
 //
 //     final cachedUser = cachedUserFromMap(jsonString);
-class CachedUser {
-  CachedUser( {
+import 'package:equatable/equatable.dart';
+
+class CachedUser extends Equatable {
+  CachedUser({
     required this.id,
     this.firstname,
     this.lastname,
     this.username,
+    this.gender,
+    this.ethnicity,
     this.email,
     this.phone,
     this.emailVerifiedAt,
@@ -22,7 +26,8 @@ class CachedUser {
     this.updatedAt,
     this.dateOfBirth,
     this.apiToken,
-    this.country, this.state,
+    this.country,
+    this.state,
   });
 
   final int id;
@@ -40,6 +45,8 @@ class CachedUser {
   final String? coverPhotoPath;
   final String? biodata;
   final String? status;
+  final String? gender;
+  final String? ethnicity;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? apiToken;
@@ -47,34 +54,37 @@ class CachedUser {
   final String? state;
   final DateTime? dateOfBirth;
 
-  CachedUser copyWith({
-    int? id,
-    String? firstname,
-    String? lastname,
-    String? username,
-    String? email,
-    String? phone,
-    DateTime? emailVerifiedAt,
-    String? role,
-    String? payStatus,
-    String? regStatus,
-    String? currentTeamId,
-    String? profilePhotoPath,
-    String? coverPhotoPath,
-    String? biodata,
-    String? status,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? apiToken,
-     String? country,
-    String? state,
-     DateTime? dateOfBirth
-  }) =>
+  CachedUser copyWith(
+          {int? id,
+          String? firstname,
+          String? lastname,
+          String? username,
+          String? email,
+          String? phone,
+          DateTime? emailVerifiedAt,
+          String? role,
+          String? payStatus,
+          String? regStatus,
+          String? currentTeamId,
+          String? profilePhotoPath,
+          String? coverPhotoPath,
+          String? biodata,
+          String? status,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? apiToken,
+          String? country,
+          String? state,
+          String? gender,
+          String? ethnicity,
+          DateTime? dateOfBirth}) =>
       CachedUser(
         id: id ?? this.id,
         firstname: firstname ?? this.firstname,
         lastname: lastname ?? this.lastname,
         username: username ?? this.username,
+        gender: gender ?? this.gender,
+        ethnicity: ethnicity ?? this.ethnicity,
         email: email ?? this.email,
         phone: phone ?? this.phone,
         emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
@@ -101,6 +111,8 @@ class CachedUser {
         username: json["username"] == null ? null : json["username"],
         email: json["email"] == null ? null : json["email"],
         phone: json["phone"] == null ? null : json["phone"],
+        gender: json["gender"] == null ? null : json["gender"],
+        ethnicity: json["ethnicity"] == null ? null : json["ethnicity"],
         emailVerifiedAt: json["email_verified_at"] == null
             ? null
             : DateTime.parse(json["email_verified_at"]),
@@ -122,7 +134,7 @@ class CachedUser {
             ? null
             : DateTime.parse(json["updated_at"]),
         apiToken: json["api_token"] == null ? null : json["api_token"],
-        dateOfBirth: json["date_of_birth"] == null ? null : json["date_of_birth"],
+        dateOfBirth: json["dob"] == null ? null : DateTime.parse(json["dob"]),
         country: json["country"] == null ? null : json["country"],
         state: json["state"] == null ? null : json["state"],
       );
@@ -134,6 +146,8 @@ class CachedUser {
         "username": username == null ? null : username,
         "email": email == null ? null : email,
         "phone": phone == null ? null : phone,
+        "gender": gender == null ? null : gender,
+        "ethnicity": ethnicity == null ? null : ethnicity,
         "email_verified_at":
             emailVerifiedAt == null ? null : createdAt!.toIso8601String(),
         "role": role == null ? null : role,
@@ -148,10 +162,34 @@ class CachedUser {
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "api_token": apiToken == null ? null : apiToken,
-    "date_of_birth": dateOfBirth == null ? null : dateOfBirth!.toIso8601String(),
-    "country": country == null ? null : country,
-    "state": state == null ? null : state,
+        "dob": dateOfBirth == null ? null : dateOfBirth!.toIso8601String(),
+        "country": country == null ? null : country,
+        "state": state == null ? null : state,
       };
 
   String get fullname => '$firstname $lastname';
+
+  @override
+  List<Object?> get props => [
+        id,
+        firstname,
+        lastname,
+        username,
+        email,
+        phone,
+        emailVerifiedAt,
+        role,
+        payStatus,
+        regStatus,
+        currentTeamId,
+        profilePhotoPath,
+        coverPhotoPath,
+        biodata,
+        status,
+        createdAt,
+        updatedAt,
+        apiToken,
+        country,
+        state,
+      ];
 }
