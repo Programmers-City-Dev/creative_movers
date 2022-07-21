@@ -13,10 +13,11 @@ class ConnectsRepository {
 
   ConnectsRepository(this.httpHelper);
 
-  Future<State> getConnects() async {
+  Future<State> getConnects(String? user_id) async {
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(
-        Endpoints.fetchConnectionsEndpoint,
+       user_id == null ?  Endpoints.fetchConnectionsEndpoint :Endpoints.fetchUserConnectionsEndpoint,
+        body: {'user_id':user_id}
       ),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(

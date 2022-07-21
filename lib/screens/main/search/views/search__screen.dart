@@ -72,17 +72,17 @@ class _SearchScreenState extends State<SearchScreen> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            userType = 'movers';
+                            userType = 'mover';
                           });
                         },
                         child: Chip(
-                            backgroundColor: userType == 'movers'
+                            backgroundColor: userType == 'mover'
                                 ? AppColors.primaryColor
                                 : Colors.grey.shade300,
                             label: Text(
                               'Movers',
                               style: TextStyle(
-                                  color: userType == 'movers'
+                                  color: userType == 'mover'
                                       ? AppColors.white
                                       : AppColors.textColor),
                             )),
@@ -135,7 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 16,
                   ),
                   const Text(
-                    'Buisness Category',
+                    'Business Category',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(

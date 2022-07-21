@@ -1,4 +1,3 @@
-import 'package:creative_movers/helpers/api_helper.dart';
 
 import 'constants.dart';
 
@@ -40,6 +39,8 @@ class Endpoints {
 
   static String fetchConnectionsEndpoint =
       '${Constants.baseUrl}api/connections/fetch-all';
+  static String fetchUserConnectionsEndpoint =
+      '${Constants.baseUrl}api/connections/fetch-list';
   static String searchEndpoint = '${Constants.baseUrl}api/user/search';
   static String pendingRequestEndpoint =
       '${Constants.baseUrl}api/connections/fetch-all-pending';

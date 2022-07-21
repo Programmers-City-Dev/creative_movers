@@ -9,8 +9,11 @@ class AddConnectsEvent extends ConnectsEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 class GetConnectsEvent extends ConnectsEvent {
+ final String? user_id;
+ GetConnectsEvent({this.user_id});
+
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 class GetPendingRequestEvent extends ConnectsEvent {
   @override

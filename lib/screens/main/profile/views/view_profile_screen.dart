@@ -8,6 +8,7 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
+import 'package:creative_movers/screens/main/profile/views/user_connects_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
@@ -546,12 +547,21 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.bold),
                             ),
-                            TextButton(
-                                onPressed: () {},
-                                child: const Text("View All",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: AppColors.primaryColor))),
+                            Visibility(
+                              visible: user.connections!.length >5,
+                              child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => UserConnectsScreen(
+                                        user_id: user.id.toString(),
+                                      ),
+                                    ));
+                                  },
+                                  child: const Text("View All",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.primaryColor))),
+                            ),
                           ],
                         ),
                         const SizedBox(
@@ -564,7 +574,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   children: [
                                     Expanded(
                                       child: ListView.builder(
-                                        itemCount: user.connections?.length,
+                                        itemCount: user.connections!.length> 5? user.connections?.getRange(0, 4).length:user.connections!.length,
                                         scrollDirection: Axis.horizontal,
                                         physics: const BouncingScrollPhysics(),
                                         shrinkWrap: true,
@@ -682,47 +692,6 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         const SizedBox(
                           height: 16,
                         ),
-
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: const [
-                        //     Text(
-                        //       'BUSINESS/INVESTMENT',
-                        //       style: TextStyle(
-                        //           color: AppColors.primaryColor,
-                        //           fontWeight: FontWeight.bold),
-                        //     ),
-                        //     Text(
-                        //       '+2 more',
-                        //       style: TextStyle(
-                        //           fontSize: 13,
-                        //           color: AppColors.primaryColor,
-                        //           fontWeight: FontWeight.bold),
-                        //     ),
-                        //   ],
-                        // ),
-                        // const SizedBox(
-                        //   height: 5,
-                        // ),
-                        // Container(
-                        //   height: 80,
-                        //   child: ListView.builder(
-                        //     shrinkWrap: true,
-                        //     itemCount: 4,
-                        //     scrollDirection: Axis.horizontal,
-                        //     itemBuilder: (context, index) => Container(
-                        //       width: 110,
-                        //       margin: const EdgeInsets.only(right: 2),
-                        //       decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(10),
-                        //           image: const DecorationImage(
-                        //               fit: BoxFit.cover,
-                        //               image: NetworkImage(
-                        //                 'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
-                        //               ))),
-                        //     ),
-                        //   ),
-                        // )
                       ],
                     ),
                   )

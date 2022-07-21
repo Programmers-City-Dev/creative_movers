@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_radio_button/group_radio_button.dart';
-import 'package:intl/intl.dart';
 import 'connection_screen.dart';
 
 class MoverForm extends StatefulWidget {
@@ -47,7 +45,7 @@ class _MoverFormState extends State<MoverForm>
   ];
   List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
   String _groupValue = '';
-  String _preferedStage = 'account_type';
+  String _preferedStage = 'Seed';
   String? min = '';
   String? max = '';
   final _minController = TextEditingController();

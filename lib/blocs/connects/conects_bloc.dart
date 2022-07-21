@@ -33,7 +33,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       GetConnectsEvent event, Emitter<ConnectsState> emit) async {
     emit(ConnectsLoadingState());
     try {
-      var state = await connectsRepository.getConnects();
+      var state = await connectsRepository.getConnects(event.user_id);
       if (state is SuccessState) {
         emit(ConnectsSuccesState(connectsResponse: state.value));
       } else if (state is ErrorState) {
