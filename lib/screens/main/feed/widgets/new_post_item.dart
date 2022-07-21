@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
@@ -8,7 +7,6 @@ import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
 import 'dart:ui';
 
-import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
@@ -25,11 +23,9 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_stack/image_stack.dart';
-import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../profile/views/edit_gender_dialog.dart';
 
 class NewPostItem extends StatefulWidget {
   const NewPostItem({
@@ -477,7 +473,7 @@ class _NewPostItemState extends State<NewPostItem> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Row(
                   children: [
@@ -542,6 +538,7 @@ class _NewPostItemState extends State<NewPostItem> {
                     )
                   ],
                 ),
+                const SizedBox(width: 20,),// Temporary sized box
                 InkWell(
                   onTap: () {
                     if (widget.onCommentBoxClicked != null) {
@@ -571,21 +568,21 @@ class _NewPostItemState extends State<NewPostItem> {
                     ],
                   ),
                 ),
-                Row(
-                  children: const [
-                    Icon(
-                      Icons.share_rounded,
-                      color: AppColors.textColor,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Share',
-                      style: TextStyle(fontSize: 13),
-                    )
-                  ],
-                ),
+                // Row(
+                //   children: const [
+                //     Icon(
+                //       Icons.share_rounded,
+                //       color: AppColors.textColor,
+                //     ),
+                //     SizedBox(
+                //       width: 5,
+                //     ),
+                //     Text(
+                //       'Share',
+                //       style: TextStyle(fontSize: 13),
+                //     )
+                //   ],
+                // ),
               ],
             ),
           )

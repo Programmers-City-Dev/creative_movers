@@ -548,10 +548,11 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Visibility(
-                              visible: user.connections!.length >5,
+                              visible: user.connections!.length > 5,
                               child: TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).push(MaterialPageRoute(
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
                                       builder: (context) => UserConnectsScreen(
                                         user_id: user.id.toString(),
                                       ),
@@ -574,7 +575,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   children: [
                                     Expanded(
                                       child: ListView.builder(
-                                        itemCount: user.connections!.length> 5? user.connections?.getRange(0, 4).length:user.connections!.length,
+                                        itemCount: user.connections!.length> 5? user.connections?.getRange(0, 5).length:user.connections!.length,
                                         scrollDirection: Axis.horizontal,
                                         physics: const BouncingScrollPhysics(),
                                         shrinkWrap: true,
@@ -585,13 +586,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           child: SizedBox(
                                             width: 120,
                                             child: GestureDetector(
-                                              // onTap: () {
-                                              //   Navigator.of(context)
-                                              //       .pushNamed(viewProfilePath, arguments: {
-                                              //     "user_id": int.parse(user.connections![index]['id'].toString())
-                                              //
-                                              //   });
-                                              // },
+
                                               child: Card(
                                                 elevation: 0,
                                                 shape: RoundedRectangleBorder(

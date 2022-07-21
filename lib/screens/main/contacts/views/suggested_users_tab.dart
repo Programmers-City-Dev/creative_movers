@@ -7,7 +7,6 @@ import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../widgets/contact_item.dart';
 
 class SuggestedUsersTab extends StatefulWidget {
   const SuggestedUsersTab({Key? key}) : super(key: key);
@@ -78,7 +77,7 @@ class _SuggestedUsersTabState extends State<SuggestedUsersTab> with AutomaticKee
                           canTryAgain: true,
                           isSvgResource: true,
                           imagePath: "assets/svgs/request.svg",
-                          title: "You have no connection yet .",
+                          title: "No suggestions yet.",
                           message:
                               "Invite your contacts or search for connecions to start moving!",
                         )))

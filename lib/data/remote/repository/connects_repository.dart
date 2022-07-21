@@ -106,6 +106,36 @@ class ConnectsRepository {
     );
   }
 
+  Future<State> searchConnects({String? user_id, String? searchValue}) async {
+    return await SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(Endpoints.searchConnectsEndpoint,
+          body: {"user_id": user_id, "search_value": searchValue}),
+      successResponse: (data) {
+        return State<FetchConnectionResponse?>.success(
+            data != null ? FetchConnectionResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
   Future<State> react({String? connectionId, String? action}) async {
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.requestReactEndpoint,

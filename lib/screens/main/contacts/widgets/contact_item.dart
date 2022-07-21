@@ -134,6 +134,8 @@ class _ContactItemState extends State<ContactItem> {
                             username: widget.connection.username,
                             firstname: widget.connection.firstname,
                             lastname: widget.connection.lastname,
+                            updatedAt: widget.connection.updatedAt,
+                            status: widget.connection.status,
                             profilePhotoPath: widget.connection.profilePhotoPath),
                       ),
                     ));

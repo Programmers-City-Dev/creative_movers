@@ -46,7 +46,7 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
           status.file == null
               ? StoryItem.text(
                   title: status.text!,
-                  textStyle: TextStyle(fontFamily: status.fontName,fontSize: 18),
+                  textStyle: TextStyle(fontFamily: status.fontName,fontSize: 40),
                   backgroundColor: Color(int.parse(status.bgColor!,radix: 16)),
                 )
               : status.mediaType == 'image'

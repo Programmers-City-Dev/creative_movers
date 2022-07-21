@@ -1,11 +1,9 @@
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
-import 'package:creative_movers/screens/main/contacts/widgets/add_contacts_widget.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/connects_shimer.dart';
 import 'package:creative_movers/screens/main/contacts/widgets/contact_item.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/search_field.dart';
-import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,7 +49,7 @@ class _ConnectsTabState extends State<ConnectsTab>
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: 4,
-                  itemBuilder: (context, index) => ConnectsShimer(),
+                  itemBuilder: (context, index) => const ConnectsShimer(),
                   separatorBuilder: (BuildContext context, int index) {
                     return const SizedBox(
                       height: 14,
@@ -62,11 +60,8 @@ class _ConnectsTabState extends State<ConnectsTab>
             ],
           );
         } else if (state is ConnectsSuccesState) {
-          if (mainList.isEmpty) {
             filterList = state.connectsResponse.connections.connectionList;
             mainList = state.connectsResponse.connections.connectionList;
-          }
-
           return Container(
             padding: const EdgeInsets.all(18),
             child: RefreshIndicator(

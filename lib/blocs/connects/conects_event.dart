@@ -47,7 +47,6 @@ class SendRequestEvent extends ConnectsEvent {
 
   const SendRequestEvent(this.userId);
 }
-
 class FollowEvent extends ConnectsEvent {
   final String userId;
 
@@ -55,6 +54,16 @@ class FollowEvent extends ConnectsEvent {
 
   @override
   List<Object?> get props => [userId];
+}
+
+class SearchConnectsEvent extends ConnectsEvent {
+
+  final String? user_id;
+  final String? searchValue;
+  @override
+  List<Object?> get props => throw UnimplementedError();
+
+  const SearchConnectsEvent({this.user_id, this.searchValue});
 }
 
 class GetSuggestedConnectsEvent extends ConnectsEvent {

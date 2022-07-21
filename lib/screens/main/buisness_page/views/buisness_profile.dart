@@ -372,7 +372,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                   bloc: _buisnessBloc,
                   builder: (context, state) {
                     if (state is PageSuggestionsLoadingState) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
                     if (state is PageSuggestionsSuccesState) {
                       return Container(
@@ -388,13 +388,13 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                       color: AppColors.primaryColor,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Text(
-                                  '+2 more',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                // Text(
+                                //   '+2 more',
+                                //   style: TextStyle(
+                                //       fontSize: 13,
+                                //       color: AppColors.primaryColor,
+                                //       fontWeight: FontWeight.bold),
+                                // ),
                               ],
                             ),
                             const SizedBox(
@@ -455,77 +455,6 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                                                   index]
                                                               .photoPath!,
                                                     ))),
-                                            // child: Stack(
-                                            //   children: [
-                                            //     Container(
-                                            //       decoration: BoxDecoration(
-                                            //           gradient: LinearGradient(
-                                            //               colors: [
-                                            //                 AppColors.black.withOpacity(1),
-                                            //                 AppColors.black.withOpacity(0.5),
-                                            //                 AppColors.black.withOpacity(0.3)
-                                            //               ],
-                                            //               begin: Alignment.bottomCenter,
-                                            //               end: Alignment.topCenter)),
-                                            //     ),
-                                            //     Align(
-                                            //         alignment: Alignment.bottomLeft,
-                                            //         child: Padding(
-                                            //           padding: const EdgeInsets.all(16),
-                                            //           child: Column(
-                                            //             crossAxisAlignment:
-                                            //             CrossAxisAlignment.start,
-                                            //             mainAxisSize: MainAxisSize.min,
-                                            //             children: const [
-                                            //               Text(
-                                            //                 ' widget.page.name',
-                                            //                 style: TextStyle(
-                                            //                     color: Colors.white,
-                                            //                     fontSize: 20),
-                                            //               ),
-                                            //               SizedBox(
-                                            //                 height: 5,
-                                            //               ),
-                                            //               // Row(
-                                            //               //   children: [
-                                            //               //     ImageStack.providers(
-                                            //               //       imageBorderWidth: 1,
-                                            //               //       providers: const [
-                                            //               //         NetworkImage(
-                                            //               //             'https://encrypted-tbn0.gstatic.com/imag'
-                                            //               //                 'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                            //               //                 'IsMSaTdFerTaA&usqp=CAU'),
-                                            //               //         NetworkImage(
-                                            //               //             'https://encrypted-tbn0.gstatic.com/imag'
-                                            //               //                 'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                            //               //                 'IsMSaTdFerTaA&usqp=CAU'),
-                                            //               //         NetworkImage(
-                                            //               //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                            //               //               'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                            //               //               'LZKNzyR9E9kzjH55-w&usqp=CAU',
-                                            //               //         ),
-                                            //               //         NetworkImage(
-                                            //               //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                            //               //               'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                            //               //               'LZKNzyR9E9kzjH55-w&usqp=CAU',
-                                            //               //         )
-                                            //               //       ],
-                                            //               //       totalCount: 5,
-                                            //               //       imageCount: 5,
-                                            //               //     ),
-                                            //               //     SizedBox(
-                                            //               //       width: 10,
-                                            //               //     ),
-                                            //               //   ],
-                                            //               // ),
-                                            //               SizedBox(
-                                            //                 height: 5,
-                                            //               ),
-                                            //             ],
-                                            //           ),
-                                            //         ))
-                                            //   ],
-                                            // ),
                                           ),
                                         ),
                                         const SizedBox(

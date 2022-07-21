@@ -293,6 +293,7 @@ void search(){
       _connectsBloc.add(SearchEvent(userType, _searchValueController.text));
 }
 
+
   void _listenToSearchState(BuildContext context, ConnectsState state) {
     if (state is SearchLoadingState) {
       AppUtils.showAnimatedProgressDialog(context);

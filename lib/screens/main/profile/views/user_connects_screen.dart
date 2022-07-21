@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/profile/widgets/user_connection_card.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,9 +68,9 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                       radius: 16,
                       fillcolor: Colors.grey.shade100,
                       controller: _searchController,
-                      onChanged: (val) {
-                        filterConnects(FilterParam(
-                            role: roleValue, name: _searchController.text));
+                      onSubmitted: (val) {
+                        log(widget.user_id);
+                        _connectsBloc.add(SearchConnectsEvent(searchValue: _searchController.text,user_id: widget.user_id));
                       },
                     ),
                     const SizedBox(
@@ -162,13 +163,17 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                       },
                       listener: (ctx, state) {
                         if (state is ConnectsSuccesState) {
-                          if (mainList.isEmpty) {
+                          log(state.connectsResponse.connections.connectionList.length.toString());
                             filterList = state
                                 .connectsResponse.connections.connectionList;
                             mainList = state
                                 .connectsResponse.connections.connectionList;
-                          }
+
                         }
+                        if(state is ConnectsFailureState){
+                          AppUtils.showCustomToast(state.error,Colors.red);
+                        }
+
                       },
                       bloc: _connectsBloc,
                       builder: (context, state) {
@@ -196,63 +201,68 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                             ],
                           );
                         } else if (state is ConnectsSuccesState) {
-                        if (filterList.isEmpty) {
-                          return Column(
-                            children: [
-                              SizedBox(height: 100,),
-                              Center(
-                              child: AppPromptWidget(
-                                buttonText: 'Try again',
-                              onTap: () {  _connectsBloc.add(GetConnectsEvent());},
-                        canTryAgain: true,
-                        isSvgResource: true,
-                        imagePath: "assets/svgs/request.svg",
-                        title: "No connection  ",
-                        message: "Invite your contacts or search for connecions to start moving!",
-                        )),
-                            ],
-                          );
-                        } else {
-                          return Column(
-                            children: [
-                              GridView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  physics: const BouncingScrollPhysics(),
-                                  // primary: false,
-                                  shrinkWrap: true,
-                                  itemCount: filterList.length,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10,
-                                          childAspectRatio: 0.7),
-                                  itemBuilder: (ctx, index) =>
-                                      UserConnectionCard(
-                                        connection: filterList[index],
-                                      )),
-                              Visibility(
-                                visible: state.connectsResponse.connections
-                                        .nextPageUrl !=
-                                    null,
-                                child: TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Load more',
-                                    style: TextStyle(
-                                        fontSize: 11,
-                                        color: AppColors.primaryColor),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                      shape: const StadiumBorder(
-                                          side: BorderSide(
-                                              color: AppColors.primaryColor)),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16)),
+                          if (filterList.isEmpty) {
+                            return Column(
+                              children: [
+                                const SizedBox(
+                                  height: 100,
                                 ),
-                              )
-                            ],
-                          );
-                        }
+                                Center(
+                                    child: AppPromptWidget(
+                                  buttonText: 'Try again',
+                                  onTap: () {
+                                    _connectsBloc.add(GetConnectsEvent());
+                                  },
+                                  canTryAgain: true,
+                                  isSvgResource: true,
+                                  imagePath: "assets/svgs/request.svg",
+                                  title: "No connection  ",
+                                  message:
+                                      "Invite your contacts or search for connecions to start moving!",
+                                )),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                GridView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    physics: const BouncingScrollPhysics(),
+                                    // primary: false,
+                                    shrinkWrap: true,
+                                    itemCount: filterList.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing: 10,
+                                            childAspectRatio: 0.7),
+                                    itemBuilder: (ctx, index) =>
+                                        UserConnectionCard(
+                                          connection: filterList[index],
+                                        )),
+                                Visibility(
+                                  visible: state.connectsResponse.connections
+                                          .nextPageUrl !=
+                                      null,
+                                  child: TextButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'Load more',
+                                      style: TextStyle(
+                                          fontSize: 11,
+                                          color: AppColors.primaryColor),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                        shape: const StadiumBorder(
+                                            side: BorderSide(
+                                                color: AppColors.primaryColor)),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16)),
+                                  ),
+                                )
+                              ],
+                            );
+                          }
                         } else if (state is ConnectsFailureState) {
                           return AppPromptWidget(
                             // title: "Something went wrong",
@@ -284,38 +294,48 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
   void filterConnects(FilterParam filterParam) {
     setState(() {
       log(filterParam.role.toLowerCase());
-      if(_searchController.text.isNotEmpty){
+      if (_searchController.text.isNotEmpty) {
         if (filterParam.role.toLowerCase() == 'all') {
           filterList = mainList
               .where((element) =>
-          element.firstname.toLowerCase().contains(filterParam.name.toLowerCase()) ||
-              element.lastname.toLowerCase().contains(filterParam.name.toLowerCase())||
-              element.username.contains(filterParam.name.toLowerCase()))
-
+                  element.firstname
+                      .toLowerCase()
+                      .contains(filterParam.name.toLowerCase()) ||
+                  element.lastname
+                      .toLowerCase()
+                      .contains(filterParam.name.toLowerCase()) ||
+                  element.username.contains(filterParam.name.toLowerCase()))
               .toList();
         } else {
           filterList = mainList
               .where((element) =>
-          element.role.toLowerCase() == filterParam.role.toLowerCase() &&
-              element.firstname.toLowerCase().contains(filterParam.name.toLowerCase()) ||
-              element.lastname.toLowerCase().contains(filterParam.name.toLowerCase())||
-              element.username.contains(filterParam.name.toLowerCase()))
-
+                  element.role.toLowerCase() ==
+                          filterParam.role.toLowerCase() &&
+                      element.firstname
+                          .toLowerCase()
+                          .contains(filterParam.name.toLowerCase()) ||
+                  element.lastname
+                      .toLowerCase()
+                      .contains(filterParam.name.toLowerCase()) ||
+                  element.username.contains(filterParam.name.toLowerCase()))
               .toList();
         }
-      }else{
+      } else {
         if (filterParam.role.toLowerCase() == 'all') {
           filterList = mainList
               .where((element) =>
-          element.firstname.toLowerCase().contains(filterParam.name.toLowerCase()) ||
-              element.lastname.toLowerCase().contains(filterParam.name.toLowerCase())||
-              element.username.contains(filterParam.name.toLowerCase()))
-
+                  element.firstname
+                      .toLowerCase()
+                      .contains(filterParam.name.toLowerCase()) ||
+                  element.lastname
+                      .toLowerCase()
+                      .contains(filterParam.name.toLowerCase()) ||
+                  element.username.contains(filterParam.name.toLowerCase()))
               .toList();
         } else {
           filterList = mainList
               .where((element) =>
-          element.role.toLowerCase() == filterParam.role.toLowerCase() )
+                  element.role.toLowerCase() == filterParam.role.toLowerCase())
               .toList();
         }
       }

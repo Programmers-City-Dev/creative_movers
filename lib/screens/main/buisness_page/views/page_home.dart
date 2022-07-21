@@ -123,31 +123,7 @@ class _PageHomeState extends State<PageHome> {
                             const SizedBox(
                               height: 5,
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => AboutPageScreen(
-                                    page: widget.page,
-                                  ),
-                                ));
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.arrow_back,
-                                    color: AppColors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    'More about Creative Movers',
-                                    style: TextStyle(
-                                        color: AppColors.white, fontSize: 13),
-                                  )
-                                ],
-                              ),
-                            )
+                           
                           ],
                         ),
                       ))
@@ -162,20 +138,19 @@ class _PageHomeState extends State<PageHome> {
                   Expanded(
                       child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text(
-                        '0',
-                        style: TextStyle(
+                    children:  [
+                      Text(widget.page.followers?.length.toString()??'0',
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
-                      Text(
+                      const Text(
                         'Followers ',
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 13,
                             color: AppColors.textColor),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                     ],
@@ -184,33 +159,36 @@ class _PageHomeState extends State<PageHome> {
                     width: 15,
                   ),
                   Expanded(
-                      child: Column(
+                      child: GestureDetector(
+                        onTap: (){
+
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AboutPageScreen(page: widget.page),));
+                        },
+                        child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Center(
-                        child: Column(
-                          children: const [
-                            Text(
-                              '0',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16),
-                            ),
-                            Text(
-                              'Connections ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 13,
-                                  color: AppColors.textColor),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                          ],
+                        Center(
+                          child: Column(
+                            children: const [
+                            Icon(Icons.info),
+
+                              Text(
+                                'About Page',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                    color: AppColors.textColor),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                     ],
-                  ))
+                  ),
+                      ))
                 ],
               ),
             ),

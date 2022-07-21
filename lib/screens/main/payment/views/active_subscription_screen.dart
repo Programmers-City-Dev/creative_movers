@@ -31,7 +31,10 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.black),
+        iconTheme: Theme
+            .of(context)
+            .iconTheme
+            .copyWith(color: Colors.black),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
@@ -93,12 +96,12 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                   title: const Text(
                                     'Subscription Date',
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: const Text(
                                       'This subscription was updated on this date.'),
                                   trailing: Text(AppUtils.getDateAndTime(
-                                      subscription.createdAt)),
+                                      subscription.updatedAt)),
                                 ),
                                 ListTile(
                                   title: const Text('Subscription Status',
@@ -112,15 +115,15 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                         color: subscription.status == "active"
                                             ? AppColors.lightBlue
                                             : subscription.status == "trial"
-                                                ? Colors.orange
-                                                : AppColors.red,
+                                            ? Colors.orange
+                                            : AppColors.red,
                                         borderRadius: BorderRadius.circular(5)),
                                     child: Text(
                                       subscription.status == "active"
                                           ? 'Active'
                                           : subscription.status == "trial"
-                                              ? "Free Trial"
-                                              : 'Inactive',
+                                          ? "Free Trial"
+                                          : 'Inactive',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -130,6 +133,26 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                     ),
                                   ),
                                 ),
+                                ListTile(
+                                  title: const Text('Expiry Date',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  trailing: Text(AppUtils.getDateAndTime(
+                                      subscription.expiryDate)),
+                                  subtitle: const Text(
+                                      'Your subscription will expire on this date.'),
+                                ),
+                                ListTile(
+                                  title: const Text('Subscription Type',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),),
+                                  trailing: Text(
+                                      subscription.status.toLowerCase() ==
+                                          'trial'
+                                          ? 'Not Active ':subscription
+                                          .subType),
+                                  // subtitle: const Text(''),
+                                )
                               ],
                             ),
                           ),
@@ -138,14 +161,12 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                             height: 16,
                           ),
                           CustomButton(
-                            child: Text(subscription.subType.toLowerCase() ==
-                                    'new'
+                            child: Text(subscription.status.toLowerCase() ==
+                                'active'
                                 ? 'Topup Subscription'
-                                : subscription.subType.toLowerCase() == 'new' &&
-                                        subscription.type.toLowerCase() ==
-                                            "free_trial"
-                                    ? "Subscribe Now"
-                                    : 'Renew Subscription'),
+                                : subscription.status.toLowerCase() == 'expired'
+                                ? "Renew Subscription"
+                                : 'Subscribe Now'),
                             onTap: () {
                               Navigator.of(context).pushNamed('/payment');
                             },
