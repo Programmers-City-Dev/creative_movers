@@ -1,16 +1,12 @@
-import 'dart:developer';
 
-import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/contacts/views/movers_tab.dart';
 import 'package:creative_movers/screens/main/contacts/views/pending_request_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/suggested_users_tab.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ContactScreen extends StatefulWidget {

@@ -22,6 +22,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
 
     on<GetConnectsEvent>(_mapGetConnectsEventToState);
     on<SearchEvent>(_mapSearchEventToState);
+    on<SearchConnectsEvent>(_mapSearchConnectsEventToState);
     on<GetPendingRequestEvent>(_mapGetPendingRequestEventToState);
     on<GetSuggestedConnectsEvent>(_mapGetSuggestedConnectsEventToState);
     on<RequestReactEvent>(_mapRequestReactEventToState);
@@ -33,7 +34,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       GetConnectsEvent event, Emitter<ConnectsState> emit) async {
     emit(ConnectsLoadingState());
     try {
-      var state = await connectsRepository.getConnects();
+      var state = await connectsRepository.getConnects(event.user_id);
       if (state is SuccessState) {
         emit(ConnectsSuccesState(connectsResponse: state.value));
       } else if (state is ErrorState) {
@@ -75,6 +76,24 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       }
     } catch (e) {
       emit(SearchFailureState(error: 'Oops Something went wrong'));
+    }
+  }
+
+
+  FutureOr<void> _mapSearchConnectsEventToState(
+      SearchConnectsEvent event, Emitter<ConnectsState> emit) async {
+    emit(ConnectsLoadingState());
+    try {
+      var state = await connectsRepository.searchConnects(
+          searchValue: event.searchValue, user_id: event.user_id);
+      if (state is SuccessState) {
+        emit(ConnectsSuccesState(connectsResponse:state.value));
+      } else if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(ConnectsFailureState(error: errorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(const ConnectsFailureState(error: 'Oops Something went wrong'));
     }
   }
 

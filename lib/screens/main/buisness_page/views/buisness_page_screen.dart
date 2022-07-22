@@ -1,11 +1,9 @@
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/resources/app_icons.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/create_page_form.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/following_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/page_home.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/page_notification.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
-import 'package:creative_movers/screens/main/buisness_page/widgets/create_post_card.dart';
+
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

@@ -9,8 +9,11 @@ class AddConnectsEvent extends ConnectsEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 class GetConnectsEvent extends ConnectsEvent {
+ final String? user_id;
+ GetConnectsEvent({this.user_id});
+
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 class GetPendingRequestEvent extends ConnectsEvent {
   @override
@@ -44,7 +47,6 @@ class SendRequestEvent extends ConnectsEvent {
 
   const SendRequestEvent(this.userId);
 }
-
 class FollowEvent extends ConnectsEvent {
   final String userId;
 
@@ -52,6 +54,16 @@ class FollowEvent extends ConnectsEvent {
 
   @override
   List<Object?> get props => [userId];
+}
+
+class SearchConnectsEvent extends ConnectsEvent {
+
+  final String? user_id;
+  final String? searchValue;
+  @override
+  List<Object?> get props => throw UnimplementedError();
+
+  const SearchConnectsEvent({this.user_id, this.searchValue});
 }
 
 class GetSuggestedConnectsEvent extends ConnectsEvent {

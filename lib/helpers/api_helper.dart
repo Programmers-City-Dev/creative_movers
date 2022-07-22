@@ -20,6 +20,7 @@ class SimplifyApiConsuming {
   ///@Param [successResponse] a [Function] to execute if request is successful, must have a return statement
   /// Returns [Future<ResponseModel>]
   ///
+  ///
   static Future<State> makeRequest(
       Future<Response<dynamic>> Function() requestFunction,
       {bool isStatusCode = true,
@@ -87,8 +88,6 @@ class SimplifyApiConsuming {
 
 
 
-
-
   static State _handleResponseBasedOnStatusCode(
       Response response,
       int statusCodeSuccess,
@@ -108,4 +107,5 @@ class SimplifyApiConsuming {
     }
     return errorResponse(response);
   }
+
 }

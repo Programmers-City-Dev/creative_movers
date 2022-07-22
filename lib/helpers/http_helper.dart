@@ -1,7 +1,6 @@
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class HttpHelper {
   static Dio? _client;
@@ -14,6 +13,7 @@ class HttpHelper {
     Map<String, dynamic> headers = {};
     headers['Content-Type'] = 'application/json';
     headers['Accept'] = 'application/json';
+    headers['Cache-Control'] = 'no-cache';
     if (storageToken != null) headers['Authorization'] = 'Bearer $storageToken';
 
     _client!.options.headers = headers;
