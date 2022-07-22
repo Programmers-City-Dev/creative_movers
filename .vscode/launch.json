@@ -28,7 +28,7 @@
             "name": "prod",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main.dart",
+            "program": "lib/main_prod.dart",
             "args": [
                 "--flavor",
                 "prod"
