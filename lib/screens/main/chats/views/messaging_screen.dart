@@ -132,16 +132,16 @@ class _MessagingScreenState extends State<MessagingScreen> {
             if (state is ChatError) {
               return Center(
                   child: AppPromptWidget(
-                    onTap: () {
-                      _chatBloc.add(FetchConversationsMessagesEvent(
-                          conversationId: conversationId!));
-                    },
-                    canTryAgain: true,
-                    isSvgResource: true,
-                    imagePath: "assets/svgs/request.svg",
-                    title: "Something went wrong",
-                    message: state.errorModel.errorMessage,
-                  ));
+                onTap: () {
+                  _chatBloc.add(FetchConversationsMessagesEvent(
+                      conversationId: conversationId!));
+                },
+                canTryAgain: true,
+                isSvgResource: true,
+                imagePath: "assets/svgs/request.svg",
+                title: "Something went wrong",
+                message: state.errorModel.errorMessage,
+              ));
             }
             if (state is ConversationMessagesFetched ||
                 widget.conversationId == null) {
@@ -246,9 +246,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                         focusNode: _focusNode,
                                         onChanged: (val) {
                                           noTextNotifier.value =
-                                              val.isEmpty || val
-                                                  .trim()
-                                                  .isEmpty;
+                                              val.isEmpty || val.trim().isEmpty;
                                         },
                                         controller: _textController,
                                         decoration: const InputDecoration(
@@ -333,17 +331,14 @@ class _MessagingScreenState extends State<MessagingScreen> {
         id: 0,
         body: _textController.text,
         conversationId:
-        conversationId == null ? '-1' : conversationId.toString(),
+            conversationId == null ? '-1' : conversationId.toString(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         media: [],
         status: 'unread',
-        userId: widget.user.id.toString(),
+        userId: injector.get<CacheCubit>().cachedUser!.id.toString(),
         profilePhotoPath:
-        injector
-            .get<CacheCubit>()
-            .cachedUser!
-            .profilePhotoPath,
+            injector.get<CacheCubit>().cachedUser!.profilePhotoPath,
         shouldLoad: true);
     _chatBloc.pushMessage(message);
     _textController.clear();

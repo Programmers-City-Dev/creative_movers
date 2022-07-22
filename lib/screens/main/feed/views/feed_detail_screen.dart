@@ -154,6 +154,7 @@ class _FeedDetailsWidgetState extends State<FeedDetailsWidget> {
                     curve: Curves.easeOut,
                     duration: const Duration(milliseconds: 300),
                   );
+                  setState(() {});
                 },
               );
             }

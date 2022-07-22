@@ -83,15 +83,18 @@ class _NotificationItemState extends State<NotificationItem> {
         notificationType == "likes" ||
         notificationType == "feed") {
       if (contentData.type == "user_feed") {
-        showMaterialModalBottomSheet(
-            context: mainNavKey.currentState!.context,
-            builder: (_) {
-              return Container(
-                child: FeedDetailsScreen(
+        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+            builder: ((context) => FeedDetailsScreen(
                   feedId: contentData.id!,
-                ),
-              );
-            });
+                ))));
+        // showMaterialModalBottomSheet(
+        //     context: context,
+        //     useRootNavigator: true,
+        //     builder: (context) {
+        //       return FeedDetailsScreen(
+        //         feedId: contentData.id!,
+        //       );
+        //     });
       }
     } else if (notificationType == "live_video") {
       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
