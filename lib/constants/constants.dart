@@ -28,15 +28,15 @@ class Constants {
   }
 
   // Pusher
-  static const pusherApiKey = "277fd9b8aac2dbbd54a1";
+  static const pusherApiKey = "7290b6d128bdadf6255e";
   static const pusherCluster = "eu";
-  static const pusherSecrete = "fd3eb9b5f0c9ee51e096";
-  static const pusherId = "1351185";
+  static const pusherSecrete = "a094cb4172d4652cb1b6";
+  static const pusherId = "1507673";
 
   static const userCredentials = 'login_user_credentials';
   static const themeKey = "nitrade_theme_key";
   static const firstTimeUserKey = "first_time_user_key";
-  static const agoraAppId = "d914468e34e446acb3892494cf004eab";
+  static const agoraAppId = "30d7ce9ee6844b3c9736b3ef38ab4d48";
 }
 
 /// Allows this class to be only visible to this file
