@@ -9,7 +9,6 @@ import 'package:creative_movers/data/remote/model/chat/chat_message_response.dar
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation_messages_response.dart';
 import 'package:creative_movers/data/remote/model/chat/conversations_response.dart';
-import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -88,14 +87,14 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
                       }, icon: const Icon(Icons.close, color: Colors.white,)),
 
 
-                      Expanded(child: SizedBox()),
-                      SizedBox(width: 20,),
+                      const Expanded(child: SizedBox()),
+                      const SizedBox(width: 20,),
                       IconButton(onPressed: () {
                         _fetchMedia();
                       },
                           icon: const Icon(Icons.add_photo_alternate_outlined,
                             color: AppColors.lightBlue, size: 25,)),
-                      SizedBox(width: 20,),
+                      const SizedBox(width: 20,),
                       IconButton(onPressed: () {
                         setState(() {
                           mediaItems.removeAt(pageIndex);
@@ -255,7 +254,7 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
     if (state is AddStatusSuccessState) {
       Navigator.pop(context);
       // Navigator.of(context).pushNamed(feedsPath);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(),));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
 
     }
 

@@ -50,6 +50,7 @@ class _EditImageWidgetState extends State<EditImageWidget> {
             radius: widget.ImageBgradius,
             backgroundColor: AppColors.lightBlue,
             child: CircleAvatar(
+              radius: widget.Imageradius,
               child: Container(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(200),
@@ -61,7 +62,6 @@ class _EditImageWidgetState extends State<EditImageWidget> {
                   ):Image.network(widget.imagePath!,fit: BoxFit.cover,  width: 200,),
                 ),
               ),
-              radius: widget.Imageradius,
             ),
           ),
           Positioned(

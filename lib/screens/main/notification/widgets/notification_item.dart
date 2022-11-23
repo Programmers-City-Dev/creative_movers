@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:creative_movers/app.dart';
 import 'package:creative_movers/data/remote/model/notifications_response.dart'
     as notification;
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -8,7 +6,6 @@ import 'package:creative_movers/screens/main/live/views/live_stream.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class NotificationItem extends StatefulWidget {
   final notification.Notification notificationData;

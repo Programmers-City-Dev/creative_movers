@@ -148,7 +148,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
               return ValueListenableBuilder<List<Message>>(
                   valueListenable: _chatBloc.chatMessagesNotifier,
                   builder: (context, messages, snapshot) {
-                    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                       _scrollChatToBottom();
                     });
                     // List<Message> messages = msgs.reversed.toList();

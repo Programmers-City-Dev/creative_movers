@@ -3,7 +3,6 @@ import 'package:creative_movers/screens/auth/views/connection_screen.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/main/payment/views/payment_history_screen.dart';
 import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/buisness_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/invite_contact_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';

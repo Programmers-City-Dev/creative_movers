@@ -159,7 +159,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                             });
                                           }
                                         },
-                                        builder: (context, _buisnessState) {
+                                        builder: (context, buisnessState) {
                                           return Center(
                                             child: TextButton(
                                               style: TextButton.styleFrom(
@@ -169,7 +169,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                                 _buisnessBloc.add(LikePageEvent(
                                                     page_id: widget.pageId));
                                               },
-                                              child: _buisnessState
+                                              child: buisnessState
                                                       is LikePageLoadingState
                                                   ? const Padding(
                                                       padding:
@@ -237,7 +237,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                             });
                                           }
                                         },
-                                        builder: (context, _buisnessState) {
+                                        builder: (context, buisnessState) {
                                           return Center(
                                             child: TextButton(
                                                 style: TextButton.styleFrom(
@@ -251,7 +251,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                                           page_id:
                                                               widget.pageId));
                                                 },
-                                                child: _buisnessState
+                                                child: buisnessState
                                                         is FollowPageLoadingState
                                                     ? const Padding(
                                                         padding: EdgeInsets

@@ -3,15 +3,11 @@ import 'dart:typed_data';
 
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/data/remote/model/view_status_response.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/status/views/add_status_screen.dart';
 import 'package:creative_movers/screens/main/status/views/view_status_screen.dart';
 import 'package:creative_movers/screens/main/status/widgets/create_story_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:status_view/status_view.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -202,6 +198,8 @@ class _StatusViewsState extends State<StatusViews> {
 
                                                           child: ClipRRect(
                                                             
+                                                            borderRadius: BorderRadius.circular(20),
+                                                            
                                                             child: Image.memory(
 
                                                               snapshot.data!,
@@ -212,7 +210,6 @@ class _StatusViewsState extends State<StatusViews> {
                                                               height: 50,
                                                               alignment: Alignment.center,
                                                             ),
-                                                            borderRadius: BorderRadius.circular(20),
                                                           ),
                                                         )))
                                               ],

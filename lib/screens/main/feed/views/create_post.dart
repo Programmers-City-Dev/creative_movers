@@ -73,7 +73,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: AppColors.primaryColor,
+                        backgroundColor: AppColors.primaryColor,
                       ),
                       onPressed:
                           mediaItems.isEmpty && _postController.text.isEmpty
@@ -119,7 +119,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                 ),
                 mediaItems.isNotEmpty
-                    ? Container(
+                    ? SizedBox(
                         height: 150,
                         child: ListView.builder(
                             physics: const BouncingScrollPhysics(),

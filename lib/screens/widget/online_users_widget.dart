@@ -40,7 +40,7 @@ class _OnlineUsersState extends State<OnlineUsers> {
               valueListenable: widget.onlineUsersNotifier,
               builder: (context, value, child) {
                 if (value) {
-                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                     _chatBloc.add(FetchOnlineUsersEvent());
                     widget.onlineUsersNotifier.value = false;
                   });

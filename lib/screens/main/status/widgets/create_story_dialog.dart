@@ -21,7 +21,7 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var _statusBloc = context.read<StatusBloc>();
+    var statusBloc = context.read<StatusBloc>();
     return Scaffold(
       backgroundColor: AppColors.smokeWhite,
       body: Container(
@@ -87,7 +87,7 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => BlocProvider.value(
-                                  value: _statusBloc,
+                                  value: statusBloc,
                                   child: const AddStatusScreen(),
                                 ),
                               ));
@@ -95,6 +95,8 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)),
+                              color: AppColors.primaryColor,
+                              elevation: 0,
                               child: Container(
                                 height: 170,
                                 width: 120,
@@ -133,8 +135,6 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                                   ),
                                 ),
                               ),
-                              color: AppColors.primaryColor,
-                              elevation: 0,
                             ),
                           ),
                           const SizedBox(
@@ -147,6 +147,7 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)),
+                              elevation: 0,
                               child: Container(
                                 height: 170,
                                 width: 120,
@@ -186,7 +187,6 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                                   ),
                                 ),
                               ),
-                              elevation: 0,
                             ),
                           )
                         ],

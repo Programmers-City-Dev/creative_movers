@@ -84,32 +84,32 @@ class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepA
                                   widget.result.id.toString()));
                             }
                                 : null,
+                            style: TextButton.styleFrom(
+                                backgroundColor: AppColors.lightBlue),
                             child: connectState == ConnectState.idle
                                 ? const Text('Connect')
                                 : connectState == ConnectState.loading
                                 ? const SizedBox(
+                              height: 10,
+                              width: 10,
                               child: CircularProgressIndicator(
                                 color: AppColors.primaryColor,
                                 strokeWidth: 2,
                               ),
-                              height: 10,
-                              width: 10,
                             )
-                                : Text('Pending..'),
-                            style: TextButton.styleFrom(
-                                backgroundColor: AppColors.lightBlue),
+                                : const Text('Pending..'),
                           ) :
                           widget.result.connected == 'Connected' ?  TextButton(
                             onPressed: () {},
-                            child: const Text('Connected'),
                             style: TextButton.styleFrom(
                                 backgroundColor: AppColors.lightBlue),
+                            child: const Text('Connected'),
                           )
                           : TextButton(
                             onPressed: () {},
-                            child: const Text('Pending..'),
                             style: TextButton.styleFrom(
                                 backgroundColor: AppColors.lightBlue),
+                            child: const Text('Pending..'),
                           ),
                         ),
                         const SizedBox(
@@ -123,11 +123,11 @@ class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepA
                           bloc: _connectsBloc2,
                           builder: (context, state) {
                             return state is FollowLoadingState
-                                ? Container(
+                                ? const SizedBox(
                               width: 10,
                               height: 10,
                               child:
-                              const CircularProgressIndicator(
+                              CircularProgressIndicator(
                                 color: AppColors.primaryColor,
                                 strokeWidth: 2,
                               ),
@@ -204,14 +204,14 @@ class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepA
                       widget.result.followers.isNotEmpty
                           ? widget.result.followers[0].firstname
                           : '',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     widget.result.followers.length > 1 ?
                     Text('+${widget.result.followers.length - 1}') :
-                    Text(''),
+                    const Text(''),
                   ],
                 )
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),
@@ -277,7 +277,7 @@ class _StackedImagesState extends State<StackedImages> {
       children: [
         ImageStack(
 
-          imageList: [],
+          imageList: const [],
           totalCount: images.length,
           // If larger than images.length, will show extra empty circle
           imageRadius: 20,
@@ -294,7 +294,7 @@ class _StackedImagesState extends State<StackedImages> {
           'Peter C. ',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        Text('+ are following'),
+        const Text('+ are following'),
       ],
     );
   }

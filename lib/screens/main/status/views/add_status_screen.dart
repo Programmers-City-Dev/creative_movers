@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +31,7 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
   ];
 
   List<Color> colors =[
-   Color( 0xFF000000,)
+   const Color( 0xFF000000,)
   ];
   List<int> theme = [
     0xffC2185B,
@@ -82,8 +81,8 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
             onPressed: () {
               uploadStatus();
             },
-            child: const Icon(Icons.send),
             backgroundColor: AppColors.primaryColor,
+            child: const Icon(Icons.send),
           ),
         ),
         body: Column(
@@ -201,7 +200,7 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     }
 
     if (state is AddStatusSuccessState) {
-      context.read<StatusBloc>().add(GetStatusEvent());
+      context.read<StatusBloc>().add(const GetStatusEvent());
       Navigator.popUntil(context,(route) => route.isFirst );
 
       // Navigator.popAndPushNamed(context,'/home/feeds');

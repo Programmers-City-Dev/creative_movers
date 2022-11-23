@@ -19,7 +19,7 @@ class ConversationMessagesResponse {
   }) =>
       ConversationMessagesResponse(
         status: status ?? this.status,
-        conversationData: chatData ?? this.conversationData,
+        conversationData: chatData ?? conversationData,
       );
 
   factory ConversationMessagesResponse.fromMap(Map<String, dynamic> json) => ConversationMessagesResponse(

@@ -13,6 +13,8 @@ class _ChatsLoaderState extends State<ChatsLoader> {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
         period: const Duration(milliseconds: 1000),
+        baseColor: Colors.grey[200]!,
+        highlightColor: Colors.grey[300]!,
         child: Column(
           children: [
             Row(
@@ -74,8 +76,6 @@ class _ChatsLoaderState extends State<ChatsLoader> {
             ),
 
           ],
-        ),
-        baseColor: Colors.grey[200]!,
-        highlightColor: Colors.grey[300]!);
+        ));
   }
 }

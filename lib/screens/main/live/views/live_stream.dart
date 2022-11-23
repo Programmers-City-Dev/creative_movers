@@ -1,7 +1,6 @@
 import 'dart:developer' as logger;
 import 'dart:math';
 
-import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/constants/constants.dart';
@@ -14,11 +13,13 @@ import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 
 // import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
-import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
+
+// import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
+// import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:uuid/uuid.dart';
 
 var _scrollController = ScrollController();
@@ -28,7 +29,7 @@ _scrollToBottom() {
 }
 
 int? _remoteUid;
-VideoRemoteState? _remoteUserState;
+RemoteVideoState? _remoteUserState;
 
 class LiveStream extends StatefulWidget {
   final bool isBroadcaster;
@@ -59,6 +60,7 @@ class _LiveStreamState extends State<LiveStream> {
 
   // String channel = DateTime.now().toIso8601String();
   final ChatBloc _chatBloc = injector.get<ChatBloc>();
+
   // bool ready = false;
 
   @override
@@ -78,7 +80,8 @@ class _LiveStreamState extends State<LiveStream> {
 
   @override
   void dispose() {
-    _engine?.destroy();
+    //TODO: Destroy agora engine here
+    // _engine?.destroy();
     // _client.destroy();
     super.dispose();
   }
@@ -88,7 +91,11 @@ class _LiveStreamState extends State<LiveStream> {
     await [Permission.microphone, Permission.camera].request();
 
     //create the engine
-    _engine = await RtcEngine.create(Constants.agoraAppId);
+    _engine = createAgoraRtcEngine();
+    await _engine?.initialize(const RtcEngineContext(
+      appId: Constants.agoraAppId,
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+    ));
 
     // Enable Agora Video and Video Preview
     await _engine?.enableVideo();
@@ -102,18 +109,23 @@ class _LiveStreamState extends State<LiveStream> {
     }
 
     // Here we set the channel profile for the Video Call
-    await _engine?.setChannelProfile(ChannelProfile.LiveBroadcasting);
+    await _engine
+        ?.setChannelProfile(ChannelProfileType.channelProfileLiveBroadcasting);
     if (widget.isBroadcaster) {
-      await _engine?.setClientRole(ClientRole.Broadcaster);
+      await _engine?.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     } else {
-      await _engine?.setClientRole(ClientRole.Audience);
+      await _engine?.setClientRole(role: ClientRoleType.clientRoleAudience);
     }
 
-    _engine?.setEventHandler(
+    _engine?.registerEventHandler(
       _handleEvents(),
     );
 
-    await _engine?.joinChannel(token, channelName!, null, 0);
+    await _engine?.joinChannel(
+        channelId: channelName!,
+        options: ChannelMediaOptions(token: token),
+        uid: 0,
+        token: token);
     if (widget.isBroadcaster) {
       await _engine?.muteAllRemoteAudioStreams(true);
     }
@@ -121,38 +133,39 @@ class _LiveStreamState extends State<LiveStream> {
 
   RtcEngineEventHandler _handleEvents() {
     return RtcEngineEventHandler(
-      joinChannelSuccess: (String channel, int uid, int elapsed) {
+      onJoinChannelSuccess: (RtcConnection conn, int uid) {
         logInfo("local user $uid joined");
         setState(() {
           _localUserJoined = true;
         });
       },
-      userJoined: (int uid, int elapsed) {
+      onUserJoined: (RtcConnection conn, int uid, int elapsed) {
         logInfo("remote user $uid joined");
         setState(() {
           _remoteUid = uid;
         });
       },
-      userOffline: (int uid, UserOfflineReason reason) {
+      onUserOffline:
+          (RtcConnection conn, int uid, UserOfflineReasonType reason) {
         logInfo("remote user $uid left channel");
         setState(() {
           _remoteUid = null;
         });
       },
-      remoteVideoStateChanged:
-          (x, VideoRemoteState state, VideoRemoteStateReason reason, i) {
+      onRemoteVideoStateChanged: (RtcConnection conn, x, RemoteVideoState state,
+          RemoteVideoStateReason reason, i) {
         logInfo("remote user $state video state changed");
-        if (state == VideoRemoteState.Decoding) {
+        if (state == RemoteVideoState.remoteVideoStateDecoding) {
           setState(() {
-            _remoteUserState = VideoRemoteState.Decoding;
+            _remoteUserState = RemoteVideoState.remoteVideoStateDecoding;
           });
-        } else if (state == VideoRemoteState.Stopped) {
+        } else if (state == RemoteVideoState.remoteVideoStateStopped) {
           setState(() {
-            _remoteUserState = VideoRemoteState.Stopped;
+            _remoteUserState = RemoteVideoState.remoteVideoStateStopped;
           });
-        } else if (state == VideoRemoteState.Frozen) {
+        } else if (state == RemoteVideoState.remoteVideoStateFrozen) {
           setState(() {
-            _remoteUserState = VideoRemoteState.Frozen;
+            _remoteUserState = RemoteVideoState.remoteVideoStateFrozen;
           });
         }
       },
@@ -221,6 +234,7 @@ class LiveStreamWidget extends StatelessWidget {
         super(key: key);
 
   final LiveStream widget;
+
   // final int? _remoteUid;
   final RtcEngine? engine;
   final String channelName;
@@ -229,22 +243,22 @@ class LiveStreamWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logger.log(
-        "Is broadcaster: ${widget.isBroadcaster}\nRemote User ID: ${_remoteUid}",
+        "Is broadcaster: ${widget.isBroadcaster}\nRemote User ID: $_remoteUid",
         name: "LiveChat");
     return Stack(
       children: [
         if (!widget.isBroadcaster &&
-            _remoteUserState == VideoRemoteState.Decoding &&
+            _remoteUserState == RemoteVideoState.remoteVideoStateDecoding &&
             _remoteUid != null)
           Center(
             child: RemoteUserView(engine, channelName, _remoteUid),
           ),
         if (!widget.isBroadcaster &&
-            _remoteUserState == VideoRemoteState.Stopped)
+            _remoteUserState == RemoteVideoState.remoteVideoStateStopped)
           const LiveEndedWidget(),
         if (!widget.isBroadcaster &&
-            (_remoteUserState != VideoRemoteState.Decoding &&
-                _remoteUserState != VideoRemoteState.Stopped))
+            (_remoteUserState != RemoteVideoState.remoteVideoStateDecoding &&
+                _remoteUserState != RemoteVideoState.remoteVideoStateStopped))
           const Center(
             child: CircularProgressIndicator(),
           ),
@@ -322,8 +336,13 @@ class _RemoteUserViewState extends State<RemoteUserView> {
           },
           child: Stack(
             children: [
-              rtc_remote_view.SurfaceView(
-                  uid: widget.remoteUid!, channelId: widget.channelName),
+              AgoraVideoView(
+                controller: VideoViewController.remote(
+                  rtcEngine: widget.engine!,
+                  canvas: VideoCanvas(uid: widget.remoteUid!),
+                  connection: RtcConnection(channelId: widget.channelName),
+                ),
+              ),
               Align(
                   alignment: Alignment.topCenter,
                   child: Container(
@@ -366,7 +385,7 @@ class _RemoteUserViewState extends State<RemoteUserView> {
                               },
                               listener: (context, state) {
                                 if (state is LiveChannelMessagesFetched) {
-                                  WidgetsBinding.instance?.addPostFrameCallback(
+                                  WidgetsBinding.instance.addPostFrameCallback(
                                       (_) => _scrollToBottom());
                                 }
                               },
@@ -542,7 +561,7 @@ class _RemoteUserViewState extends State<RemoteUserView> {
                                 builder: (BuildContext context, Widget child,
                                     bool isKeyboardVisible) {
                                   WidgetsBinding.instance
-                                      ?.addPostFrameCallback((timeStamp) {
+                                      .addPostFrameCallback((timeStamp) {
                                     _isTextFocusedNotifier.value =
                                         isKeyboardVisible;
                                   });
@@ -644,7 +663,8 @@ class _RemoteUserViewState extends State<RemoteUserView> {
         message: "Are you sure you want to leave this live?",
         cancelButtonText: "Cancel",
         confirmButtonText: "Leave Video", onConfirmed: () async {
-      await widget.engine?.destroy();
+      //TODO: Destroy agora engine here
+      // await widget.engine?.destroy();
       Navigator.of(context)
         ..pop()
         ..pop();
@@ -720,10 +740,15 @@ class _LocalUserViewState extends State<LocalUserView> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    bottom: WidgetsBinding.instance!.window.viewInsets.bottom),
+                    bottom: WidgetsBinding.instance.window.viewInsets.bottom),
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height,
-                    child: const rtc_local_view.SurfaceView()),
+                    child: AgoraVideoView(
+                      controller: VideoViewController(
+                        rtcEngine: widget.engine!,
+                        canvas: const VideoCanvas(uid: 0),
+                      ),
+                    )),
               ),
               ValueListenableBuilder<bool>(
                   valueListenable: _activeLiveNotifier,
@@ -799,7 +824,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                                         if (state
                                             is LiveChannelMessagesFetched) {
                                           WidgetsBinding.instance
-                                              ?.addPostFrameCallback(
+                                              .addPostFrameCallback(
                                                   (_) => _scrollToBottom());
                                         }
                                       },
@@ -904,7 +929,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                                                 Widget child,
                                                 bool isKeyboardVisible) {
                                               WidgetsBinding.instance
-                                                  ?.addPostFrameCallback(
+                                                  .addPostFrameCallback(
                                                       (timeStamp) {
                                                 _isTextFocusedNotifier.value =
                                                     isKeyboardVisible;
@@ -1054,7 +1079,8 @@ class _LocalUserViewState extends State<LocalUserView> {
         message: "Are you sure you want to end this video?",
         cancelButtonText: "Cancel",
         confirmButtonText: "End Video", onConfirmed: () async {
-      await widget.engine?.destroy();
+      //TODO: Destroy agora engine here
+      // await widget.engine?.destroy();
       Navigator.of(context)
         ..pop()
         ..pop();
@@ -1067,14 +1093,14 @@ class _LocalUserViewState extends State<LocalUserView> {
   void _showInviteDialog(BuildContext context) {
     ChatBloc chatBloc = ChatBloc(injector.get());
     int value = 0;
-    final _inviteTypeNotifier = ValueNotifier<int>(0);
+    final inviteTypeNotifier = ValueNotifier<int>(0);
     showDialog(
         context: context,
         builder: (ctx) {
           return AlertDialog(
             title: const Text("Invite"),
             content: ValueListenableBuilder<int>(
-                valueListenable: _inviteTypeNotifier,
+                valueListenable: inviteTypeNotifier,
                 builder: (context, val, child) {
                   logger.log("VAL: $value");
                   return Column(
@@ -1087,7 +1113,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                           groupValue: value,
                           onChanged: (v) {
                             value = v!;
-                            _inviteTypeNotifier.value = 0;
+                            inviteTypeNotifier.value = 0;
                           },
                           title: const Text("Invite by Followers")),
                       RadioListTile<int>(
@@ -1095,7 +1121,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                           groupValue: value,
                           onChanged: (v) {
                             value = v!;
-                            _inviteTypeNotifier.value = 1;
+                            inviteTypeNotifier.value = 1;
                           },
                           title: const Text("Invite by Connects")),
                       RadioListTile<int>(
@@ -1103,7 +1129,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                           groupValue: value,
                           onChanged: (v) {
                             value = v!;
-                            _inviteTypeNotifier.value = 2;
+                            inviteTypeNotifier.value = 2;
                           },
                           title: const Text("Invite All")),
                     ],
@@ -1129,10 +1155,6 @@ class _LocalUserViewState extends State<LocalUserView> {
                 },
                 builder: (context, state) {
                   return TextButton(
-                    child: Text(
-                      state is ChatMessageLoading ? "Inviting..." : "Invite",
-                      style: const TextStyle(color: AppColors.primaryColor),
-                    ),
                     onPressed: state is ChatMessageLoading
                         ? null
                         : () {
@@ -1144,6 +1166,10 @@ class _LocalUserViewState extends State<LocalUserView> {
                                         ? "connections"
                                         : "all"));
                           },
+                    child: Text(
+                      state is ChatMessageLoading ? "Inviting..." : "Invite",
+                      style: const TextStyle(color: AppColors.primaryColor),
+                    ),
                   );
                 },
               ),
@@ -1210,19 +1236,19 @@ class _KeyboardVisibilityBuilderState extends State<KeyboardVisibilityBuilder>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeMetrics() {
-    final bottomInset = WidgetsBinding.instance?.window.viewInsets.bottom;
-    final newValue = bottomInset! > 0.0;
+    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    final newValue = bottomInset> 0.0;
     if (newValue != _isKeyboardVisible) {
       setState(() {
         _isKeyboardVisible = newValue;

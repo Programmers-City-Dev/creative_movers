@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';

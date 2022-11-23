@@ -48,9 +48,7 @@ class _RequestItemState extends State<RequestItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.connection.firstname +
-                      ' ' +
-                      widget.connection.lastname,
+                  '${widget.connection.firstname} ${widget.connection.lastname}',
                   style: const TextStyle(
                       fontWeight: FontWeight.w700, fontSize: 13),
                 ),
@@ -84,6 +82,9 @@ class _RequestItemState extends State<RequestItem> {
                                                 'accept'));
                                           }
                                         : null,
+                                    style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: AppColors.lightGreen),
                                     child: acceptState == AcceptState.idle
                                         ? const Text(
                                             'Accept',
@@ -92,16 +93,13 @@ class _RequestItemState extends State<RequestItem> {
                                                 fontSize: 12),
                                           )
                                         : const SizedBox(
+                                            height: 10,
+                                            width: 10,
                                             child: CircularProgressIndicator(
                                               color: Colors.green,
                                               strokeWidth: 2,
                                             ),
-                                            height: 10,
-                                            width: 10,
                                           ),
-                                    style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        backgroundColor: AppColors.lightGreen),
                                   )),
                               const SizedBox(
                                 width: 10,
@@ -123,6 +121,9 @@ class _RequestItemState extends State<RequestItem> {
 
                                           }
                                         : null,
+                                    style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: AppColors.lightred),
                                     child: declineState == DeclineState.idle
                                         ? const Text(
                                             'Decline',
@@ -131,16 +132,13 @@ class _RequestItemState extends State<RequestItem> {
                                                 fontSize: 12),
                                           )
                                         : const SizedBox(
+                                            height: 10,
+                                            width: 10,
                                             child: CircularProgressIndicator(
                                               color: AppColors.red,
                                               strokeWidth: 2,
                                             ),
-                                            height: 10,
-                                            width: 10,
                                           ),
-                                    style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        backgroundColor: AppColors.lightred),
                                   )),
                             ],
                           )

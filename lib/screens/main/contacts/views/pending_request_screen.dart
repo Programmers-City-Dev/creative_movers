@@ -14,7 +14,7 @@ class PendingRequestScreen extends StatefulWidget {
 
 class _PendingRequestScreenState extends State<PendingRequestScreen>
     with AutomaticKeepAliveClientMixin {
-  ConnectsBloc _connectsBloc = ConnectsBloc();
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
 
   @override
   void initState() {
@@ -41,9 +41,9 @@ class _PendingRequestScreenState extends State<PendingRequestScreen>
                       child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: 5,
-                    itemBuilder: (context, index) => ConnectsShimer(),
+                    itemBuilder: (context, index) => const ConnectsShimer(),
                     separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
+                      return const SizedBox(
                         height: 14,
                       );
                     },

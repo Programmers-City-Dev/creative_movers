@@ -13,7 +13,7 @@ class UniLinks {
       if (initialUri != null) _decodeUri(initialUri);
     } on FormatException {
       debugPrint('error in link');
-    } catch (e) {}
+    }
 
     uriLinkStream.listen((Uri? uri) {
       _decodeUri(uri);

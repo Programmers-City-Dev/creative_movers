@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +18,6 @@ class _ImagePickerItemState extends State<ImagePickerItem> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.file(
-              File(widget.image!),
-              fit: BoxFit.cover,
-            )),
         decoration: BoxDecoration(
           // image: DecorationImage(image:  AssetImage(AppIcons.imgSlide1)),
           color: Colors.blue,
@@ -33,6 +26,12 @@ class _ImagePickerItemState extends State<ImagePickerItem> {
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         width: 100,
         height: 150,
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.file(
+              File(widget.image!),
+              fit: BoxFit.cover,
+            )),
       ),
       InkWell(
         onTap: widget.onClose,

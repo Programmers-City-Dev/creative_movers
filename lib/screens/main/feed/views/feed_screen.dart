@@ -1,18 +1,13 @@
-import 'dart:developer';
 
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/blocs/status/status_bloc.dart';
-import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/views/create_post.dart';
 import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
 import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
-import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
 import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
 import 'package:creative_movers/screens/main/search/views/search__screen.dart';
@@ -40,7 +35,7 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   void initState() {
     feedBloc.add(const GetFeedEvent());
-    statusBloc.add(GetStatusEvent());
+    statusBloc.add(const GetStatusEvent());
     super.initState();
   }
 
@@ -118,7 +113,7 @@ class _FeedScreenState extends State<FeedScreen> {
           onRefresh: (() async {
             await Future.delayed(const Duration(seconds: 1));
             feedBloc.add(const GetFeedEvent());
-            statusBloc.add(GetStatusEvent());
+            statusBloc.add(const GetStatusEvent());
           }),
           child: CustomScrollView(
             // controller: _scrollController,

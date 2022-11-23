@@ -38,7 +38,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> with AutomaticK
                   itemBuilder: (context, index) =>  SearchResultItem(result: widget.searchResponse.users[index],),
                 ),
               ):
-                  Expanded(child: Center(child: Text('No results for your search..'),))
+                  const Expanded(child: Center(child: Text('No results for your search..'),))
             ],
           ),
         ));

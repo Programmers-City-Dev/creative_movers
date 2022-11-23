@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:camera/camera.dart';
 import 'package:creative_movers/app_config.dart';
@@ -213,6 +212,7 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                                   _chatBloc.add(const GenerateAgoraToken(
                                       channelName: "CreativeMovers"));
                                 },
+                          color: AppColors.primaryColor,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -233,7 +233,6 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                                   : Container()
                             ],
                           ),
-                          color: AppColors.primaryColor,
                         );
                       },
                     ),

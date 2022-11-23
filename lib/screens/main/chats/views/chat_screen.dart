@@ -9,7 +9,6 @@ import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/screens/auth/views/connection_screen.dart';
 import 'package:creative_movers/screens/main/chats/views/messaging_screen.dart';
 import 'package:creative_movers/screens/main/chats/widgets/chat_item.dart';
 import 'package:creative_movers/screens/main/chats/widgets/chats_loader.dart';
@@ -165,7 +164,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<dynamic> _showConnectionsDialog(BuildContext context) {
-    final ConnectsBloc _connectsBloc = ConnectsBloc();
+    final ConnectsBloc connectsBloc = ConnectsBloc();
     return showBarModalBottomSheet(
         context: context,
         useRootNavigator: true,
@@ -188,7 +187,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Flexible(
                   child: BlocBuilder<ConnectsBloc, ConnectsState>(
-                    bloc: _connectsBloc..add(GetConnectsEvent()),
+                    bloc: connectsBloc..add(const GetConnectsEvent()),
                     builder: (context, state) {
                       if (state is ConnectsLoadingState) {
                         return Padding(

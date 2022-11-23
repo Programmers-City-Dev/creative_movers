@@ -72,7 +72,7 @@ class _SuggestedUsersTabState extends State<SuggestedUsersTab> with AutomaticKee
                           child: Center(
                               child: AppPromptWidget(
                           onTap: () {
-                            _connectsBloc.add(GetConnectsEvent());
+                            _connectsBloc.add(const GetConnectsEvent());
                           },
                           canTryAgain: true,
                           isSvgResource: true,

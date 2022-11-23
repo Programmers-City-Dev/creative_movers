@@ -28,7 +28,7 @@ class PaymentRepository {
             "Content-Type": "application/x-www-form-urlencoded"
           })),
       successResponse: (data) {
-        return State<Map<String, dynamic>>.success(data != null ? data : null);
+        return State<Map<String, dynamic>>.success(data);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

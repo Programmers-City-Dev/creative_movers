@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/data/remote/model/chat/chat_message_request.dart';
@@ -18,10 +17,10 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/services/puhser_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pusher_client/pusher_client.dart';
 
 part 'chat_event.dart';
-
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -114,8 +113,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError(errorModel: errorModel));
       }
     } catch (e) {
-      log("CHAT ERROR: ${e}");
-      ServerErrorModel errorModel = ServerErrorModel(
+      log("CHAT ERROR: $e");
+      ServerErrorModel errorModel = const ServerErrorModel(
           statusCode: 404, errorMessage: "Unable to send message!");
       emit(ChatError(errorModel: errorModel));
     }
@@ -134,7 +133,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError(errorModel: errorModel));
       }
     } catch (e) {
-      ServerErrorModel errorModel = ServerErrorModel(
+      ServerErrorModel errorModel = const ServerErrorModel(
           statusCode: 404, errorMessage: "Unable to fetch conversations!");
       emit(ChatError(errorModel: errorModel));
     }
@@ -158,7 +157,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError(errorModel: errorModel));
       }
     } catch (e) {
-      ServerErrorModel errorModel = ServerErrorModel(
+      ServerErrorModel errorModel = const ServerErrorModel(
           statusCode: 404,
           errorMessage: "Unable to fetch messages for this conversation!");
       emit(ChatError(errorModel: errorModel));
@@ -223,7 +222,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatError(errorModel: state.value));
       }
     } catch (e) {
-      ServerErrorModel errorModel = ServerErrorModel(
+      ServerErrorModel errorModel = const ServerErrorModel(
           statusCode: 404, errorMessage: "Oops! an error occurred, try again!");
       emit(ChatError(errorModel: errorModel));
     }
@@ -258,7 +257,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
     } catch (e) {
       log("Error sending invite: $e");
-      emit(ChatError(
+      emit(const ChatError(
           errorModel: ServerErrorModel(
               statusCode: 404,
               errorMessage: "Oops! an error occurred, try again!")));

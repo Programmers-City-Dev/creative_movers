@@ -1,5 +1,4 @@
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -36,11 +35,11 @@ class CustomTextField extends StatelessWidget {
       cursorColor: AppColors.primaryColor,
       validator: validator,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(17),
+          contentPadding: const EdgeInsets.all(17),
           focusedBorder: const OutlineInputBorder(borderSide: BorderSide()),
           label: Text(
             hint,
-            style: TextStyle(color: AppColors.textColor),
+            style: const TextStyle(color: AppColors.textColor),
           ),
 
           // hintText: hint,

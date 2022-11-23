@@ -17,7 +17,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<String> categories = [];
-  RangeValues _values = RangeValues(10, 50);
+  RangeValues _values = const RangeValues(10, 50);
   TextEditingController from_controller = TextEditingController();
   TextEditingController to_controller = TextEditingController();
   String userType = 'all';
@@ -146,14 +146,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: BoxDecoration(
                           border: Border.all(color: AppColors.textColor),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(18.0),
-                          child: Text('Select Category'),
-                        ),
                         width: MediaQuery
                             .of(context)
                             .size
                             .width,
+                        child: const Padding(
+                          padding: EdgeInsets.all(18.0),
+                          child: Text('Select Category'),
+                        ),
                       ),
                       onTap: () {
                         showDialog(

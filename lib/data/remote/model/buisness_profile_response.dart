@@ -94,7 +94,7 @@ class Investment {
   DateTime updatedAt;
 
   factory Investment.fromJson(Map<String, dynamic> json) => Investment(
-    id: json["id"]!= null?json["id"]:null,
+    id: json["id"],
     userId: json["user_id"],
     maxRange: json["max_range"],
     minRange: json["min_range"],

@@ -91,14 +91,14 @@ class _UserConnectionCardState extends State<UserConnectionCard> {
                 "user_id": widget.connection.user_connect_id
               });
             },
-            child: const Text(
-              'View Profile',
-              style: TextStyle(fontSize: 11, color: AppColors.primaryColor),
-            ),
             style: TextButton.styleFrom(
                 shape: const StadiumBorder(
                     side: BorderSide(color: AppColors.primaryColor)),
                 padding: const EdgeInsets.symmetric(horizontal: 16)),
+            child: const Text(
+              'View Profile',
+              style: TextStyle(fontSize: 11, color: AppColors.primaryColor),
+            ),
           )
         ],
       ),

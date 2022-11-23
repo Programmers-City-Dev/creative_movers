@@ -1,12 +1,9 @@
 import 'package:creative_movers/blocs/deep_link/deep_link_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
-import 'package:creative_movers/helpers/routes.dart';
 import 'package:creative_movers/models/deep_link_data.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
 import 'package:creative_movers/screens/main/live/views/live_stream.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class DeeplinkNavigator {
   // this handles navigation to various routes depending on notification type
@@ -48,6 +45,7 @@ abstract class DeepLinkBase {
 }
 
 class LiveDeepLink implements DeepLinkBase {
+  @override
   final String? type, path;
   final Map<String, dynamic>? data;
 
@@ -71,6 +69,7 @@ class LiveDeepLink implements DeepLinkBase {
 }
 
 class FeedsDeepLink implements DeepLinkBase {
+  @override
   final String type;
 
   FeedsDeepLink(this.type);

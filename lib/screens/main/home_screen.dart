@@ -6,7 +6,6 @@ import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/routes.dart';
-import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
@@ -14,15 +13,12 @@ import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.dart';
 import 'package:creative_movers/screens/main/widgets/deeplink/deep_link_listener.dart';
-import 'package:creative_movers/screens/main/widgets/nav_selected_icon.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/welcome_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:page_transition/page_transition.dart';
 
 List<GlobalKey<NavigatorState>> homeNavigatorKeys = [
@@ -58,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _navBloc.add(OpenHomeTabEvent());
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
@@ -92,8 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             onWillPop: () async {
               final isFirstRouteInCurrentTab =
                   !await homeNavigatorKeys[_navIndex].currentState!.maybePop();
-              debugPrint('isFirstRouteInCurrentTab: ' +
-                  isFirstRouteInCurrentTab.toString());
+              debugPrint('isFirstRouteInCurrentTab: $isFirstRouteInCurrentTab');
               // let system handle back button if we're on the first route
               return isFirstRouteInCurrentTab;
             },

@@ -54,9 +54,9 @@ class _CreatePageOnboardingState extends State<CreatePageOnboarding> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                     child: Container(
-                  padding: EdgeInsets.all(18),
+                  padding: const EdgeInsets.all(18),
                   child: Column(
                     children: [
                       const SizedBox(
@@ -144,7 +144,7 @@ class _CreatePageOnboardingState extends State<CreatePageOnboarding> {
                       style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12)),
 
                         onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreatePageScreen(),));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CreatePageScreen(),));
                         },
                         child: const Text(
                           'Get Started',

@@ -42,10 +42,10 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
     super.initState();
     pages = [
       PageHome(page: widget.page,),
-      FollowingScreen(),
-      PageNotifications(),
+      const FollowingScreen(),
+      const PageNotifications(),
        Padding(
-        padding: EdgeInsets.all(18),
+        padding: const EdgeInsets.all(18),
         child: EditPageForm(businessPage: widget.page,),
       )
     ];
@@ -55,7 +55,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text(widget.page.name,style: TextStyle(fontSize: 16),),),
+      appBar: AppBar(title:  Text(widget.page.name,style: const TextStyle(fontSize: 16),),),
       backgroundColor: AppColors.smokeWhite,
       body: SafeArea(
           child: Container(

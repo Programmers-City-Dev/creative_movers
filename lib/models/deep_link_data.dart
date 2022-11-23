@@ -66,12 +66,12 @@ class DeepLinkData {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
-      'message': this.message,
-      'type': this.type,
-      'path': this.path,
-      'id': this.id,
-      'data': this.data,
+      'title': title,
+      'message': message,
+      'type': type,
+      'path': path,
+      'id': id,
+      'data': data,
     };
   }
 }

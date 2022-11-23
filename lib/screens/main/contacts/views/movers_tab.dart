@@ -21,11 +21,11 @@ class _ConnectsTabState extends State<ConnectsTab>
   List<Connection> filterList = [];
   List<Connection> mainList = [];
 
-  ConnectsBloc _connectsBloc = ConnectsBloc();
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
 
   @override
   void initState() {
-    _connectsBloc.add(GetConnectsEvent());
+    _connectsBloc.add(const GetConnectsEvent());
     super.initState();
   }
 
@@ -66,7 +66,7 @@ class _ConnectsTabState extends State<ConnectsTab>
             padding: const EdgeInsets.all(18),
             child: RefreshIndicator(
               onRefresh: () async{
-                _connectsBloc.add(GetConnectsEvent());
+                _connectsBloc.add(const GetConnectsEvent());
                 // return Future.delayed(const Duration(milliseconds: 1));
               },
               child: Column(
@@ -101,7 +101,7 @@ class _ConnectsTabState extends State<ConnectsTab>
                       ?Expanded(
                       child: Center(
                           child: AppPromptWidget(
-                            onTap: () {  _connectsBloc.add(GetConnectsEvent());},
+                            onTap: () {  _connectsBloc.add(const GetConnectsEvent());},
                             canTryAgain: true,
                             isSvgResource: true,
                             imagePath: "assets/svgs/request.svg",
@@ -124,7 +124,7 @@ class _ConnectsTabState extends State<ConnectsTab>
             isSvgResource: true,
             message: state.error,
             onTap: () {
-              _connectsBloc.add(GetConnectsEvent());
+              _connectsBloc.add(const GetConnectsEvent());
             },
           );
         }

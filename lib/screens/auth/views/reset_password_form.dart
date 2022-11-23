@@ -79,6 +79,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   if (_newPasswordController.text.isEmpty) {
                     return 'Enter a new Password';
                   }
+                  return null;
                 },
                 cursorColor: AppColors.textColor,
 
@@ -88,9 +89,9 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
 
 
 
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                     ),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.password_outlined,
                       color: AppColors.textColor,
                     ),
@@ -111,7 +112,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                       ),
                     ) ,
                     hintText: 'New Password',
-                    border: OutlineInputBorder()),
+                    border: const OutlineInputBorder()),
               ),
               const SizedBox(
                 height: 16,
@@ -144,7 +145,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                       color: AppColors.textColor,
                     ),
                     hintText: 'Confirm Password',
-                    border: OutlineInputBorder()),
+                    border: const OutlineInputBorder()),
               ),
               const SizedBox(
                 height: 15,
@@ -164,12 +165,12 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   },
                   child: isLoading
                       ? const SizedBox(
+                    height: 30,
+                    width: 20,
                     child: CircularProgressIndicator(
                       color: Colors.white,
                       strokeWidth: 2,
                     ),
-                    height: 30,
-                    width: 20,
                   )
                       : const Text('Continue'),
                 ),

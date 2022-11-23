@@ -1,6 +1,5 @@
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:image_stack/image_stack.dart';
 class ContactItem extends StatefulWidget {
   const ContactItem({Key? key}) : super(key: key);
 
@@ -47,8 +46,8 @@ class _ContactItemState extends State<ContactItem> {
                     ),
                     Row(
                       children: [
-                        TextButton(onPressed: () {}, child: Text('Invite'), style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue),),
-                        SizedBox(width: 7,),
+                        TextButton(onPressed: () {}, style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue), child: const Text('Invite'),),
+                        const SizedBox(width: 7,),
                         const Icon(Icons.person_add_rounded,color: AppColors.primaryColor,),
                       ],
                     ),

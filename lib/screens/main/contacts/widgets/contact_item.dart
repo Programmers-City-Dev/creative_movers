@@ -58,9 +58,7 @@ class _ContactItemState extends State<ContactItem> {
                     });
                   },
                   child: Text(
-                    widget.connection.firstname +
-                        ' ' +
-                        widget.connection.lastname,
+                    '${widget.connection.firstname} ${widget.connection.lastname}',
                     style: const TextStyle(
                         fontWeight: FontWeight.w700, fontSize: 13),
                   ),

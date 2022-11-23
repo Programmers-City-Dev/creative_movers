@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-import 'package:video_player/video_player.dart';
 
 enum MediaType { image, video }
 

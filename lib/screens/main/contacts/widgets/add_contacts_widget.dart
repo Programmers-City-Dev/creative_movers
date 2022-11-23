@@ -1,6 +1,5 @@
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/resources/app_icons.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/invite_contact_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +26,8 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
 
-        SizedBox(height: 10,),
-          Container(
+        const SizedBox(height: 10,),
+          SizedBox(
           height: 50,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -55,8 +54,7 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
             width: MediaQuery.of(context).size.width,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    primary: AppColors.primaryColor),
+                    padding: const EdgeInsets.symmetric(vertical: 12), backgroundColor: AppColors.primaryColor),
                 onPressed: () {
                   Navigator.of(context).pushNamed(inviteContactsPath);
                 },

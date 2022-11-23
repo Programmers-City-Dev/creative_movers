@@ -33,7 +33,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>
     _tabController.addListener(_handleTabSelection);
     _buisnessBloc.add(BuisnessProfileEvent());
     pages = [
-      MyPageTab(),
+      const MyPageTab(),
       ViewBuisnessPageScreen(
         pageId: widget.page.id.toString(),
       )
@@ -54,7 +54,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>
               padding: const EdgeInsets.symmetric(horizontal: 6),
               height: 40,
               child: ListView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 children: [
@@ -66,7 +66,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>
                       });
                     },
                     child: Chip(
-                        padding: EdgeInsets.all(7),
+                        padding: const EdgeInsets.all(7),
                         avatar: SvgPicture.asset(
                           AppIcons.svgPeople,
                           color: pageType == 'my_pages'
@@ -96,7 +96,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>
                       });
                     },
                     child: Chip(
-                        padding: EdgeInsets.all(7),
+                        padding: const EdgeInsets.all(7),
                         avatar: SvgPicture.asset(
                           AppIcons.svgPeople,
                           color: pageType == 'following_pages'

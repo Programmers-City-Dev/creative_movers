@@ -1,7 +1,6 @@
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -17,8 +16,8 @@ class _PaymentSuccesDialogState extends State<PaymentSuccesDialog> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.all(20),
-        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+        margin: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
         color: AppColors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +50,7 @@ class _PaymentSuccesDialogState extends State<PaymentSuccesDialog> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               decoration: BoxDecoration(
                   color: AppColors.chipsColor,
                   borderRadius: BorderRadius.circular(15)),
@@ -61,7 +60,7 @@ class _PaymentSuccesDialogState extends State<PaymentSuccesDialog> {
                 style: TextStyle(color: AppColors.smokeWhite),
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             const Text(
               'We have received your payment for one month subscription fee and you have moved to the front',
               textAlign: TextAlign.center,
@@ -75,8 +74,7 @@ class _PaymentSuccesDialogState extends State<PaymentSuccesDialog> {
                     child: OutlinedButton(
 
                       style: OutlinedButton.styleFrom(
-                        primary: AppColors.primaryColor,
-                          side:const BorderSide(color: AppColors.primaryColor) ,
+                        foregroundColor: AppColors.primaryColor, side:const BorderSide(color: AppColors.primaryColor) ,
                           padding: const EdgeInsets.all(16)),
                       onPressed: (){}, child:const Text("Finalize Your Profile",style: TextStyle(color: AppColors.primaryColor),),)),
               ],

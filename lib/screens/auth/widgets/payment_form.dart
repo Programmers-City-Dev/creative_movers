@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -34,7 +33,7 @@ class _PaymentFormState extends State<PaymentForm> {
 
   @override
   Widget build(BuildContext context) {
-    final _trialPaymentBloc = PaymentBloc(injector.get());
+    final trialPaymentBloc = PaymentBloc(injector.get());
     return Form(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -115,7 +114,7 @@ class _PaymentFormState extends State<PaymentForm> {
                 }
               },
               child: BlocConsumer<PaymentBloc, PaymentState>(
-                  bloc: _trialPaymentBloc,
+                  bloc: trialPaymentBloc,
                   listener: (context, state) {
                     if (state is PaymentConfirmedState) {
                       Navigator.of(context).pop();
@@ -149,7 +148,7 @@ class _PaymentFormState extends State<PaymentForm> {
                               CreatePaymentIntentEvent(int.parse(paymentAmount),
                                   "usd", mDuration, "account_activation"));
                         } else {
-                          _trialPaymentBloc.add(StartFreeTrialEvent());
+                          trialPaymentBloc.add(StartFreeTrialEvent());
                         }
                       },
                     );

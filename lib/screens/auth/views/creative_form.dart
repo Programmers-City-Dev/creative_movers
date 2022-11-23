@@ -113,11 +113,11 @@ class _CreativeFormState extends State<CreativeForm> {
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppColors.textColor),
                               ),
+                              width: MediaQuery.of(context).size.width,
                               child: const Padding(
                                 padding: EdgeInsets.all(18.0),
                                 child: Text('Select Category'),
                               ),
-                              width: MediaQuery.of(context).size.width,
                             ),
                             onTap: () {
                               showDialog(
@@ -200,7 +200,7 @@ class _CreativeFormState extends State<CreativeForm> {
                     radius: const Radius.circular(5),
                     strokeWidth: 1,
                     borderType: BorderType.RRect,
-                    child: Container(
+                    child: SizedBox(
                       height: 170,
                       child: Stack(
                         children: [
@@ -209,6 +209,7 @@ class _CreativeFormState extends State<CreativeForm> {
                             child: Container(
                               child: Center(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
                                     Icon(
                                       Icons.add_photo_alternate_outlined,
@@ -218,7 +219,6 @@ class _CreativeFormState extends State<CreativeForm> {
                                     Text(
                                         'Add Cover Image On YOur Buisness Page'),
                                   ],
-                                  mainAxisAlignment: MainAxisAlignment.center,
                                 ),
                               ),
                             ),

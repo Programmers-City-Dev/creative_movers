@@ -34,7 +34,7 @@ class SimplifyApiConsuming {
           statusCodeSuccess, successResponse, errorResponse!);
     } on SocketException {
       return State<ServerErrorModel>.error(
-        ServerErrorModel(
+        const ServerErrorModel(
             statusCode: 400,
             errorMessage: "Something went wrong "
                 "please check your internet connection and try again",
@@ -67,11 +67,11 @@ class SimplifyApiConsuming {
 
 
   static Future<State> _makeRequest(
-      Future<Response> requestFunction(),
+      Future<Response> Function() requestFunction,
       bool isStatusCode,
       int statusCodeSuccess,
-      State successResponse(dynamic data),
-      State errorResponse(Response data)) async {
+      State Function(dynamic data) successResponse,
+      State Function(Response data) errorResponse) async {
     var response = await requestFunction();
 
 
@@ -91,8 +91,8 @@ class SimplifyApiConsuming {
   static State _handleResponseBasedOnStatusCode(
       Response response,
       int statusCodeSuccess,
-      State successResponse(dynamic data),
-      State errorResponse(Response data)) {
+      State Function(dynamic data) successResponse,
+      State Function(Response data) errorResponse) {
     if (response.statusCode == statusCodeSuccess) {
       return successResponse(response.data);
     } else {
@@ -101,7 +101,7 @@ class SimplifyApiConsuming {
   }
 
   static State _handleResponseBasedOnDataReturned(Response response,
-      State successResponse(dynamic data), State errorResponse(Response data)) {
+      State Function(dynamic data) successResponse, State Function(Response data) errorResponse) {
     if (response.data['status'] == 'success') {
       return successResponse(response.data);
     }

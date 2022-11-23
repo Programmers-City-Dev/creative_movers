@@ -12,8 +12,8 @@ class _StreamCommentItemState extends State<StreamCommentItem> {
   @override
   Widget build(BuildContext context) {  
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 2,horizontal: 11),
-      padding: EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(vertical: 2,horizontal: 11),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: AppColors.commentBg.withOpacity(0.6) ),
       child: Row(
         children: const [

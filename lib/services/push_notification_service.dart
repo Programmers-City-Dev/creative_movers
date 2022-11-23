@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -13,7 +12,7 @@ class PushNotificationService {
   static final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   /// Create a [AndroidNotificationChannel] for heads up notifications
-  static late AndroidNotificationChannel channel =
+  static AndroidNotificationChannel channel =
       const AndroidNotificationChannel(
           'high_importance_channel', // id
           'High Importance Notifications', // title
@@ -23,7 +22,7 @@ class PushNotificationService {
           playSound: true);
 
   /// Initialize the [FlutterLocalNotificationsPlugin] package.
-  static late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   PushNotificationService._();
@@ -150,7 +149,7 @@ class PushNotificationService {
         // return DeepLinkData.fromMap(map['a']);
       }
     } catch (e) {
-      debugPrint('not error ' + e.toString());
+      debugPrint('not error $e');
     }
 
     return null;

@@ -343,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   Expanded(
                                     child: Container(
-                                      padding: EdgeInsets.all(18),
+                                      padding: const EdgeInsets.all(18),
                                       alignment: Alignment.centerRight,
                                       child: Column(
                                         crossAxisAlignment:
@@ -433,9 +433,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.of(context)
                                     .pushNamed(profileEditPath);
                               },
-                              child: const Text('Edit Details'),
                               style: TextButton.styleFrom(
                                   backgroundColor: AppColors.lightBlue),
+                              child: const Text('Edit Details'),
                             )
                           ],
                         ),
@@ -566,14 +566,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               user.connections!.length > 6
                                   ? TextButton(
                                 onPressed: () {},
-                                child: Text(
-                                    '+${user.connections!.length - 6}'),
                                 style: TextButton.styleFrom(
                                     backgroundColor:
                                     AppColors.lightBlue,
                                     padding:
                                     const EdgeInsets.symmetric(
                                         vertical: 10)),
+                                child: Text(
+                                    '+${user.connections!.length - 6}'),
                               )
                                   : const SizedBox.shrink(),
                             ],

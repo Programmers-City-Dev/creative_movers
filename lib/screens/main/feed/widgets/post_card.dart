@@ -1,11 +1,7 @@
 import 'package:creative_movers/app.dart';
-import 'package:creative_movers/screens/main/live/views/live_stream.dart';
 import 'package:creative_movers/screens/main/live/views/live_stream_home_screen.dart';
-import 'package:creative_movers/screens/main/views/live_stream_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({Key? key, this.onTap}) : super(key: key);

@@ -17,8 +17,7 @@ class CustomButton extends StatelessWidget {
       height: height ?? 50,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: color ?? AppColors.primaryColor,
+              elevation: 0, backgroundColor: color ?? AppColors.primaryColor,
               padding: const EdgeInsets.all(16)),
           onPressed: isEnabled ? onTap : null,
           child: Center(

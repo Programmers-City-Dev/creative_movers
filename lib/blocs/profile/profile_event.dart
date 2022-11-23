@@ -44,7 +44,7 @@ class UpdateProfileEvent extends ProfileEvent {
   final String? firstName;
   final String? lastName;
 
-  UpdateProfileEvent(
+  const UpdateProfileEvent(
       {this.imagePath,
       this.isProfilePhoto,
       this.phone,

@@ -171,7 +171,7 @@ class FollowPageLoadingState extends BuisnessState{
 }
 class FollowPageSuccesState extends BuisnessState{
   final String message;
-  FollowPageSuccesState({required this.message});
+  const FollowPageSuccesState({required this.message});
 
   @override
   // TODO: implement props
@@ -201,7 +201,7 @@ class LikePageLoadingState extends BuisnessState{
 }
 class LikePageSuccesState extends BuisnessState{
   final String message;
-  LikePageSuccesState({required this.message});
+  const LikePageSuccesState({required this.message});
 
   @override
   // TODO: implement props

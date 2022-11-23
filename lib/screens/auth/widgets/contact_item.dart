@@ -23,7 +23,7 @@ class _ContactItemState extends State<ContactItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 25),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       child: Column(
         children: [
           Row(
@@ -51,7 +51,7 @@ class _ContactItemState extends State<ContactItem> {
               ),
               InkWell(
                 onTap: widget.onTap,
-                child: Container(
+                child: SizedBox(
                   height: 20,
                   width: 20,
                   child: Center(
@@ -63,7 +63,7 @@ class _ContactItemState extends State<ContactItem> {
               )
             ],
           ),
-          Divider()
+          const Divider()
         ],
       ),
     );

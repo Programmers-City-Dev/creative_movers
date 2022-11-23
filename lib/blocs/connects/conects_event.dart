@@ -10,7 +10,7 @@ class AddConnectsEvent extends ConnectsEvent {
 }
 class GetConnectsEvent extends ConnectsEvent {
  final String? user_id;
- GetConnectsEvent({this.user_id});
+ const GetConnectsEvent({this.user_id});
 
   @override
   List<Object?> get props => [];

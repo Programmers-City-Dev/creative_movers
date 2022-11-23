@@ -95,7 +95,7 @@ class _AboutPageScreenState extends State<AboutPageScreen> {
                           //     ),
                           //   ],
                           // ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
 
@@ -106,14 +106,14 @@ class _AboutPageScreenState extends State<AboutPageScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
                  Text(
                  widget.page.description,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 16,),
 
@@ -148,7 +148,7 @@ class _AboutPageScreenState extends State<AboutPageScreen> {
                 const SizedBox(height: 5,),
                  Text(
                   widget.page.website.toString(),
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
 
                 ),
                 const SizedBox(height: 16,),
@@ -159,7 +159,7 @@ class _AboutPageScreenState extends State<AboutPageScreen> {
                 const SizedBox(height: 5,),
                  Text(
                   widget.page.contact.toString(),
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
 
                 ),
             ],),

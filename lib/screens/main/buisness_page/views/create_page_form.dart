@@ -1,11 +1,7 @@
-import 'dart:developer';
 
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
-import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
-import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
@@ -36,7 +32,7 @@ class _CreatePageFormState extends State<CreatePageForm> {
   final _capitalController = TextEditingController();
 
   String stage = 'Seed';
-  BuisnessBloc _buisnessBloc = BuisnessBloc();
+  final BuisnessBloc _buisnessBloc = BuisnessBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -161,15 +157,15 @@ class _CreatePageFormState extends State<CreatePageForm> {
                                 child: Container(
                                   decoration:
                                   const BoxDecoration(color: AppColors.white),
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width,
                                   child: const Padding(
                                     padding: EdgeInsets.all(16.0),
                                     child: Text(
                                         'Select Category Of Investment'),
                                   ),
-                                  width: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width,
                                 ),
                                 onTap: () {
                                   showDialog(

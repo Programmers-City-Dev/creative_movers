@@ -205,12 +205,12 @@ class _ConfirmTokenFormState extends State<ConfirmTokenForm> {
                 },
                 child: isLoading
                     ? const SizedBox(
+                        height: 30,
+                        width: 20,
                         child: CircularProgressIndicator(
                           color: Colors.white,
                           strokeWidth: 2,
                         ),
-                        height: 30,
-                        width: 20,
                       )
                     : const Text('Continue'),
               ),

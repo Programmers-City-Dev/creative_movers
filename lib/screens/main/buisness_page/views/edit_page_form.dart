@@ -3,7 +3,6 @@ import 'package:creative_movers/data/remote/model/buisness_profile_response.dart
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
-import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/screens/widget/edit_image_widget.dart';
 import 'package:creative_movers/screens/widget/filled_form_field.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-import 'my_page_tab.dart';
 class EditPageForm extends StatefulWidget {
   final BusinessPage businessPage;
   const EditPageForm({Key? key, required this.businessPage,}) : super(key: key);
@@ -178,11 +176,11 @@ class _EditPageFormState extends State<EditPageForm> {
                             child: Container(
                               decoration:
                               const BoxDecoration(color: AppColors.white),
+                              width: MediaQuery.of(context).size.width,
                               child: const Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: Text('Select Category Of Investment'),
                               ),
-                              width: MediaQuery.of(context).size.width,
                             ),
                             onTap: () {
                               showDialog(

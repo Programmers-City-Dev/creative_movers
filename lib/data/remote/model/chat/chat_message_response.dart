@@ -2,7 +2,6 @@
 //
 //     final chatMessageResponse = chatMessageResponseFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'conversation.dart';

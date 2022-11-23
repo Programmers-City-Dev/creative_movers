@@ -1,15 +1,8 @@
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
-import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/create_page_screen.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
-import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
-import 'buisness_page_screen.dart';
 import 'buisness_profile.dart';
 
 class MyPageTab extends StatefulWidget {

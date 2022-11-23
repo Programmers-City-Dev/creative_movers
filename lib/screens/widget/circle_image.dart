@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
@@ -46,12 +45,12 @@ class CircleImage extends StatelessWidget {
                   width: mRadius,
                   height: mRadius,
                   child: Shimmer.fromColors(
+                    baseColor: Colors.grey[200]!,
+                    highlightColor: Colors.grey[300]!,
                     child: SizedBox(
                       width: mRadius,
                       height: mRadius,
                     ),
-                    baseColor: Colors.grey[200]!,
-                    highlightColor: Colors.grey[300]!,
                   ),
                 ),
                 errorWidget: (context, url, error) => SizedBox(

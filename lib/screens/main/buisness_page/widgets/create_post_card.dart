@@ -41,10 +41,10 @@ class _CreatePostCardState extends State<CreatePostCard> {
                       child: Container(
                         margin: const EdgeInsets.all(10),
                         padding: const EdgeInsets.all(10),
-                        child: const Text('Whats on your mind ?'),
                         decoration: BoxDecoration(
                             color: AppColors.lightGrey,
                             borderRadius: BorderRadius.circular(20)),
+                        child: const Text('Whats on your mind ?'),
                       ),
                     )
                   ],
@@ -59,7 +59,7 @@ class _CreatePostCardState extends State<CreatePostCard> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

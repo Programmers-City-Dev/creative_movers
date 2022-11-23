@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_stack/image_stack.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FeedLoader extends StatefulWidget {

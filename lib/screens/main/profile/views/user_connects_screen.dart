@@ -4,7 +4,6 @@ import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/profile/widgets/user_connection_card.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -211,7 +210,7 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                                     child: AppPromptWidget(
                                   buttonText: 'Try again',
                                   onTap: () {
-                                    _connectsBloc.add(GetConnectsEvent());
+                                    _connectsBloc.add(const GetConnectsEvent());
                                   },
                                   canTryAgain: true,
                                   isSvgResource: true,
@@ -246,18 +245,18 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                                       null,
                                   child: TextButton(
                                     onPressed: () {},
-                                    child: const Text(
-                                      'Load more',
-                                      style: TextStyle(
-                                          fontSize: 11,
-                                          color: AppColors.primaryColor),
-                                    ),
                                     style: TextButton.styleFrom(
                                         shape: const StadiumBorder(
                                             side: BorderSide(
                                                 color: AppColors.primaryColor)),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 16)),
+                                    child: const Text(
+                                      'Load more',
+                                      style: TextStyle(
+                                          fontSize: 11,
+                                          color: AppColors.primaryColor),
+                                    ),
                                   ),
                                 )
                               ],
@@ -269,7 +268,7 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                             isSvgResource: true,
                             message: state.error,
                             onTap: () {
-                              _connectsBloc.add(GetConnectsEvent());
+                              _connectsBloc.add(const GetConnectsEvent());
                             },
                           );
                         } else {

@@ -15,7 +15,7 @@ class FilledFormField extends StatefulWidget {
   // final IconData icon;
   final Widget toggle_icon;
    TextInputType? keyboardType = TextInputType.text;
-   Widget? prefix = SizedBox.shrink();
+   Widget? prefix = const SizedBox.shrink();
   final bool obscure;
   final String hint;
   final int maxlines;
@@ -45,15 +45,15 @@ class _FilledFormFieldState extends State<FilledFormField> {
         filled: true,
           prefix: widget.prefix,
           fillColor: AppColors.white,
-          contentPadding: EdgeInsets.all(17),
+          contentPadding: const EdgeInsets.all(17),
 
           focusedBorder: const OutlineInputBorder(borderSide: BorderSide.none),
           hintText: widget.hint,
-          hintStyle: TextStyle(fontSize: 13),
+          hintStyle: const TextStyle(fontSize: 13),
           label: widget.labeled ? Text(
             widget.hint,
-            style: TextStyle(color: AppColors.textColor),
-          ):SizedBox.shrink(),
+            style: const TextStyle(color: AppColors.textColor),
+          ):const SizedBox.shrink(),
 
           // hintText: hint,
 

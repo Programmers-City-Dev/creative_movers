@@ -46,7 +46,7 @@ class _FollowersItemState extends State<FollowersItem> {
                     ),
                     Row(
                       children: [
-                        TextButton(onPressed: () {}, child: const Text('Follow'), style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue),),
+                        TextButton(onPressed: () {}, style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue), child: const Text('Follow'),),
                         const SizedBox(width: 7,),
                         const Icon(Icons.person_add_rounded,color: AppColors.primaryColor,),
                       ],

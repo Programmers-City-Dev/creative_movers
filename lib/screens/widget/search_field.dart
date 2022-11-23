@@ -1,5 +1,4 @@
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {

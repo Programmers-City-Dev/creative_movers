@@ -202,13 +202,13 @@ class Link {
   bool? active;
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-        url: json["url"] == null ? null : json["url"],
+        url: json["url"],
         label: json["label"],
         active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url == null ? null : url,
+        "url": url,
         "label": label,
         "active": active,
       };

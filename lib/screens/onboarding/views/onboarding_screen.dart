@@ -1,5 +1,4 @@
 import 'package:creative_movers/constants/storage_keys.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/extension.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/resources/app_icons.dart';
@@ -7,7 +6,6 @@ import 'package:creative_movers/screens/onboarding/views/onboarding_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -107,7 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           alignment: Alignment.bottomCenter,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -157,10 +155,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      primary: AppColors.white,
-                                      onPrimary: AppColors.primaryColor,
+                                      foregroundColor: AppColors.primaryColor, backgroundColor: AppColors.white,
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
+                                          const EdgeInsets.symmetric(horizontal: 20),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20))),

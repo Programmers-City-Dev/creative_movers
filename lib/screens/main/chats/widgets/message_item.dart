@@ -80,12 +80,12 @@ class _MessageItemState extends State<MessageItem> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Visibility(
+                visible: !isForMe,
                 child: CircleImage(
                   url: widget.chatMessage.profilePhotoPath,
                   withBaseUrl: false,
                   radius: 18,
                 ),
-                visible: !isForMe,
               ),
               Flexible(
                 child: Visibility(

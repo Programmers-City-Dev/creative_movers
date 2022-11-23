@@ -76,7 +76,7 @@ class _NotificationPromptListState extends State<NotificationPromptList> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       deepLinkCubit.inAppNotifier.addListener(() {
         if (widget.actWhen()) {
           final value = deepLinkCubit.inAppNotifier.value;

@@ -2,7 +2,6 @@ import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -109,12 +108,12 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 },
                 child: isLoading
                     ? const SizedBox(
+                  height: 30,
+                  width: 20,
                   child: CircularProgressIndicator(
                     color: Colors.white,
                     strokeWidth: 2,
                   ),
-                  height: 30,
-                  width: 20,
                 )
                     : const Text('Continue'),
               )

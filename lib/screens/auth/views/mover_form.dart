@@ -44,7 +44,7 @@ class _MoverFormState extends State<MoverForm>
     'Other'
   ];
   List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
-  String _groupValue = '';
+  final String _groupValue = '';
   String _preferedStage = 'Seed';
   String? min = '';
   String? max = '';
@@ -90,6 +90,7 @@ class _MoverFormState extends State<MoverForm>
                         if (initialValue.isEmpty) {
                           return 'Please choose a range';
                         }
+                        return null;
                         // return 'hh';
 
                         // if (value!.isEmpty ) {
@@ -100,7 +101,7 @@ class _MoverFormState extends State<MoverForm>
                         // }
                         // return null;
                       },
-                      builder: (_state) {
+                      builder: (state) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -132,7 +133,7 @@ class _MoverFormState extends State<MoverForm>
                               height: 10,
                             ),
                             AnimatedContainer(
-                              duration: Duration(milliseconds: 2000),
+                              duration: const Duration(milliseconds: 2000),
                               child: Visibility(
                                   visible: initialValue['min'] == 'other',
                                   child: Row(
@@ -151,6 +152,7 @@ class _MoverFormState extends State<MoverForm>
                                               _minController.text.isEmpty) {
                                             return 'Enter your min  range';
                                           }
+                                          return null;
                                         }),
                                         inputFormatters: [
                                           FilteringTextInputFormatter.digitsOnly
@@ -174,6 +176,7 @@ class _MoverFormState extends State<MoverForm>
                                               _maxController.text.isEmpty) {
                                             return 'Enter your max  range';
                                           }
+                                          return null;
                                         }),
                                         controller: _maxController,
                                         inputFormatters: [
@@ -192,9 +195,9 @@ class _MoverFormState extends State<MoverForm>
                               height: 16,
                             ),
                             Text(
-                              _state.hasError ? _state.errorText! : '',
+                              state.hasError ? state.errorText! : '',
                               style: TextStyle(
-                                  color: _state.hasError
+                                  color: state.hasError
                                       ? Colors.redAccent
                                       : Colors.green),
                             )
@@ -219,6 +222,7 @@ class _MoverFormState extends State<MoverForm>
                               if (categories.isEmpty) {
                                 return 'Select at least one category';
                               }
+                              return null;
                             },
                             builder: (state) {
                               return Column(
@@ -233,12 +237,12 @@ class _MoverFormState extends State<MoverForm>
                                           border: Border.all(
                                               color: AppColors.textColor),
                                         ),
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: const Padding(
                                           padding: EdgeInsets.all(18.0),
                                           child: Text('Select Category'),
                                         ),
-                                        width:
-                                            MediaQuery.of(context).size.width,
                                       ),
                                       onTap: () {
                                         showDialog(
@@ -301,6 +305,7 @@ class _MoverFormState extends State<MoverForm>
                         if (_preferedStage.isEmpty) {
                           return 'select a preferred stage';
                         }
+                        return null;
                       },
                       builder: (state) {
                         return Column(

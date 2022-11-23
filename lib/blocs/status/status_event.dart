@@ -24,7 +24,7 @@ class GetStatusEvent extends StatusEvent {
 
 
 
-  GetStatusEvent();
+  const GetStatusEvent();
 
   @override
   List<Object?> get props => [];

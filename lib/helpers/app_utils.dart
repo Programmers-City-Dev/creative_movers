@@ -24,7 +24,7 @@ class AppUtils {
   AppUtils._();
 
   static List<EthnicityModel> get ethnicities {
-    Map<String, dynamic> _data = {
+    Map<String, dynamic> data = {
       "Mixed / Multiple ethnic groups": [
         "White and Black Caribbean",
         "White and Black African",
@@ -40,7 +40,7 @@ class AppUtils {
     };
 
     List<EthnicityModel> list = [];
-    _data.forEach((k, v) => list.add(EthnicityModel(title: k, values: v)));
+    data.forEach((k, v) => list.add(EthnicityModel(title: k, values: v)));
     return list;
   }
 
@@ -101,10 +101,10 @@ class AppUtils {
         lastSeen = d;
       }
       String time = getTime(date);
-      return lastSeen + " @ " + time;
+      return "$lastSeen @ $time";
     }
     String time = getTime(date);
-    return lastSeen + " @ " + time;
+    return "$lastSeen @ $time";
   }
 
   static String getTimeAgo(DateTime dateTime) {
@@ -230,14 +230,16 @@ class AppUtils {
               children: [
                 Expanded(
                   child: CustomButton(
-                      child: Text(confirmButtonText), onTap: onConfirmed),
+                      onTap: onConfirmed,
+                      child: Text(confirmButtonText)),
                 ),
                 const SizedBox(
                   width: 16,
                 ),
                 Expanded(
                     child: CustomButton(
-                        child: Text(cancelButtonText), onTap: onCancel)),
+                        onTap: onCancel,
+                        child: Text(cancelButtonText))),
               ],
             )
           ],
@@ -295,7 +297,7 @@ class AppUtils {
             const SizedBox(
               height: 32.0,
             ),
-            CustomButton(child: Text(confirmButtonText), onTap: onConfirmed),
+            CustomButton(onTap: onConfirmed, child: Text(confirmButtonText)),
           ],
         ),
       ),
@@ -392,8 +394,8 @@ class AppUtils {
               height: 32.0,
             ),
             CustomButton(
-              child: const Text('CONTINUE'),
               onTap: onClose,
+              child: const Text('CONTINUE'),
             )
           ],
         ),
@@ -564,6 +566,7 @@ class AppUtils {
         allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png'],
       ).then((value) {
         onSelect!(value);
+        return null;
       });
       if (result != null) {
         return result.files;

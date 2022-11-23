@@ -115,7 +115,7 @@ class _EditPostFormState extends State<EditPostForm> {
                   child: mediaItems.isNotEmpty
                       ? Column(
                           children: [
-                            Container(
+                            SizedBox(
                                 height: 150,
                                 child: ListView.builder(
                                     physics: const BouncingScrollPhysics(),

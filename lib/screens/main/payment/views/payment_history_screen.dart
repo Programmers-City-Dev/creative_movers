@@ -1,15 +1,9 @@
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
-import 'package:creative_movers/data/remote/model/payment_history_data.dart';
 import 'package:creative_movers/di/injector.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/payment/widgets/payment_history_item.dart';
 import 'package:creative_movers/screens/main/payment/widgets/payment_history_widget.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
-import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grouped_list/grouped_list.dart';
-import 'package:creative_movers/helpers/extension.dart';
 
 class PaymentHistoryScreen extends StatefulWidget {
   const PaymentHistoryScreen({Key? key}) : super(key: key);

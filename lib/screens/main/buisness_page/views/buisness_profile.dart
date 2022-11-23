@@ -27,7 +27,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
   List<BusinessPage> pages = [];
 
   late TabController _tabController;
-  BuisnessBloc _buisnessBloc = BuisnessBloc();
+  final BuisnessBloc _buisnessBloc = BuisnessBloc();
 
   @override
   void initState() {
@@ -167,26 +167,26 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Expanded(child: SizedBox()),
+                                const Expanded(child: SizedBox()),
                                 widget.profile.profile.pages.length >= 5
                                     ? const Text(
                                         'View more',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       )
-                                    : SizedBox(),
+                                    : const SizedBox(),
                               ],
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             pages.isNotEmpty
-                                ? Container(
+                                ? SizedBox(
                                     height: 130,
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       itemCount: pages.length,
                                       itemBuilder: (context, index) => InkWell(
                                         onTap: () {
@@ -296,15 +296,15 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                 child: Row(
                                   children: [
                                     Container(
-                                      child: const Icon(
-                                        Icons.add_circle_outline_rounded,
-                                        color: AppColors.white,
-                                      ),
                                       height: 40,
                                       width: 40,
                                       decoration: BoxDecoration(
                                         color: AppColors.primaryColor,
                                         borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Icon(
+                                        Icons.add_circle_outline_rounded,
+                                        color: AppColors.white,
                                       ),
                                     ),
                                     const SizedBox(

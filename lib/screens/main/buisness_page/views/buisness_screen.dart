@@ -1,16 +1,9 @@
-import 'dart:ui';
 
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
-import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/resources/app_icons.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/buisness_page_screen.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/buisness_profile.dart';
-import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
-import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BuisnessScreen extends StatefulWidget {
@@ -26,7 +19,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProv
 
   int selectedIndex = 0;
   List<Widget> pages =  [
-   MyPageTab(),
+   const MyPageTab(),
     Container(color: Colors.black,),
 
   ];
@@ -60,7 +53,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProv
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   height:40 ,
                   child: ListView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
 
@@ -73,7 +66,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProv
                           });
                         },
                         child: Chip(
-                            padding: EdgeInsets.all(7),
+                            padding: const EdgeInsets.all(7),
                             avatar: SvgPicture.asset(
                               AppIcons.svgPeople,
                               color: pageType == 'my_pages'
@@ -103,7 +96,7 @@ class _BuisnessScreenState extends State<BuisnessScreen>   with SingleTickerProv
                           });
                         },
                         child: Chip(
-                            padding: EdgeInsets.all(7),
+                            padding: const EdgeInsets.all(7),
                             avatar: SvgPicture.asset(
                               AppIcons.svgPeople,
                               color: pageType == 'following_pages'

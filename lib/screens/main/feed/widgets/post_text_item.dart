@@ -24,7 +24,7 @@ class PostTextItem extends StatelessWidget {
               radius: 18,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Expanded(

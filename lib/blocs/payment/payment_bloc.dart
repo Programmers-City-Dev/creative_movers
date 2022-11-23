@@ -10,6 +10,7 @@ import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/subscription_response.dart';
 import 'package:creative_movers/data/remote/repository/payment_repository.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:uuid/uuid.dart';
 
 part 'payment_event.dart';
+
 part 'payment_state.dart';
 
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
@@ -35,10 +37,12 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
         paymentIntentClientSecret: secret,
-        applePay: true,
-        googlePay: true,
+        // applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
+        googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
+        appearance: const PaymentSheetAppearance(
+            colors:
+                PaymentSheetAppearanceColors(primary: AppColors.primaryColor)),
         style: ThemeMode.light,
-        merchantCountryCode: "US",
         merchantDisplayName: "Creative Movers Pay",
       ));
 
@@ -82,11 +86,11 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         log("ERROR OCCURRED");
         return Left(ServerErrorModel(statusCode: 400, errorMessage: res.value));
       }
-      return Left(ServerErrorModel(
+      return const Left(ServerErrorModel(
           statusCode: 400,
           errorMessage: "Something went wrong, please try again"));
     } catch (e) {
-      return Left(ServerErrorModel(
+      return const Left(ServerErrorModel(
           statusCode: 400, errorMessage: "Unable to complete payment request"));
     }
   }

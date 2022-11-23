@@ -82,7 +82,7 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
               if (!snapshot.hasError) {
                 if (snapshot.hasData) {
                   return Stack(children: [
-                    Container(
+                    SizedBox(
                       height: 250,
                       width: MediaQuery.of(context).size.width,
                       child: Image.memory(
@@ -93,7 +93,7 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                     ),
                     GestureDetector(
                       onTap: (){showDialog(context: context, builder: (context) => VideoPreview(videoUrl: widget.media.mediaPath));},
-                      child: Container(
+                      child: SizedBox(
                         height: 250,
                         width: MediaQuery.of(context).size.width,
                         child: const Center(

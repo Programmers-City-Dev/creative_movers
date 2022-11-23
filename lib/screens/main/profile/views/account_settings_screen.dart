@@ -141,7 +141,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         ),
                         Text(
                           cachedUser.email!,
-                          style: TextStyle(),
+                          style: const TextStyle(),
                         ),
                       ],
                     ),

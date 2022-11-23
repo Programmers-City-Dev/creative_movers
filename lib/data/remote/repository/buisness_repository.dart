@@ -157,10 +157,10 @@ class BuisnessRepository {
   }
 
 
-  Future<State> getPageFeeds(String page_id) {
+  Future<State> getPageFeeds(String pageId) {
     return SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(Endpoints.pageFeedsEndpoint,body: {
-            "page_id":page_id
+            "page_id":pageId
           }),
       successResponse: (data) {
         return State<FeedsResponse?>.success(
@@ -188,10 +188,10 @@ class BuisnessRepository {
     );
   }
 
-  Future<State> followPage(String page_id) {
+  Future<State> followPage(String pageId) {
     return SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(Endpoints.followPageEndpoint,body: {
-            "page_id":page_id
+            "page_id":pageId
           }),
       successResponse: (data) {
         return State<String?>.success(
@@ -218,10 +218,10 @@ class BuisnessRepository {
       },
     );
   }
-  Future<State> likePage(String page_id) {
+  Future<State> likePage(String pageId) {
     return SimplifyApiConsuming.makeRequest(
           () => httpHelper.post(Endpoints.likePageEndpoint,body: {
-        "page_id":page_id
+        "page_id":pageId
       }),
       successResponse: (data) {
         return State<String?>.success(

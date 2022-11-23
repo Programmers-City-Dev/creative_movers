@@ -1,9 +1,6 @@
 import 'package:creative_movers/screens/main/buisness_page/views/create_page_form.dart';
-import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CreatePageScreen extends StatefulWidget {
   const CreatePageScreen({Key? key}) : super(key: key);
@@ -19,7 +16,7 @@ class _CreatePageScreenState extends State<CreatePageScreen> {
       backgroundColor: AppColors.smokeWhite,
       body: SafeArea(
           child: Container(
-        padding: EdgeInsets.all(18),
+        padding: const EdgeInsets.all(18),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
