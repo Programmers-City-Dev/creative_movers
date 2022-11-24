@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
-import 'package:creative_movers/blocs/base_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
@@ -13,12 +11,12 @@ import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'profile_event.dart';
-
 part 'profile_state.dart';
 
-class ProfileBloc extends BaseBloc<ProfileEvent, ProfileState> {
+class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   String username = '';
   String firstname = '';
 
@@ -34,8 +32,8 @@ class ProfileBloc extends BaseBloc<ProfileEvent, ProfileState> {
     });
   }
 
-  FutureOr<void> _mapGetUsernameToState(GetUsernameEvent event,
-      Emitter<ProfileState> emit) async {
+  FutureOr<void> _mapGetUsernameToState(
+      GetUsernameEvent event, Emitter<ProfileState> emit) async {
     var s = await StorageHelper.getString(StorageKeys.username);
     username = s!;
     var firstName = await StorageHelper.getString(StorageKeys.firstname);
@@ -43,8 +41,8 @@ class ProfileBloc extends BaseBloc<ProfileEvent, ProfileState> {
     emit(UsernameFetchedState(username));
   }
 
-  FutureOr<void> _mapFetchUserProfileEventToEvent(FetchUserProfileEvent event,
-      Emitter<ProfileState> emit) async {
+  FutureOr<void> _mapFetchUserProfileEventToEvent(
+      FetchUserProfileEvent event, Emitter<ProfileState> emit) async {
     try {
       emit(ProfileLoading());
       var state = await profileRepository.fetchUserProfile(event.userId);

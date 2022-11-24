@@ -174,7 +174,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         log("CHANNEL: message-${event.channelName}");
         Channel channel = pusher.subscribe('message-${event.channelName}');
         channel.bind("chat_message_push", (PusherEvent? pusherEvent) {
-          if (pusherEvent != null && pusherEvent.data != null) {
+          log("PUSHER EVENT: ${pusherEvent!.data}");
+          if (pusherEvent.data != null) {
             var message =
                 ChatData.fromMap(jsonDecode(pusherEvent.data!)["chat_data"])
                     .message;

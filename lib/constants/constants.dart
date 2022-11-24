@@ -28,10 +28,10 @@ class Constants {
   }
 
   // Pusher
-  static const pusherApiKey = "7290b6d128bdadf6255e";
+  static const pusherApiKey = "2989b98e4e4f5137d8f9";
   static const pusherCluster = "eu";
-  static const pusherSecrete = "a094cb4172d4652cb1b6";
-  static const pusherId = "1507673";
+  static const pusherSecrete = "b287008664ae2bdd50d2";
+  static const pusherId = "1507674";
 
   static const userCredentials = 'login_user_credentials';
   static const themeKey = "nitrade_theme_key";
