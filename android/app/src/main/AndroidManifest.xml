@@ -17,7 +17,7 @@
         tools:ignore="ProtectedPermissions" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="Creative Movers"
         tools:replace="android:label">
         <activity
