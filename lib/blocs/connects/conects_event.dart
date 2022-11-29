@@ -38,15 +38,16 @@ class RequestReactEvent extends ConnectsEvent {
 
   const RequestReactEvent(this.connectionId, this.action);
 }
-class SendRequestEvent extends ConnectsEvent {
+class ConnectToUserEvent extends ConnectsEvent {
 
   final String? userId;
 
   @override
   List<Object?> get props => [userId];
 
-  const SendRequestEvent(this.userId);
+  const ConnectToUserEvent(this.userId);
 }
+
 class FollowEvent extends ConnectsEvent {
   final String userId;
 

@@ -26,7 +26,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
     on<GetPendingRequestEvent>(_mapGetPendingRequestEventToState);
     on<GetSuggestedConnectsEvent>(_mapGetSuggestedConnectsEventToState);
     on<RequestReactEvent>(_mapRequestReactEventToState);
-    on<SendRequestEvent>(_mapSendRequestEventToState);
+    on<ConnectToUserEvent>(_mapSendRequestEventToState);
     on<FollowEvent>(_mapFollowEventToState);
   }
 
@@ -115,20 +115,20 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
   }
 
   FutureOr<void> _mapSendRequestEventToState(
-      SendRequestEvent event, Emitter<ConnectsState> emit) async {
-    emit(SendRequestLoadingState());
+      ConnectToUserEvent event, Emitter<ConnectsState> emit) async {
+    emit(ConnectToUserLoadingState());
     try {
       var state = await connectsRepository.sendRequest(
         userId: event.userId,
       );
       if (state is SuccessState) {
-        emit(SendRequestSuccesState(reactResponse: state.value));
+        emit(ConnectToUserSuccesState(reactResponse: state.value));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
-        emit(SendRequestFailureState(error: errorModel.errorMessage));
+        emit(ConnectToUserFailureState(error: errorModel.errorMessage));
       }
     } catch (e) {
-      emit(SendRequestFailureState(error: 'Oops Something went wrong'));
+      emit(ConnectToUserFailureState(error: 'Oops Something went wrong'));
     }
   }
 

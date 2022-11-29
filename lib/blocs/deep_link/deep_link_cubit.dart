@@ -9,6 +9,7 @@ class DeepLinkCubit extends Cubit<DeepLinkData?> {
   DeepLinkCubit(this.repo) : super(null);
 
   final inAppNotifier = ValueNotifier<DeepLinkData?>(null);
+
   void retrieveRecentNotification() async {
     var notification = await repo.getRecentNotification();
     emit(notification);

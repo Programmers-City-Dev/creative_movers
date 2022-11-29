@@ -69,3 +69,8 @@ class UpdateLocalUserProfileEvent extends ProfileEvent {
   @override
   List<Object> get props => [user];
 }
+
+class GetFaqsEvent extends ProfileEvent {
+  @override
+  List<Object> get props => [];
+}

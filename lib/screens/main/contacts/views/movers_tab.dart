@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConnectsTab extends StatefulWidget {
-
-
-  const ConnectsTab({Key? key, }) : super(key: key);
+  const ConnectsTab({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ConnectsTabState createState() => _ConnectsTabState();
@@ -21,11 +21,11 @@ class _ConnectsTabState extends State<ConnectsTab>
   List<Connection> filterList = [];
   List<Connection> mainList = [];
 
-  final ConnectsBloc _connectsBloc = ConnectsBloc();
+  ConnectsBloc _connectsBloc = ConnectsBloc();
 
   @override
   void initState() {
-    _connectsBloc.add(const GetConnectsEvent());
+    _connectsBloc.add(GetConnectsEvent());
     super.initState();
   }
 
@@ -37,99 +37,105 @@ class _ConnectsTabState extends State<ConnectsTab>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ConnectsBloc, ConnectsState>(
-      bloc: _connectsBloc,
-      builder: (context, state) {
-        if (state is ConnectsLoadingState) {
-          return Column(
-            children: [
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: 4,
-                  itemBuilder: (context, index) => const ConnectsShimer(),
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(
-                      height: 14,
-                    );
-                  },
-                ),
-              )),
-            ],
-          );
-        } else if (state is ConnectsSuccesState) {
+    return BlocProvider(
+      create: (context) => _connectsBloc,
+      child: BlocBuilder<ConnectsBloc, ConnectsState>(
+        bloc: _connectsBloc,
+        builder: (context, state) {
+          if (state is ConnectsLoadingState) {
+            return Column(
+              children: [
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: 4,
+                    itemBuilder: (context, index) => const ConnectsShimer(),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const SizedBox(
+                        height: 14,
+                      );
+                    },
+                  ),
+                )),
+              ],
+            );
+          } else if (state is ConnectsSuccesState) {
             filterList = state.connectsResponse.connections.connectionList;
             mainList = state.connectsResponse.connections.connectionList;
-          return Container(
-            padding: const EdgeInsets.all(18),
-            child: RefreshIndicator(
-              onRefresh: () async{
-                _connectsBloc.add(const GetConnectsEvent());
-                // return Future.delayed(const Duration(milliseconds: 1));
-              },
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: SearchField(
-                      hint: 'Search Contacts',
-                      onChanged: (val) {
-                        setState(() {
-                          filterList = mainList
-                              .where((element) =>
-                                  element.firstname
-                                      .toString()
-                                      .toLowerCase()
-                                      .contains(val.toString().toLowerCase()) |
-                                  element.lastname
-                                      .toLowerCase()
-                                      .contains(val.toString().toLowerCase()))
-                              .toList();
-                        });
-                      },
+            return Container(
+              padding: const EdgeInsets.all(18),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  _connectsBloc.add(GetConnectsEvent());
+                  // return Future.delayed(const Duration(milliseconds: 1));
+                },
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  filterList.isEmpty
-                      ?Expanded(
-                      child: Center(
-                          child: AppPromptWidget(
-                            onTap: () {  _connectsBloc.add(const GetConnectsEvent());},
+                    Container(
+                      child: SearchField(
+                        hint: 'Search Contacts',
+                        onChanged: (val) {
+                          setState(() {
+                            filterList = mainList
+                                .where((element) =>
+                                    element.firstname
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(
+                                            val.toString().toLowerCase()) |
+                                    element.lastname
+                                        .toLowerCase()
+                                        .contains(val.toString().toLowerCase()))
+                                .toList();
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    filterList.isEmpty
+                        ? Expanded(
+                            child: Center(
+                                child: AppPromptWidget(
+                            onTap: () {
+                              _connectsBloc.add(GetConnectsEvent());
+                            },
                             canTryAgain: true,
                             isSvgResource: true,
                             imagePath: "assets/svgs/request.svg",
                             title: "You have no connection yet .",
-                            message: "Invite your contacts or search for connecions to start moving!",
+                            message:
+                                "Invite your contacts or search for connecions to start moving!",
                           )))
-                      : Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: filterList.length,
-                              itemBuilder: (context, index) =>
-                                  ContactItem(connection: filterList[index])))
-                ],
+                        : Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: filterList.length,
+                                itemBuilder: (context, index) =>
+                                    ContactItem(connection: filterList[index])))
+                  ],
+                ),
               ),
-            ),
-          );
-        } else if (state is ConnectsFailureState) {
-          return AppPromptWidget(
-            // title: "Something went wrong",
-            isSvgResource: true,
-            message: state.error,
-            onTap: () {
-              _connectsBloc.add(const GetConnectsEvent());
-            },
-          );
-        }
-        return Container();
-      },
+            );
+          } else if (state is ConnectsFailureState) {
+            return AppPromptWidget(
+              // title: "Something went wrong",
+              isSvgResource: true,
+              message: state.error,
+              onTap: () {
+                _connectsBloc.add(GetConnectsEvent());
+              },
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 
