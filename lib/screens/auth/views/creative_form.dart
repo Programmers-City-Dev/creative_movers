@@ -270,7 +270,7 @@ class _CreativeFormState extends State<CreativeForm> {
             name: _pagenameController.text,
             stage: stage,
             category: selectedCategories,
-            est_capital: _capitalController.text,
+            estCapital: _capitalController.text,
             photo: image,
             description: _descriptionController.text));
       }

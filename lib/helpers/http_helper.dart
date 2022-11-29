@@ -1,6 +1,7 @@
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class HttpHelper {
   static Dio? _client;
@@ -17,20 +18,20 @@ class HttpHelper {
     if (storageToken != null) headers['Authorization'] = 'Bearer $storageToken';
 
     _client!.options.headers = headers;
-    // if (enabledDioLogger) {
-    //   _client!.interceptors.add(
-    //     PrettyDioLogger(
-    //       request: true,
-    //       requestHeader: true,
-    //       requestBody: true,
-    //       responseBody: true,
-    //       responseHeader: true,
-    //       error: true,
-    //       compact: true,
-    //       maxWidth: 400,
-    //     ),
-    //   );
-    // }
+    if (enabledDioLogger) {
+      _client!.interceptors.add(
+        PrettyDioLogger(
+          request: true,
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: true,
+          error: true,
+          compact: true,
+          maxWidth: 400,
+        ),
+      );
+    }
     return _client;
   }
 

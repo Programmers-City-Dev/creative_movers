@@ -89,6 +89,9 @@ class Endpoints {
 
   static String startFreeTrial = '${Constants.baseUrl}api/payment/free_trial';
 
+  static String getFaqs =
+      '${Constants.baseUrl}api/support/fetch-faq';
+
 // static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
 // static const add_feed_endpoint = '${Constants.baseUrl}api/feed/add-feed';

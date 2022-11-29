@@ -80,7 +80,7 @@ class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepA
                             onPressed: connectState != ConnectState.loading
                                 ? () {
                               connectState = ConnectState.loading;
-                              _connectsBloc.add(SendRequestEvent(
+                              _connectsBloc.add(ConnectToUserEvent(
                                   widget.result.id.toString()));
                             }
                                 : null,
@@ -221,19 +221,19 @@ class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepA
   }
 
   void listenToSendRequestState(BuildContext context, ConnectsState state) {
-    if (state is SendRequestLoadingState) {
+    if (state is ConnectToUserLoadingState) {
       setState(() {
         connectState = ConnectState.loading;
 
       });
     }
-    if (state is SendRequestSuccesState) {
+    if (state is ConnectToUserSuccesState) {
       setState(() {
         connectState = ConnectState.success;
         AppUtils.showCustomToast('Request Sent');
       });
     }
-    if (state is SendRequestFailureState) {
+    if (state is ConnectToUserFailureState) {
       setState(() {
         AppUtils.showCustomToast(state.error);
         connectState = ConnectState.idle;

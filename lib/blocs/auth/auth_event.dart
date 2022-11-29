@@ -48,11 +48,11 @@ class BioDataEvent extends AuthEvent {
 
 class AccountTypeEvent extends AuthEvent {
   final String? role;
-  final String? user_id;
+  final String? userId;
   final String? name;
   final String? stage;
   final List<String>? category;
-  final String? est_capital;
+  final String? estCapital;
   final String? description;
   final String? photo;
   final String? max_range;
@@ -62,11 +62,11 @@ class AccountTypeEvent extends AuthEvent {
   // TODO: implement props
   List<Object?> get props => [
         role,
-        user_id,
+        userId,
         name,
         stage,
         category,
-        est_capital,
+        estCapital,
         description,
         photo,
         max_range,
@@ -75,11 +75,11 @@ class AccountTypeEvent extends AuthEvent {
 
   AccountTypeEvent({
     this.role,
-    this.user_id,
+    this.userId,
     this.name,
     this.stage,
     this.category,
-    this.est_capital,
+    this.estCapital,
     this.description,
     this.photo,
     this.max_range,

@@ -461,12 +461,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                           },
                                           child: GestureDetector(
                                             onTap: () async {
-                                              injector.get<PaymentBloc>().add(
-                                                  const CreatePaymentIntentEvent(
-                                                      20,
-                                                      "USD",
-                                                      "monthly",
-                                                      "account_activation"));
+                                              // injector.get<PaymentBloc>().add(
+                                              //     const CreatePaymentIntentEvent(
+                                              //         20,
+                                              //         "USD",
+                                              //         "monthly",
+                                              //         "account_activation"));
+
+                                              Navigator.of(context).pushNamed(helpAndSupportPath);
                                             },
                                             child: const Text(
                                               'Help and Support',

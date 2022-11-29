@@ -92,6 +92,8 @@ dependencies:
   camera: ^0.10.0+4
 #  pusher_channels_flutter: ^1.0.5
   pusher_client: ^2.0.0
+  line_icons: ^2.0.1
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   flutter_test:

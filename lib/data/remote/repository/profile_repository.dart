@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/FaqsResponse.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/addconnection_response.dart';
 import 'package:creative_movers/data/remote/model/biodata_response.dart';
@@ -20,16 +21,16 @@ class ProfileRepository {
   ProfileRepository(this.httpClient);
 
   // Register Request
-  Future<State> register({required String email,
-    required String password,
-    required String username}) async {
+  Future<State> register(
+      {required String email,
+      required String password,
+      required String username}) async {
     return SimplifyApiConsuming.makeRequest(
-          () =>
-          httpClient.post(Endpoints.registerEndpoint, body: {
-            "email": email,
-            "password": password,
-            "username": username,
-          }),
+      () => httpClient.post(Endpoints.registerEndpoint, body: {
+        "email": email,
+        "password": password,
+        "username": username,
+      }),
       successResponse: (data) {
         return State<AuthResponse?>.success(
             data != null ? AuthResponse.fromMap(data) : null);
@@ -59,11 +60,10 @@ class ProfileRepository {
   //Login Request
   Future<State> login({required String email, required String password}) async {
     return SimplifyApiConsuming.makeRequest(
-          () =>
-          httpClient.post(Endpoints.loginEndpoint, body: {
-            "email": email,
-            "password": password,
-          }),
+      () => httpClient.post(Endpoints.loginEndpoint, body: {
+        "email": email,
+        "password": password,
+      }),
       successResponse: (data) {
         return State<AuthResponse?>.success(
             data != null ? AuthResponse.fromMap(data) : null);
@@ -91,20 +91,20 @@ class ProfileRepository {
   }
 
   //Post Bio Data Request
-  Future<State> post_biodata({required String firstname,
-    required String lastname,
-    required String phoneNumber,
-    required String biodata,
-    String? image}) async {
+  Future<State> post_biodata(
+      {required String firstname,
+      required String lastname,
+      required String phoneNumber,
+      required String biodata,
+      String? image}) async {
     return SimplifyApiConsuming.makeRequest(
-          () =>
-          httpClient.post(Endpoints.bioDataEndpoint, body: {
-            "firstname": firstname,
-            "lastname": lastname,
-            "phone": phoneNumber,
-            "biodata": biodata,
-            "image": image,
-          }),
+      () => httpClient.post(Endpoints.bioDataEndpoint, body: {
+        "firstname": firstname,
+        "lastname": lastname,
+        "phone": phoneNumber,
+        "biodata": biodata,
+        "image": image,
+      }),
       successResponse: (data) {
         return State<BioDataResponse?>.success(
             data != null ? BioDataResponse.fromJson(data) : null);
@@ -145,19 +145,18 @@ class ProfileRepository {
     String? min_range,
   }) async {
     return SimplifyApiConsuming.makeRequest(
-          () =>
-          httpClient.post(Endpoints.accountTypeEndpoint, body: {
-            "role": role,
-            "user_id": user_id,
-            "name": name,
-            "stage": stage,
-            "category": category,
-            "est_capital": est_capital,
-            "description": description,
-            "photo": photo,
-            "max_range": max_range,
-            "min_range": min_range,
-          }),
+      () => httpClient.post(Endpoints.accountTypeEndpoint, body: {
+        "role": role,
+        "user_id": user_id,
+        "name": name,
+        "stage": stage,
+        "category": category,
+        "est_capital": est_capital,
+        "description": description,
+        "photo": photo,
+        "max_range": max_range,
+        "min_range": min_range,
+      }),
       successResponse: (data) {
         return State<AccountTypeResponse?>.success(
             data != null ? AccountTypeResponse.fromJson(data) : null);
@@ -190,11 +189,10 @@ class ProfileRepository {
     required List<Connect> connections,
   }) async {
     return SimplifyApiConsuming.makeRequest(
-          () =>
-          httpClient.post(Endpoints.addConnectionEndpoint, body: {
-            "user_id": user_id,
-            "connection": jsonEncode(connections),
-          }),
+      () => httpClient.post(Endpoints.addConnectionEndpoint, body: {
+        "user_id": user_id,
+        "connection": jsonEncode(connections),
+      }),
       successResponse: (data) {
         return State<AddConnectionResponse?>.success(
             data != null ? AddConnectionResponse.fromJson(data) : null);
@@ -236,7 +234,6 @@ class ProfileRepository {
         return State<User?>.success(
             data != null ? User.fromMap(data["user"]) : null);
       },
-
       statusCodeSuccess: 200,
       errorResponse: (response) {
         debugPrint('ERROR SERVER');
@@ -247,7 +244,6 @@ class ProfileRepository {
               data: null),
         );
       },
-
       dioErrorResponse: (response) {
         debugPrint('DIO SERVER');
         return State<ServerErrorModel>.error(
@@ -273,7 +269,7 @@ class ProfileRepository {
           filename: basename(imagePath)),
     });
     return SimplifyApiConsuming.makeRequest(
-          () => httpClient.post(url, body: formData),
+      () => httpClient.post(url, body: formData),
       successResponse: (data) {
         return State<String?>.success(data != null ? data["photo_path"] : null);
       },
@@ -330,6 +326,37 @@ class ProfileRepository {
       successResponse: (data) {
         return State<UpdateProfileResponse?>.success(
             UpdateProfileResponse.fromJson(data));
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> getFaqs() async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(
+        Endpoints.getFaqs,
+      ),
+      successResponse: (data) {
+        return State<FaqsResponse?>.success(
+            data != null ? FaqsResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

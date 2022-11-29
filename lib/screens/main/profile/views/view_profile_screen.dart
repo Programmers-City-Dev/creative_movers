@@ -469,9 +469,9 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                 },
                                 buildWhen: (prevstate, currentState) {
                                   return currentState
-                                          is SendRequestLoadingState ||
-                                      currentState is SendRequestSuccesState ||
-                                      currentState is SendRequestFailureState;
+                                          is ConnectToUserLoadingState ||
+                                      currentState is ConnectToUserSuccesState ||
+                                      currentState is ConnectToUserFailureState;
                                 },
                                 builder: (context, connectState) {
                                   return Expanded(
@@ -491,11 +491,11 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                     AppColors.lightBlue),
                                             onPressed: () {
                                               _connectsBloc.add(
-                                                  SendRequestEvent(
+                                                  ConnectToUserEvent(
                                                       user.id.toString()));
                                             },
                                             child: connectState
-                                                    is SendRequestLoadingState
+                                                    is ConnectToUserLoadingState
                                                 ? const SizedBox(
                                                     height: 20,
                                                     width: 20,
@@ -716,8 +716,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
   }
 
   void listenToConnectState(BuildContext context, ConnectsState state) {
-    if (state is SendRequestLoadingState) {}
-    if (state is SendRequestSuccesState) {
+    if (state is ConnectToUserLoadingState) {}
+    if (state is ConnectToUserSuccesState) {
       setState(() {
         isConnected = state.reactResponse.message!;
       });
@@ -726,7 +726,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
       // declineState = DeclineState.idle;
       AppUtils.showCustomToast(state.reactResponse.message!);
     }
-    if (state is SendRequestFailureState) {
+    if (state is ConnectToUserFailureState) {
       // setState(() {
       AppUtils.showCustomToast(state.error);
       // acceptState = AcceptState.idle;

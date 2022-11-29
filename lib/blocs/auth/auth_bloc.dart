@@ -116,13 +116,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           role: event.role,
           category: event.category,
           description: event.description,
-          est_capital: event.est_capital,
+          est_capital: event.estCapital,
           max_range: event.max_range,
           min_range: event.min_range,
           name: event.name,
           photo: event.photo,
           stage: event.stage,
-          user_id: event.user_id);
+          user_id: event.userId);
       if (state is SuccessState) {
         emit(AccountTypeSuccesState(
           accountTypeResponse: state.value,

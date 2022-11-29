@@ -39,7 +39,6 @@ class ProfilePhotoUpdatedState extends ProfileState {
   List<Object> get props => [photo, isProfilePhoto];
 }
 
-
 class ProfileUpdateLoading extends ProfileState {}
 
 class ProfileUpdateLoadedState extends ProfileState {
@@ -69,8 +68,28 @@ class UsernameFetchedState extends ProfileState {
   List<Object> get props => [username];
 }
 
+class GetFaqsLoadingState extends ProfileState {
+  @override
+  List<Object> get props => [];
+}
 
+class GetFaqsFailureState extends ProfileState {
+  String error;
 
+  GetFaqsFailureState(this.error);
+
+  @override
+  List<Object> get props => [];
+}
+
+class GetFaqsSuccessState extends ProfileState {
+  final FaqsResponse faqsResponse;
+
+  GetFaqsSuccessState(this.faqsResponse);
+
+  @override
+  List<Object> get props => [faqsResponse];
+}
 
 // class ProfilePhotoUpdatedState extends ProfileState {
 //   final String photo;
