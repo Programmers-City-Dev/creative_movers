@@ -28,8 +28,7 @@ class ChatRepository {
   Future<State> generateToken(
       {String? uid, required String channelName}) async {
     return SimplifyApiConsuming.makeRequest(
-      () =>
-          httpClient.post("https://agora-token-gen.herokuapp.com/token", body: {
+      () => httpClient.post("https://livevid.creativemovers.app/token", body: {
         "appId": "d914468e34e446acb3892494cf004eab",
         "appCertificate": "49b03f4b574b4f1bb403b76d138bedf4",
         "channelName": channelName,
@@ -290,11 +289,13 @@ class ChatRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.notifyLiveVideo, body: {
         "notify_for": inviteType,
-        "notify_message": "$firstname $lastname has started a live video, join them now!",
+        "notify_message":
+            "$firstname $lastname has started a live video, join them now!",
         "channel": channelName
       }),
       successResponse: (data) {
-        return State<String?>.success(data != null ? "Invitation sent successfully" : null);
+        return State<String?>.success(
+            data != null ? "Invitation sent successfully" : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
