@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/addconnection_response.dart';
 import 'package:creative_movers/data/remote/model/biodata_response.dart';
@@ -18,10 +17,10 @@ import 'package:creative_movers/data/remote/repository/auth_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

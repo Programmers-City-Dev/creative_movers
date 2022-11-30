@@ -92,7 +92,6 @@ class AddConnectionsEvent extends AuthEvent {
   final List<Connect> connection;
 
   @override
-  // TODO: implement props
   List<Object?> get props => [user_id, connection];
 
   AddConnectionsEvent({this.user_id, required this.connection});
@@ -100,12 +99,10 @@ class AddConnectionsEvent extends AuthEvent {
 
 class LogoutEvent extends AuthEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 class CategoriesEvent extends AuthEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 class ForgotPasswordEvent extends AuthEvent {
