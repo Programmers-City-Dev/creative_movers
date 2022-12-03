@@ -1,6 +1,6 @@
 import 'dart:developer' as logger;
-import 'dart:math';
 
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/constants/constants.dart';
@@ -13,14 +13,10 @@ import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-
 // import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
-import 'package:uuid/uuid.dart';
 
 var _scrollController = ScrollController();
 
@@ -65,28 +61,29 @@ class _LiveStreamState extends State<LiveStream> {
 
   @override
   void initState() {
+    logger.log("Channel: ${widget.channel}");
     if (widget.channel != null) {
       channelName = widget.channel!;
     } else {
       channelName = "TestChannel";
     }
-    _initAgora("");
-    _chatBloc.add(GenerateAgoraToken(
-        channelName: const Uuid().v1(),
-        uid: Random().nextInt(1000000).toString()));
+    _initAgora();
+    // if (widget.token == null) {
+    //   _chatBloc.add(GenerateAgoraToken(
+    //       channelName: channelName!,
+    //       uid: "0"));
+    // }
 
     super.initState();
   }
 
   @override
   void dispose() {
-    //TODO: Destroy agora engine here
-    // _engine?.destroy();
-    // _client.destroy();
+    _engine?.release();
     super.dispose();
   }
 
-  Future<void> _initAgora(String token) async {
+  Future<void> _initAgora() async {
     // retrieve permissions
     await [Permission.microphone, Permission.camera].request();
 
@@ -117,18 +114,71 @@ class _LiveStreamState extends State<LiveStream> {
       await _engine?.setClientRole(role: ClientRoleType.clientRoleAudience);
     }
 
-    _engine?.registerEventHandler(
-      _handleEvents(),
-    );
-
-    await _engine?.joinChannel(
-        channelId: channelName!,
-        options: ChannelMediaOptions(token: token),
-        uid: 0,
-        token: token);
+    _engine?.registerEventHandler(RtcEngineEventHandler(
+      onConnectionStateChanged: (connection, state, reason) {
+        logInfo("Connection State Changed: $state, Reason:$reason");
+      },
+      onJoinChannelSuccess: (RtcConnection conn, int uid) {
+        logInfo("local user $uid joined");
+        setState(() {
+          _localUserJoined = true;
+        });
+      },
+      onUserJoined: (RtcConnection conn, int uid, int elapsed) {
+        logInfo("remote user $uid joined");
+        setState(() {
+          _remoteUid = uid;
+        });
+      },
+      onUserOffline:
+          (RtcConnection conn, int uid, UserOfflineReasonType reason) {
+        logInfo("remote user $uid left channel");
+        setState(() {
+          _remoteUid = null;
+        });
+      },
+      onRemoteVideoStateChanged: (RtcConnection conn, x, RemoteVideoState state,
+          RemoteVideoStateReason reason, i) {
+        logInfo("remote user $state video state changed");
+        if (state == RemoteVideoState.remoteVideoStateDecoding) {
+          setState(() {
+            _remoteUserState = RemoteVideoState.remoteVideoStateDecoding;
+          });
+        } else if (state == RemoteVideoState.remoteVideoStateStopped) {
+          setState(() {
+            _remoteUserState = RemoteVideoState.remoteVideoStateStopped;
+          });
+        } else if (state == RemoteVideoState.remoteVideoStateFrozen) {
+          setState(() {
+            _remoteUserState = RemoteVideoState.remoteVideoStateFrozen;
+          });
+        }
+      },
+    ));
     if (widget.isBroadcaster) {
       await _engine?.muteAllRemoteAudioStreams(true);
     }
+    if (widget.token != null) {
+      await _joinChannel(widget.token!);
+    } else {
+      _chatBloc.add(GenerateAgoraToken(channelName: channelName!, uid: "0"));
+    }
+  }
+
+  Future<void> _joinChannel(String token) async {
+    await _engine?.joinChannel(
+        channelId: channelName!,
+        options: ChannelMediaOptions(
+            // token: token,
+            channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+            clientRoleType: widget.isBroadcaster
+                ? ClientRoleType.clientRoleBroadcaster
+                : ClientRoleType.clientRoleAudience,
+            autoSubscribeVideo: true,
+            autoSubscribeAudio: true,
+            defaultVideoStreamType: VideoStreamType.videoStreamLow),
+        uid: 0,
+        token: token);
   }
 
   RtcEngineEventHandler _handleEvents() {
@@ -185,6 +235,7 @@ class _LiveStreamState extends State<LiveStream> {
           if (state is AgoraTokenGotten) {
             // Navigator.of(context).pop();
             logger.log("Agora Token: ${state.token}");
+            _joinChannel(state.token);
             // _joinLiveStream(state.token);
           }
           if (state is AgoraTokenFailed) {
@@ -310,26 +361,34 @@ class _RemoteUserViewState extends State<RemoteUserView> {
   @override
   void initState() {
     super.initState();
+    injector.get<CacheCubit>().fetchCachedUserData();
     _chatBloc.add(FetchLiveChannelMessages(channelName: widget.channelName));
   }
 
   @override
   void dispose() {
     _chatBloc.close();
+    widget.engine?.release();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CacheCubit, CacheState>(
-      bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
+      bloc: injector.get<CacheCubit>(),
       buildWhen: (p, c) => c is CachedUserDataFetched,
       builder: (context, state) {
         CachedUser userData = (state as CachedUserDataFetched).cachedUser;
         return WillPopScope(
           onWillPop: () async {
             if (_activeLiveNotifier.value) {
-              _showCloseVideoDialog(context);
+              _showCloseVideoDialog(context, onConfirmed: () {
+                widget.engine?.release();
+                Navigator.of(context)
+                  ..pop()
+                  ..pop();
+                _activeLiveNotifier.value = false;
+              });
               return false;
             }
             return true;
@@ -658,18 +717,13 @@ class _RemoteUserViewState extends State<RemoteUserView> {
     );
   }
 
-  void _showCloseVideoDialog(BuildContext context) {
+  void _showCloseVideoDialog(BuildContext context,
+      {required VoidCallback onConfirmed}) {
     AppUtils.showShowConfirmDialog(context,
         message: "Are you sure you want to leave this live?",
         cancelButtonText: "Cancel",
-        confirmButtonText: "Leave Video", onConfirmed: () async {
-      //TODO: Destroy agora engine here
-      // await widget.engine?.destroy();
-      Navigator.of(context)
-        ..pop()
-        ..pop();
-      _activeLiveNotifier.value = false;
-    }, onCancel: () {
+        confirmButtonText: "Leave Video",
+        onConfirmed: onConfirmed, onCancel: () {
       Navigator.of(context).pop();
     });
   }
@@ -1248,7 +1302,7 @@ class _KeyboardVisibilityBuilderState extends State<KeyboardVisibilityBuilder>
   @override
   void didChangeMetrics() {
     final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
-    final newValue = bottomInset> 0.0;
+    final newValue = bottomInset > 0.0;
     if (newValue != _isKeyboardVisible) {
       setState(() {
         _isKeyboardVisible = newValue;

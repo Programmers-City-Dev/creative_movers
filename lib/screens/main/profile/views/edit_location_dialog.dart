@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
@@ -35,7 +34,7 @@ class EditLocationDialog extends StatelessWidget {
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
-          log("USER:${state.updateProfileResponse.toJson()}");
+          // log("USER:${state.updateProfileResponse.toJson()}");
           onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
@@ -118,6 +117,7 @@ class EditLocationDialog extends StatelessWidget {
               searchBarRadius: 10.0,
               onCountryChanged: (value) {
                 countryValue = value;
+                stateValue = null;
               },
               onStateChanged: (value) {
                 stateValue = value;
@@ -129,7 +129,9 @@ class EditLocationDialog extends StatelessWidget {
             ),
             CustomButton(
               onTap: () {
-                if (countryValue != null && stateValue != null) {
+                if (countryValue != null &&
+                    stateValue != null &&
+                    stateValue != "*State") {
                   _profileBloc.add(UpdateProfileEvent(
                       country: countryValue, state: stateValue));
                 } else {

@@ -37,6 +37,7 @@ class Constants {
   static const themeKey = "nitrade_theme_key";
   static const firstTimeUserKey = "first_time_user_key";
   static const agoraAppId = "30d7ce9ee6844b3c9736b3ef38ab4d48";
+    static const agoraAppCert = "5d8f3dfba7f84903a9dde8f4e6c09230";
 }
 
 /// Allows this class to be only visible to this file

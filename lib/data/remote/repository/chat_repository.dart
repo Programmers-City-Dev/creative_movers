@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/chat/chat_message_request.dart';
@@ -29,8 +30,9 @@ class ChatRepository {
       {String? uid, required String channelName}) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post("https://livevid.creativemovers.app/token", body: {
-        "appId": "d914468e34e446acb3892494cf004eab",
-        "appCertificate": "49b03f4b574b4f1bb403b76d138bedf4",
+        "appId": Constants.agoraAppId,
+        "appCertificate":
+            Constants.agoraAppCert, // "49b03f4b574b4f1bb403b76d138bedf4",
         "channelName": channelName,
         "uid": uid ?? "22048695876",
         "role": "subscriber"
