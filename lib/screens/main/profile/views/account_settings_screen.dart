@@ -468,7 +468,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                               //         "monthly",
                                               //         "account_activation"));
 
-                                              Navigator.of(context).pushNamed(helpAndSupportPath);
+                                              Navigator.of(context).pushNamed(
+                                                  helpAndSupportPath);
                                             },
                                             child: const Text(
                                               'Help and Support',
@@ -495,7 +496,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             onTap: () {
                               AppUtils.showShowConfirmDialog(
                                 context,
-                                message: 'Are you sure you wan to logout ?',
+                                message: 'Are you sure you want to logout?',
                                 cancelButtonText: 'Cancel',
                                 confirmButtonText: 'Logout',
                                 onConfirmed: () {
