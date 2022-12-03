@@ -51,7 +51,7 @@ class HttpHelper {
       {dynamic body,
       ProgressCallback? progressCallback,
       Options? options}) async {
-    final instance = await _getInstance(true);
+    final instance = await _getInstance(false);
     return instance!.post(url,
         data: body, onSendProgress: progressCallback, options: options);
   }

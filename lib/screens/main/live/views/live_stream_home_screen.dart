@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
@@ -59,7 +57,7 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
   @override
   void initState() {
     super.initState();
-    log("CAMES: ${cameras.length}");
+    // log("CAMES: ${cameras.length}");
     if (cameras.isNotEmpty) {
       cameraController = CameraController(
         _isFrontCamera ? cameras[1] : cameras[0],
@@ -85,12 +83,32 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
   @override
   Widget build(BuildContext context) {
     return Stack(
-      fit: StackFit.expand,
+      // fit: StackFit.expand,
       children: [
         if (cameraController != null && cameraController!.value.isInitialized)
-          CameraPreview(
-            cameraController!,
+          Container(
+            color: AppColors.black,
           ),
+        CameraPreview(
+          cameraController!,
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                  // Colors.black,
+                  // Colors.black.withOpacity(0.3),
+                  // Colors.black.withOpacity(0.4),
+                  Colors.black.withOpacity(0.2),
+                  Colors.black.withOpacity(0.3),
+                ])),
+          ),
+        ),
         Container(
           color: Colors.black.withOpacity(0.5),
           child: Column(
