@@ -70,21 +70,21 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     Row(
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                           child: SearchField(
                             hint: 'Search Chats',
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 16,
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.people,
-                          ),
-                        )
+                        // IconButton(
+                        //   onPressed: () {},
+                        //   icon: const Icon(
+                        //     Icons.people,
+                        //   ),
+                        // )
                       ],
                     ),
                     const SizedBox(
@@ -229,7 +229,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           ));
                         }
                         return ListView.builder(
-                          // shrinkWrap: true,
+                            // shrinkWrap: true,
                             itemCount: connections.length,
                             itemBuilder: (ctx, index) {
                               return ListTile(

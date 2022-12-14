@@ -13,10 +13,10 @@ class ChatItem extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ChatItemState createState() => _ChatItemState();
+  ChatItemState createState() => ChatItemState();
 }
 
-class _ChatItemState extends State<ChatItem> {
+class ChatItemState extends State<ChatItem> {
   @override
   Widget build(BuildContext context) {
     var lastMessage = widget.conversation.lastMessage;

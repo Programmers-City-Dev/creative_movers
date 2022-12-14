@@ -2,6 +2,7 @@ import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/screens/main/chats/views/messaging_screen.dart';
 import 'package:creative_movers/screens/main/status/widgets/status_shimmer.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,10 @@ class OnlineUsers extends StatefulWidget {
       : super(key: key);
 
   @override
-  _OnlineUsersState createState() => _OnlineUsersState();
+  OnlineUsersState createState() => OnlineUsersState();
 }
 
-class _OnlineUsersState extends State<OnlineUsers> {
+class OnlineUsersState extends State<OnlineUsers> {
   final ChatBloc _chatBloc = ChatBloc(injector.get());
 
   @override
@@ -53,28 +54,39 @@ class _OnlineUsersState extends State<OnlineUsers> {
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemCount: users.length,
-                    itemBuilder: (context, index) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: CircleImage(
-                            url: users[index].profilePhotoPath,
-                            withBaseUrl: false,
-                            radius: 28,
-                          ),
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true)
+                            .push(MaterialPageRoute(
+                          builder: (context) => MessagingScreen(
+                              conversationId: null, user: users[index]),
+                        ));
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: CircleImage(
+                                url: users[index].profilePhotoPath,
+                                withBaseUrl: false,
+                                radius: 28,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Center(
+                                  child: Text(
+                                '${users[index].firstname}',
+                                maxLines: 1,
+                                style: const TextStyle(fontSize: 13),
+                              )),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Center(
-                              child: Text(
-                            '${users[index].firstname}',
-                            maxLines: 1,
-                            style: const TextStyle(fontSize: 13),
-                          )),
-                        )
-                      ],
+                      ),
                     ),
                   ),
                 );

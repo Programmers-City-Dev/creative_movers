@@ -1099,13 +1099,13 @@ class _LocalUserViewState extends State<LocalUserView> {
                                                               .switch_camera_outlined,
                                                           color: Colors.white,
                                                         )),
-                                                    IconButton(
-                                                        onPressed: () {},
-                                                        icon: const Icon(
-                                                          Icons
-                                                              .emoji_emotions_outlined,
-                                                          color: Colors.white,
-                                                        )),
+                                                    // IconButton(
+                                                    //     onPressed: () {},
+                                                    //     icon: const Icon(
+                                                    //       Icons
+                                                    //           .emoji_emotions_outlined,
+                                                    //       color: Colors.white,
+                                                    //     )),
                                                   ],
                                                 ),
                                               );
