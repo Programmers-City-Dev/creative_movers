@@ -86,12 +86,9 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
       // fit: StackFit.expand,
       children: [
         if (cameraController != null && cameraController!.value.isInitialized)
-          Container(
-            color: AppColors.black,
+          CameraPreview(
+            cameraController!,
           ),
-        CameraPreview(
-          cameraController!,
-        ),
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(

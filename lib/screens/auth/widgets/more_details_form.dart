@@ -177,7 +177,6 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
       StorageHelper.setString(
           StorageKeys.lastname, _lastNameController.text.toString().trim());
 
-          
       Navigator.pop(context);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -189,7 +188,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
   }
 
   void _fetchImage() async {
-    var images = await AppUtils.fetchImages(allowMultiple: false);
+    var images = await AppUtils.fetchFiles(allowMultiple: false);
     if (images.isNotEmpty) {
       setState(() {
         image = images[0];

@@ -5,8 +5,8 @@ import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
+import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
@@ -263,7 +263,7 @@ class _CreativeFormState extends State<CreativeForm> {
   }
 
   void postAccountType() {
-    if(image.isNotEmpty){
+    if (image.isNotEmpty) {
       if (_formKey.currentState!.validate()) {
         _authBloc.add(AccountTypeEvent(
             role: 'creative',
@@ -274,9 +274,8 @@ class _CreativeFormState extends State<CreativeForm> {
             photo: image,
             description: _descriptionController.text));
       }
-
-    }else{
-      AppUtils.showCustomToast('Select Image',Colors.blue);
+    } else {
+      AppUtils.showCustomToast('Select Image', Colors.blue);
     }
   }
 
@@ -311,7 +310,7 @@ class _CreativeFormState extends State<CreativeForm> {
   }
 
   void _fetchImage() async {
-    var images = await AppUtils.fetchImages(allowMultiple: false);
+    var images = await AppUtils.fetchFiles(allowMultiple: false);
     if (images.isNotEmpty) {
       setState(() {
         image = images[0];

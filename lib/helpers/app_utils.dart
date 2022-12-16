@@ -20,7 +20,6 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AppUtils {
-
   AppUtils._();
 
   static List<EthnicityModel> get ethnicities {
@@ -230,16 +229,14 @@ class AppUtils {
               children: [
                 Expanded(
                   child: CustomButton(
-                      onTap: onConfirmed,
-                      child: Text(confirmButtonText)),
+                      onTap: onConfirmed, child: Text(confirmButtonText)),
                 ),
                 const SizedBox(
                   width: 16,
                 ),
                 Expanded(
                     child: CustomButton(
-                        onTap: onCancel,
-                        child: Text(cancelButtonText))),
+                        onTap: onCancel, child: Text(cancelButtonText))),
               ],
             )
           ],
@@ -414,16 +411,20 @@ class AppUtils {
     );
   }
 
-  static Future<List<String>> fetchImages({bool allowMultiple = false}) async {
+  static Future<List<String>> fetchFiles(
+      {bool allowMultiple = false,
+      String? title,
+      FileType fileType = FileType.image,
+      List<String>? allowedExtensions}) async {
     try {
       FilePicker filePicker = FilePicker.platform;
       FilePickerResult? result = await filePicker.pickFiles(
-        type: FileType.image,
+        type: fileType,
         allowCompression: true,
-        dialogTitle: 'SELECT IMAGE',
+        dialogTitle: title ?? 'SELECT IMAGES',
         withData: true,
         allowMultiple: allowMultiple,
-        // allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        allowedExtensions: allowedExtensions,
       );
       if (result != null) {
         return result.files.map((file) => file.path!).toList();
@@ -449,9 +450,12 @@ class AppUtils {
     }
   }
 
-  static selectImage(BuildContext context, Function(List<String>) onSelected,
+  static selectFiles(BuildContext context, Function(List<String>) onSelected,
       {bool allowMultiple = false,
       bool hasViewAction = false,
+      String? title,
+      FileType? fileType,
+      List<String>? allowedExtensions,
       VoidCallback? onViewAction}) async {
     await showMaterialModalBottomSheet(
         context: context,
@@ -490,7 +494,11 @@ class AppUtils {
                           textAlign: TextAlign.center)),
                   onTap: () async {
                     Navigator.pop(context);
-                    var list = await fetchImages(allowMultiple: allowMultiple);
+                    var list = await fetchFiles(
+                        allowMultiple: allowMultiple,
+                        fileType: fileType ?? FileType.image,
+                        title: title,
+                        allowedExtensions: allowedExtensions);
                     onSelected(list);
                   },
                 ),
@@ -589,8 +597,7 @@ class AppUtils {
       return 'Yesterday ${DateFormat("hh:mm a").format(date)}';
     }
 
-    return DateFormat.yMMMEd()
-        .format(date);
+    return DateFormat.yMMMEd().format(date);
   }
 
   static String getGroupLabel(int groupByValue) {

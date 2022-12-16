@@ -1,3 +1,4 @@
+import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/data/remote/model/media.dart';
@@ -8,10 +9,14 @@ import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
 import 'package:creative_movers/screens/main/feed/widgets/image_picker_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:path/path.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({Key? key, this.postType = "user_feed", this.pageId})
@@ -153,7 +158,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   padding: const EdgeInsets.only(bottom: 25),
                   child: InkWell(
                     onTap: () {
-                      _fetchMedia();
+                      // _fetchMedia();
+                      _showImageSelectionDialog(context, false);
                     },
                     child: Row(
                       children: const [
@@ -178,6 +184,62 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
       ),
     );
+  }
+
+  void _showImageSelectionDialog(
+    BuildContext context,
+    bool isProfilePhoto,
+  ) {
+    var extensions = ['.jpg', '.jpeg', '.png', '.webp', '.PNG'];
+    var videos = ['.mp4', '.mov'];
+    AppUtils.selectFiles(
+        mainNavKey.currentContext!,
+        (images) {
+          if (images.isNotEmpty) {
+            for (var file in images) {
+              if (extensions
+                  .where((element) => element == extension(file))
+                  .isNotEmpty) {
+                mediaItems.add(
+                    MediaItemModel(mediaType: MediaType.image, path: file));
+                mediaFiles.add(file);
+
+                setState(() {});
+              } else if (videos
+                  .where((element) => element == extension(file))
+                  .isNotEmpty) {
+                mediaItems.add(
+                    MediaItemModel(mediaType: MediaType.video, path: file));
+                mediaFiles.add(file);
+                // log('VIDEO ${mediaFiles[0].file?.filename}');
+
+                setState(() {});
+              }
+            }
+          }
+        },
+        allowMultiple: true,
+        hasViewAction: false,
+        fileType: FileType.custom,
+        title: "SELECT IMAGES AND VIDEOS",
+        allowedExtensions: [
+          'jpg',
+          'jpeg',
+          'png',
+          'webp',
+          'PNG',
+          'mp4',
+          'mov',
+        ],
+        onViewAction: () {
+          showMaterialModalBottomSheet(
+              context: mainNavKey.currentContext!,
+              isDismissible: false,
+              enableDrag: false,
+              expand: false,
+              builder: (context) =>
+                  const ImagePreviewer(heroTag: "profile_photo", imageUrl: ''));
+        });
   }
 
   void postFeed() {
@@ -212,7 +274,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _fetchImage() async {
-    var images = await AppUtils.fetchImages(allowMultiple: true);
+    var images = await AppUtils.fetchFiles(allowMultiple: true);
     if (images.isNotEmpty) {
       setState(() {
         // mediaItem.addAll(images

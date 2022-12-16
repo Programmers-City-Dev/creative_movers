@@ -731,7 +731,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     BuildContext context,
     bool isProfilePhoto,
   ) {
-    AppUtils.selectImage(
+    AppUtils.selectFiles(
         mainNavKey.currentContext!,
         (images) {
           if (images.isEmpty) return;
