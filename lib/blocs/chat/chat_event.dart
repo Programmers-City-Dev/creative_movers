@@ -18,7 +18,7 @@ class GenerateAgoraToken extends ChatEvent {
 }
 
 class SendLiveChannelMessage extends ChatEvent {
-  final LiveChatMessage message;
+  final String message;
   final String channelName;
   const SendLiveChannelMessage({
     required this.message,
@@ -46,7 +46,7 @@ class LiveChatMessagesFetchedEvent extends ChatEvent {
   List<Object> get props => [messages];
 }
 
-class SendChatMessage extends ChatEvent{
+class SendChatMessage extends ChatEvent {
   final ChatMessageRequest message;
   final List<File> files;
 
@@ -56,7 +56,7 @@ class SendChatMessage extends ChatEvent{
   List<Object> get props => [message, files];
 }
 
-class FetchConversationsEvent extends ChatEvent{}
+class FetchConversationsEvent extends ChatEvent {}
 
 class FetchConversationsMessagesEvent extends ChatEvent {
   final int conversationId;
@@ -77,6 +77,15 @@ class ListenToChatEvent extends ChatEvent {
 
   @override
   List<Object> get props => [conversationId, channelName];
+}
+
+class ListenToLiveChatEvent extends ChatEvent {
+  final String channelName;
+
+  const ListenToLiveChatEvent(this.channelName);
+
+  @override
+  List<Object> get props => [channelName];
 }
 
 class ConversationMessagesFetchedEvent extends ChatEvent {

@@ -396,7 +396,9 @@ class _MoverFormState extends State<MoverForm>
                     connections: state.accountTypeResponse.connect,
                     role: state.accountTypeResponse.userRole?.role,
                   )
-                : const PaymentScreen(isFirstTime: true,),
+                : const PaymentScreen(
+                    isFirstTime: true,
+                  ),
           ),
           (route) => false);
     }

@@ -22,29 +22,29 @@ class ConversationMessagesResponse {
         conversationData: chatData ?? conversationData,
       );
 
-  factory ConversationMessagesResponse.fromMap(Map<String, dynamic> json) => ConversationMessagesResponse(
-    status: json["status"],
-    conversationData: ConversationData.fromMap(json["conversation"]),
-  );
+  factory ConversationMessagesResponse.fromMap(Map<String, dynamic> json) =>
+      ConversationMessagesResponse(
+        status: json["status"],
+        conversationData: ConversationData.fromMap(json["conversation"]),
+      );
 
   Map<String, dynamic> toMap() => {
-    "status": status,
-    "conversation": conversationData.toMap(),
-  };
+        "status": status,
+        "conversation": conversationData.toMap(),
+      };
 }
 
 class ConversationData {
-  ConversationData({
-    required this.id,
-    required this.user1Id,
-    required this.user2Id,
-    required this.channel,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.messages,
-    required this.user1,
-    required this.user2
-  });
+  ConversationData(
+      {required this.id,
+      required this.user1Id,
+      required this.user2Id,
+      required this.channel,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.messages,
+      required this.user1,
+      required this.user2});
 
   final int id;
   final String user1Id;
@@ -79,27 +79,29 @@ class ConversationData {
         messages: messages ?? this.messages,
       );
 
-  factory ConversationData.fromMap(Map<String, dynamic> json) => ConversationData(
-    id: json["id"],
-    user1Id: json["user1_id"],
-    user2Id: json["user2_id"],
-    channel: json["channel"],
-    user1: ConversationUser.fromMap(json["user1"]),
-    user2: ConversationUser.fromMap(json["user2"]),
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    messages: List<Message>.from(json["messages"].map((x) => Message.fromMap(x))),
-  );
+  factory ConversationData.fromMap(Map<String, dynamic> json) =>
+      ConversationData(
+        id: json["id"],
+        user1Id: json["user1_id"],
+        user2Id: json["user2_id"],
+        channel: json["channel"],
+        user1: ConversationUser.fromMap(json["user1"]),
+        user2: ConversationUser.fromMap(json["user2"]),
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        messages:
+            List<Message>.from(json["messages"].map((x) => Message.fromMap(x))),
+      );
 
   Map<String, dynamic> toMap() => {
-    "id": id,
-    "user1_id": user1Id,
-    "user2_id": user2Id,
-    "channel": channel,
-    "user1":user1.toMap(),
-    "user2":user2.toMap(),
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "messages": List<Message>.from(messages.map((x) => x.toMap())),
-  };
+        "id": id,
+        "user1_id": user1Id,
+        "user2_id": user2Id,
+        "channel": channel,
+        "user1": user1.toMap(),
+        "user2": user2.toMap(),
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "messages": List<Message>.from(messages.map((x) => x.toMap())),
+      };
 }

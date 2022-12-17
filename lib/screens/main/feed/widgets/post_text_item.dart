@@ -19,8 +19,10 @@ class PostTextItem extends StatelessWidget {
             radius: 20,
             child: CircleAvatar(
               backgroundImage: NetworkImage(feed?.type == 'user_feed'
-                  ? feed!.user!.profilePhotoPath! : feed?.page!.photoPath != null ?
-                   feed!.page!.photoPath!:'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'),
+                  ? feed!.user!.profilePhotoPath!
+                  : feed?.page!.photoPath != null
+                      ? feed!.page!.photoPath!
+                      : 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'),
               radius: 18,
             ),
           ),
@@ -34,10 +36,9 @@ class PostTextItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-               feed!.type == 'user_feed'?
-                ' ${feed!.user?.firstname} ${feed!.user?.lastname} 🌞':
-                ' ${feed!.page?.name} 🌞'
-                ,
+                feed!.type == 'user_feed'
+                    ? ' ${feed!.user?.firstname} ${feed!.user?.lastname} 🌞'
+                    : ' ${feed!.page?.name} 🌞',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(feed!.content!),

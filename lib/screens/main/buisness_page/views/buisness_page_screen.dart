@@ -13,17 +13,17 @@ import 'edit_page_form.dart';
 class BuisnessPageScreen extends StatefulWidget {
   final BusinessPage page;
 
-
-
-  const BuisnessPageScreen({Key? key, required this.page, }) : super(key: key);
+  const BuisnessPageScreen({
+    Key? key,
+    required this.page,
+  }) : super(key: key);
 
   @override
   _BuisnessPageScreenState createState() => _BuisnessPageScreenState();
 }
 
 class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
-
- late BusinessPage businessPage ;
+  late BusinessPage businessPage;
   List<String> placeholders = [
     AppIcons.icPlaceHolder1,
     AppIcons.icPlaceHolder2,
@@ -31,8 +31,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
     AppIcons.icPlaceHolder4
   ];
 
-  List pages = [
-  ];
+  List pages = [];
 
   int selectedIndex = 0;
   String userType = 'home';
@@ -41,21 +40,29 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
     // TODO: implement initState
     super.initState();
     pages = [
-      PageHome(page: widget.page,),
+      PageHome(
+        page: widget.page,
+      ),
       const FollowingScreen(),
       const PageNotifications(),
-       Padding(
+      Padding(
         padding: const EdgeInsets.all(18),
-        child: EditPageForm(businessPage: widget.page,),
+        child: EditPageForm(
+          businessPage: widget.page,
+        ),
       )
     ];
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text(widget.page.name,style: const TextStyle(fontSize: 16),),),
+      appBar: AppBar(
+        title: Text(
+          widget.page.name,
+          style: const TextStyle(fontSize: 16),
+        ),
+      ),
       backgroundColor: AppColors.smokeWhite,
       body: SafeArea(
           child: Container(
@@ -67,11 +74,11 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
             Center(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                height:40 ,
+                height: 40,
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                 shrinkWrap: true,
+                  shrinkWrap: true,
                   children: [
                     InkWell(
                       onTap: () {
@@ -137,7 +144,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                       onTap: () {
                         setState(() {
                           userType = 'notification';
-                          selectedIndex = 2 ;
+                          selectedIndex = 2;
                         });
                       },
                       child: Chip(
@@ -167,7 +174,7 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
                       onTap: () {
                         setState(() {
                           userType = 'editPage';
-                          selectedIndex =3;
+                          selectedIndex = 3;
                         });
                       },
                       child: Chip(
@@ -199,10 +206,9 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
             ),
             Expanded(
               child: PageView.builder(
-
-                onPageChanged: (index){
+                onPageChanged: (index) {
                   setState(() {
-                    selectedIndex =index;
+                    selectedIndex = index;
                   });
                 },
                 physics: const NeverScrollableScrollPhysics(),

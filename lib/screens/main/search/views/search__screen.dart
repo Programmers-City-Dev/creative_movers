@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
       body: BlocListener<ConnectsBloc, ConnectsState>(
         bloc: _connectsBloc,
         listener: (context, state) {
-          _listenToSearchState(context,state);
+          _listenToSearchState(context, state);
         },
         child: SafeArea(
           child: Container(
@@ -52,10 +52,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                   SearchField(
+                  SearchField(
                     hint: 'Find Creators or Movers',
                     controller: _searchValueController,
-
                   ),
                   const SizedBox(
                     height: 16,
@@ -146,10 +145,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: BoxDecoration(
                           border: Border.all(color: AppColors.textColor),
                         ),
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
+                        width: MediaQuery.of(context).size.width,
                         child: const Padding(
                           padding: EdgeInsets.all(18.0),
                           child: Text('Select Category'),
@@ -158,14 +154,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (context) =>
-                              SearchDropdown(
-                                onSaved: (list) {
-                                  setState(() {
-                                    categories = list;
-                                  });
-                                },
-                              ),
+                          builder: (context) => SearchDropdown(
+                            onSaved: (list) {
+                              setState(() {
+                                categories = list;
+                              });
+                            },
+                          ),
                         );
                       }),
                   const SizedBox(
@@ -178,8 +173,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     spacing: 5,
                     children: List<Widget>.generate(
                         categories.length,
-                            (index) =>
-                            Chip(
+                        (index) => Chip(
                               label: Text(categories[index]),
                               deleteIcon: const Icon(Icons.close),
                               onDeleted: () {
@@ -201,7 +195,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   RangeSlider(
                     labels:
-                    RangeLabels(' ${_values.start}', '${_values.start}'),
+                        RangeLabels(' ${_values.start}', '${_values.start}'),
                     min: 1,
                     max: 5000,
                     onChanged: (val) {
@@ -223,34 +217,34 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       Expanded(
                           child: TextFormField(
-                            controller: from_controller,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                              prefix: Text('\$'),
-                              border: OutlineInputBorder(),
-                              hintText: 'From',
-                              contentPadding: EdgeInsets.all(8),
-                            ),
-                          )),
+                        controller: from_controller,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          prefix: Text('\$'),
+                          border: OutlineInputBorder(),
+                          hintText: 'From',
+                          contentPadding: EdgeInsets.all(8),
+                        ),
+                      )),
                       const SizedBox(
                         width: 16,
                       ),
                       Expanded(
                           child: TextFormField(
-                            controller: to_controller,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                                prefix: Text('\$'),
-                                border: OutlineInputBorder(),
-                                contentPadding: EdgeInsets.all(8),
-                                hintText: 'To'),
-                          )),
+                        controller: to_controller,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                            prefix: Text('\$'),
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.all(8),
+                            hintText: 'To'),
+                      )),
                     ],
                   ),
                   const SizedBox(
@@ -264,7 +258,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   padding:
-                                  const EdgeInsets.symmetric(vertical: 12)),
+                                      const EdgeInsets.symmetric(vertical: 12)),
                               onPressed: () {
                                 search();
                                 // Navigator.of(context).push(MaterialPageRoute(
@@ -288,11 +282,9 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-
-void search(){
-      _connectsBloc.add(SearchEvent(userType, _searchValueController.text));
-}
-
+  void search() {
+    _connectsBloc.add(SearchEvent(userType, _searchValueController.text));
+  }
 
   void _listenToSearchState(BuildContext context, ConnectsState state) {
     if (state is SearchLoadingState) {
@@ -300,7 +292,11 @@ void search(){
     }
     if (state is SearchSuccesState) {
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchResultScreen(searchResponse: state.searchResponse,),));
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => SearchResultScreen(
+          searchResponse: state.searchResponse,
+        ),
+      ));
     }
     if (state is SearchFailureState) {
       Navigator.pop(context);

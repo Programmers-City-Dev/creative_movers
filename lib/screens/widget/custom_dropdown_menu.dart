@@ -22,14 +22,14 @@ class CustomDropdownMenu<T> extends StatefulWidget {
     required this.items,
     required this.tileKey,
     this.icon,
-    this.label, this.handleTap,
+    this.label,
+    this.handleTap,
   }) : super(key: key);
   @override
   _CustomDropdownMenuState createState() => _CustomDropdownMenuState();
 }
 
 class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
-
   @override
   Widget build(BuildContext context) {
     return Column(

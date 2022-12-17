@@ -51,7 +51,9 @@ class _ConnectsShimerState extends State<ConnectsShimer> {
                             color: Colors.grey,
                           ),
                         ),
-                        const SizedBox(height: 5,),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         Container(
                           height: 10,
                           width: 100,
@@ -74,7 +76,6 @@ class _ConnectsShimerState extends State<ConnectsShimer> {
                 ),
               ],
             ),
-
           ],
         ));
   }

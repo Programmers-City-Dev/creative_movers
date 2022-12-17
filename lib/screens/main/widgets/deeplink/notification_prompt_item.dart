@@ -25,9 +25,10 @@ class _NotificationPromptItemState extends State<NotificationPromptItem>
   void initState() {
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800));
-    _position = Tween<Offset>(begin: const Offset(-1, 0), end: const Offset(0, 0)).animate(
-        CurvedAnimation(
-            parent: _animationController, curve: Curves.decelerate));
+    _position =
+        Tween<Offset>(begin: const Offset(-1, 0), end: const Offset(0, 0))
+            .animate(CurvedAnimation(
+                parent: _animationController, curve: Curves.decelerate));
     _animationController.forward();
     Future.delayed(const Duration(seconds: 15), () {
       _onDone();
@@ -93,7 +94,9 @@ class _NotificationPromptItemState extends State<NotificationPromptItem>
                                       color: Colors.black),
                                 ),
                               ),
-                              const SizedBox(width: 15,),
+                              const SizedBox(
+                                width: 15,
+                              ),
                               InkWell(
                                 child: Icon(
                                   Icons.close,

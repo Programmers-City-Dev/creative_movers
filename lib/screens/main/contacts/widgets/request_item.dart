@@ -5,8 +5,8 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 enum AcceptState { idle, loading, succes, failed }
+
 enum DeclineState { idle, loading, succes, failed }
 
 class RequestItem extends StatefulWidget {
@@ -111,14 +111,13 @@ class _RequestItemState extends State<RequestItem> {
                                   child: TextButton(
                                     onPressed: declineState == DeclineState.idle
                                         ? () {
-                                      _connectsBloc.add(RequestReactEvent(
-                                          widget.connection.id.toString(),
-                                          'decline'));
+                                            _connectsBloc.add(RequestReactEvent(
+                                                widget.connection.id.toString(),
+                                                'decline'));
                                             setState(() {
                                               declineState =
                                                   DeclineState.loading;
                                             });
-
                                           }
                                         : null,
                                     style: TextButton.styleFrom(

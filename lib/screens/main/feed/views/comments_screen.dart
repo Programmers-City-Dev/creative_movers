@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -37,7 +36,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
         iconTheme: const IconThemeData(color: AppColors.textColor),
         backgroundColor: AppColors.white,
         title: const Text('Comments'),
-
       ),
       body: BlocBuilder<CacheCubit, CacheState>(
         bloc: injector.get<CacheCubit>(),
@@ -87,7 +85,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   bloc: CacheCubit()..fetchCachedUserData(),
                   buildWhen: (_, state) => state is CachedUserDataFetched,
                   builder: (context, state) {
-                    if(state is CachedUserDataFetched){
+                    if (state is CachedUserDataFetched) {
                       var user = state.cachedUser;
                       return CommentBox(
                         profilePhotoPath: user.profilePhotoPath,
@@ -103,7 +101,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                   firstname: state.cachedUser.firstname!,
                                   lastname: state.cachedUser.lastname!,
                                   profilePhotoPath:
-                                  state.cachedUser.profilePhotoPath),
+                                      state.cachedUser.profilePhotoPath),
                               shouldLoad: true));
                           _commentScrollController.animateTo(
                             _commentScrollController.position.maxScrollExtent,
@@ -114,7 +112,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
                       );
                     }
                     return const SizedBox.shrink();
-
                   },
                 )
                 // Container(

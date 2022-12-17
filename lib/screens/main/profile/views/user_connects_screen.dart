@@ -69,7 +69,9 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                       controller: _searchController,
                       onSubmitted: (val) {
                         log(widget.user_id);
-                        _connectsBloc.add(SearchConnectsEvent(searchValue: _searchController.text,user_id: widget.user_id));
+                        _connectsBloc.add(SearchConnectsEvent(
+                            searchValue: _searchController.text,
+                            user_id: widget.user_id));
                       },
                     ),
                     const SizedBox(
@@ -162,17 +164,17 @@ class _UserConnectsScreenState extends State<UserConnectsScreen> {
                       },
                       listener: (ctx, state) {
                         if (state is ConnectsSuccesState) {
-                          log(state.connectsResponse.connections.connectionList.length.toString());
-                            filterList = state
-                                .connectsResponse.connections.connectionList;
-                            mainList = state
-                                .connectsResponse.connections.connectionList;
-
+                          log(state.connectsResponse.connections.connectionList
+                              .length
+                              .toString());
+                          filterList =
+                              state.connectsResponse.connections.connectionList;
+                          mainList =
+                              state.connectsResponse.connections.connectionList;
                         }
-                        if(state is ConnectsFailureState){
-                          AppUtils.showCustomToast(state.error,Colors.red);
+                        if (state is ConnectsFailureState) {
+                          AppUtils.showCustomToast(state.error, Colors.red);
                         }
-
                       },
                       bloc: _connectsBloc,
                       builder: (context, state) {

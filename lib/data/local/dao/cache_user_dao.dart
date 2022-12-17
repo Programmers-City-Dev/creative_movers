@@ -53,5 +53,4 @@ class CacheCachedUserDao extends BaseDao<CachedUser> {
     debugPrint("cachedCachedUser is $cachedCachedUser");
     return cachedCachedUser!;
   }
-
 }

@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';

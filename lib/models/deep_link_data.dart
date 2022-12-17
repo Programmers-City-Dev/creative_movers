@@ -6,7 +6,8 @@ class DeepLinkData {
   int? id;
   Map<String, dynamic>? data;
 
-  DeepLinkData({this.type, this.path, this.id, this.title, this.message, this.data});
+  DeepLinkData(
+      {this.type, this.path, this.id, this.title, this.message, this.data});
 
   DeepLinkData copyWith({
     String? title,
@@ -42,8 +43,7 @@ class DeepLinkData {
           type == other.type &&
           path == other.path &&
           id == other.id &&
-          data == other.data
-          );
+          data == other.data);
 
   @override
   int get hashCode =>

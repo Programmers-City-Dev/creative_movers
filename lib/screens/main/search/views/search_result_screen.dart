@@ -4,15 +4,16 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultScreen extends StatefulWidget {
-  const SearchResultScreen({Key? key, required this.searchResponse}) : super(key: key);
+  const SearchResultScreen({Key? key, required this.searchResponse})
+      : super(key: key);
   final SearchResponse searchResponse;
-
 
   @override
   _SearchResultScreenState createState() => _SearchResultScreenState();
 }
 
-class _SearchResultScreenState extends State<SearchResultScreen> with AutomaticKeepAliveClientMixin{
+class _SearchResultScreenState extends State<SearchResultScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -29,16 +30,21 @@ class _SearchResultScreenState extends State<SearchResultScreen> with AutomaticK
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Column(
             children: [
-              widget.searchResponse.users.isNotEmpty?
-              Expanded(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: widget.searchResponse.users.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) =>  SearchResultItem(result: widget.searchResponse.users[index],),
-                ),
-              ):
-                  const Expanded(child: Center(child: Text('No results for your search..'),))
+              widget.searchResponse.users.isNotEmpty
+                  ? Expanded(
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: widget.searchResponse.users.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) => SearchResultItem(
+                          result: widget.searchResponse.users[index],
+                        ),
+                      ),
+                    )
+                  : const Expanded(
+                      child: Center(
+                      child: Text('No results for your search..'),
+                    ))
             ],
           ),
         ));

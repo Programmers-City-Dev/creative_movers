@@ -6,7 +6,12 @@ class DotIndicator extends StatelessWidget {
   final bool isActive;
   final Color inActiveColor;
 
-  const DotIndicator({Key? key, this.size = 8,  this.active_color=Colors.blue, required this.isActive, this.inActiveColor = Colors.grey})
+  const DotIndicator(
+      {Key? key,
+      this.size = 8,
+      this.active_color = Colors.blue,
+      required this.isActive,
+      this.inActiveColor = Colors.grey})
       : super(key: key);
 
   @override

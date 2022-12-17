@@ -110,8 +110,7 @@ class _PostCardState extends State<PostCard> {
   }
 
   void _joinLiveStream() {
-    Navigator.of(mainNavKey.currentState!.context)
-        .push(MaterialPageRoute(
+    Navigator.of(mainNavKey.currentState!.context).push(MaterialPageRoute(
       builder: (context) => const LiveStreamHomeScreen(
         isBroadcaster: true,
       ),

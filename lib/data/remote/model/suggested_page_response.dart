@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 
-SuggestedPageResponse suggestedPageResponseFromJson(String str) => SuggestedPageResponse.fromJson(json.decode(str));
+SuggestedPageResponse suggestedPageResponseFromJson(String str) =>
+    SuggestedPageResponse.fromJson(json.decode(str));
 
-String suggestedPageResponseToJson(SuggestedPageResponse data) => json.encode(data.toJson());
+String suggestedPageResponseToJson(SuggestedPageResponse data) =>
+    json.encode(data.toJson());
 
 class SuggestedPageResponse {
   SuggestedPageResponse({
@@ -19,15 +21,17 @@ class SuggestedPageResponse {
   String status;
   List<BusinessPage> sugestedpages;
 
-  factory SuggestedPageResponse.fromJson(Map<String, dynamic> json) => SuggestedPageResponse(
-    status: json["status"],
-    sugestedpages: List<BusinessPage>.from(json["pages"].map((x) => BusinessPage.fromJson(x))),
-  );
+  factory SuggestedPageResponse.fromJson(Map<String, dynamic> json) =>
+      SuggestedPageResponse(
+        status: json["status"],
+        sugestedpages: List<BusinessPage>.from(
+            json["pages"].map((x) => BusinessPage.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "pages": List<dynamic>.from(sugestedpages.map((x) => x.toJson())),
-  };
+        "status": status,
+        "pages": List<dynamic>.from(sugestedpages.map((x) => x.toJson())),
+      };
 }
 
 class Sugestedpage {
@@ -60,34 +64,34 @@ class Sugestedpage {
   DateTime? updatedAt;
 
   factory Sugestedpage.fromJson(Map<String, dynamic> json) => Sugestedpage(
-    id: json["id"],
-    userId: json["user_id"],
-    name: json["name"],
-    stage: stageValues.map[json["stage"]],
-    category: List<String>.from(json["category"].map((x) => x)),
-    estCapital: json["est_capital"],
-    description: json["description"],
-    website: json["website"],
-    contact: json["contact"],
-    photoPath: json["photo_path"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        userId: json["user_id"],
+        name: json["name"],
+        stage: stageValues.map[json["stage"]],
+        category: List<String>.from(json["category"].map((x) => x)),
+        estCapital: json["est_capital"],
+        description: json["description"],
+        website: json["website"],
+        contact: json["contact"],
+        photoPath: json["photo_path"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": userId,
-    "name": name,
-    "stage": stageValues.reverse[stage],
-    "category": List<dynamic>.from(category.map((x) => x)),
-    "est_capital": estCapital,
-    "description": description,
-    "website": website,
-    "contact": contact,
-    "photo_path": photoPath,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "id": id,
+        "user_id": userId,
+        "name": name,
+        "stage": stageValues.reverse[stage],
+        "category": List<dynamic>.from(category.map((x) => x)),
+        "est_capital": estCapital,
+        "description": description,
+        "website": website,
+        "contact": contact,
+        "photo_path": photoPath,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }
 
 enum Stage { EXPANSION, PRE_SEED, START_UP, SEED }

@@ -31,10 +31,7 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: Theme
-            .of(context)
-            .iconTheme
-            .copyWith(color: Colors.black),
+        iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.black),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
@@ -96,7 +93,7 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                   title: const Text(
                                     'Subscription Date',
                                     style:
-                                    TextStyle(fontWeight: FontWeight.bold),
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: const Text(
                                       'This subscription was updated on this date.'),
@@ -115,15 +112,15 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                         color: subscription.status == "active"
                                             ? AppColors.lightBlue
                                             : subscription.status == "trial"
-                                            ? Colors.orange
-                                            : AppColors.red,
+                                                ? Colors.orange
+                                                : AppColors.red,
                                         borderRadius: BorderRadius.circular(5)),
                                     child: Text(
                                       subscription.status == "active"
                                           ? 'Active'
                                           : subscription.status == "trial"
-                                          ? "Free Trial"
-                                          : 'Inactive',
+                                              ? "Free Trial"
+                                              : 'Inactive',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -143,14 +140,16 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                       'Your subscription will expire on this date.'),
                                 ),
                                 ListTile(
-                                  title: const Text('Subscription Type',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold),),
+                                  title: const Text(
+                                    'Subscription Type',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                   trailing: Text(
                                       subscription.status.toLowerCase() ==
-                                          'trial'
-                                          ? 'Not Active ':subscription
-                                          .subType),
+                                              'trial'
+                                          ? 'Not Active '
+                                          : subscription.subType),
                                   // subtitle: const Text(''),
                                 )
                               ],
@@ -162,11 +161,11 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                           ),
                           CustomButton(
                             child: Text(subscription.status.toLowerCase() ==
-                                'active'
+                                    'active'
                                 ? 'Topup Subscription'
                                 : subscription.status.toLowerCase() == 'expired'
-                                ? "Renew Subscription"
-                                : 'Subscribe Now'),
+                                    ? "Renew Subscription"
+                                    : 'Subscribe Now'),
                             onTap: () {
                               Navigator.of(context).pushNamed('/payment');
                             },

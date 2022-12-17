@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/screens/main/notification/widgets/notification_item.dart';
@@ -39,36 +38,37 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   borderRadius: BorderRadius.circular(10)),
               itemBuilder: (context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
-                    padding: const EdgeInsets.all(10),
-                    value: 'Mark all as read',
-                    child: Row(
-                      children: const [
-                        Icon(Icons.check),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text('Mark all as read'),
-                      ],
-                    ),
-                  ),
-              PopupMenuItem<String>(
                   padding: const EdgeInsets.all(10),
-                  value: 'Filter',
-                  child: SizedBox(
-                    width: 100,
-                    child: Row(
-                      children: const [
-                        Icon(Icons.sort),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text('Filter'),
-                      ],
-                    ),
-                  )),
-            ],
-          ),
-        )],
+                  value: 'Mark all as read',
+                  child: Row(
+                    children: const [
+                      Icon(Icons.check),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text('Mark all as read'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                    padding: const EdgeInsets.all(10),
+                    value: 'Filter',
+                    child: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: const [
+                          Icon(Icons.sort),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text('Filter'),
+                        ],
+                      ),
+                    )),
+              ],
+            ),
+          )
+        ],
         title: const Text(
           'Notifications',
           style: TextStyle(color: AppColors.textColor),

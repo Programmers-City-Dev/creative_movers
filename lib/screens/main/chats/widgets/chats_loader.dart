@@ -51,7 +51,9 @@ class _ChatsLoaderState extends State<ChatsLoader> {
                             color: Colors.grey,
                           ),
                         ),
-                        const SizedBox(height: 5,),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         Container(
                           height: 10,
                           width: 100,
@@ -74,7 +76,6 @@ class _ChatsLoaderState extends State<ChatsLoader> {
                 ),
               ],
             ),
-
           ],
         ));
   }

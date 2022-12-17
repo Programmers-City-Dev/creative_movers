@@ -195,8 +195,7 @@ class User {
             ? null
             : DateTime.parse(json["updated_at"]),
         apiToken: json["api_token"],
-        coverPhotoPath:
-            json["cover_photo_path"],
+        coverPhotoPath: json["cover_photo_path"],
         countryId: json["country_id"],
         followers: json["followers"] == null
             ? null

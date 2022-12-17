@@ -11,17 +11,21 @@ class AppStyles {
     String? hintText,
   }) =>
       InputDecoration(
-          contentPadding: const EdgeInsets.all(17),
-          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: AppColors.textColor)),
-          label: Text(label,style: const TextStyle(color: AppColors.textColor),),
+        contentPadding: const EdgeInsets.all(17),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.textColor)),
+        label: Text(
+          label,
+          style: const TextStyle(color: AppColors.textColor),
+        ),
 
+        // hintText: hint,
 
-          // hintText: hint,
-
-          focusColor: AppColors.primaryColor,
-          border: const OutlineInputBorder(borderSide: BorderSide()),
-          alignLabelWithHint: true,
-          prefixIcon: prefixIcon,
-          hintText: hinText,
-          suffixIcon: suffixIcon,);
+        focusColor: AppColors.primaryColor,
+        border: const OutlineInputBorder(borderSide: BorderSide()),
+        alignLabelWithHint: true,
+        prefixIcon: prefixIcon,
+        hintText: hinText,
+        suffixIcon: suffixIcon,
+      );
 }

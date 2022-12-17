@@ -19,14 +19,15 @@ class CreatePageEvent extends BuisnessEvent {
   final String? est_capital;
   final String? description;
 
-  const CreatePageEvent({this.website,
-    this.contact,
-    this.name,
-    this.stage,
-    this.category,
-    this.est_capital,
-    this.description,
-    this.photo});
+  const CreatePageEvent(
+      {this.website,
+      this.contact,
+      this.name,
+      this.stage,
+      this.category,
+      this.est_capital,
+      this.description,
+      this.photo});
 
   final String? photo;
 
@@ -34,8 +35,7 @@ class CreatePageEvent extends BuisnessEvent {
   // final String? min_range;
   @override
   // TODO: implement props
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         photo,
         stage,
         category,
@@ -57,14 +57,16 @@ class EditPageEvent extends BuisnessEvent {
   final String? est_capital;
   final String? description;
 
-  const EditPageEvent({this.page_id, this.website,
-    this.contact,
-    this.name,
-    this.stage,
-    this.category,
-    this.est_capital,
-    this.description,
-    this.photo});
+  const EditPageEvent(
+      {this.page_id,
+      this.website,
+      this.contact,
+      this.name,
+      this.stage,
+      this.category,
+      this.est_capital,
+      this.description,
+      this.photo});
 
   final String? photo;
 
@@ -72,8 +74,7 @@ class EditPageEvent extends BuisnessEvent {
   // final String? min_range;
   @override
   // TODO: implement props
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         photo,
         stage,
         category,

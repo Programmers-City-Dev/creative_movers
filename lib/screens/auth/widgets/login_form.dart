@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:ui';
 
-
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
@@ -124,7 +123,6 @@ class _LoginFormState extends State<LoginForm> {
               child: GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
-
                       backgroundColor: Colors.transparent,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
@@ -133,18 +131,19 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       isScrollControlled: true,
-
                       context: context,
                       builder: (c) => BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 45, sigmaY: 45),
-                        child: ForgotPasswordModal(
+                            filter: ImageFilter.blur(sigmaX: 45, sigmaY: 45),
+                            child: ForgotPasswordModal(
                               onComplete: () {
                                 log('complete');
                                 Navigator.pop(context);
-                                AppUtils.showSuccessSuccessDialog(context,message:'You successfully changed your password proceed to login ');
+                                AppUtils.showSuccessSuccessDialog(context,
+                                    message:
+                                        'You successfully changed your password proceed to login ');
                               },
                             ),
-                      ));
+                          ));
                 },
                 child: const Text(
                   'Forgot Password',
@@ -230,16 +229,14 @@ class _LoginFormState extends State<LoginForm> {
     injector
         .get<CacheCubit>()
         .updateCachedUserData(CachedUser.fromMap(response.user.toMap()));
-        StorageHelper.setString(
-        StorageKeys.email, response.user.email.toString());
+    StorageHelper.setString(StorageKeys.email, response.user.email.toString());
     StorageHelper.setString(
         StorageKeys.username, response.user.username.toString());
     StorageHelper.setString(
         StorageKeys.token, response.user.apiToken.toString());
     StorageHelper.setString(
         StorageKeys.firstname, response.user.firstname.toString());
-    StorageHelper.setString(
-        StorageKeys.user_id, response.user.id.toString());
+    StorageHelper.setString(StorageKeys.user_id, response.user.id.toString());
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }

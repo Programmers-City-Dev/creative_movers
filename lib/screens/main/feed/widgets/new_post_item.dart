@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
@@ -25,7 +24,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_stack/image_stack.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
 
 class NewPostItem extends StatefulWidget {
   const NewPostItem({
@@ -538,7 +536,9 @@ class _NewPostItemState extends State<NewPostItem> {
                     )
                   ],
                 ),
-                const SizedBox(width: 20,),// Temporary sized box
+                const SizedBox(
+                  width: 20,
+                ), // Temporary sized box
                 InkWell(
                   onTap: () {
                     if (widget.onCommentBoxClicked != null) {

@@ -36,8 +36,7 @@ class _FaqScreenState extends State<FaqScreen> {
             );
           } else if (state is GetFaqsSuccessState) {
             return Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               child: Column(children: [
                 ListView.builder(
                   primary: false,

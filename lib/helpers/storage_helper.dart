@@ -25,7 +25,6 @@ class StorageHelper {
         return defaultValue;
       }
       return value;
-
     } catch (_) {
       log('ON ERROR $_');
       return defaultValue;
@@ -56,8 +55,6 @@ class StorageHelper {
 
   static void clear() async {
     final SharedPreferences preferences = await _getInstance();
-      preferences.clear();
-
+    preferences.clear();
   }
-
 }

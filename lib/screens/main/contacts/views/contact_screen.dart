@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/contacts/views/movers_tab.dart';
@@ -143,8 +142,6 @@ class _ContactScreenState extends State<ContactScreen>
     });
   }
 }
-
-
 
 //
 // BlocBuilder<ConnectsBloc, ConnectsState>(

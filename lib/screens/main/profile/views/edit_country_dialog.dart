@@ -8,11 +8,13 @@ import '../../../../di/injector.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
-class EditCountryDialog extends StatefulWidget {
-  final Function(User user ) onSuccess;
-  final String? initialCountry;
-  const EditCountryDialog({Key? key, required this.onSuccess, required this.initialCountry}) : super(key: key);
 
+class EditCountryDialog extends StatefulWidget {
+  final Function(User user) onSuccess;
+  final String? initialCountry;
+  const EditCountryDialog(
+      {Key? key, required this.onSuccess, required this.initialCountry})
+      : super(key: key);
 
   @override
   _EditCountryDialogState createState() => _EditCountryDialogState();
@@ -29,22 +31,21 @@ class _EditCountryDialogState extends State<EditCountryDialog> {
     super.initState();
     _countryController.text = widget.initialCountry ?? '';
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: _profileBloc,
       listener: (context, state) {
         if (state is ProfileUpdateLoading) {
-          AppUtils.showAnimatedProgressDialog(
-              context,
+          AppUtils.showAnimatedProgressDialog(context,
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
           widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
-          AppUtils.showCustomToast(
-              "Country  has been updated successfully");
+          AppUtils.showCustomToast("Country  has been updated successfully");
           // _updateProfile(
           //     state.photo, state.isProfilePhoto);
         }
@@ -54,7 +55,6 @@ class _EditCountryDialogState extends State<EditCountryDialog> {
         }
       },
       child: Container(
-
         child: Container(
           padding: const EdgeInsets.all(30),
           decoration: const BoxDecoration(
@@ -65,13 +65,12 @@ class _EditCountryDialogState extends State<EditCountryDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Center(
                   child: Container(
-                    color: Colors.grey,
-                    width: 100,
-                    height: 2.5,
-                  )),
+                color: Colors.grey,
+                width: 100,
+                height: 2.5,
+              )),
               const SizedBox(
                 height: 15,
               ),
@@ -82,23 +81,16 @@ class _EditCountryDialogState extends State<EditCountryDialog> {
               const SizedBox(
                 height: 10,
               ),
-
               Padding(
                 padding: EdgeInsets.only(
-
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Form(
                   key: _fieldKey,
                   child: TextFormField(
-
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Enter your country'),
                       // EmailValidator(errorText: 'Enter a valid email'),
                     ]),
-
                     controller: _countryController,
                     cursorColor: AppColors.textColor,
                     decoration: const InputDecoration(
@@ -119,7 +111,8 @@ class _EditCountryDialogState extends State<EditCountryDialog> {
               CustomButton(
                 onTap: () {
                   if (_fieldKey.currentState!.validate()) {
-                    _profileBloc.add(UpdateProfileEvent(country: _countryController.text));
+                    _profileBloc.add(
+                        UpdateProfileEvent(country: _countryController.text));
                     // _authBloc.add(ForgotPasswordEvent(email: _phoneNumberController.text));
 
                   }

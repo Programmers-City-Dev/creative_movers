@@ -21,11 +21,12 @@ class _CreatePageScreenState extends State<CreatePageScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 18.0,left:1.0,top: 18.0,bottom: 8 ),
+              padding: const EdgeInsets.only(
+                  right: 18.0, left: 1.0, top: 18.0, bottom: 8),
               child: Row(
-                children:  [
+                children: [
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
                     child: const CircleAvatar(

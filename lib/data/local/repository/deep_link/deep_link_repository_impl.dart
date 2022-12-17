@@ -6,12 +6,11 @@ import 'package:creative_movers/models/deep_link_data.dart';
 
 import 'deep_link_repository.dart';
 
-
 class DeepLinkRepoImpl extends DeepLinkRepo {
   final String key = StorageKeys.pushNotification;
 
   @override
-  Future<void> deleteRecentNotification() async{
+  Future<void> deleteRecentNotification() async {
     StorageHelper.remove(key);
   }
 
@@ -26,7 +25,7 @@ class DeepLinkRepoImpl extends DeepLinkRepo {
   }
 
   @override
-  Future<void> saveRecentNotification(DeepLinkData notification) async{
+  Future<void> saveRecentNotification(DeepLinkData notification) async {
     StorageHelper.setString(key, json.encode(notification.toMap()));
   }
 }

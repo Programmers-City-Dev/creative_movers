@@ -43,7 +43,8 @@ class _EditPostFormState extends State<EditPostForm> {
       bloc: _feedBloc,
       listener: (context, state) {
         if (state is EditFeedLoadingState) {
-          AppUtils.showAnimatedProgressDialog(context, title: "Updating, please wait...");
+          AppUtils.showAnimatedProgressDialog(context,
+              title: "Updating, please wait...");
         }
         if (state is EditFeedSuccessState) {
           widget.onSucces();
@@ -122,27 +123,29 @@ class _EditPostFormState extends State<EditPostForm> {
                                     itemCount: mediaItems.length,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) => mediaItems[index]
-                                        .mediaType ==
-                                        MediaType.image
-                                        ? ImagePickerItem(
-                                      image: mediaItems[index].path,
-                                      onClose: () {
-                                        setState(() {
-                                          mediaItems.remove(mediaItems[index]);
-                                          mediaFiles.removeAt(index);
-                                        });
-                                      },
-                                    )
-                                        : VideoPickerItem(
-                                      path: mediaItems[index].path!,
-                                      onClose: () {
-                                        setState(() {
-                                          mediaFiles.removeAt(index);
-                                          mediaItems.remove(mediaItems[index]);
-                                        });
-                                      },
-                                    ))),
+                                    itemBuilder: (context, index) =>
+                                        mediaItems[index].mediaType ==
+                                                MediaType.image
+                                            ? ImagePickerItem(
+                                                image: mediaItems[index].path,
+                                                onClose: () {
+                                                  setState(() {
+                                                    mediaItems.remove(
+                                                        mediaItems[index]);
+                                                    mediaFiles.removeAt(index);
+                                                  });
+                                                },
+                                              )
+                                            : VideoPickerItem(
+                                                path: mediaItems[index].path!,
+                                                onClose: () {
+                                                  setState(() {
+                                                    mediaFiles.removeAt(index);
+                                                    mediaItems.remove(
+                                                        mediaItems[index]);
+                                                  });
+                                                },
+                                              ))),
                             const Text(
                               'Tap to add image',
                               style: TextStyle(color: Colors.blueGrey),

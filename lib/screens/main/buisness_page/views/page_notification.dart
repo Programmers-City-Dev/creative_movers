@@ -15,10 +15,10 @@ class _PageNotificationsState extends State<PageNotifications> {
         children: [
           Expanded(
               child: ListView.builder(
-                itemCount: 4,
-                // itemBuilder: (context, index) => NotificationItem(),
-                itemBuilder: (context, index) => Container(),
-              ))
+            itemCount: 4,
+            // itemBuilder: (context, index) => NotificationItem(),
+            itemBuilder: (context, index) => Container(),
+          ))
         ],
       ),
     );

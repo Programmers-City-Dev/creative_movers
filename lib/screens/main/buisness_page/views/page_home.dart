@@ -123,7 +123,6 @@ class _PageHomeState extends State<PageHome> {
                             const SizedBox(
                               height: 5,
                             ),
-                           
                           ],
                         ),
                       ))
@@ -138,8 +137,9 @@ class _PageHomeState extends State<PageHome> {
                   Expanded(
                       child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children:  [
-                      Text(widget.page.followers?.length.toString()??'0',
+                    children: [
+                      Text(
+                        widget.page.followers?.length.toString() ?? '0',
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
@@ -160,19 +160,22 @@ class _PageHomeState extends State<PageHome> {
                   ),
                   Expanded(
                       child: GestureDetector(
-                        onTap: (){
-
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AboutPageScreen(page: widget.page),));
-                        },
-                        child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AboutPageScreen(page: widget.page),
+                          ));
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                         Center(
                           child: Column(
                             children: const [
-                            Icon(Icons.info),
-
+                              Icon(Icons.info),
                               Text(
                                 'About Page',
                                 style: TextStyle(
@@ -186,9 +189,9 @@ class _PageHomeState extends State<PageHome> {
                             ],
                           ),
                         ),
-                    ],
-                  ),
-                      ))
+                      ],
+                    ),
+                  ))
                 ],
               ),
             ),

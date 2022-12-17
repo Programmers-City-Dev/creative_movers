@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'conversation.dart';
 
-ChatMessageResponse chatMessageResponseFromMap(String str) => ChatMessageResponse.fromMap(json.decode(str));
+ChatMessageResponse chatMessageResponseFromMap(String str) =>
+    ChatMessageResponse.fromMap(json.decode(str));
 
-String chatMessageResponseToMap(ChatMessageResponse data) => json.encode(data.toMap());
+String chatMessageResponseToMap(ChatMessageResponse data) =>
+    json.encode(data.toMap());
 
 class ChatMessageResponse {
   ChatMessageResponse({
@@ -28,15 +30,16 @@ class ChatMessageResponse {
         chatData: chatData ?? this.chatData,
       );
 
-  factory ChatMessageResponse.fromMap(Map<String, dynamic> json) => ChatMessageResponse(
-    status: json["status"],
-    chatData: ChatData.fromMap(json["chat_data"]),
-  );
+  factory ChatMessageResponse.fromMap(Map<String, dynamic> json) =>
+      ChatMessageResponse(
+        status: json["status"],
+        chatData: ChatData.fromMap(json["chat_data"]),
+      );
 
   Map<String, dynamic> toMap() => {
-    "status": status,
-    "chat_data": chatData.toMap(),
-  };
+        "status": status,
+        "chat_data": chatData.toMap(),
+      };
 }
 
 class ChatData {
@@ -58,12 +61,12 @@ class ChatData {
       );
 
   factory ChatData.fromMap(Map<String, dynamic> json) => ChatData(
-    conversation: Conversation.fromMap(json["conversation"]),
-    message: Message.fromMap(json["message"]),
-  );
+        conversation: Conversation.fromMap(json["conversation"]),
+        message: Message.fromMap(json["message"]),
+      );
 
   Map<String, dynamic> toMap() => {
-    "conversation": conversation.toMap(),
-    "message": message.toMap(),
-  };
+        "conversation": conversation.toMap(),
+        "message": message.toMap(),
+      };
 }

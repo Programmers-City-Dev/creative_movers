@@ -19,7 +19,7 @@ class MessageItem extends StatefulWidget {
       this.shouldLoad = false,
       required this.onMessageSent,
       required this.onDeleteMessage,
-        required this.otherUserId})
+      required this.otherUserId})
       : super(key: key);
   final Message chatMessage;
   final bool? shouldLoad;
@@ -44,12 +44,12 @@ class _MessageItemState extends State<MessageItem> {
     _shouldLoad = widget.shouldLoad;
     if (_shouldLoad != null) {
       if (_shouldLoad!) {
-        if(widget.chatMessage.conversationId == "-1"){
+        if (widget.chatMessage.conversationId == "-1") {
           _chatBloc.add(SendChatMessage(
               message: ChatMessageRequest(
                   userId: widget.otherUserId,
                   message: widget.chatMessage.body!)));
-        }else {
+        } else {
           _chatBloc.add(SendChatMessage(
               message: ChatMessageRequest(
                   userId: widget.otherUserId,
@@ -197,8 +197,7 @@ class _MessageItemState extends State<MessageItem> {
             if (state is ChatError) {
               return GestureDetector(
                 onTap: () {
-                  if (_shouldLoad!) {
-                  }
+                  if (_shouldLoad!) {}
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 16.0),

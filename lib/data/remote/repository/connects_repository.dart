@@ -16,9 +16,10 @@ class ConnectsRepository {
   Future<State> getConnects(String? userId) async {
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(
-       userId == null ?  Endpoints.fetchConnectionsEndpoint :Endpoints.fetchUserConnectionsEndpoint,
-        body: {'user_id':userId}
-      ),
+          userId == null
+              ? Endpoints.fetchConnectionsEndpoint
+              : Endpoints.fetchUserConnectionsEndpoint,
+          body: {'user_id': userId}),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(
             data != null ? FetchConnectionResponse.fromJson(data) : null);
@@ -108,7 +109,7 @@ class ConnectsRepository {
 
   Future<State> searchConnects({String? user_id, String? searchValue}) async {
     return await SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.searchConnectsEndpoint,
+      () => httpHelper.post(Endpoints.searchConnectsEndpoint,
           body: {"user_id": user_id, "search_value": searchValue}),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(

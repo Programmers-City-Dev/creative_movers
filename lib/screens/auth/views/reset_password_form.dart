@@ -50,10 +50,10 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
               ),
               Center(
                   child: Container(
-                    color: Colors.grey,
-                    width: 200,
-                    height: 2.5,
-                  )),
+                color: Colors.grey,
+                width: 200,
+                height: 2.5,
+              )),
               const SizedBox(
                 height: 15,
               ),
@@ -72,7 +72,6 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 height: 15,
               ),
               TextFormField(
-
                 controller: _newPasswordController,
                 enabled: !isLoading,
                 validator: (value) {
@@ -82,20 +81,14 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   return null;
                 },
                 cursorColor: AppColors.textColor,
-
                 obscureText: obscure,
-
-                decoration:  InputDecoration(
-
-
-
-                    focusedBorder: const OutlineInputBorder(
-                    ),
+                decoration: InputDecoration(
+                    focusedBorder: const OutlineInputBorder(),
                     prefixIcon: const Icon(
                       Icons.password_outlined,
                       color: AppColors.textColor,
                     ),
-                    suffixIcon:IconButton(
+                    suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
                           obscure = !obscure;
@@ -103,14 +96,14 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                       },
                       icon: obscure
                           ? const Icon(
-                        Icons.visibility_off_outlined,
-                        color: AppColors.textColor,
-                      )
+                              Icons.visibility_off_outlined,
+                              color: AppColors.textColor,
+                            )
                           : const Icon(
-                        Icons.visibility_outlined,
-                        color: AppColors.textColor,
-                      ),
-                    ) ,
+                              Icons.visibility_outlined,
+                              color: AppColors.textColor,
+                            ),
+                    ),
                     hintText: 'New Password',
                     border: const OutlineInputBorder()),
               ),
@@ -122,8 +115,8 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 obscureText: obscure2,
                 controller: _confirmPasswordController,
                 cursorColor: AppColors.textColor,
-                decoration:  InputDecoration(
-                    suffixIcon:IconButton(
+                decoration: InputDecoration(
+                    suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
                           obscure2 = !obscure2;
@@ -131,14 +124,14 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                       },
                       icon: obscure2
                           ? const Icon(
-                        Icons.visibility_off_outlined,
-                        color: AppColors.textColor,
-                      )
+                              Icons.visibility_off_outlined,
+                              color: AppColors.textColor,
+                            )
                           : const Icon(
-                        Icons.visibility_outlined,
-                        color: AppColors.textColor,
-                      ),
-                    ) ,
+                              Icons.visibility_outlined,
+                              color: AppColors.textColor,
+                            ),
+                    ),
                     focusedBorder: const OutlineInputBorder(),
                     prefixIcon: const Icon(
                       Icons.password_outlined,
@@ -152,10 +145,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: CustomButton(
                   onTap: () {
                     _authBloc.add(ResetPasswordEvent(
@@ -165,13 +155,13 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   },
                   child: isLoading
                       ? const SizedBox(
-                    height: 30,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 2,
-                    ),
-                  )
+                          height: 30,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
                       : const Text('Continue'),
                 ),
               )

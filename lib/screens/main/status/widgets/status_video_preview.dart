@@ -5,8 +5,11 @@ import 'package:creative_movers/screens/main/status/widgets/status_video_play.da
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+
 class StatusVideoPreview extends StatefulWidget {
-  const StatusVideoPreview({Key? key, required this.path, this.onClose, this.onAdded, this.onPlay}) : super(key: key);
+  const StatusVideoPreview(
+      {Key? key, required this.path, this.onClose, this.onAdded, this.onPlay})
+      : super(key: key);
   final String path;
   final VoidCallback? onClose;
   final VoidCallback? onAdded;
@@ -25,9 +28,10 @@ class _StatusVideoPreviewState extends State<StatusVideoPreview> {
           Center(
             child: Container(
               height: 300,
-              width:  MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                image: const DecorationImage(image: AssetImage(AppIcons.imgSlide1)),
+                image: const DecorationImage(
+                    image: AssetImage(AppIcons.imgSlide1)),
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -50,17 +54,21 @@ class _StatusVideoPreviewState extends State<StatusVideoPreview> {
                     return Image.asset("assets/images/slide_i.png",
                         fit: BoxFit.cover);
                   }),
-
             ),
           ),
-
-           Center(
+          Center(
             child: IconButton(
               icon: const Icon(
                 Icons.play_arrow_rounded,
                 color: AppColors.primaryColor,
                 size: 60,
-              ), onPressed: () { showDialog(context: context, builder: (context) => StatusVideoPlay(videoUrl:widget.path)); },
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) =>
+                        StatusVideoPlay(videoUrl: widget.path));
+              },
             ),
           ),
         ]),

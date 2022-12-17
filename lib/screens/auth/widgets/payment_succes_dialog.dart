@@ -17,7 +17,7 @@ class _PaymentSuccesDialogState extends State<PaymentSuccesDialog> {
     return Center(
       child: Container(
         margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         color: AppColors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -60,28 +60,41 @@ class _PaymentSuccesDialogState extends State<PaymentSuccesDialog> {
                 style: TextStyle(color: AppColors.smokeWhite),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             const Text(
               'We have received your payment for one month subscription fee and you have moved to the front',
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textColor),
             ),
-            const SizedBox(height: 16,),
+            const SizedBox(
+              height: 16,
+            ),
             Row(
               children: [
                 Expanded(
-
                     child: OutlinedButton(
-
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.primaryColor, side:const BorderSide(color: AppColors.primaryColor) ,
-                          padding: const EdgeInsets.all(16)),
-                      onPressed: (){}, child:const Text("Finalize Your Profile",style: TextStyle(color: AppColors.primaryColor),),)),
+                  style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.primaryColor,
+                      side: const BorderSide(color: AppColors.primaryColor),
+                      padding: const EdgeInsets.all(16)),
+                  onPressed: () {},
+                  child: const Text(
+                    "Finalize Your Profile",
+                    style: TextStyle(color: AppColors.primaryColor),
+                  ),
+                )),
               ],
             ),
             // CustomButton(onTap: (){},child: Text("Finalize Your Profile"),),
-             const SizedBox(height: 10,),
-             CustomButton(onTap: (){},child: const Text("Start Exploring"),)
+            const SizedBox(
+              height: 10,
+            ),
+            CustomButton(
+              onTap: () {},
+              child: const Text("Start Exploring"),
+            )
           ],
         ),
       ),

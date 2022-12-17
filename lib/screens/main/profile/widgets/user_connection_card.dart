@@ -10,7 +10,6 @@ class UserConnectionCard extends StatefulWidget {
       : super(key: key);
   final Connection connection;
 
-
   @override
   State<UserConnectionCard> createState() => _UserConnectionCardState();
 }
@@ -20,7 +19,9 @@ class _UserConnectionCardState extends State<UserConnectionCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16),side: const BorderSide(color: AppColors.lightGrey)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.lightGrey)),
       shadowColor: AppColors.smokeWhite,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,11 +72,12 @@ class _UserConnectionCardState extends State<UserConnectionCard> {
               children: [
                 ImageStack(
                   imageBorderWidth: 1,
-                  imageList: widget.connection.connects.map((e) => e.profilePhotoPath).toList(),
+                  imageList: widget.connection.connects
+                      .map((e) => e.profilePhotoPath)
+                      .toList(),
                   totalCount: widget.connection.connects.length,
                   showTotalCount: true,
                   imageRadius: 25,
-
                   extraCountTextStyle: const TextStyle(fontSize: 10),
                 ),
               ],
@@ -86,10 +88,8 @@ class _UserConnectionCardState extends State<UserConnectionCard> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamed(viewProfilePath, arguments: {
-                "user_id": widget.connection.user_connect_id
-              });
+              Navigator.of(context).pushNamed(viewProfilePath,
+                  arguments: {"user_id": widget.connection.user_connect_id});
             },
             style: TextButton.styleFrom(
                 shape: const StadiumBorder(

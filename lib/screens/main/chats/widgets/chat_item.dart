@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/chats/views/messaging_screen.dart';
@@ -32,7 +31,7 @@ class ChatItemState extends State<ChatItem> {
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
           builder: (context) => MessagingScreen(
-            conversationId: widget.conversation.id, user: user!),
+              conversationId: widget.conversation.id, user: user!),
         ));
       },
       child: Container(

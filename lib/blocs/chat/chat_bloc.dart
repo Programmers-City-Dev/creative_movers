@@ -28,6 +28,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   StreamSubscription<List<LiveChatMessage>>? _liveChannelMessageStream;
 
   ValueNotifier<List<Message>> chatMessagesNotifier = ValueNotifier([]);
+  ValueNotifier<List<LiveChatMessage>> liveChatMessagesNotifier =
+      ValueNotifier([]);
 
   ChatBloc(this.chatRepository) : super(ChatInitial()) {
     on<GenerateAgoraToken>(_onGenerateAgoraToken);
@@ -47,6 +49,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     // Listen to chat messages
     on<ListenToChatEvent>(_mapListenToChatEventsToState);
+    on<ListenToLiveChatEvent>(_mapListenToLiveChatEventsToState);
     on<ConversationMessagesFetchedEvent>((event, emit) => emit(
         ConversationMessagesFetched(
             id: event.id,
@@ -89,13 +92,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   FutureOr<void> _mapSendLiveChannelMessageToState(
       SendLiveChannelMessage event, Emitter<ChatState> emit) async {
-    emit(ChatMessageLoading());
-    var state = await chatRepository.sendChannelMessage(
-        event.channelName, event.message);
-    if (state is SuccessState) {
-      emit(LiveChannelMessagesent(reference: state.value));
-    } else if (state is ErrorState) {
-      emit(ChatError(errorModel: state.value));
+    try {
+      emit(ChatMessageLoading());
+      var state = await chatRepository.sendChannelMessage(
+          event.channelName, event.message);
+      if (state is SuccessState) {
+        emit(LiveChannelMessagesent(reference: state.value));
+      } else if (state is ErrorState) {
+        emit(ChatError(errorModel: state.value));
+      }
+    } catch (e) {
+      log("SEND LIVE CHAT ERROR: $e");
+      ServerErrorModel errorModel = const ServerErrorModel(
+          statusCode: 404, errorMessage: "Unable to send message!");
+      emit(ChatError(errorModel: errorModel));
     }
   }
 
@@ -262,6 +272,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           errorModel: ServerErrorModel(
               statusCode: 404,
               errorMessage: "Oops! an error occurred, try again!")));
+    }
+  }
+
+  FutureOr<void> _mapListenToLiveChatEventsToState(
+      ListenToLiveChatEvent event, Emitter<ChatState> emit) async {
+    try {
+      var pusherService = await PusherService.getInstance;
+      PusherClient? pusher = await pusherService.getClient;
+      if (pusher != null) {
+        log("CHANNEL: live-${event.channelName}");
+        Channel channel = pusher.subscribe('live-${event.channelName}');
+        channel.bind("live_chat_message", (PusherEvent? pusherEvent) {
+          log("PUSHER EVENT: ${pusherEvent!.data}");
+          if (pusherEvent.data != null) {
+            var message =
+                LiveChatMessage.fromMap(jsonDecode(pusherEvent.data!));
+            liveChatMessagesNotifier.value = List<LiveChatMessage>.from(
+                liveChatMessagesNotifier.value..add(message));
+            log("EVENT MESSAGE: ${message.toMap()}");
+          }
+        });
+      }
+    } catch (e) {
+      log("Message Event Error: $e");
     }
   }
 }

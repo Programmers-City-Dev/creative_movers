@@ -13,7 +13,12 @@ class _InviteContactScreenState extends State<InviteContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Invite Contacts',style: TextStyle(fontSize: 16),),),
+      appBar: AppBar(
+        title: const Text(
+          'Invite Contacts',
+          style: TextStyle(fontSize: 16),
+        ),
+      ),
       backgroundColor: AppColors.smokeWhite,
       body: Container(
         padding: const EdgeInsets.all(18),
@@ -21,7 +26,7 @@ class _InviteContactScreenState extends State<InviteContactScreen> {
           children: [
             Expanded(
                 child: ListView.builder(
-                  itemCount: 5,
+              itemCount: 5,
               shrinkWrap: true,
               itemBuilder: (context, index) => const ContactItem(),
             ))

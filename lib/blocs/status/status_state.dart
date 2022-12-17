@@ -8,6 +8,7 @@ class StatusInitial extends StatusState {
   @override
   List<Object> get props => [];
 }
+
 class AddStatusLoadingState extends StatusState {
   @override
   List<Object> get props => [];
@@ -36,6 +37,7 @@ class StatusLoadingState extends StatusState {
   @override
   List<Object> get props => [];
 }
+
 class StatusSuccessState extends StatusState {
   ViewStatusResponse viewStatusResponse;
 
@@ -44,6 +46,7 @@ class StatusSuccessState extends StatusState {
   @override
   List<Object> get props => [viewStatusResponse];
 }
+
 class StatusFaliureState extends StatusState {
   String error;
 

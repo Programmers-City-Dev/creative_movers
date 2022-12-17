@@ -2,6 +2,7 @@ import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/auth/widgets/login_form.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -14,7 +15,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.smokeWhite,
-
       body: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -23,10 +23,24 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: const [
-              Center(child: Image(image: AssetImage(AppIcons.icSplashLogo,),height: 150,width: 150,)),
-              SizedBox(height: 16,),
-              Text('Signin',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w700),),
-              SizedBox(height: 50,),
+              Center(
+                  child: Image(
+                image: AssetImage(
+                  AppIcons.icSplashLogo,
+                ),
+                height: 150,
+                width: 150,
+              )),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                'Signin',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+              ),
+              SizedBox(
+                height: 50,
+              ),
               LoginForm()
             ],
           ),

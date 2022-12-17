@@ -19,7 +19,6 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       ConnectsRepository(HttpHelper());
 
   ConnectsBloc() : super(ConnectsInitial()) {
-
     on<GetConnectsEvent>(_mapGetConnectsEventToState);
     on<SearchEvent>(_mapSearchEventToState);
     on<SearchConnectsEvent>(_mapSearchConnectsEventToState);
@@ -79,7 +78,6 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
     }
   }
 
-
   FutureOr<void> _mapSearchConnectsEventToState(
       SearchConnectsEvent event, Emitter<ConnectsState> emit) async {
     emit(ConnectsLoadingState());
@@ -87,7 +85,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
       var state = await connectsRepository.searchConnects(
           searchValue: event.searchValue, user_id: event.user_id);
       if (state is SuccessState) {
-        emit(ConnectsSuccesState(connectsResponse:state.value));
+        emit(ConnectsSuccesState(connectsResponse: state.value));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
         emit(ConnectsFailureState(error: errorModel.errorMessage));

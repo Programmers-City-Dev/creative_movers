@@ -41,6 +41,7 @@ class _StatusVideoPlayState extends State<StatusVideoPlay> {
     );
     return _chewieController!;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

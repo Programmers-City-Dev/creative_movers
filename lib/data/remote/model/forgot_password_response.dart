@@ -37,7 +37,7 @@ class ForgotPasswordResponse {
 
 class Token {
   Token({
-     this.email,
+    this.email,
     required this.token,
     required this.updatedAt,
     required this.createdAt,
@@ -51,7 +51,7 @@ class Token {
   int id;
 
   factory Token.fromJson(Map<String, dynamic> json) => Token(
-        email:  json["email"],
+        email: json["email"],
         token: json["token"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),

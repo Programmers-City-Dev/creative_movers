@@ -28,14 +28,15 @@ class _SplashScreenState extends State<SplashScreen> {
       decoration: const BoxDecoration(
           // color: AppColors.OnboardingColor,
           gradient: RadialGradient(
-            colors: [AppColors.gradient,AppColors.gradient2,],
-            radius: 0.8,
-
-          )),
+        colors: [
+          AppColors.gradient,
+          AppColors.gradient2,
+        ],
+        radius: 0.8,
+      )),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-
           children: [
             SvgPicture.asset(
               AppIcons.svgLogo,

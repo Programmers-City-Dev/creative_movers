@@ -1,8 +1,5 @@
-
-class CachedUserRepository{
-
+class CachedUserRepository {
   // Future<User> getCachedUser() async{
-
 
   // }
 

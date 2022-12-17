@@ -7,7 +7,6 @@ import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class SuggestedUsersTab extends StatefulWidget {
   const SuggestedUsersTab({Key? key}) : super(key: key);
 
@@ -15,7 +14,8 @@ class SuggestedUsersTab extends StatefulWidget {
   State<SuggestedUsersTab> createState() => _SuggestedUsersTabState();
 }
 
-class _SuggestedUsersTabState extends State<SuggestedUsersTab> with AutomaticKeepAliveClientMixin{
+class _SuggestedUsersTabState extends State<SuggestedUsersTab>
+    with AutomaticKeepAliveClientMixin {
   final ConnectsBloc _connectsBloc = ConnectsBloc();
 
   @override
@@ -83,11 +83,9 @@ class _SuggestedUsersTabState extends State<SuggestedUsersTab> with AutomaticKee
                         )))
                       : Expanded(
                           child: ListView.builder(
-
                               shrinkWrap: true,
                               itemCount: connectionList.length,
-                              itemBuilder: (context, index) =>
-                                  SearchResultItem(
+                              itemBuilder: (context, index) => SearchResultItem(
                                     result: connectionList[index],
                                   )))
                 ],

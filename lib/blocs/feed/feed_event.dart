@@ -60,11 +60,14 @@ class EditFeedEvent extends FeedEvent {
   String content;
   List<String> media;
 
-
-  EditFeedEvent({required this.feed_id, this.pageId, required this.content, required this.media});
+  EditFeedEvent(
+      {required this.feed_id,
+      this.pageId,
+      required this.content,
+      required this.media});
 
   @override
-  List<Object?> get props => [feed_id,pageId,content,media];
+  List<Object?> get props => [feed_id, pageId, content, media];
 }
 
 class DeleteFeedEvent extends FeedEvent {

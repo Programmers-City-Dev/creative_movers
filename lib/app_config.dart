@@ -5,7 +5,6 @@ import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/services/puhser_service.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:creative_movers/services/remote_configs_service.dart';
-import 'package:creative_movers/theme/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:creative_movers/di/injector.dart' as di;
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -13,14 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
-  List<CameraDescription> cameras=[];
+List<CameraDescription> cameras = [];
+
 enum Flavor { dev, staging, prod }
 
 class AppConfig {
   final String appName;
   final Flavor flavor;
-
-
 
   AppConfig._({required this.appName, required this.flavor});
 
@@ -33,9 +31,9 @@ class AppConfig {
   Future<void> _init() async {
     if (flavor == Flavor.dev) {
       Constants.setEnvironmentVariables(Flavor.dev);
-    } else if(flavor == Flavor.staging) {
+    } else if (flavor == Flavor.staging) {
       Constants.setEnvironmentVariables(Flavor.staging);
-    }else{
+    } else {
       Constants.setEnvironmentVariables(Flavor.prod);
     }
     _setup();
@@ -56,7 +54,7 @@ class AppConfig {
     Stripe.publishableKey = stripeKey;
     var firstScreen = await AppUtils.getFirstScreen();
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: AppColors.primaryColor));
+        SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));
     runApp(CreativeMoversApp(
       defaultScreen: firstScreen,
       appConfig: this,

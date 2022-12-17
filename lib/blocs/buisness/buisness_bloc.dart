@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/data/remote/model/create_page_response.dart';
@@ -16,7 +15,8 @@ part 'buisness_event.dart';
 part 'buisness_state.dart';
 
 class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
-  final BuisnessRepository buisnessRepository = BuisnessRepository(HttpHelper());
+  final BuisnessRepository buisnessRepository =
+      BuisnessRepository(HttpHelper());
 
   BuisnessBloc() : super(BuisnessInitial()) {
     on<BuisnessEvent>((event, emit) {});
@@ -28,7 +28,6 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
     on<FollowPageEvent>(_mapFollowPageEvent);
     on<LikePageEvent>(_mapLikePageEvent);
     on<GetPageEvent>(_mapGetPageEvent);
-
   }
 
   void _mapBuisnessProfileEvent(
@@ -69,7 +68,9 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
     try {
       var state = await buisnessRepository.getPage(event.page_id);
       if (state is SuccessState) {
-        emit(GetPageSuccesState(getPageResponse: state.value,));
+        emit(GetPageSuccesState(
+          getPageResponse: state.value,
+        ));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
         emit(GetPageFailureState(error: errorModel.errorMessage));
@@ -81,7 +82,7 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
 
   void _mapCreatePageEvent(
       CreatePageEvent event, Emitter<BuisnessState> emitter) async {
-    emit( CreatePageLoadingState());
+    emit(CreatePageLoadingState());
     try {
       var state = await buisnessRepository.create_page(
         stage: event.stage,
@@ -94,37 +95,37 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
         website: event.website,
       );
       if (state is SuccessState) {
-        emit( CreatePageSuccesState(createPageResponse: state.value));
+        emit(CreatePageSuccesState(createPageResponse: state.value));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
-        emit( CreatePageFailureState(error: errorModel.errorMessage));
+        emit(CreatePageFailureState(error: errorModel.errorMessage));
       }
     } catch (e) {
-      emit( CreatePageFailureState(error: 'Oops Something went wrong'));
-
+      emit(CreatePageFailureState(error: 'Oops Something went wrong'));
     }
   }
 
   void _mapEditPageEvent(
       EditPageEvent event, Emitter<BuisnessState> emitter) async {
-    emit( EditPageLoadingState());
+    emit(EditPageLoadingState());
     try {
       var state = await buisnessRepository.edit_page(
-        stage: event.stage,
-        category: event.category,
-        description: event.description,
-        name: event.name,
-        photo: event.photo,
-        est_capital: event.est_capital,
-        contact: event.contact,
-        website: event.website,
-        page_id: event.page_id
-      );
+          stage: event.stage,
+          category: event.category,
+          description: event.description,
+          name: event.name,
+          photo: event.photo,
+          est_capital: event.est_capital,
+          contact: event.contact,
+          website: event.website,
+          page_id: event.page_id);
       if (state is SuccessState) {
-        emit( EditPageSuccesState(buisnessProfile: state.value,));
+        emit(EditPageSuccesState(
+          buisnessProfile: state.value,
+        ));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
-        emit( EditPageFailureState(error: errorModel.errorMessage));
+        emit(EditPageFailureState(error: errorModel.errorMessage));
       }
     } catch (e) {
       emit(EditPageFailureState(error: 'Oops Something went wrong'));
@@ -147,6 +148,7 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       emit(PageFeedsFailureState(error: 'Oops Something went wrong'));
     }
   }
+
   void _mapFollowPageEvent(
       FollowPageEvent event, Emitter<BuisnessState> emitter) async {
     emit(FollowPageLoadingState());

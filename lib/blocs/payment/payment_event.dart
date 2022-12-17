@@ -13,7 +13,8 @@ class CreatePaymentIntentEvent extends PaymentEvent {
   final String duration;
   final String paymentFor;
 
-  const CreatePaymentIntentEvent(this.amount, this.currency, this.duration, this.paymentFor);
+  const CreatePaymentIntentEvent(
+      this.amount, this.currency, this.duration, this.paymentFor);
 
   @override
   List<Object> get props => [amount, currency];
@@ -27,8 +28,8 @@ class MakePaymentEvent extends PaymentEvent {
   @override
   List<Object> get props => [secrete];
 }
-class GetSubscriptionInfoEvent extends PaymentEvent {
 
+class GetSubscriptionInfoEvent extends PaymentEvent {
   const GetSubscriptionInfoEvent();
 
   @override
@@ -36,11 +37,10 @@ class GetSubscriptionInfoEvent extends PaymentEvent {
 }
 
 class GetPaymentHistoryEvent extends PaymentEvent {
-
   const GetPaymentHistoryEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class StartFreeTrialEvent extends PaymentEvent{}
+class StartFreeTrialEvent extends PaymentEvent {}

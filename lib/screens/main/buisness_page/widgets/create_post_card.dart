@@ -16,17 +16,18 @@ class _CreatePostCardState extends State<CreatePostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       decoration: const BoxDecoration(color: AppColors.white),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-           padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16,),
+                const SizedBox(
+                  height: 16,
+                ),
                 Row(
                   children: [
                     const AddImageWidget(
@@ -98,7 +99,7 @@ class _CreatePostCardState extends State<CreatePostCard> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     _joinLiveStream();
                   },
                   child: Row(
@@ -124,9 +125,9 @@ class _CreatePostCardState extends State<CreatePostCard> {
       ),
     );
   }
+
   void _joinLiveStream() {
-    Navigator.of(mainNavKey.currentState!.context)
-        .push(MaterialPageRoute(
+    Navigator.of(mainNavKey.currentState!.context).push(MaterialPageRoute(
       builder: (context) => const LiveStreamHomeScreen(
         isBroadcaster: true,
       ),

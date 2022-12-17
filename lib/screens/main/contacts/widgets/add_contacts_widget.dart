@@ -21,23 +21,23 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
-        const SizedBox(height: 10,),
-          SizedBox(
-          height: 50,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: placeholders.length,
-            itemBuilder: (context, index) => CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage(placeholders[index]),
-            ),
+          const SizedBox(
+            height: 10,
           ),
+          SizedBox(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: placeholders.length,
+              itemBuilder: (context, index) => CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage(placeholders[index]),
+              ),
+            ),
           ),
           const SizedBox(
             height: 16,
@@ -54,7 +54,8 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
             width: MediaQuery.of(context).size.width,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12), backgroundColor: AppColors.primaryColor),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: AppColors.primaryColor),
                 onPressed: () {
                   Navigator.of(context).pushNamed(inviteContactsPath);
                 },
@@ -63,7 +64,6 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
                   style: TextStyle(fontSize: 16),
                 )),
           )
-         
         ],
       ),
     );

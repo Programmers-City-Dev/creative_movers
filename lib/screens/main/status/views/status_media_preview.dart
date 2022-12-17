@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
@@ -36,7 +35,6 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
   final List<MediaItemModel> mediaItems = [];
   final StatusBloc _statusBloc = StatusBloc();
 
-
   int pageIndex = 0;
 
   @override
@@ -44,133 +42,144 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
     return BlocListener<StatusBloc, StatusState>(
       bloc: _statusBloc,
       listener: (context, state) {
-        _listenToUploadStatusStates(context,state);
-
+        _listenToUploadStatusStates(context, state);
       },
       child: SafeArea(
         child: Scaffold(
             body: mediaItems.isNotEmpty
                 ? Container(
-              child: Stack(children: [
-                Container(
-                  color: Colors.black,
-                  child: PageView.builder(
-                    controller:
-                    PageController(keepPage: true, initialPage: 0),
-                    pageSnapping: true,
-                    onPageChanged: (currentindex) {
-                      setState(() {
-                        pageIndex = currentindex;
-                      });
-                    },
-                    scrollDirection: Axis.horizontal,
-                    itemCount: mediaItems.length,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) =>
-                    mediaItems[index]
-                        .mediaType ==
-                        MediaType.image
-                        ? StatusImagePreview(
-                      image: mediaItems[index].path!,
-                    )
-                        : StatusVideoPreview(path: mediaItems[index].path!),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-
-                      IconButton(onPressed: () {
-                        Navigator.pop(context);
-                      }, icon: const Icon(Icons.close, color: Colors.white,)),
-
-
-                      const Expanded(child: SizedBox()),
-                      const SizedBox(width: 20,),
-                      IconButton(onPressed: () {
-                        _fetchMedia();
-                      },
-                          icon: const Icon(Icons.add_photo_alternate_outlined,
-                            color: AppColors.lightBlue, size: 25,)),
-                      const SizedBox(width: 20,),
-                      IconButton(onPressed: () {
-                        setState(() {
-                          mediaItems.removeAt(pageIndex);
-                          mediaFiles.removeAt(pageIndex);
-                          AppUtils.showCustomToast('Removed');
-                        });
-                      },
-                          icon: const Icon(
-                            Icons.delete_rounded, color: AppColors.lightBlue,
-                            size: 25,)),
-
-
-                      mediaItems.length > 1
-                          ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Chip(
-                            backgroundColor:
-                            AppColors.black.withOpacity(0.8),
-                            padding: EdgeInsets.zero,
-                            label: Text(
-                              '${pageIndex + 1}/${mediaItems.length} ',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 10,
-                                  color: AppColors.smokeWhite,
-                                  fontWeight: FontWeight.w600),
-                            )),
-                      )
-                          : const SizedBox(),
-
-                    ],
-                  ),
-                ),
-                Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: TextField(
-
-                              decoration: InputDecoration(
-                                fillColor: AppColors.smokeWhite,
-                                filled: true,
-                                hintText: 'Enter Caption',
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 15,
-                                ),
-
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                    borderSide: BorderSide.none),
-                              ),
-                              controller: _captionController,
-                              minLines: 1,
-                              maxLines: 5,
-
-                            ),
-                          ),
-                          const SizedBox(width: 10,),
-                          SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: FloatingActionButton(onPressed: () {
-                               uploadStatus();
-                              }, child: const Icon(
-                                Icons.send,
-                              ),))
-                        ],
+                    child: Stack(children: [
+                      Container(
+                        color: Colors.black,
+                        child: PageView.builder(
+                          controller:
+                              PageController(keepPage: true, initialPage: 0),
+                          pageSnapping: true,
+                          onPageChanged: (currentindex) {
+                            setState(() {
+                              pageIndex = currentindex;
+                            });
+                          },
+                          scrollDirection: Axis.horizontal,
+                          itemCount: mediaItems.length,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) =>
+                              mediaItems[index].mediaType == MediaType.image
+                                  ? StatusImagePreview(
+                                      image: mediaItems[index].path!,
+                                    )
+                                  : StatusVideoPreview(
+                                      path: mediaItems[index].path!),
+                        ),
                       ),
-                    )),
-
-              ]),
-            )
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                )),
+                            const Expanded(child: SizedBox()),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  _fetchMedia();
+                                },
+                                icon: const Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  color: AppColors.lightBlue,
+                                  size: 25,
+                                )),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    mediaItems.removeAt(pageIndex);
+                                    mediaFiles.removeAt(pageIndex);
+                                    AppUtils.showCustomToast('Removed');
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.delete_rounded,
+                                  color: AppColors.lightBlue,
+                                  size: 25,
+                                )),
+                            mediaItems.length > 1
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Chip(
+                                        backgroundColor:
+                                            AppColors.black.withOpacity(0.8),
+                                        padding: EdgeInsets.zero,
+                                        label: Text(
+                                          '${pageIndex + 1}/${mediaItems.length} ',
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              fontSize: 10,
+                                              color: AppColors.smokeWhite,
+                                              fontWeight: FontWeight.w600),
+                                        )),
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      fillColor: AppColors.smokeWhite,
+                                      filled: true,
+                                      hintText: 'Enter Caption',
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 15,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          borderSide: BorderSide.none),
+                                    ),
+                                    controller: _captionController,
+                                    minLines: 1,
+                                    maxLines: 5,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: FloatingActionButton(
+                                      onPressed: () {
+                                        uploadStatus();
+                                      },
+                                      child: const Icon(
+                                        Icons.send,
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          )),
+                    ]),
+                  )
                 : const SizedBox()),
       ),
     );
@@ -181,9 +190,7 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
     var videos = ['mp4', 'mov'];
     if (files.isNotEmpty) {
       for (var file in files) {
-        if (images
-            .where((element) => element == file.extension)
-            .isNotEmpty) {
+        if (images.where((element) => element == file.extension).isNotEmpty) {
           mediaItems
               .add(MediaItemModel(mediaType: MediaType.image, path: file.path));
           mediaFiles.add(file.path!);
@@ -207,40 +214,42 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
     var images = ['jpg', 'jpeg', 'png', 'webp'];
     var videos = ['mp4', 'mov'];
     var files = await AppUtils.fetchMedia(
-        allowMultiple: true, onSelect: (result) {
-      if (result!.files.isNotEmpty) {
-        for (var file in result.files) {
-          if (images
-              .where((element) => element == file.extension)
-              .isNotEmpty) {
-            mediaItems
-                .add(
-                MediaItemModel(mediaType: MediaType.image, path: file.path));
-            mediaFiles.add(file.path!);
+        allowMultiple: true,
+        onSelect: (result) {
+          if (result!.files.isNotEmpty) {
+            for (var file in result.files) {
+              if (images
+                  .where((element) => element == file.extension)
+                  .isNotEmpty) {
+                mediaItems.add(MediaItemModel(
+                    mediaType: MediaType.image, path: file.path));
+                mediaFiles.add(file.path!);
 
-            setState(() {});
-          } else if (videos
-              .where((element) => element == file.extension)
-              .isNotEmpty) {
-            mediaItems
-                .add(
-                MediaItemModel(mediaType: MediaType.video, path: file.path));
-            mediaFiles.add(file.path!);
-            // log('VIDEO ${mediaFiles[0].file?.filename}');
+                setState(() {});
+              } else if (videos
+                  .where((element) => element == file.extension)
+                  .isNotEmpty) {
+                mediaItems.add(MediaItemModel(
+                    mediaType: MediaType.video, path: file.path));
+                mediaFiles.add(file.path!);
+                // log('VIDEO ${mediaFiles[0].file?.filename}');
 
-            setState(() {});
+                setState(() {});
+              }
+            }
           }
-        }
-      }
-    });
+        });
   }
-   void uploadStatus(){
-    if(_captionController.text.isEmpty & mediaFiles.isEmpty){
+
+  void uploadStatus() {
+    if (_captionController.text.isEmpty & mediaFiles.isEmpty) {
       AppUtils.showCustomToast('Add an Image or Video');
-    }else{
-      _statusBloc.add(UploadStatusEvent(text: _captionController.text,media: mediaFiles));
+    } else {
+      _statusBloc.add(
+          UploadStatusEvent(text: _captionController.text, media: mediaFiles));
     }
-   }
+  }
+
   void _listenToUploadStatusStates(BuildContext context, StatusState state) {
     if (state is AddStatusLoadingState) {
       AppUtils.showAnimatedProgressDialog(context);
@@ -254,10 +263,9 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
     if (state is AddStatusSuccessState) {
       Navigator.pop(context);
       // Navigator.of(context).pushNamed(feedsPath);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
-
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ));
     }
-
   }
-
 }

@@ -1,4 +1,3 @@
-
 enum MediaType { image, video }
 
 class MediaItemModel {

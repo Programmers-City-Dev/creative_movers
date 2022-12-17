@@ -1,4 +1,3 @@
-
 import 'constants.dart';
 
 class Endpoints {
@@ -42,7 +41,8 @@ class Endpoints {
   static String fetchUserConnectionsEndpoint =
       '${Constants.baseUrl}api/connections/fetch-list';
   static String searchEndpoint = '${Constants.baseUrl}api/user/search';
-  static String searchConnectsEndpoint = '${Constants.baseUrl}api/connections/search-list';
+  static String searchConnectsEndpoint =
+      '${Constants.baseUrl}api/connections/search-list';
   static String pendingRequestEndpoint =
       '${Constants.baseUrl}api/connections/fetch-all-pending';
   static String requestReactEndpoint =
@@ -89,8 +89,7 @@ class Endpoints {
 
   static String startFreeTrial = '${Constants.baseUrl}api/payment/free_trial';
 
-  static String getFaqs =
-      '${Constants.baseUrl}api/support/fetch-faq';
+  static String getFaqs = '${Constants.baseUrl}api/support/fetch-faq';
 
 // static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 
@@ -106,4 +105,7 @@ class Endpoints {
       '${Constants.baseUrl}api/connections/notify/live-video';
   static String onlineUsers = '${Constants.baseUrl}api/user/online-users';
   static String userStatus = '${Constants.baseUrl}api/user/update-status';
+
+  static String sendLiveMessage =
+      '${Constants.baseUrl}api/live/chats/send_message';
 }

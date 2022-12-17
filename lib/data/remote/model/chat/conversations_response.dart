@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'conversation.dart';
 
-ConversationsResponse conversationsResponseFromMap(String str) => ConversationsResponse.fromMap(json.decode(str));
+ConversationsResponse conversationsResponseFromMap(String str) =>
+    ConversationsResponse.fromMap(json.decode(str));
 
-String conversationsResponseToMap(ConversationsResponse data) => json.encode(data.toMap());
+String conversationsResponseToMap(ConversationsResponse data) =>
+    json.encode(data.toMap());
 
 class ConversationsResponse {
   ConversationsResponse({
@@ -28,15 +30,20 @@ class ConversationsResponse {
         conversations: conversations ?? this.conversations,
       );
 
-  factory ConversationsResponse.fromMap(Map<String, dynamic> json) => ConversationsResponse(
-    status: json["status"],
-    conversations: json["conversations"] == null ? [] : List<Conversation>.from(json["conversations"].map((x) => Conversation.fromMap(x))),
-  );
+  factory ConversationsResponse.fromMap(Map<String, dynamic> json) =>
+      ConversationsResponse(
+        status: json["status"],
+        conversations: json["conversations"] == null
+            ? []
+            : List<Conversation>.from(
+                json["conversations"].map((x) => Conversation.fromMap(x))),
+      );
 
   Map<String, dynamic> toMap() => {
-    "status": status,
-    "conversations": List<dynamic>.from(conversations.map((x) => x.toMap())),
-  };
+        "status": status,
+        "conversations":
+            List<dynamic>.from(conversations.map((x) => x.toMap())),
+      };
 }
 //
 // class Conversation {

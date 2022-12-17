@@ -31,12 +31,13 @@ class _ContactItemState extends State<ContactItem> {
             children: [
               Row(
                 children: [
-                   CircleAvatar(
+                  CircleAvatar(
                     radius: 30,
                     backgroundColor: AppColors.lightGrey,
                     child: CircleAvatar(
                       radius: 28,
-                      backgroundImage: NetworkImage(widget.connect.profilePhotoPath),
+                      backgroundImage:
+                          NetworkImage(widget.connect.profilePhotoPath),
                     ),
 // ,
                   ),

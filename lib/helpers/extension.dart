@@ -7,6 +7,6 @@ extension AppLocalization on BuildContext {
   AppLocalizations get localization => AppLocalizations.of(this)!;
 }
 
-extension StringX on String{
+extension StringX on String {
   String get toFirstUppercase => AppUtils.capitalizeFirstCharacter(this);
 }

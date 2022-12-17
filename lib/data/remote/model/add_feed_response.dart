@@ -16,12 +16,12 @@ class AddFeedResponse {
     this.message,
   });
 
-
   String? status;
   AddedFeed? addedFeed;
   String? message;
 
-  factory AddFeedResponse.fromJson(Map<String, dynamic> json) => AddFeedResponse(
+  factory AddFeedResponse.fromJson(Map<String, dynamic> json) =>
+      AddFeedResponse(
         status: json["status"],
         addedFeed: AddedFeed.fromJson(json["added_feed"]),
         message: json["message"],

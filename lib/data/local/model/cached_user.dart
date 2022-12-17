@@ -121,8 +121,7 @@ class CachedUser extends Equatable {
         regStatus: json["reg_status"],
         currentTeamId: json["current_team_id"],
         profilePhotoPath: json["profile_photo_path"],
-        coverPhotoPath:
-            json["cover_photo_path"],
+        coverPhotoPath: json["cover_photo_path"],
         biodata: json["biodata"],
         status: json["status"],
         createdAt: json["created_at"] == null
@@ -152,8 +151,7 @@ class CachedUser extends Equatable {
         "pay_status": payStatus,
         "reg_status": regStatus,
         "current_team_id": currentTeamId,
-        "profile_photo_path":
-            profilePhotoPath,
+        "profile_photo_path": profilePhotoPath,
         "cover_photo_path": coverPhotoPath,
         "biodata": biodata,
         "status": status,

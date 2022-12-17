@@ -3,108 +3,138 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class LiveChatMessage extends Equatable {
-  final String? id;
-  final String message;
-  final int userId;
-  final String username;
-  final String firstName;
-  final String lastName;
-  final String? userPhoto;
-  final String? userCoverPhoto;
-  final String email;
-  final int timestamp;
-  const LiveChatMessage({
-    this.id,
-    required this.message,
-    required this.userId,
-    required this.username,
-    required this.firstName,
-    required this.lastName,
-    this.userPhoto,
-    this.userCoverPhoto,
-    required this.email,
-    required this.timestamp, 
-  });
+  final LiveChatUser? user;
+  final String? message;
+  final String? token;
 
-  LiveChatMessage copyWith({
-    String? id,
-    String? message,
-    int? userId,
-    String? username,
-    String? firstName,
-    String? lastName,
-    String? userPhoto,
-    String? userCoverPhoto,
-    String? email,
-    int? timestamp
-  }) {
-    return LiveChatMessage(
-      id: id ?? this.id,
-      message: message ?? this.message,
-      userId: userId ?? this.userId,
-      username: username ?? this.username,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      userPhoto: userPhoto ?? this.userPhoto,
-      userCoverPhoto: userCoverPhoto ?? this.userCoverPhoto,
-      email: email ?? this.email,
-      timestamp: this.timestamp
-    );
+  const LiveChatMessage({this.user, this.message, this.token});
+
+  factory LiveChatMessage.fromMap(Map<String, dynamic> data) {
+    return data['live_chat_data'] == null
+        ? LiveChatMessage(
+            user: data['user'] == null
+                ? null
+                : LiveChatUser.fromMap(data['user'] as Map<String, dynamic>),
+            message: data['message'] as String?,
+            token: data['token'] as String?,
+          )
+        : LiveChatMessage(
+            user: data['live_chat_data']['user'] == null
+                ? null
+                : LiveChatUser.fromMap(
+                    data['live_chat_data']['user'] as Map<String, dynamic>),
+            message: data['live_chat_data']['message'] as String?,
+            token: data['live_chat_data']['token'] as String?,
+          );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'message': message,
-      'userId': userId,
-      'username': username,
-      'firstName': firstName,
-      'lastName': lastName,
-      'userPhoto': userPhoto,
-      'userCoverPhoto': userCoverPhoto,
-      'email': email,
-      'timestamp': timestamp,
-    };
+  Map<String, dynamic> toMap() => {
+        'user': user?.toMap(),
+        'message': message,
+        'token': token,
+      };
+
+  /// `dart:convert`
+  ///
+  /// Parses the string and returns the resulting Json object as [LiveChatMessage].
+  factory LiveChatMessage.fromJson(String data) {
+    return LiveChatMessage.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
-  factory LiveChatMessage.fromMap(Map<String, dynamic> map) {
-    return LiveChatMessage(
-      id: map['id'],
-      message: map['message'] ?? '',
-      userId: map['userId']?.toInt() ?? 0,
-      username: map['username'] ?? '',
-      firstName: map['firstName'] ?? '',
-      lastName: map['lastName'] ?? '',
-      userPhoto: map['userPhoto'] ?? '',
-      userCoverPhoto: map['userCoverPhoto'] ?? '',
-      email: map['email'] ?? '',
-      timestamp: map['timestamp'] ?? 0,
-    );
-  }
-
+  /// `dart:convert`
+  ///
+  /// Converts [LiveChatMessage] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  factory LiveChatMessage.fromJson(String source) =>
-      LiveChatMessage.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'LiveChatMessage(id: $id, message: $message, userId: $userId, username: $username, firstName: $firstName, lastName: $lastName, userPhoto: $userPhoto, userCoverPhoto: $userCoverPhoto, email: $email, timestamp: $timestamp)';
+  LiveChatMessage copyWith({
+    LiveChatUser? user,
+    String? message,
+    String? token,
+  }) {
+    return LiveChatMessage(
+      user: user ?? this.user,
+      message: message ?? this.message,
+      token: token ?? this.token,
+    );
   }
 
   @override
-  List<Object> get props {
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [user, message, token];
+}
+
+class LiveChatUser extends Equatable {
+  final int? id;
+  final String? firstname;
+  final String? lastname;
+  final String? username;
+  final String? profilePhotoPath;
+
+  const LiveChatUser({
+    this.id,
+    this.firstname,
+    this.lastname,
+    this.username,
+    this.profilePhotoPath,
+  });
+
+  factory LiveChatUser.fromMap(Map<String, dynamic> data) => LiveChatUser(
+        id: data['id'] as int?,
+        firstname: data['firstname'] as String?,
+        lastname: data['lastname'] as String?,
+        username: data['username'] as String?,
+        profilePhotoPath: data['profile_photo_path'] as String?,
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'firstname': firstname,
+        'lastname': lastname,
+        'username': username,
+        'profile_photo_path': profilePhotoPath,
+      };
+
+  /// `dart:convert`
+  ///
+  /// Parses the string and returns the resulting Json object as [LiveChatUser].
+  factory LiveChatUser.fromJson(String data) {
+    return LiveChatUser.fromMap(json.decode(data) as Map<String, dynamic>);
+  }
+
+  /// `dart:convert`
+  ///
+  /// Converts [LiveChatUser] to a JSON string.
+  String toJson() => json.encode(toMap());
+
+  LiveChatUser copyWith({
+    int? id,
+    String? firstname,
+    String? lastname,
+    String? username,
+    String? profilePhotoPath,
+  }) {
+    return LiveChatUser(
+      id: id ?? this.id,
+      firstname: firstname ?? this.firstname,
+      lastname: lastname ?? this.lastname,
+      username: username ?? this.username,
+      profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
+    );
+  }
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props {
     return [
-      id!,
-      message,
-      userId,
+      id,
+      firstname,
+      lastname,
       username,
-      firstName,
-      lastName,
-      userPhoto!,
-      userCoverPhoto!,
-      email,
-      timestamp
+      profilePhotoPath,
     ];
   }
 }

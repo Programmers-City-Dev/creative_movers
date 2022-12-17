@@ -1,5 +1,6 @@
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+
 class ContactItem extends StatefulWidget {
   const ContactItem({Key? key}) : super(key: key);
 
@@ -10,10 +11,9 @@ class ContactItem extends StatefulWidget {
 class _ContactItemState extends State<ContactItem> {
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 15),
       child: Row(
-
         children: [
           const Padding(
             padding: EdgeInsets.only(right: 8.0),
@@ -23,7 +23,6 @@ class _ContactItemState extends State<ContactItem> {
               backgroundImage: NetworkImage(
                 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
               ),
-
             ),
           ),
           Expanded(
@@ -35,32 +34,43 @@ class _ContactItemState extends State<ContactItem> {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children:  const [
-                          Text('Frank Trabivas',
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
+                        children: const [
                           Text(
-                            'Mover', style: TextStyle(fontSize: 13, color: Colors.grey),),
-
-
-                        ],),
+                            'Frank Trabivas',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 13),
+                          ),
+                          Text(
+                            'Mover',
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
+                        ],
+                      ),
                     ),
                     Row(
                       children: [
-                        TextButton(onPressed: () {}, style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue), child: const Text('Invite'),),
-                        const SizedBox(width: 7,),
-                        const Icon(Icons.person_add_rounded,color: AppColors.primaryColor,),
+                        TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                              backgroundColor: AppColors.lightBlue),
+                          child: const Text('Invite'),
+                        ),
+                        const SizedBox(
+                          width: 7,
+                        ),
+                        const Icon(
+                          Icons.person_add_rounded,
+                          color: AppColors.primaryColor,
+                        ),
                       ],
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
-
-
-
-        ],),
+        ],
+      ),
     );
   }
 }

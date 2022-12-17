@@ -6,7 +6,8 @@ abstract class NavEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-class SwitchNavEvent extends NavEvent{
+
+class SwitchNavEvent extends NavEvent {
   final int index;
 
   const SwitchNavEvent(this.index);
@@ -14,23 +15,28 @@ class SwitchNavEvent extends NavEvent{
   @override
   List<Object> get props => [index];
 }
-class OpenHomeTabEvent extends NavEvent{
+
+class OpenHomeTabEvent extends NavEvent {
   @override
   List<Object> get props => [];
 }
-class OpenBizTabEvent extends NavEvent{
+
+class OpenBizTabEvent extends NavEvent {
   @override
   List<Object> get props => [];
 }
-class OpenConnectsTabEvent extends NavEvent{
+
+class OpenConnectsTabEvent extends NavEvent {
   @override
   List<Object> get props => [];
 }
-class OpenChatsTabEvent extends NavEvent{
+
+class OpenChatsTabEvent extends NavEvent {
   @override
   List<Object> get props => [];
 }
-class OpenProfileTabEvent extends NavEvent{
+
+class OpenProfileTabEvent extends NavEvent {
   @override
   List<Object> get props => [];
 }

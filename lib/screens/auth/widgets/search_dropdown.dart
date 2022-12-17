@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -183,12 +182,15 @@ class _SearchDropdownState extends State<SearchDropdown> {
                     return Container(
                       child: Column(
                         children: const [
-                          SizedBox(height: 100,),
+                          SizedBox(
+                            height: 100,
+                          ),
                           Center(
                             child: CircularProgressIndicator(),
                           ),
-                          SizedBox(height: 20,),
-
+                          SizedBox(
+                            height: 20,
+                          ),
                           Text('Fetching Categories..')
                         ],
                       ),
@@ -220,13 +222,22 @@ class _SearchDropdownState extends State<SearchDropdown> {
                       itemCount: filterlist.length,
                       shrinkWrap: true,
                     );
-                  } else  {
+                  } else {
                     return Column(
-                      children:  [
-                        const SizedBox(height: 100,),
+                      children: [
+                        const SizedBox(
+                          height: 100,
+                        ),
                         const Text('Ooops an error occured '),
-                        const SizedBox(height: 10,),
-                        CustomButton(onTap: (){_authBloc.add(CategoriesEvent());}, child: const Text('Retry'),)
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomButton(
+                          onTap: () {
+                            _authBloc.add(CategoriesEvent());
+                          },
+                          child: const Text('Retry'),
+                        )
                       ],
                     );
                   }

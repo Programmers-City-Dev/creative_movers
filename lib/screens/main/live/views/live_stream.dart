@@ -362,7 +362,7 @@ class _RemoteUserViewState extends State<RemoteUserView> {
   void initState() {
     super.initState();
     injector.get<CacheCubit>().fetchCachedUserData();
-    _chatBloc.add(FetchLiveChannelMessages(channelName: widget.channelName));
+    _chatBloc.add(ListenToLiveChatEvent(widget.channelName));
   }
 
   @override
@@ -468,7 +468,8 @@ class _RemoteUserViewState extends State<RemoteUserView> {
                                               children: [
                                                 CircleImage(
                                                   url: messages[index]
-                                                      .userCoverPhoto,
+                                                      .user
+                                                      ?.profilePhotoPath,
                                                   withBaseUrl: false,
                                                 ),
                                                 const SizedBox(
@@ -491,8 +492,7 @@ class _RemoteUserViewState extends State<RemoteUserView> {
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          messages[index]
-                                                              .username,
+                                                          '${messages[index].user?.firstname} ${messages[index].user?.lastname}',
                                                           style:
                                                               const TextStyle(
                                                                   fontWeight:
@@ -502,8 +502,7 @@ class _RemoteUserViewState extends State<RemoteUserView> {
                                                                       .white),
                                                         ),
                                                         Text(
-                                                          messages[index]
-                                                              .message,
+                                                          '${messages[index].message}',
                                                           style:
                                                               const TextStyle(
                                                                   color: Colors
@@ -634,20 +633,7 @@ class _RemoteUserViewState extends State<RemoteUserView> {
                                   onSubmitted: (val) {
                                     if (val.isNotEmpty) {
                                       _chatBloc.add(SendLiveChannelMessage(
-                                          message: LiveChatMessage(
-                                            message: val,
-                                            username: userData.username!,
-                                            firstName: userData.firstname!,
-                                            lastName: userData.lastname!,
-                                            email: userData.email!,
-                                            userCoverPhoto:
-                                                userData.coverPhotoPath,
-                                            userPhoto:
-                                                userData.profilePhotoPath,
-                                            userId: userData.id,
-                                            timestamp: DateTime.now()
-                                                .millisecondsSinceEpoch,
-                                          ),
+                                          message: val,
                                           channelName: widget.channelName));
                                       _textController.clear();
                                       _textFocus.unfocus();
@@ -762,7 +748,7 @@ class _LocalUserViewState extends State<LocalUserView> {
     _textFocus.addListener(() {
       // _isTextFocusedNotifier.value = _textFocus.hasFocus;
     });
-    _chatBloc.add(FetchLiveChannelMessages(channelName: widget.channelName));
+    _chatBloc.add(ListenToLiveChatEvent(widget.channelName));
   }
 
   @override
@@ -868,25 +854,23 @@ class _LocalUserViewState extends State<LocalUserView> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16.0),
-                                    child: BlocConsumer<ChatBloc, ChatState>(
-                                      bloc: _chatBloc,
-                                      buildWhen: (previous, current) {
-                                        return current
-                                            is LiveChannelMessagesFetched;
-                                      },
-                                      listener: (context, state) {
-                                        if (state
-                                            is LiveChannelMessagesFetched) {
-                                          WidgetsBinding.instance
-                                              .addPostFrameCallback(
-                                                  (_) => _scrollToBottom());
-                                        }
-                                      },
-                                      builder: (context, state) {
-                                        if (state
-                                            is LiveChannelMessagesFetched) {
-                                          final List<LiveChatMessage> messages =
-                                              state.messages;
+                                    child: ValueListenableBuilder<
+                                            List<LiveChatMessage>>(
+                                        valueListenable:
+                                            _chatBloc.liveChatMessagesNotifier,
+                                        // buildWhen: (previous, current) {
+                                        //   return current
+                                        //       is LiveChannelMessagesFetched;
+                                        // },
+                                        // listener: (context, state) {
+                                        //   if (state
+                                        //       is LiveChannelMessagesFetched) {
+                                        //     WidgetsBinding.instance
+                                        //         .addPostFrameCallback(
+                                        //             (_) => _scrollToBottom());
+                                        //   }
+                                        // },
+                                        builder: (context, messages, child) {
                                           return ListView.builder(
                                               controller: _scrollController,
                                               physics:
@@ -906,7 +890,8 @@ class _LocalUserViewState extends State<LocalUserView> {
                                                       children: [
                                                         CircleImage(
                                                           url: messages[index]
-                                                              .userCoverPhoto,
+                                                              .user
+                                                              ?.profilePhotoPath,
                                                           withBaseUrl: false,
                                                         ),
                                                         const SizedBox(
@@ -932,9 +917,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                                                                       .start,
                                                               children: [
                                                                 Text(
-                                                                  messages[
-                                                                          index]
-                                                                      .username,
+                                                                  '${messages[index].user?.firstname} ${messages[index].user?.lastname}',
                                                                   style: const TextStyle(
                                                                       fontWeight:
                                                                           FontWeight
@@ -943,9 +926,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                                                                           .white),
                                                                 ),
                                                                 Text(
-                                                                  messages[
-                                                                          index]
-                                                                      .message,
+                                                                  '${messages[index].message}',
                                                                   style: const TextStyle(
                                                                       color: Colors
                                                                           .white),
@@ -957,10 +938,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                                                       ]),
                                                 );
                                               });
-                                        }
-                                        return const SizedBox.shrink();
-                                      },
-                                    ),
+                                        }),
                                   ),
                                 ),
                               ),
@@ -1000,26 +978,7 @@ class _LocalUserViewState extends State<LocalUserView> {
                                                 if (val.isNotEmpty) {
                                                   _chatBloc.add(
                                                       SendLiveChannelMessage(
-                                                          message:
-                                                              LiveChatMessage(
-                                                            message: val,
-                                                            username: userData
-                                                                .username!,
-                                                            firstName: userData
-                                                                .firstname!,
-                                                            lastName: userData
-                                                                .lastname!,
-                                                            email:
-                                                                userData.email!,
-                                                            userCoverPhoto: userData
-                                                                .coverPhotoPath,
-                                                            userPhoto: userData
-                                                                .profilePhotoPath,
-                                                            userId: userData.id,
-                                                            timestamp: DateTime
-                                                                    .now()
-                                                                .millisecondsSinceEpoch,
-                                                          ),
+                                                          message: val,
                                                           channelName: widget
                                                               .channelName));
                                                   _textController.clear();

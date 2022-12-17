@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-CreatePageResponse createPageResponseFromJson(String str) => CreatePageResponse.fromJson(json.decode(str));
+CreatePageResponse createPageResponseFromJson(String str) =>
+    CreatePageResponse.fromJson(json.decode(str));
 
-String createPageResponseToJson(CreatePageResponse data) => json.encode(data.toJson());
+String createPageResponseToJson(CreatePageResponse data) =>
+    json.encode(data.toJson());
 
 class CreatePageResponse {
   CreatePageResponse({
@@ -17,13 +19,14 @@ class CreatePageResponse {
   String? status;
   String? message;
 
-  factory CreatePageResponse.fromJson(Map<String, dynamic> json) => CreatePageResponse(
-    status: json["status"],
-    message: json["message"],
-  );
+  factory CreatePageResponse.fromJson(Map<String, dynamic> json) =>
+      CreatePageResponse(
+        status: json["status"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-  };
+        "status": status,
+        "message": message,
+      };
 }

@@ -186,7 +186,8 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       itemCount: pages.length,
                                       itemBuilder: (context, index) => InkWell(
                                         onTap: () {

@@ -10,24 +10,23 @@ import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-
-class StatusRepository{
+class StatusRepository {
   final HttpHelper httpHelper;
 
   StatusRepository(this.httpHelper);
   Future<State> uploadStatus({
     required String? text,
     String? bg_color,
-     String? font_name,
+    String? font_name,
     List<String>? media,
   }) async {
     var formData = FormData.fromMap({
-      "text" :text,
-      "bg_color" :bg_color,
-      "font_name" :font_name,
+      "text": text,
+      "bg_color": bg_color,
+      "font_name": font_name,
     });
     log("IMAGES: $media");
-    if(media != null){
+    if (media != null) {
       for (var file in media) {
         formData.files.addAll([
           MapEntry("file", await MultipartFile.fromFile(file)),
@@ -36,7 +35,7 @@ class StatusRepository{
     }
 
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.uploadStatusEndpoint, body:formData),
+      () => httpHelper.post(Endpoints.uploadStatusEndpoint, body: formData),
       successResponse: (data) {
         return State<UploadStatusResponse?>.success(
             data != null ? UploadStatusResponse.fromJson(data) : null);
@@ -65,7 +64,7 @@ class StatusRepository{
 
   Future<State> getStatus() async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.get(Endpoints.getStatusEndpoint),
+      () => httpHelper.get(Endpoints.getStatusEndpoint),
       successResponse: (data) {
         return State<ViewStatusResponse?>.success(
             data != null ? ViewStatusResponse.fromJson(data) : null);

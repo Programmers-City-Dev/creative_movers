@@ -155,9 +155,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      foregroundColor: AppColors.primaryColor, backgroundColor: AppColors.white,
-                                      padding:
-                                          const EdgeInsets.symmetric(horizontal: 20),
+                                      foregroundColor: AppColors.primaryColor,
+                                      backgroundColor: AppColors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20))),
@@ -167,7 +168,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         StorageKeys.firsTimeUser, false);
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (context) => const SignupScreen(),
+                                      builder: (context) =>
+                                          const SignupScreen(),
                                     ));
                                   },
                                   child: Row(

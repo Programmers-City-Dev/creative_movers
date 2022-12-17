@@ -17,8 +17,7 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
   final StatusRepository statusRepository = StatusRepository(HttpHelper());
 
   StatusBloc() : super(StatusInitial()) {
-    on<StatusEvent>((event, emit) {
-    });
+    on<StatusEvent>((event, emit) {});
     on<UploadStatusEvent>(_mapUploadStatusEventToState);
     on<GetStatusEvent>(_mapGetStatusEventToState);
   }
@@ -28,7 +27,7 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
     try {
       var response = await statusRepository.uploadStatus(
           text: event.text,
-          bg_color:  event.bg_color,
+          bg_color: event.bg_color,
           font_name: event.font_name,
           media: event.media);
       if (response is SuccessState) {
@@ -63,4 +62,3 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
     }
   }
 }
-

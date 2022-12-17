@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddStatusScreen extends StatefulWidget {
-
   const AddStatusScreen({Key? key}) : super(key: key);
 
   @override
@@ -30,8 +29,10 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     'Segoe',
   ];
 
-  List<Color> colors =[
-   const Color( 0xFF000000,)
+  List<Color> colors = [
+    const Color(
+      0xFF000000,
+    )
   ];
   List<int> theme = [
     0xffC2185B,
@@ -150,7 +151,6 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     // final random = Random();
 
     setState(() {
-
       if (colorIndex != theme.length - 1) {
         colorIndex += 1;
       } else {
@@ -182,10 +182,9 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
       log(theme[colorIndex].toRadixString(16));
 
       _statusBloc.add(UploadStatusEvent(
-
-          text: _statusController.text, bg_color: theme[colorIndex].toRadixString(16), font_name: font)
-
-      );
+          text: _statusController.text,
+          bg_color: theme[colorIndex].toRadixString(16),
+          font_name: font));
     }
   }
 
@@ -201,7 +200,7 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
 
     if (state is AddStatusSuccessState) {
       context.read<StatusBloc>().add(const GetStatusEvent());
-      Navigator.popUntil(context,(route) => route.isFirst );
+      Navigator.popUntil(context, (route) => route.isFirst);
 
       // Navigator.popAndPushNamed(context,'/home/feeds');
       // Navigator.of(context).pushNamed(feedsPath);
@@ -212,8 +211,9 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
 
     }
   }
-  bool untill (Route route){
-    route.settings.copyWith(arguments: {'showWelcomeDialog':true}) ;
+
+  bool untill(Route route) {
+    route.settings.copyWith(arguments: {'showWelcomeDialog': true});
     return route.isFirst;
   }
 }

@@ -12,14 +12,13 @@ class PushNotificationService {
   static final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   /// Create a [AndroidNotificationChannel] for heads up notifications
-  static AndroidNotificationChannel channel =
-      const AndroidNotificationChannel(
-          'high_importance_channel', // id
-          'High Importance Notifications', // title
-          description:
-              'This channel is used for important notifications.', // description
-          importance: Importance.high,
-          playSound: true);
+  static AndroidNotificationChannel channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description:
+          'This channel is used for important notifications.', // description
+      importance: Importance.high,
+      playSound: true);
 
   /// Initialize the [FlutterLocalNotificationsPlugin] package.
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

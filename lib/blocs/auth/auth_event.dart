@@ -101,10 +101,12 @@ class LogoutEvent extends AuthEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+
 class CategoriesEvent extends AuthEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+
 class ForgotPasswordEvent extends AuthEvent {
   final String email;
 
@@ -117,6 +119,7 @@ class ForgotPasswordEvent extends AuthEvent {
         email,
       ];
 }
+
 class ConfirmTokenEvent extends AuthEvent {
   final String token;
 
@@ -127,13 +130,17 @@ class ConfirmTokenEvent extends AuthEvent {
   @override
   List<Object?> get props => [token];
 }
+
 class ResetPasswordEvent extends AuthEvent {
   final String password;
   final String password_confirmation;
   final String email;
 
-  ResetPasswordEvent(
-      {required this.password_confirmation, required this.password,required this.email, });
+  ResetPasswordEvent({
+    required this.password_confirmation,
+    required this.password,
+    required this.email,
+  });
 
   @override
   List<Object?> get props => [password_confirmation, password];

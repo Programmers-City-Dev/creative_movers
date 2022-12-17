@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class StatusImagePreview extends StatefulWidget {
-  const StatusImagePreview({Key? key, this.image, this.onClose}) : super(key: key);
+  const StatusImagePreview({Key? key, this.image, this.onClose})
+      : super(key: key);
   final String? image;
   final VoidCallback? onClose;
 
@@ -27,7 +28,6 @@ class _StatusImagePreviewState extends State<StatusImagePreview> {
           File(widget.image!),
           fit: BoxFit.cover,
         ),
-
       ),
     );
   }

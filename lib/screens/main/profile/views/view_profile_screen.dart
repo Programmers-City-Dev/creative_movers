@@ -470,7 +470,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                 buildWhen: (prevstate, currentState) {
                                   return currentState
                                           is ConnectToUserLoadingState ||
-                                      currentState is ConnectToUserSuccesState ||
+                                      currentState
+                                          is ConnectToUserSuccesState ||
                                       currentState is ConnectToUserFailureState;
                                 },
                                 builder: (context, connectState) {
@@ -575,7 +576,11 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   children: [
                                     Expanded(
                                       child: ListView.builder(
-                                        itemCount: user.connections!.length> 5? user.connections?.getRange(0, 5).length:user.connections!.length,
+                                        itemCount: user.connections!.length > 5
+                                            ? user.connections
+                                                ?.getRange(0, 5)
+                                                .length
+                                            : user.connections!.length,
                                         scrollDirection: Axis.horizontal,
                                         physics: const BouncingScrollPhysics(),
                                         shrinkWrap: true,
@@ -586,7 +591,6 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           child: SizedBox(
                                             width: 120,
                                             child: GestureDetector(
-
                                               child: Card(
                                                 elevation: 0,
                                                 shape: RoundedRectangleBorder(

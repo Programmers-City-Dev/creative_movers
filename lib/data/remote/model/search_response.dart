@@ -17,7 +17,8 @@ class SearchResponse {
   List<SearchResult> users;
 
   factory SearchResponse.fromJson(Map<String, dynamic> json) => SearchResponse(
-        users: List<SearchResult>.from(json["users"].map((x) => SearchResult.fromJson(x))),
+        users: List<SearchResult>.from(
+            json["users"].map((x) => SearchResult.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,7 +58,8 @@ class SearchResult {
         profilePhotoPath: json["profile_photo_path"],
         connected: json["connected"],
         following: json["following"],
-        followers: List<Follower>.from(json["followers"].map((x) =>Follower.fromJson(x))),
+        followers: List<Follower>.from(
+            json["followers"].map((x) => Follower.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

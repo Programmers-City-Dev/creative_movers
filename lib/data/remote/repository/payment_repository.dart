@@ -110,12 +110,11 @@ class PaymentRepository {
     );
   }
 
-   Future<State> startFreeTrial() async {
+  Future<State> startFreeTrial() async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.startFreeTrial),
       successResponse: (data) {
-        return State<String?>.success(
-            "Free trial activation successful");
+        return State<String?>.success("Free trial activation successful");
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

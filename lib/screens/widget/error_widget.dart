@@ -10,16 +10,16 @@ class AppPromptWidget extends StatelessWidget {
   final bool? canTryAgain;
   final String? buttonText;
 
-  const AppPromptWidget({
-    Key? key,
-    this.message = 'Oops an error occured',
-    this.title,
-    this.onTap,
-    this.imagePath,
-    this.isSvgResource = false,
-    this.canTryAgain = true,
-    this.buttonText
-  }) : super(key: key);
+  const AppPromptWidget(
+      {Key? key,
+      this.message = 'Oops an error occured',
+      this.title,
+      this.onTap,
+      this.imagePath,
+      this.isSvgResource = false,
+      this.canTryAgain = true,
+      this.buttonText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +72,12 @@ class AppPromptWidget extends StatelessWidget {
           if (canTryAgain!)
             Column(
               children: [
-
                 OutlinedButton(
                     onPressed: onTap,
                     style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16))),
-                    child: Text( buttonText ?? "Try again")),
+                    child: Text(buttonText ?? "Try again")),
               ],
             )
         ],

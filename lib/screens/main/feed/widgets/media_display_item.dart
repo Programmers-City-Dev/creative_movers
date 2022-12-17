@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
@@ -48,25 +47,25 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
   Widget build(BuildContext context) {
     return widget.media.type == 'image'
         ? GestureDetector(
-      onTap:  () => showDialog(
-        context: context,
-        // isDismissible: false,
-        // enableDrag: false,
-        barrierDismissible: true,
-        builder: (context) => ImagePreviewer(
-          imageUrl: widget.media.mediaPath,
-          heroTag: "cover_photo",
-          tightMode: true,
-        ),
-      ),
-          child: Container(
+            onTap: () => showDialog(
+              context: context,
+              // isDismissible: false,
+              // enableDrag: false,
+              barrierDismissible: true,
+              builder: (context) => ImagePreviewer(
+                imageUrl: widget.media.mediaPath,
+                heroTag: "cover_photo",
+                tightMode: true,
+              ),
+            ),
+            child: Container(
               height: 250,
               decoration: BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(widget.media.mediaPath))),
             ),
-        )
+          )
         : FutureBuilder<Uint8List?>(
             future: VideoThumbnail.thumbnailData(
               video: widget.media.mediaPath,
@@ -75,7 +74,6 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
               maxHeight: 300,
               // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
               quality: 100,
-
             ),
             builder: (context, snapshot) {
               // log(widget.media.mediaPath);
@@ -92,7 +90,12 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){showDialog(context: context, builder: (context) => VideoPreview(videoUrl: widget.media.mediaPath));},
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) =>
+                                VideoPreview(videoUrl: widget.media.mediaPath));
+                      },
                       child: SizedBox(
                         height: 250,
                         width: MediaQuery.of(context).size.width,
@@ -107,7 +110,9 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                     ),
                   ]);
                 } else {
-                  return  Container(   color: AppColors.black,child: const Center(child: CircularProgressIndicator()) );
+                  return Container(
+                      color: AppColors.black,
+                      child: const Center(child: CircularProgressIndicator()));
                 }
               } else {
                 return Text(snapshot.error.toString());

@@ -190,7 +190,6 @@ class CategoryFaliureState extends AuthState {
   CategoryFaliureState({required this.error});
 }
 
-
 //Forgot Password States
 class ForgotPasswordLoadingState extends AuthState {
   @override
@@ -221,6 +220,7 @@ class ConfirmTokenLoadingState extends AuthState {
   @override
   List<Object?> get props => [];
 }
+
 class ConfirmTokenSuccessState extends AuthState {
   final ConfirmTokenResponse response;
 
@@ -229,6 +229,7 @@ class ConfirmTokenSuccessState extends AuthState {
   @override
   List<Object?> get props => [response];
 }
+
 class ConfirmTokenFailureState extends AuthState {
   final String error;
 
@@ -243,6 +244,7 @@ class ResetPasswordLoadingState extends AuthState {
   @override
   List<Object?> get props => [];
 }
+
 class ResetPasswordSuccessState extends AuthState {
   final ResetPasswordResponse response;
 
@@ -251,6 +253,7 @@ class ResetPasswordSuccessState extends AuthState {
   @override
   List<Object?> get props => [response];
 }
+
 class ResetPasswordFailureState extends AuthState {
   final String error;
 
@@ -259,4 +262,3 @@ class ResetPasswordFailureState extends AuthState {
   @override
   List<Object?> get props => [error];
 }
-

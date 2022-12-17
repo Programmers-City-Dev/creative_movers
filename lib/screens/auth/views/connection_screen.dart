@@ -69,8 +69,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                       widget.role == 'creative'
                           ? 'We found some movers you might like to connect with'
                           : 'We found some creatives you might like to connect with',
-                      style:
-                          const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 13, fontWeight: FontWeight.w600),
                     ),
                     Align(
                       alignment: Alignment.centerRight,

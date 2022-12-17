@@ -56,7 +56,6 @@ class SubscriptionLoadErrorState extends PaymentState {
   List<Object> get props => [error];
 }
 
-
 class PaymentHistoryLoadingState extends PaymentState {}
 
 class PaymentHistoryLoadedState extends PaymentState {

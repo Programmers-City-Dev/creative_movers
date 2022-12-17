@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-ConfirmTokenResponse confirmTokenFromJson(String str) => ConfirmTokenResponse.fromJson(json.decode(str));
+ConfirmTokenResponse confirmTokenFromJson(String str) =>
+    ConfirmTokenResponse.fromJson(json.decode(str));
 
-String confirmTokenToJson(ConfirmTokenResponse data) => json.encode(data.toJson());
+String confirmTokenToJson(ConfirmTokenResponse data) =>
+    json.encode(data.toJson());
 
 class ConfirmTokenResponse {
   ConfirmTokenResponse({
@@ -17,13 +19,14 @@ class ConfirmTokenResponse {
   String status;
   String message;
 
-  factory ConfirmTokenResponse.fromJson(Map<String, dynamic> json) => ConfirmTokenResponse(
-    status: json["status"],
-    message: json["message"],
-  );
+  factory ConfirmTokenResponse.fromJson(Map<String, dynamic> json) =>
+      ConfirmTokenResponse(
+        status: json["status"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-  };
+        "status": status,
+        "message": message,
+      };
 }

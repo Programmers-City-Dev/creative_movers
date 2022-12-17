@@ -7,6 +7,7 @@ import '../../../../di/injector.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
+
 class EditGenderDialog extends StatefulWidget {
   final Function(User) onSuccess;
   const EditGenderDialog({Key? key, required this.onSuccess}) : super(key: key);
@@ -18,10 +19,8 @@ class EditGenderDialog extends StatefulWidget {
 class _EditGenderDialogState extends State<EditGenderDialog> {
   final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
   final _profileBloc = ProfileBloc(injector.get());
-  List<String> genders = ['Male' , 'Female'];
+  List<String> genders = ['Male', 'Female'];
   String gender = '';
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +28,14 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
       bloc: _profileBloc,
       listener: (context, state) {
         if (state is ProfileUpdateLoading) {
-          AppUtils.showAnimatedProgressDialog(
-              context,
+          AppUtils.showAnimatedProgressDialog(context,
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
-
           widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
-          AppUtils.showCustomToast(
-              "Gender has been updated successfully");
+          AppUtils.showCustomToast("Gender has been updated successfully");
           // _updateProfile(
           //     state.photo, state.isProfilePhoto);
         }
@@ -49,7 +45,6 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
         }
       },
       child: Container(
-
         child: Container(
           padding: const EdgeInsets.all(30),
           decoration: const BoxDecoration(
@@ -60,13 +55,12 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Center(
                   child: Container(
-                    color: Colors.grey,
-                    width: 100,
-                    height: 2.5,
-                  )),
+                color: Colors.grey,
+                width: 100,
+                height: 2.5,
+              )),
               const SizedBox(
                 height: 15,
               ),
@@ -77,14 +71,9 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
               const SizedBox(
                 height: 10,
               ),
-
               Padding(
                 padding: EdgeInsets.only(
-
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Form(
                   key: _fieldKey,
                   child: DropdownButtonFormField<String>(
@@ -94,7 +83,7 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
                       decoration: const InputDecoration(
                           focusedBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: AppColors.textColor)),
+                                  BorderSide(color: AppColors.textColor)),
                           labelStyle: TextStyle(color: AppColors.textColor),
                           labelText: 'Select Gender',
                           contentPadding: EdgeInsets.all(16),
@@ -102,7 +91,7 @@ class _EditGenderDialogState extends State<EditGenderDialog> {
                       value: 'Male',
                       items: genders
                           .map((e) => DropdownMenuItem<String>(
-                          value: e, child: Text(e)))
+                              value: e, child: Text(e)))
                           .toList()),
                 ),
               ),

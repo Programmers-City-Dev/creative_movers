@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
 import 'package:flutter/material.dart';

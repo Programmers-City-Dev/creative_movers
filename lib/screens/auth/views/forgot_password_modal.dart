@@ -15,16 +15,18 @@ class ForgotPasswordModal extends StatefulWidget {
   _ForgotPasswordModalState createState() => _ForgotPasswordModalState();
 }
 
-class _ForgotPasswordModalState extends State<ForgotPasswordModal> with SingleTickerProviderStateMixin {
+class _ForgotPasswordModalState extends State<ForgotPasswordModal>
+    with SingleTickerProviderStateMixin {
   String screen = 'forgot password';
   String userEmail = '';
 
- late TabController _controller;
-@override
+  late TabController _controller;
+  @override
   void initState() {
-  _controller = TabController(length: 3, vsync: this);
+    _controller = TabController(length: 3, vsync: this);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     // return Column(
@@ -55,12 +57,14 @@ class _ForgotPasswordModalState extends State<ForgotPasswordModal> with SingleTi
                     setState(() {
                       screen = '';
                     });
-                  }, email: userEmail,
+                  },
+                  email: userEmail,
                 )
               : ResetPasswordForm(
-                  onFinish: (){
+                  onFinish: () {
                     widget.onComplete();
-                  }, email: userEmail,
+                  },
+                  email: userEmail,
                 ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+
 class StreamCommentItem extends StatefulWidget {
   const StreamCommentItem({Key? key}) : super(key: key);
 
@@ -10,11 +11,13 @@ class StreamCommentItem extends StatefulWidget {
 
 class _StreamCommentItemState extends State<StreamCommentItem> {
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 2,horizontal: 11),
+      margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 11),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: AppColors.commentBg.withOpacity(0.6) ),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: AppColors.commentBg.withOpacity(0.6)),
       child: Row(
         children: const [
           AddImageWidget(
@@ -25,9 +28,16 @@ class _StreamCommentItemState extends State<StreamCommentItem> {
             iconSize: 0,
             iconBgCOlor: Colors.green,
           ),
-          SizedBox(width: 10,),
-          Expanded(child: Text('Great Video Keep it Up We Love You Much Love From Here',style: TextStyle(color: AppColors.smokeWhite),)),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+              child: Text(
+            'Great Video Keep it Up We Love You Much Love From Here',
+            style: TextStyle(color: AppColors.smokeWhite),
+          )),
         ],
-      ),);
+      ),
+    );
   }
 }

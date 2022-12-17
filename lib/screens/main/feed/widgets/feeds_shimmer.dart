@@ -9,8 +9,7 @@ class FeedsShimer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Shimmer.fromColors(
-
-        period: const Duration(milliseconds: 1000),
+          period: const Duration(milliseconds: 1000),
           baseColor: Colors.grey[200]!,
           highlightColor: Colors.grey[300]!,
           child: Column(
@@ -19,7 +18,6 @@ class FeedsShimer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-
                     children: [
                       const CircleAvatar(
                         radius: 20,
@@ -32,17 +30,23 @@ class FeedsShimer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                              height: 10,
-                              width: 100,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey,),
-
+                            height: 10,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey,
+                            ),
                           ),
-                          const SizedBox(height: 10,),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             height: 10,
                             width: 70,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey,),
-
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),
@@ -55,8 +59,10 @@ class FeedsShimer extends StatelessWidget {
                 child: AnimatedSize(
                   duration: const Duration(milliseconds: 12),
                   child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey,),
-
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey,
+                    ),
                     height: 40,
                   ),
                 ),

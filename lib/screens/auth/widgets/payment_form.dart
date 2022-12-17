@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -68,7 +67,9 @@ class _PaymentFormState extends State<PaymentForm> {
                 },
               ),
             ),
-            const SizedBox(height: 18,),
+            const SizedBox(
+              height: 18,
+            ),
 
             // const Spacer(),
             BlocListener<PaymentBloc, PaymentState>(
@@ -96,10 +97,10 @@ class _PaymentFormState extends State<PaymentForm> {
                         builder: (context) => WillPopScope(
                             onWillPop: () => Future.value(false),
                             child: DetailsSavedDialog(
-                              paymentMode: selectedPaymentMode,
-                              paymentType: paymentType,
-                              paymentAmount: paymentAmount,
-                              duration: mDuration,
+                                paymentMode: selectedPaymentMode,
+                                paymentType: paymentType,
+                                paymentAmount: paymentAmount,
+                                duration: mDuration,
                                 isFirstTime: widget.isFirstTime)),
                         barrierDismissible: false);
                   } else {
@@ -124,10 +125,11 @@ class _PaymentFormState extends State<PaymentForm> {
                               onWillPop: () => Future.value(false),
                               child: DetailsSavedDialog(
                                 paymentMode: selectedPaymentMode,
-                              paymentType: paymentType,
-                              paymentAmount: paymentAmount,
-                              duration: mDuration,
-                              isFirstTime: widget.isFirstTime,)),
+                                paymentType: paymentType,
+                                paymentAmount: paymentAmount,
+                                duration: mDuration,
+                                isFirstTime: widget.isFirstTime,
+                              )),
                           barrierDismissible: false);
                     }
                     if (state is PaymentFailureState) {

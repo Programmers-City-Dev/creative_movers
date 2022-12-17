@@ -1,4 +1,3 @@
-
 import 'package:creative_movers/data/remote/repository/auth_repository.dart';
 import 'package:creative_movers/data/remote/repository/buisness_repository.dart';
 import 'package:creative_movers/data/remote/repository/chat_repository.dart';
@@ -26,7 +25,6 @@ Future<void> init(GetIt injector) async {
   injector.registerLazySingleton(() => StatusRepository(injector.get()));
   injector.registerLazySingleton(() => BuisnessRepository(injector.get()));
   injector.registerLazySingleton(() => ChatRepository(injector.get()));
-
 }
 
 void _injectDependenciesRelatedToAuth(GetIt injector) {

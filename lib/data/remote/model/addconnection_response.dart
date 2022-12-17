@@ -12,8 +12,8 @@ String addConnectionResponseToJson(AddConnectionResponse data) =>
 
 class AddConnectionResponse {
   AddConnectionResponse({
-     this.status,
-     this.message,
+    this.status,
+    this.message,
   });
 
   String? status;

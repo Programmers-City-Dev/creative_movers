@@ -303,9 +303,8 @@ class FeedRepository {
 
   Future<State> deletePost({required String feed_id}) async {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.deleteFeedEndpoint,body: {
+      () => httpHelper.post(Endpoints.deleteFeedEndpoint, body: {
         "feed_id": feed_id,
-
       }),
       successResponse: (data) {
         return State<LikeResponse?>.success(
@@ -340,10 +339,10 @@ class FeedRepository {
     required List<String> media,
   }) async {
     var formData = FormData.fromMap({
-      "type" :'user_feed',
-      "page_id" :page_id,
-      "feed_id" :feed_id,
-      "content" :content,
+      "type": 'user_feed',
+      "page_id": page_id,
+      "feed_id": feed_id,
+      "content": content,
     });
     log("IMAGES: $media");
     for (var file in media) {
@@ -352,7 +351,7 @@ class FeedRepository {
       ]);
     }
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.editFeedEndpoint, body:formData),
+      () => httpHelper.post(Endpoints.editFeedEndpoint, body: formData),
       successResponse: (data) {
         return State<AddFeedResponse?>.success(
             data != null ? AddFeedResponse.fromJson(data) : null);

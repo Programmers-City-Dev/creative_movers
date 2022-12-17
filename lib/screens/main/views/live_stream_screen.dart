@@ -25,7 +25,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                       fit: BoxFit.cover)),
             ),
             Container(
-              decoration: BoxDecoration(color: AppColors.black.withOpacity(0.1)),
+              decoration:
+                  BoxDecoration(color: AppColors.black.withOpacity(0.1)),
               child: Column(
                 children: [
                   const SizedBox(
@@ -93,19 +94,22 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                               alignment: Alignment.topCenter,
                               child: Container(
                                 height: 10,
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
-                                padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    const EdgeInsets.fromLTRB(32, 32, 32, 0),
                                 decoration: BoxDecoration(
-
-
-                                border: Border.symmetric(vertical: BorderSide(color: Colors.transparent.withOpacity(0.8))) ,
+                                  border: Border.symmetric(
+                                      vertical: BorderSide(
+                                          color: Colors.transparent
+                                              .withOpacity(0.8))),
                                   boxShadow: [
-                                    BoxShadow(color:  AppColors.black.withOpacity(0.08),blurRadius: 12,spreadRadius: 12)
+                                    BoxShadow(
+                                        color:
+                                            AppColors.black.withOpacity(0.08),
+                                        blurRadius: 12,
+                                        spreadRadius: 12)
                                   ],
-                                  gradient:  LinearGradient(
+                                  gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [
@@ -114,7 +118,6 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                                         AppColors.black.withOpacity(0.1)
                                       ]),
                                 ),
-
                               ),
                             ),
                           ]),

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 BioDataResponse bioDataResponseFromJson(String str) =>

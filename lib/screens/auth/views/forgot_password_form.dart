@@ -24,12 +24,11 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      bloc:_authBloc,
+      bloc: _authBloc,
       listener: (context, state) {
         _listenToForgotPasswordEventState(context, state);
       },
       child: Container(
-
         child: Container(
           padding: const EdgeInsets.all(30),
           decoration: const BoxDecoration(
@@ -45,10 +44,10 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
               ),
               Center(
                   child: Container(
-                    color: Colors.grey,
-                    width: 200,
-                    height: 2.5,
-                  )),
+                color: Colors.grey,
+                width: 200,
+                height: 2.5,
+              )),
               const SizedBox(
                 height: 15,
               ),
@@ -68,11 +67,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Form(
                   key: _fieldKey,
                   child: TextFormField(
@@ -98,23 +93,21 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 height: 15,
               ),
               CustomButton(
-                onTap:(){
-
-                if(_fieldKey.currentState!.validate()){
-                  _authBloc.add(ForgotPasswordEvent(email: _emailController.text));
-
-                }
-
+                onTap: () {
+                  if (_fieldKey.currentState!.validate()) {
+                    _authBloc
+                        .add(ForgotPasswordEvent(email: _emailController.text));
+                  }
                 },
                 child: isLoading
                     ? const SizedBox(
-                  height: 30,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ),
-                )
+                        height: 30,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
                     : const Text('Continue'),
               )
             ],
@@ -124,7 +117,8 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
     );
   }
 
-  void _listenToForgotPasswordEventState(BuildContext context, AuthState state) {
+  void _listenToForgotPasswordEventState(
+      BuildContext context, AuthState state) {
     if (state is ForgotPasswordLoadingState) {
       setState(() {
         isLoading = true;
@@ -134,8 +128,6 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
       widget.onFinish(_emailController.text);
       setState(() {
         isLoading = false;
-
-
       });
     }
     if (state is ForgotPasswordFailureState) {
@@ -147,7 +139,5 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
     }
   }
 
-  void complete(){
-
-  }
+  void complete() {}
 }

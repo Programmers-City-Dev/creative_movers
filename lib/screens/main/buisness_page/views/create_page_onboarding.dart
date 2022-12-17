@@ -23,9 +23,9 @@ class _CreatePageOnboardingState extends State<CreatePageOnboarding> {
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Row(
-                  children:  [
+                  children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: const CircleAvatar(
@@ -54,110 +54,120 @@ class _CreatePageOnboardingState extends State<CreatePageOnboarding> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: Container(
-                  padding: const EdgeInsets.all(18),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 0,
-                      ),
-                      Row(
+                      padding: const EdgeInsets.all(18),
+                      child: Column(
                         children: [
-                          SvgPicture.asset(
-                            AppIcons.svgIdea,
-                            color: AppColors.primaryColor,
-                            height: 25,
-                            width: 25,
+                          const SizedBox(
+                            height: 0,
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppIcons.svgIdea,
+                                color: AppColors.primaryColor,
+                                height: 25,
+                                width: 25,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'A page is a space where Movers can publicly connect '
+                                  'with your ideas/ personal brand or organization ',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              )
+                            ],
                           ),
                           const SizedBox(
-                            width: 20,
-                          ),
-                          const Expanded(
-                            child: Text(
-                              'A page is a space where Movers can publicly connect '
-                              'with your ideas/ personal brand or organization ',
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.photo_camera_rounded,
-                            color: AppColors.primaryColor,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: Text(
-                                'You can do things like showcase products and services,'
-                                ' collect donations and create ads ',
-                                style: TextStyle(fontWeight: FontWeight.w600)),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            AppIcons.svgConnects,
-                            color: AppColors.primaryColor,
                             height: 25,
-                            width: 25,
+                          ),
+                          Row(
+                            children: const [
+                              Icon(
+                                Icons.photo_camera_rounded,
+                                color: AppColors.primaryColor,
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: Text(
+                                    'You can do things like showcase products and services,'
+                                    ' collect donations and create ads ',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600)),
+                              )
+                            ],
                           ),
                           const SizedBox(
-                            width: 20,
+                            height: 25,
                           ),
-                          const Expanded(
-                              child: Text(
-                            'Millions of Movers discover and connect with Pages every day',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ))
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppIcons.svgConnects,
+                                color: AppColors.primaryColor,
+                                height: 25,
+                                width: 25,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Expanded(
+                                  child: Text(
+                                'Millions of Movers discover and connect with Pages every day',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ))
+                            ],
+                          ),
+                          SvgPicture.asset(
+                            AppIcons.svgCreate,
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width,
+                          ),
                         ],
                       ),
-                      SvgPicture.asset(
-                        AppIcons.svgCreate,
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                      ),
-
-                    ],
-                  ),
-                )),
+                    )),
               ),
               Column(
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 18),
-
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 18),
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-
-                      style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12)),
-
+                        style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12)),
                         onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CreatePageScreen(),));
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const CreatePageScreen(),
+                          ));
                         },
                         child: const Text(
                           'Get Started',
                           style: TextStyle(fontSize: 16),
                         )),
                   ),
-                  const Text('By Clicking Get Started You Agree To  The',style: TextStyle(fontWeight: FontWeight.w600),),
-                  const SizedBox(height: 10,),
-                  const Text('Creative Movers Terms',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold),),
+                  const Text(
+                    'By Clicking Get Started You Agree To  The',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    'Creative Movers Terms',
+                    style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(
                     height: 25,
                   ),
-
                 ],
               )
             ],

@@ -128,12 +128,9 @@ class _StatusViewsState extends State<StatusViews> {
                         padding: const EdgeInsets.only(right: 8.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(
-
-                                MaterialPageRoute(
-                                  fullscreenDialog: true,
+                            Navigator.of(context).push(MaterialPageRoute(
+                              fullscreenDialog: true,
                               maintainState: true,
-
                               builder: (context) => ViewStatusScreen(
                                 alllStatus: _list,
                                 status: (_list[index].status),
@@ -154,13 +151,15 @@ class _StatusViewsState extends State<StatusViews> {
                                       seenColor: Colors.grey,
                                       unSeenColor: AppColors.primaryColor,
                                       centerImageUrl: _list[index]
-                                          .status.last
+                                          .status
+                                          .last
                                           .file
                                           .toString(),
                                     )
                                   : FutureBuilder<Uint8List?>(
                                       future: VideoThumbnail.thumbnailData(
-                                        video: _list[index].status.last.file ?? '',
+                                        video:
+                                            _list[index].status.last.file ?? '',
                                         imageFormat: ImageFormat.JPEG,
                                         maxWidth: 24,
                                         maxHeight: 24,
@@ -171,7 +170,7 @@ class _StatusViewsState extends State<StatusViews> {
                                         // log(widget.media.mediaPath);
                                         if (!snapshot.hasError) {
                                           if (snapshot.hasData) {
-                                          return  Stack(
+                                            return Stack(
                                               clipBehavior: Clip.none,
                                               children: [
                                                 Center(
@@ -180,12 +179,14 @@ class _StatusViewsState extends State<StatusViews> {
                                                     spacing: 15,
                                                     strokeWidth: 2,
                                                     // indexOfSeenStatus: 2,
-                                                    numberOfStatus:
-                                                    _list[index].status.length,
+                                                    numberOfStatus: _list[index]
+                                                        .status
+                                                        .length,
                                                     padding: 4,
                                                     seenColor: Colors.grey,
-                                                    unSeenColor: AppColors.primaryColor, centerImageUrl: '',
-
+                                                    unSeenColor:
+                                                        AppColors.primaryColor,
+                                                    centerImageUrl: '',
                                                   ),
                                                 ),
                                                 Positioned(
@@ -194,29 +195,26 @@ class _StatusViewsState extends State<StatusViews> {
                                                     top: 4,
                                                     child: Center(
                                                         child: CircleAvatar(
-                                                          radius: 21,
-
-                                                          child: ClipRRect(
-                                                            
-                                                            borderRadius: BorderRadius.circular(20),
-                                                            
-                                                            child: Image.memory(
-
-                                                              snapshot.data!,
-                                                              fit: BoxFit.cover,
-                                                              filterQuality:
-                                                              FilterQuality.high,
-                                                              width: 50,
-                                                              height: 50,
-                                                              alignment: Alignment.center,
-                                                            ),
-                                                          ),
-                                                        )))
+                                                      radius: 21,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        child: Image.memory(
+                                                          snapshot.data!,
+                                                          fit: BoxFit.cover,
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high,
+                                                          width: 50,
+                                                          height: 50,
+                                                          alignment:
+                                                              Alignment.center,
+                                                        ),
+                                                      ),
+                                                    )))
                                               ],
                                             );
-
-
-
                                           }
                                         }
                                         return StatusView(
@@ -225,7 +223,7 @@ class _StatusViewsState extends State<StatusViews> {
                                           strokeWidth: 2,
                                           // indexOfSeenStatus: 2,
                                           numberOfStatus:
-                                          _list[index].status.length,
+                                              _list[index].status.length,
                                           padding: 4,
                                           seenColor: Colors.grey,
                                           unSeenColor: AppColors.primaryColor,
@@ -250,7 +248,8 @@ class _StatusViewsState extends State<StatusViews> {
                                         seenColor: Colors.grey,
                                         unSeenColor: AppColors.primaryColor,
                                         centerImageUrl: _list[index]
-                                            .status.last
+                                            .status
+                                            .last
                                             .file
                                             .toString(),
                                       ),
@@ -263,8 +262,8 @@ class _StatusViewsState extends State<StatusViews> {
                                             child: CircleAvatar(
                                           radius: 21,
                                           backgroundColor: Color(int.parse(
-                                              _list[index].status.last.bgColor!,radix: 16)),
-
+                                              _list[index].status.last.bgColor!,
+                                              radix: 16)),
                                           child: Center(
                                               child: SizedBox(
                                                   height: 23,
@@ -272,7 +271,8 @@ class _StatusViewsState extends State<StatusViews> {
                                                   child: Center(
                                                       child: Text(
                                                     _list[index]
-                                                        .status.last
+                                                        .status
+                                                        .last
                                                         .text!,
                                                     style: const TextStyle(
                                                         fontSize: 5,
@@ -282,7 +282,6 @@ class _StatusViewsState extends State<StatusViews> {
                                                     maxLines: 4,
                                                     textAlign: TextAlign.center,
                                                   )))),
-
                                         )))
                                   ],
                                 ),

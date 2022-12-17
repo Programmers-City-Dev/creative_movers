@@ -1,4 +1,4 @@
-enum ReactionType{
+enum ReactionType {
   like,
   love,
   angry,

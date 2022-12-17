@@ -33,6 +33,7 @@ class _EditEmailDialogState extends State<EditEmailDialog> {
     super.initState();
     _emailController.text = widget.initialEmail ?? '';
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(

@@ -8,14 +8,18 @@ import '../../../../di/injector.dart';
 import '../../../../helpers/app_utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../widget/custom_button.dart';
+
 class EditEthnicityDialog extends StatefulWidget {
-  final Function(User user ) onSuccess;
+  final Function(User user) onSuccess;
   final String? initialEthnicity;
-  const EditEthnicityDialog({Key? key, required this.onSuccess, this.initialEthnicity}) : super(key: key);
+  const EditEthnicityDialog(
+      {Key? key, required this.onSuccess, this.initialEthnicity})
+      : super(key: key);
 
   @override
   _EditEthnicityDialogState createState() => _EditEthnicityDialogState();
 }
+
 final _ethnicityController = TextEditingController();
 final GlobalKey<FormState> _fieldKey = GlobalKey<FormState>();
 final _profileBloc = ProfileBloc(injector.get());
@@ -27,22 +31,21 @@ class _EditEthnicityDialogState extends State<EditEthnicityDialog> {
     super.initState();
     _ethnicityController.text = widget.initialEthnicity ?? '';
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: _profileBloc,
       listener: (context, state) {
         if (state is ProfileUpdateLoading) {
-          AppUtils.showAnimatedProgressDialog(
-              context,
+          AppUtils.showAnimatedProgressDialog(context,
               title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
           widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
-          AppUtils.showCustomToast(
-              "Ethnicity has been updated successfully");
+          AppUtils.showCustomToast("Ethnicity has been updated successfully");
           // _updateProfile(
           //     state.photo, state.isProfilePhoto);
         }
@@ -61,13 +64,12 @@ class _EditEthnicityDialogState extends State<EditEthnicityDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-
             Center(
                 child: Container(
-                  color: Colors.grey,
-                  width: 100,
-                  height: 2.5,
-                )),
+              color: Colors.grey,
+              width: 100,
+              height: 2.5,
+            )),
             const SizedBox(
               height: 15,
             ),
@@ -78,14 +80,9 @@ class _EditEthnicityDialogState extends State<EditEthnicityDialog> {
             const SizedBox(
               height: 10,
             ),
-
             Padding(
               padding: EdgeInsets.only(
-
-                  bottom: MediaQuery
-                      .of(context)
-                      .viewInsets
-                      .bottom),
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Form(
                 key: _fieldKey,
                 child: TextFormField(
@@ -93,7 +90,6 @@ class _EditEthnicityDialogState extends State<EditEthnicityDialog> {
                     RequiredValidator(errorText: 'Enter your ethnic group'),
                     // EmailValidator(errorText: 'Enter a valid email'),
                   ]),
-
                   controller: _ethnicityController,
                   cursorColor: AppColors.textColor,
                   decoration: const InputDecoration(
@@ -114,7 +110,8 @@ class _EditEthnicityDialogState extends State<EditEthnicityDialog> {
             CustomButton(
               onTap: () {
                 if (_fieldKey.currentState!.validate()) {
-                  _profileBloc.add(UpdateProfileEvent(ethnicity: _ethnicityController.text));
+                  _profileBloc.add(
+                      UpdateProfileEvent(ethnicity: _ethnicityController.text));
                   // _authBloc.add(ForgotPasswordEvent(email: _phoneNumberController.text));
 
                 }

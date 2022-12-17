@@ -7,8 +7,6 @@ abstract class FeedState extends Equatable {
 class FeedInitial extends FeedState {
   @override
   List<Object> get props => [];
-
-  
 }
 
 class AddFeedLoadingState extends FeedState {
@@ -39,6 +37,7 @@ class FeedLoadingState extends FeedState {
   @override
   List<Object> get props => [];
 }
+
 class FeedSuccessState extends FeedState {
   final FeedsResponse feedResponse;
 
@@ -47,6 +46,7 @@ class FeedSuccessState extends FeedState {
   @override
   List<Object> get props => [feedResponse];
 }
+
 class FeedFaliureState extends FeedState {
   final String error;
 
@@ -65,12 +65,12 @@ class FeedItemLoadedState extends FeedState {
   List<Object> get props => [feed];
 }
 
-
 //CommentStates
 class CommentsLoadingState extends FeedState {
   @override
   List<Object> get props => [];
 }
+
 class CommentsSuccessState extends FeedState {
   final PostCommentResponse postCommentsResponse;
 
@@ -79,6 +79,7 @@ class CommentsSuccessState extends FeedState {
   @override
   List<Object> get props => [postCommentsResponse];
 }
+
 class CommentsFaliureState extends FeedState {
   final String error;
 
@@ -93,6 +94,7 @@ class LikeLoadingState extends FeedState {
   @override
   List<Object> get props => [];
 }
+
 class LikeSuccessState extends FeedState {
   final LikeResponse likeResponse;
 
@@ -101,6 +103,7 @@ class LikeSuccessState extends FeedState {
   @override
   List<Object> get props => [likeResponse];
 }
+
 class LikeFaliureState extends FeedState {
   final String error;
 
@@ -114,6 +117,7 @@ class DeleteFeedLoadingState extends FeedState {
   @override
   List<Object> get props => [];
 }
+
 class DeleteFeedSuccessState extends FeedState {
   LikeResponse likeResponse;
 
@@ -122,6 +126,7 @@ class DeleteFeedSuccessState extends FeedState {
   @override
   List<Object> get props => [likeResponse];
 }
+
 class DeleteFeedFaliureState extends FeedState {
   String error;
 
@@ -131,11 +136,11 @@ class DeleteFeedFaliureState extends FeedState {
   List<Object> get props => [error];
 }
 
-
 class EditFeedLoadingState extends FeedState {
   @override
   List<Object> get props => [];
 }
+
 class EditFeedSuccessState extends FeedState {
   AddFeedResponse feedResponse;
 
@@ -144,6 +149,7 @@ class EditFeedSuccessState extends FeedState {
   @override
   List<Object> get props => [feedResponse];
 }
+
 class EditFeedFaliureState extends FeedState {
   String error;
 

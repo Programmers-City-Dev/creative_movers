@@ -62,25 +62,56 @@ class ChatRepository {
     );
   }
 
-  Future<State> sendChannelMessage(
-      String channelName, LiveChatMessage message) async {
-    try {
-      var documentReference = _firestore
-          .collection("messaging")
-          .doc("live")
-          .collection(channelName)
-          .doc();
-      await _firestore
-          .collection("messaging")
-          .doc("live")
-          .collection(channelName)
-          .add(message.copyWith(id: documentReference.id).toMap());
+  // Future<State> sendChannelMessage(
+  //     String channelName, LiveChatMessage message) async {
+  //   try {
+  //     var documentReference = _firestore
+  //         .collection("messaging")
+  //         .doc("live")
+  //         .collection(channelName)
+  //         .doc();
+  //     await _firestore
+  //         .collection("messaging")
+  //         .doc("live")
+  //         .collection(channelName)
+  //         .add(message.copyWith(id: documentReference.id).toMap());
 
-      return State.success(documentReference);
-    } on FirebaseException catch (fe) {
-      return State.error(
-          ServerErrorModel(statusCode: 401, errorMessage: fe.message!));
-    }
+  //     return State.success(documentReference);
+  //   } on FirebaseException catch (fe) {
+  //     return State.error(
+  //         ServerErrorModel(statusCode: 401, errorMessage: fe.message!));
+  //   }
+  // }
+
+  Future<State> sendChannelMessage(
+      String channelName, String message) async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(Endpoints.sendLiveMessage,
+          body: {"message": message, "token": channelName}),
+      successResponse: (data) {
+        return State<LiveChatMessage?>.success(
+            data != null ? LiveChatMessage.fromMap(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: "Oops! something went wrong",
+              data: null),
+        );
+      },
+    );
   }
 
   Stream<List<LiveChatMessage>> channelMessages(String channelName) {

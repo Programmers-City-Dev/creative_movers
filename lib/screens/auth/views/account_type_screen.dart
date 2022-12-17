@@ -4,8 +4,11 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AccountTypeScreen extends StatefulWidget {
-  const AccountTypeScreen({Key? key, required this.categories, }) : super(key: key);
- final List<String> categories;
+  const AccountTypeScreen({
+    Key? key,
+    required this.categories,
+  }) : super(key: key);
+  final List<String> categories;
 
   @override
   _AccountTypeScreenState createState() => _AccountTypeScreenState();
@@ -22,14 +25,16 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        iconTheme: const IconThemeData(color: AppColors.textColor, ),
-        toolbarTextStyle: const TextStyle(color: AppColors.textColor,),
+        iconTheme: const IconThemeData(
+          color: AppColors.textColor,
+        ),
+        toolbarTextStyle: const TextStyle(
+          color: AppColors.textColor,
+        ),
         backgroundColor: AppColors.white,
         title: const Text(
           'Select Account Type',
-
-          style: TextStyle(color: AppColors.textColor,fontSize: 16),
+          style: TextStyle(color: AppColors.textColor, fontSize: 16),
         ),
       ),
       body: Container(
@@ -75,7 +80,14 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 // scrollDirection: Axis.vertical,
                 controller: pageController,
-                children:  [ CreativeForm(categories:widget.categories ,),MoverForm(categories: widget.categories,),],
+                children: [
+                  CreativeForm(
+                    categories: widget.categories,
+                  ),
+                  MoverForm(
+                    categories: widget.categories,
+                  ),
+                ],
               )),
               // Expanded(
               //     child: account_type == 'Mover'
