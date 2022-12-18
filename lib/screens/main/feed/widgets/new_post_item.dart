@@ -146,7 +146,7 @@ class _NewPostItemState extends State<NewPostItem> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    '  ${widget.feed.page!.name} ',
+                                    '  ${widget.feed.user?.firstname} ${widget.feed.user?.lastname} ',
                                     maxLines: 1,
                                     softWrap: true,
                                     overflow: TextOverflow.ellipsis,
@@ -156,13 +156,13 @@ class _NewPostItemState extends State<NewPostItem> {
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  const Text('🅿️')
+                                  // const Text()
                                 ],
                               ),
                               Row(
                                 children: [
                                   Text(
-                                    ' Posetd by ${widget.feed.user?.firstname} ',
+                                    '🅿️ ${widget.feed.page?.name} ',
                                     maxLines: 1,
                                     style: const TextStyle(
                                       fontSize: 10,

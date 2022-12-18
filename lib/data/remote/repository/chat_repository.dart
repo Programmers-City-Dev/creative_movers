@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:creative_movers/constants/enpoints.dart';
@@ -14,6 +13,7 @@ import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/helpers/api_helper.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/chat/live_chat_message.dart';
@@ -129,10 +129,23 @@ class ChatRepository {
 
   // Send chat message on the main chat screen
   Future<State> sendChatMessage(
-      {required List<File> files, required ChatMessageRequest message}) async {
+      {required List<String> files,
+      required ChatMessageRequest message}) async {
+    var formData = FormData.fromMap({
+      "user_id": message.userId,
+      "conversation_id": message.conversationId,
+      "message": message.message,
+    });
+
+    for (var file in files) {
+      var multipartFile = await MultipartFile.fromFile(file);
+      formData.files.addAll([
+        MapEntry("media", multipartFile),
+      ]);
+    }
     log("CONVO ID: ${message.toMap()}");
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.sendChatMessage, body: message.toMap()),
+      () => httpClient.post(Endpoints.sendChatMessage, body: formData),
       successResponse: (data) {
         return State<ChatMessageResponse?>.success(
             data != null ? ChatMessageResponse.fromMap(data) : null);
@@ -290,11 +303,13 @@ class ChatRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.notifyLiveVideo, body: {
         "notify_for": inviteType,
-        "notify_message": "$firstname $lastname has started a live video, join them now!",
+        "notify_message":
+            "$firstname $lastname has started a live video, join them now!",
         "channel": channelName
       }),
       successResponse: (data) {
-        return State<String?>.success(data != null ? "Invitation sent successfully" : null);
+        return State<String?>.success(
+            data != null ? "Invitation sent successfully" : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

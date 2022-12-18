@@ -1,5 +1,5 @@
 
-enum MediaType { image, video }
+enum MediaType { image, video,other }
 
 class MediaItemModel {
   final MediaType mediaType;

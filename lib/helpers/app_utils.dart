@@ -20,7 +20,6 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AppUtils {
-
   AppUtils._();
 
   static List<EthnicityModel> get ethnicities {
@@ -230,16 +229,14 @@ class AppUtils {
               children: [
                 Expanded(
                   child: CustomButton(
-                      onTap: onConfirmed,
-                      child: Text(confirmButtonText)),
+                      onTap: onConfirmed, child: Text(confirmButtonText)),
                 ),
                 const SizedBox(
                   width: 16,
                 ),
                 Expanded(
                     child: CustomButton(
-                        onTap: onCancel,
-                        child: Text(cancelButtonText))),
+                        onTap: onCancel, child: Text(cancelButtonText))),
               ],
             )
           ],
@@ -414,7 +411,8 @@ class AppUtils {
     );
   }
 
-  static Future<List<String>> fetchImages({bool allowMultiple = false}) async {
+  static Future<List<String>> fetchImages(
+      {bool allowMultiple = false, List<String>? allowedExtensions}) async {
     try {
       FilePicker filePicker = FilePicker.platform;
       FilePickerResult? result = await filePicker.pickFiles(
@@ -423,7 +421,7 @@ class AppUtils {
         dialogTitle: 'SELECT IMAGE',
         withData: true,
         allowMultiple: allowMultiple,
-        // allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        allowedExtensions: allowedExtensions,
       );
       if (result != null) {
         return result.files.map((file) => file.path!).toList();
@@ -563,11 +561,12 @@ class AppUtils {
         type: FileType.custom,
         allowCompression: true,
         allowMultiple: allowMultiple,
-        allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png'],
-      ).then((value) {
-        onSelect!(value);
-        return null;
-      });
+        allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png','pdf'],
+      );
+      //     .then((value) {
+      //   onSelect!(value);
+      //   return null;
+      // });
       if (result != null) {
         return result.files;
       } else {
@@ -589,8 +588,7 @@ class AppUtils {
       return 'Yesterday ${DateFormat("hh:mm a").format(date)}';
     }
 
-    return DateFormat.yMMMEd()
-        .format(date);
+    return DateFormat.yMMMEd().format(date);
   }
 
   static String getGroupLabel(int groupByValue) {

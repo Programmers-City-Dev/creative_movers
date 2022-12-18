@@ -32,6 +32,7 @@ class Constants {
   static const pusherCluster = "eu";
   static const pusherSecrete = "b287008664ae2bdd50d2";
   static const pusherId = "1507674";
+  static const placeHolderImage = "https://media.istockphoto.com/id/1264040074/vector/placeholder-rgb-color-icon.jpg?s=612x612&w=0&k=20&c=0ZFUNL28htu-zHRF9evishuNKYQAZVrfK0-TZNjnX3U=";
 
   static const userCredentials = 'login_user_credentials';
   static const themeKey = "nitrade_theme_key";

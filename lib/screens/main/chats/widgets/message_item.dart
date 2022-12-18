@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
@@ -19,11 +20,13 @@ class MessageItem extends StatefulWidget {
       this.shouldLoad = false,
       required this.onMessageSent,
       required this.onDeleteMessage,
-        required this.otherUserId})
+      required this.otherUserId,
+      this.files = const []})
       : super(key: key);
   final Message chatMessage;
   final bool? shouldLoad;
   final int otherUserId;
+  final List<String> files;
   final Function(Message) onMessageSent;
   final Function(Message) onDeleteMessage;
 
@@ -44,17 +47,21 @@ class _MessageItemState extends State<MessageItem> {
     _shouldLoad = widget.shouldLoad;
     if (_shouldLoad != null) {
       if (_shouldLoad!) {
-        if(widget.chatMessage.conversationId == "-1"){
+        if (widget.chatMessage.conversationId == "-1") {
           _chatBloc.add(SendChatMessage(
+              files: widget.files,
               message: ChatMessageRequest(
-                  userId: widget.otherUserId,
-                  message: widget.chatMessage.body!)));
-        }else {
+                userId: widget.otherUserId,
+                message: widget.chatMessage.body!,
+              )));
+        } else {
           _chatBloc.add(SendChatMessage(
+              files: widget.files,
               message: ChatMessageRequest(
-                  userId: widget.otherUserId,
-                  conversationId: int.parse(widget.chatMessage.conversationId),
-                  message: widget.chatMessage.body!)));
+                userId: widget.otherUserId,
+                conversationId: int.parse(widget.chatMessage.conversationId),
+                message: widget.chatMessage.body!,
+              )));
         }
       }
     }
@@ -69,109 +76,6 @@ class _MessageItemState extends State<MessageItem> {
       crossAxisAlignment:
           !isForMe ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
-        Padding(
-          padding: !isForMe
-              ? EdgeInsets.only(
-                  left: 12, right: MediaQuery.of(context).size.width * 0.15)
-              : EdgeInsets.only(
-                  right: 12, left: MediaQuery.of(context).size.width * 0.15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Visibility(
-                visible: !isForMe,
-                child: CircleImage(
-                  url: widget.chatMessage.profilePhotoPath,
-                  withBaseUrl: false,
-                  radius: 18,
-                ),
-              ),
-              Flexible(
-                child: Visibility(
-                  visible: widget.chatMessage.media.isEmpty,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 5, left: 5, top: 8),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        color: !isForMe
-                            ? Colors.grey.shade300
-                            : AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text(
-                      '${widget.chatMessage.body}',
-                      style: TextStyle(
-                          color: !isForMe
-                              ? AppColors.PtextColor
-                              : AppColors.white),
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: widget.chatMessage.media.isNotEmpty,
-                child: Container(
-                  height: 200,
-                  width: 170,
-                  margin: const EdgeInsets.only(right: 5, left: 5, top: 8),
-                  decoration: BoxDecoration(
-                      // gradient: const RadialGradient(
-                      //   colors: [
-                      //     AppColors.gradient,
-                      //     AppColors.gradient2,
-                      //   ],
-                      //   radius: 0.8,
-                      // ),
-                      color: AppColors.primaryColor,
-                      image: DecorationImage(
-                          colorFilter: ColorFilter.mode(
-                              Colors.grey.withOpacity(0.5), BlendMode.srcOver),
-                          fit: BoxFit.cover,
-                          image: const NetworkImage(
-                            'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
-                          )),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: const Center(
-                    child: Icon(
-                      Icons.videocam_off_rounded,
-                      color: AppColors.white,
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                  visible: widget.chatMessage.media.isNotEmpty,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                      height: 220,
-                      width: 170,
-                      margin: const EdgeInsets.only(right: 5, left: 5, top: 8),
-                      decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          image: DecorationImage(
-                              colorFilter: ColorFilter.mode(
-                                  Colors.grey.withOpacity(0.5),
-                                  BlendMode.srcOver),
-                              fit: BoxFit.cover,
-                              image: const NetworkImage(
-                                'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
-                              )),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: const Center(
-                        child: Icon(
-                          Icons.photo_camera_rounded,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ))
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
         BlocConsumer<ChatBloc, ChatState>(
           bloc: _chatBloc,
           listener: (context, state) {
@@ -185,6 +89,121 @@ class _MessageItemState extends State<MessageItem> {
             }
           },
           builder: (context, state) {
+            return Padding(
+              padding: !isForMe
+                  ? EdgeInsets.only(
+                      left: 12, right: MediaQuery.of(context).size.width * 0.15)
+                  : EdgeInsets.only(
+                      right: 12,
+                      left: MediaQuery.of(context).size.width * 0.15),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Visibility(
+                    visible: !isForMe,
+                    child: CircleImage(
+                      url: widget.chatMessage.profilePhotoPath,
+                      withBaseUrl: false,
+                      radius: 18,
+                    ),
+                  ),
+                  Flexible(
+                    child: Visibility(
+                      visible: widget.chatMessage.body.toString().isNotEmpty &&
+                          widget.chatMessage.body != null,
+                      child: Container(
+                        margin:
+                            const EdgeInsets.only(right: 5, left: 5, top: 8),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            color: !isForMe
+                                ? Colors.grey.shade300
+                                : AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          '${widget.chatMessage.body}',
+                          style: TextStyle(
+                              color: !isForMe
+                                  ? AppColors.PtextColor
+                                  : AppColors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: false,
+                    child: Container(
+                      height: 200,
+                      width: 170,
+                      margin: const EdgeInsets.only(right: 5, left: 5, top: 8),
+                      decoration: BoxDecoration(
+                          // gradient: const RadialGradient(
+                          //   colors: [
+                          //     AppColors.gradient,
+                          //     AppColors.gradient2,
+                          //   ],
+                          //   radius: 0.8,
+                          // ),
+                          color: AppColors.primaryColor,
+                          image: DecorationImage(
+                              colorFilter: ColorFilter.mode(
+                                  Colors.grey.withOpacity(0.5),
+                                  BlendMode.srcOver),
+                              fit: BoxFit.cover,
+                              image: const NetworkImage(
+                                'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+                              )),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: const Center(
+                        child: Icon(
+                          Icons.videocam_off_rounded,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  widget.chatMessage.media.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container(
+                            height: 220,
+                            width: 170,
+                            margin: const EdgeInsets.only(
+                                right: 5, left: 5, top: 8),
+                            decoration: BoxDecoration(
+                                color: AppColors.primaryColor,
+                                border:
+                                    Border.all(color: Colors.grey, width: 1),
+                                image: DecorationImage(
+                                    colorFilter: null,
+                                    fit: BoxFit.cover,
+                                    image: (state is! ChatMessageLoading)
+                                        ? NetworkImage(
+                                            widget.chatMessage.media[0])
+                                        : FileImage(
+                                            File(widget.files[0]),
+                                          ) as ImageProvider),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Center(
+                              child: state is ChatMessageLoading
+                                  ? const CircularProgressIndicator()
+                                  : const SizedBox(),
+                            ),
+                          ),
+                        )
+                      : const SizedBox()
+                ],
+              ),
+            );
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        BlocBuilder<ChatBloc, ChatState>(
+          bloc: _chatBloc,
+          builder: (context, state) {
             if (state is ChatMessageLoading) {
               return const Padding(
                 padding: EdgeInsets.only(right: 16),
@@ -197,8 +216,7 @@ class _MessageItemState extends State<MessageItem> {
             if (state is ChatError) {
               return GestureDetector(
                 onTap: () {
-                  if (_shouldLoad!) {
-                  }
+                  if (_shouldLoad!) {}
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 16.0),

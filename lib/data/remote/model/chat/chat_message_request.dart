@@ -21,8 +21,8 @@ class ChatMessageRequest {
       );
 
   Map<String, dynamic> toMap() => {
-    "user_id": userId,
-    "conversation_id": conversationId,
-    "message": message,
-  };
+        "user_id": userId,
+        "conversation_id": conversationId,
+        "message": message,
+      };
 }

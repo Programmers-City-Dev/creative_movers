@@ -6,11 +6,16 @@ import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/chats/widgets/message_item.dart';
+import 'package:creative_movers/screens/main/feed/models/mediaitem_model.dart';
+import 'package:creative_movers/screens/main/feed/widgets/file_picker_item.dart';
+import 'package:creative_movers/screens/main/feed/widgets/image_picker_item.dart';
+import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class MessagingScreen extends StatefulWidget {
@@ -38,6 +43,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
   final CacheCubit _cacheCubit = injector.get<CacheCubit>();
 
   ValueNotifier<bool> noTextNotifier = ValueNotifier(true);
+  List<MediaItemModel> mediaItems = [];
+  List<String> mediaFiles = [];
 
   int? conversationId;
 
@@ -204,6 +211,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                             itemBuilder: (context, message) => MessageItem(
                               chatMessage: message,
                               shouldLoad: message.shouldLoad,
+                              files: mediaFiles,
                               otherUserId: widget.user.id,
                               onMessageSent: (msg) {
                                 conversationId = int.parse(msg.conversationId);
@@ -222,92 +230,208 @@ class _MessagingScreenState extends State<MessagingScreen> {
                             // optional
                             order: GroupedListOrder.ASC, // optional
                           )),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color: AppColors.white),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.attachment_rounded,
-                                      ),
+                            mediaItems.isNotEmpty
+                                ? SizedBox(
+                                    height: 100,
+                                    child: ListView.builder(
+                                        physics: const BouncingScrollPhysics(),
+                                        itemCount: mediaItems.length,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) =>
+                                            mediaItems[index].mediaType ==
+                                                    MediaType.image
+                                                ? ImagePickerItem(
+                                                    image:
+                                                        mediaItems[index].path,
+                                                    onClose: () {
+                                                      setState(() {
+                                                        mediaItems.remove(
+                                                            mediaItems[index]);
+                                                        mediaFiles
+                                                            .removeAt(index);
+                                                      });
+                                                    },
+                                                  )
+                                                : mediaItems[index].mediaType ==
+                                                        MediaType.image
+                                                    ? VideoPickerItem(
+                                                        path: mediaItems[index]
+                                                            .path!,
+                                                        onClose: () {
+                                                          setState(() {
+                                                            mediaFiles.removeAt(
+                                                                index);
+                                                            mediaItems.remove(
+                                                                mediaItems[
+                                                                    index]);
+                                                          });
+                                                        },
+                                                      )
+                                                    : FilePickerItem(
+                                                        filePath:
+                                                            mediaItems[index]
+                                                                .path!,
+                                                        onClose: () {
+                                                          setState(() {
+                                                            mediaFiles.removeAt(
+                                                                index);
+                                                            mediaItems.remove(
+                                                                mediaItems[
+                                                                    index]);
+                                                          });
+                                                        },
+                                                      )))
+                                : const SizedBox(),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: AppColors.white),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        SpeedDial(
+                                          elevation: 0,
+                                          spaceBetweenChildren: 16,
+                                          overlayOpacity: 0.3,
+                                          overlayColor: Colors.black,
+                                          childPadding: EdgeInsets.zero,
+                                          renderOverlay: true,
+                                          backgroundColor: Colors.transparent,
+                                          activeForegroundColor:
+                                              Colors.transparent,
+                                          activeBackgroundColor:
+                                              Colors.transparent,
+                                          useRotationAnimation: false,
+                                          children: [
+                                            SpeedDialChild(
+                                              shape: const CircleBorder(),
+                                              backgroundColor: Colors.purple,
+                                              child: const IconButton(
+                                                  onPressed: null,
+                                                  icon: Icon(
+                                                    Icons.description,
+                                                    color: Colors.white,
+                                                  )),
+                                              onTap: () async {
+                                                _fetchMedia();
+                                              },
+                                            ),
+                                            SpeedDialChild(
+                                              shape: const CircleBorder(),
+                                              backgroundColor: Colors.indigo,
+                                              child: const IconButton(
+                                                  onPressed: null,
+                                                  icon: Icon(
+                                                    Icons.image,
+                                                    color: Colors.white,
+                                                  )),
+                                              onTap: () async {
+                                                _selectImage(context);
+                                              },
+                                            ),
+                                          ],
+                                          activeChild: const IconButton(
+                                              onPressed: null,
+                                              icon: Icon(
+                                                Icons.attachment_rounded,
+                                                color: Colors.black,
+                                              )),
+                                          child: const IconButton(
+                                              onPressed: null,
+                                              icon: Icon(
+                                                Icons.attachment_rounded,
+                                                color: Colors.black,
+                                              )),
+                                        ),
+                                        Expanded(
+                                          child: TextField(
+                                            focusNode: _focusNode,
+                                            onChanged: (val) {
+                                              noTextNotifier.value =
+                                                  val.isEmpty ||
+                                                      val.trim().isEmpty;
+                                            },
+                                            controller: _textController,
+                                            decoration: const InputDecoration(
+                                                filled: true,
+                                                hintText: "Type your message",
+                                                hintStyle: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.italic),
+                                                fillColor: AppColors.white,
+                                                contentPadding: EdgeInsets.zero,
+                                                border: OutlineInputBorder(
+                                                    borderSide:
+                                                        BorderSide.none)),
+                                            minLines: 1,
+                                            maxLines: 5,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            _selectCameraImage();
+                                          },
+                                          icon: const Icon(
+                                            Icons.photo_camera_rounded,
+                                            color: AppColors.textColor,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Expanded(
-                                      child: TextField(
-                                        focusNode: _focusNode,
-                                        onChanged: (val) {
-                                          noTextNotifier.value =
-                                              val.isEmpty || val.trim().isEmpty;
-                                        },
-                                        controller: _textController,
-                                        decoration: const InputDecoration(
-                                            filled: true,
-                                            hintText: "Type your message",
-                                            hintStyle: TextStyle(
-                                                fontStyle: FontStyle.italic),
-                                            fillColor: AppColors.white,
-                                            contentPadding: EdgeInsets.zero,
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide.none)),
-                                        minLines: 1,
-                                        maxLines: 5,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.photo_camera_rounded,
-                                        color: AppColors.textColor,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        right: 8, bottom: 16),
+                                    height: 45,
+                                    width: 45,
+                                    child: FloatingActionButton(
+                                      onPressed: () {},
+                                      child: ValueListenableBuilder<bool>(
+                                          valueListenable: noTextNotifier,
+                                          builder: (context, value, snapshot) {
+                                            return value
+                                                ? AnimatedContainer(
+                                                    duration: const Duration(
+                                                        milliseconds: 2000),
+                                                    child: const Icon(
+                                                      Icons.mic_rounded,
+                                                    ),
+                                                  )
+                                                : AnimatedContainer(
+                                                    duration: const Duration(
+                                                        milliseconds: 2000),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        if (_textController
+                                                            .text.isNotEmpty) {
+                                                          _sendMessage();
+                                                        }
+                                                      },
+                                                      child: const Icon(
+                                                        Icons.send_rounded,
+                                                      ),
+                                                    ),
+                                                  );
+                                          }),
+                                    ))
+                              ],
                             ),
-                            Container(
-                                margin:
-                                    const EdgeInsets.only(right: 8, bottom: 16),
-                                height: 45,
-                                width: 45,
-                                child: FloatingActionButton(
-                                  onPressed: () {},
-                                  child: ValueListenableBuilder<bool>(
-                                      valueListenable: noTextNotifier,
-                                      builder: (context, value, snapshot) {
-                                        return value
-                                            ? AnimatedContainer(
-                                                duration: const Duration(
-                                                    milliseconds: 2000),
-                                                child: const Icon(
-                                                  Icons.mic_rounded,
-                                                ),
-                                              )
-                                            : AnimatedContainer(
-                                                duration: const Duration(
-                                                    milliseconds: 2000),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    if (_textController
-                                                        .text.isNotEmpty) {
-                                                      _sendMessage(context);
-                                                    }
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.send_rounded,
-                                                  ),
-                                                ),
-                                              );
-                                      }),
-                                ))
                           ],
                         ),
                       ],
@@ -326,7 +450,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
     }
   }
 
-  void _sendMessage(BuildContext context) {
+  void _sendMessage() {
     Message message = Message(
         id: 0,
         body: _textController.text,
@@ -334,7 +458,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
             conversationId == null ? '-1' : conversationId.toString(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        media: [],
+        media: mediaFiles,
         status: 'unread',
         userId: injector.get<CacheCubit>().cachedUser!.id.toString(),
         profilePhotoPath:
@@ -349,6 +473,99 @@ class _MessagingScreenState extends State<MessagingScreen> {
       return "Online";
     } else {
       return AppUtils.getLastSeen(user.updatedAt!);
+    }
+  }
+
+  void _fetchMedia() async {
+    var images = ['jpg', 'jpeg', 'png', 'webp', 'PNG'];
+    var videos = ['mp4', 'mov'];
+    var pickedFiles = await AppUtils.fetchMedia(
+      allowMultiple: false,
+    );
+
+    if (pickedFiles.isNotEmpty) {
+      mediaFiles.add(pickedFiles[0].path!);
+      _sendMessage();
+    }
+
+    //TODO UNCOMMENT IF MULTIPLE IMAGE PREVIEW IS ALLOWED
+    // if (pickedFiles.isNotEmpty) {
+    //   for (var file in pickedFiles) {
+    //     if (images.where((element) => element == file.extension).isNotEmpty) {
+    //       mediaItems
+    //           .add(MediaItemModel(mediaType: MediaType.image, path: file.path));
+    //
+    //       mediaFiles.add(file.path!);
+    //
+    //       setState(() {});
+    //     } else if (videos
+    //         .where((element) => element == file.extension)
+    //         .isNotEmpty) {
+    //       mediaItems
+    //           .add(MediaItemModel(mediaType: MediaType.video, path: file.path));
+    //       mediaFiles.add(file.path!);
+    //       setState(() {});
+    //
+    //       // log('VIDEO ${mediaFiles[0].file?.filename}');
+    //
+    //       setState(() {});
+    //     } else {
+    //       mediaItems
+    //           .add(MediaItemModel(mediaType: MediaType.other, path: file.path));
+    //       mediaFiles.add(file.path!);
+    //       setState(() {});
+    //     }
+    //   }
+    // }
+
+    // var pickedFiles = [];
+    // AppUtils.selectImage(context, (p0) {
+    //   setState(() {
+    //     pickedFiles = p0.map((e) => File(e)).toList();
+    //   });
+    //   if (pickedFiles.isNotEmpty) {
+    //     for (File file in pickedFiles) {
+    //       if (images
+    //           .where((element) =>
+    //       element == p.extension(file.path).replaceFirst('.', ''))
+    //           .isNotEmpty) {
+    //         mediaItems.add(
+    //             MediaItemModel(mediaType: MediaType.image, path: file.path));
+    //
+    //         mediaFiles.add(file.path);
+    //         AppUtils.showCustomToast(mediaFiles.length.toString());
+    //         AppUtils.showCustomToast(file.path.toString());
+    //
+    //         setState(() {});
+    //       } else if (videos
+    //           .where((element) => element == p.extension(file.path))
+    //           .isNotEmpty) {
+    //         mediaItems.add(
+    //             MediaItemModel(mediaType: MediaType.video, path: file.path));
+    //         mediaFiles.add(file.path);
+    //         // log('VIDEO ${mediaFiles[0].file?.filename}');
+    //
+    //         setState(() {});
+    //       }
+    //     }
+    //   }
+    // });
+  }
+
+  void _selectImage(BuildContext context) {
+    AppUtils.selectImage(context, (p0) {
+      if (p0.isNotEmpty) {
+        mediaFiles.add(p0[0]);
+        _sendMessage();
+      }
+    });
+  }
+
+  void _selectCameraImage() async {
+    var picture = await AppUtils.fetchImageFromCamera();
+    if (picture != null) {
+      mediaFiles.add(picture);
+      _sendMessage();
     }
   }
 }
