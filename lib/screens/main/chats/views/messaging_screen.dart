@@ -553,7 +553,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
   }
 
   void _selectImage(BuildContext context) {
-    AppUtils.selectImage(context, (p0) {
+    AppUtils.selectFiles(context, (p0) {
       if (p0.isNotEmpty) {
         mediaFiles.add(p0[0]);
         _sendMessage();

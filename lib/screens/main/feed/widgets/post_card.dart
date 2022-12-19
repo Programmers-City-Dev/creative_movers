@@ -14,101 +14,109 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.only(top: 40),
-        decoration: const BoxDecoration(color: AppColors.white),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Tell us about it',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Do you have anything to share ?',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                ],
-              ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(top: 40),
+      decoration: const BoxDecoration(color: AppColors.white),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Tell us about it',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Do you have anything to share ?',
+                  style: TextStyle(fontSize: 13),
+                ),
+              ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Divider(
-                height: 5,
-              ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Divider(
+              height: 5,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: widget.onTap,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.photo_size_select_actual,
+                                color: AppColors.primaryColor,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Photo',
+                                style: TextStyle(fontSize: 13),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.videocam_rounded,
+                                color: Colors.purple,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Video',
+                                style: TextStyle(fontSize: 13),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _joinLiveStream();
+                  },
+                  child: SizedBox(
                     child: Row(
                       children: const [
                         Icon(
-                          Icons.photo_size_select_actual,
-                          color: AppColors.primaryColor,
+                          Icons.video_call_rounded,
+                          color: Colors.red,
                         ),
                         SizedBox(
                           width: 5,
                         ),
                         Text(
-                          'Photo',
+                          'Go Live',
                           style: TextStyle(fontSize: 13),
                         )
                       ],
                     ),
                   ),
-                  Row(
-                    children: const [
-                      Icon(
-                        Icons.videocam_rounded,
-                        color: Colors.purple,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Video',
-                        style: TextStyle(fontSize: 13),
-                      )
-                    ],
-                  ),
-                  InkWell(
-                    onTap: () {
-                      _joinLiveStream();
-                    },
-                    child: SizedBox(
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.video_call_rounded,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'Go Live',
-                            style: TextStyle(fontSize: 13),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
