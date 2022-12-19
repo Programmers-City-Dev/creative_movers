@@ -50,20 +50,22 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: const [
-                      Icon(
-                        Icons.photo_size_select_actual,
-                        color: AppColors.primaryColor,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Photo',
-                        style: TextStyle(fontSize: 13),
-                      )
-                    ],
+                  Expanded(
+                    child: Row(
+                      children: const [
+                        Icon(
+                          Icons.photo_size_select_actual,
+                          color: AppColors.primaryColor,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          'Photo',
+                          style: TextStyle(fontSize: 13),
+                        )
+                      ],
+                    ),
                   ),
                   Row(
                     children: const [
@@ -84,20 +86,22 @@ class _PostCardState extends State<PostCard> {
                     onTap: () {
                       _joinLiveStream();
                     },
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Icons.video_call_rounded,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          'Go Live',
-                          style: TextStyle(fontSize: 13),
-                        )
-                      ],
+                    child: SizedBox(
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Icons.video_call_rounded,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Go Live',
+                            style: TextStyle(fontSize: 13),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
