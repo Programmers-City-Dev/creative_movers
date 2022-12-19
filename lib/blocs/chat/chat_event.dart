@@ -48,7 +48,7 @@ class LiveChatMessagesFetchedEvent extends ChatEvent {
 
 class SendChatMessage extends ChatEvent {
   final ChatMessageRequest message;
-  final List<File> files;
+  final List<String> files;
 
   const SendChatMessage({required this.message, this.files = const []});
 

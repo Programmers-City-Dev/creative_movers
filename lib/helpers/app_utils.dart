@@ -571,11 +571,12 @@ class AppUtils {
         type: FileType.custom,
         allowCompression: true,
         allowMultiple: allowMultiple,
-        allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png'],
-      ).then((value) {
-        onSelect!(value);
-        return null;
-      });
+        allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png','pdf'],
+      );
+      //     .then((value) {
+      //   onSelect!(value);
+      //   return null;
+      // });
       if (result != null) {
         return result.files;
       } else {
