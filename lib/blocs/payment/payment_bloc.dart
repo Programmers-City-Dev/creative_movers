@@ -18,15 +18,14 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:uuid/uuid.dart';
 
 part 'payment_event.dart';
-
 part 'payment_state.dart';
 
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   final PaymentRepository repository;
 
   PaymentBloc(this.repository) : super(PaymentInitial()) {
-    on<CreatePaymentIntentEvent>(_mapCreatePaymentIntentEventToState);
-    on<MakePaymentEvent>(_mapMakePaymentEventToState);
+    on<MakePaymentWithIntentEvent>(_mapMakePaymentEventToState);
+    // on<MakePaymentEvent>(_mapMakePaymentEventToState);
     on<GetSubscriptionInfoEvent>(_mapGetSubscriptionInfoEventToState);
     on<GetPaymentHistoryEvent>(_mapGetPaymentHistoryEventToState);
     on<StartFreeTrialEvent>(_mapStartFreeTrialEventToState);
@@ -37,7 +36,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
         paymentIntentClientSecret: secret,
-        // applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
+        applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
         googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
         appearance: const PaymentSheetAppearance(
             colors:
@@ -94,39 +93,62 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           statusCode: 400, errorMessage: "Unable to complete payment request"));
     }
   }
-
-  FutureOr<void> _mapCreatePaymentIntentEventToState(
-      CreatePaymentIntentEvent event, Emitter<PaymentState> emit) async {
-    try {
-      emit(PaymentProcessingState());
-      var either = await _createPaymentIntent(
-          event.amount, event.currency, event.duration, event.paymentFor);
-      if (either.isLeft) {
-        emit(PaymentFailureState(either.left.errorMessage));
-      } else {
-        emit(PaymentIntentGottenState(either.right));
-      }
-    } catch (e) {
-      emit(const PaymentFailureState(
-          "Unable to initialize payment, try again!"));
-    }
-  }
+  //   FutureOr<void> _mapCreatePaymentIntentEventToState(
+  //     CreatePaymentIntentEvent event, Emitter<PaymentState> emit) async {
+  //   try {
+  //     emit(PaymentProcessingState());
+  //     var either = await _createPaymentIntent(
+  //         event.amount, event.currency, event.duration, event.paymentFor);
+  //     if (either.isLeft) {
+  //       emit(PaymentFailureState(either.left.errorMessage));
+  //     } else {
+  //       emit(PaymentIntentGottenState(either.right));
+  //     }
+  //   } catch (e) {
+  //     emit(const PaymentFailureState(
+  //         "Unable to initialize payment, try again!"));
+  //   }
+  // }
 
   FutureOr<void> _mapMakePaymentEventToState(
-      MakePaymentEvent event, Emitter<PaymentState> emit) async {
+      MakePaymentWithIntentEvent event, Emitter<PaymentState> emit) async {
     try {
       emit(PaymentProcessingState());
-      var either = await makePayment(event.secrete);
-      if (either.isLeft) {
-        emit(PaymentFailureState(either.left));
+      var response = await _createPaymentIntent(
+          event.amount, event.currency, event.duration, event.paymentFor);
+      if (response.isLeft) {
+        emit(PaymentFailureState(response.left.errorMessage));
       } else {
-        emit(PaymentConfirmedState(either.right));
+        // emit(PaymentIntentGottenState(response.right));
+        String secret = response.right["client_secret"];
+        var res = await makePayment(secret);
+        if (res.isLeft) {
+          emit(PaymentFailureState(res.left));
+        } else {
+          emit(PaymentConfirmedState(res.right));
+        }
       }
     } catch (e) {
       emit(const PaymentFailureState(
           "Unable to initialize payment, try again!"));
     }
   }
+
+  // FutureOr<void> _mapMakePaymentEventToState(
+  //     MakePaymentEvent event, Emitter<PaymentState> emit) async {
+  //   try {
+  //     emit(PaymentProcessingState());
+  //     var either = await makePayment(event.secrete);
+  //     if (either.isLeft) {
+  //       emit(PaymentFailureState(either.left));
+  //     } else {
+  //       emit(PaymentConfirmedState(either.right));
+  //     }
+  //   } catch (e) {
+  //     emit(const PaymentFailureState(
+  //         "Unable to initialize payment, try again!"));
+  //   }
+  // }
 
   FutureOr<void> _mapGetSubscriptionInfoEventToState(
       GetSubscriptionInfoEvent event, Emitter<PaymentState> emit) async {

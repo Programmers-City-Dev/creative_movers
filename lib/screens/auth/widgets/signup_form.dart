@@ -143,7 +143,7 @@ class _SignupFormState extends State<SignupForm> {
                 child: RichText(
                     text: TextSpan(children: [
                   TextSpan(
-                      text: context.localization.alreadyHasAnAccountText,
+                      text: '${context.localization.alreadyHasAnAccountText} ',
                       style: const TextStyle(color: AppColors.black)),
                   TextSpan(
                     recognizer: TapGestureRecognizer()
@@ -154,8 +154,9 @@ class _SignupFormState extends State<SignupForm> {
                       },
                     text: context.localization.login,
                     style: const TextStyle(
-                        color: AppColors.primaryColor,
-                        decoration: TextDecoration.underline),
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ])),
               ),

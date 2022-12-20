@@ -147,8 +147,11 @@ class _PaymentFormState extends State<PaymentForm> {
                       onTap: () async {
                         if (paymentType == 'paid') {
                           injector.get<PaymentBloc>().add(
-                              CreatePaymentIntentEvent(int.parse(paymentAmount),
-                                  "usd", mDuration, "account_activation"));
+                              MakePaymentWithIntentEvent(
+                                  int.parse(paymentAmount),
+                                  "usd",
+                                  mDuration,
+                                  "account_activation"));
                         } else {
                           trialPaymentBloc.add(StartFreeTrialEvent());
                         }

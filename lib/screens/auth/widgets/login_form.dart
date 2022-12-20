@@ -12,9 +12,9 @@ import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/auth/views/forgot_password_modal.dart';
 import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/gestures.dart';
@@ -158,7 +158,7 @@ class _LoginFormState extends State<LoginForm> {
               child: RichText(
                   text: TextSpan(children: [
                 const TextSpan(
-                    text: 'I dont have an account  ?  ',
+                    text: 'I dont have an account?  ',
                     style: TextStyle(color: AppColors.black)),
                 TextSpan(
                   recognizer: TapGestureRecognizer()

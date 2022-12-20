@@ -7,13 +7,13 @@ abstract class PaymentEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CreatePaymentIntentEvent extends PaymentEvent {
+class MakePaymentWithIntentEvent extends PaymentEvent {
   final int amount;
   final String currency;
   final String duration;
   final String paymentFor;
 
-  const CreatePaymentIntentEvent(
+  const MakePaymentWithIntentEvent(
       this.amount, this.currency, this.duration, this.paymentFor);
 
   @override

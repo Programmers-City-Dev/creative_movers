@@ -372,7 +372,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           InkWell(
                             onTap: () {
                               injector.get<PaymentBloc>().add(
-                                  CreatePaymentIntentEvent(int.parse("7"),
+                                  MakePaymentWithIntentEvent(int.parse("7"),
                                       "usd", "1", "account_activation"));
                             },
                             child: Padding(
