@@ -54,7 +54,7 @@ class _ImageMessageItemState extends State<ImageMessageItem> {
                               state is! ChatError)
                           ? NetworkImage(widget.chatMessage.media[0].mediaPath!)
                           : FileImage(
-                              File(widget.files[0]),
+                              File(widget.chatMessage.media[0].mediaPath!),
                             ) as ImageProvider),
                   borderRadius: BorderRadius.circular(15)),
               child: Center(

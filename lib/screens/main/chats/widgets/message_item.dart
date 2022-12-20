@@ -55,19 +55,28 @@ class _MessageItemState extends State<MessageItem> {
       if (_shouldLoad!) {
         if (widget.chatMessage.conversationId == "-1") {
           _chatBloc.add(SendChatMessage(
-              files: widget.files,
+              files: widget.chatMessage.media.isNotEmpty
+                  ? widget.chatMessage.media
+                      .map((e) => e.mediaPath ?? '')
+                      .toList()
+                  : [],
               message: ChatMessageRequest(
                 userId: widget.otherUserId,
                 message: widget.chatMessage.body!,
               )));
         } else {
           _chatBloc.add(SendChatMessage(
-              files: widget.files,
+              files: widget.chatMessage.media.isNotEmpty
+                  ? widget.chatMessage.media
+                      .map((e) => e.mediaPath ?? '')
+                      .toList()
+                  : [],
               message: ChatMessageRequest(
                 userId: widget.otherUserId,
                 conversationId: int.parse(widget.chatMessage.conversationId),
                 message: widget.chatMessage.body!,
               )));
+          widget.files.clear();
         }
       }
     }

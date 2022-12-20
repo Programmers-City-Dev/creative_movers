@@ -482,7 +482,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
 
   void _fetchMedia() async {
     var pickedFiles = await AppUtils.fetchMedia(
-      allowMultiple: false,
+      allowMultiple: true,
     );
 
     if (pickedFiles.isNotEmpty) {
