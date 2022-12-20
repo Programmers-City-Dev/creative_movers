@@ -3,6 +3,7 @@ import 'dart:developer' as logger;
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
+import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/chats/widgets/message_item.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:path/path.dart' as p;
 
 class MessagingScreen extends StatefulWidget {
   final int? conversationId;
@@ -450,7 +452,9 @@ class _MessagingScreenState extends State<MessagingScreen> {
     }
   }
 
-  void _sendMessage() {
+  void _sendMessage({
+    MediaModel? mediaModel,
+  }) {
     Message message = Message(
         id: 0,
         body: _textController.text,
@@ -458,7 +462,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
             conversationId == null ? '-1' : conversationId.toString(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        media: mediaFiles,
+        media: mediaModel == null ? [] : [mediaModel],
         status: 'unread',
         userId: injector.get<CacheCubit>().cachedUser!.id.toString(),
         profilePhotoPath:
@@ -477,15 +481,18 @@ class _MessagingScreenState extends State<MessagingScreen> {
   }
 
   void _fetchMedia() async {
-    var images = ['jpg', 'jpeg', 'png', 'webp', 'PNG'];
-    var videos = ['mp4', 'mov'];
     var pickedFiles = await AppUtils.fetchMedia(
       allowMultiple: false,
     );
 
     if (pickedFiles.isNotEmpty) {
-      mediaFiles.add(pickedFiles[0].path!);
-      _sendMessage();
+      for (var file in pickedFiles) {
+        mediaFiles.add(file.path!);
+
+        _sendMessage(
+            mediaModel: MediaModel(
+                type: getFileTypeFromPath(file.path!), mediaPath: file.path!));
+      }
     }
 
     //TODO UNCOMMENT IF MULTIPLE IMAGE PREVIEW IS ALLOWED
@@ -553,19 +560,48 @@ class _MessagingScreenState extends State<MessagingScreen> {
   }
 
   void _selectImage(BuildContext context) {
-    AppUtils.selectFiles(context, (p0) {
-      if (p0.isNotEmpty) {
-        mediaFiles.add(p0[0]);
-        _sendMessage();
+    AppUtils.selectFiles(context, (filePaths) {
+      if (filePaths.isNotEmpty) {
+        for (var filePath in filePaths) {
+          mediaFiles.add(filePath);
+          _sendMessage(
+              mediaModel: MediaModel(
+                  type: getFileTypeFromPath(filePath), mediaPath: filePath));
+        }
       }
-    });
+    }, allowMultiple: false);
   }
 
   void _selectCameraImage() async {
     var picture = await AppUtils.fetchImageFromCamera();
     if (picture != null) {
       mediaFiles.add(picture);
-      _sendMessage();
+      _sendMessage(
+          mediaModel: MediaModel(
+              type: getFileTypeFromPath(picture), mediaPath: picture));
     }
   }
+}
+
+String getFileTypeFromPath(String path) {
+  var images = ['jpg', 'jpeg', 'png', 'webp', 'PNG'];
+  var videos = ['mp4', 'mov'];
+  var fileType = '';
+  var extension = p.extension(path).replaceFirst('.', '');
+
+  logger.log(extension);
+
+  if (images.contains(extension)) {
+    fileType = 'image';
+  } else if (videos.contains(extension)) {
+    fileType = 'video';
+  } else if (extension == 'pdf') {
+    fileType = 'pdf';
+  } else if (extension == 'doc' || extension == 'docx') {
+    fileType = 'document';
+  } else {
+    fileType = 'other';
+  }
+
+  return fileType;
 }

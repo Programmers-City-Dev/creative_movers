@@ -571,7 +571,16 @@ class AppUtils {
         type: FileType.custom,
         allowCompression: true,
         allowMultiple: allowMultiple,
-        allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png','pdf'],
+        allowedExtensions: [
+          'mp4',
+          'mov',
+          'jpg',
+          'jpeg',
+          'png',
+          'pdf',
+          'doc',
+          'docx'
+        ],
       );
       //     .then((value) {
       //   onSelect!(value);

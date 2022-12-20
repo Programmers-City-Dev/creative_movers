@@ -1,3 +1,5 @@
+import 'package:creative_movers/data/remote/model/media.dart';
+
 class Conversation {
   Conversation({
     required this.id,
@@ -158,7 +160,7 @@ class Message {
   String userId;
   String? body;
   String conversationId;
-  List<dynamic> media;
+  List<MediaModel> media;
   String? profilePhotoPath;
   String status;
   DateTime createdAt;
@@ -170,7 +172,7 @@ class Message {
           String? userId,
           String? body,
           String? conversationId,
-          List<String>? media,
+          List<MediaModel>? media,
           String? profilePhotoPath,
           String? status,
           DateTime? createdAt,
@@ -193,7 +195,8 @@ class Message {
         userId: json["user_id"].toString(),
         body: json["body"],
         conversationId: json["conversation_id"].toString(),
-        media: List<String>.from(json["media"].map((x) => x)),
+        media: List<MediaModel>.from(
+            json["media"].map((x) => MediaModel.fromJson(x))),
         status: json["status"].toString(),
         profilePhotoPath: json["profile_photo_path"].toString(),
         createdAt: DateTime.parse(json["created_at"]),

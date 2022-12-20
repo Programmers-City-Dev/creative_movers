@@ -3,7 +3,6 @@ import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
-import 'package:creative_movers/data/remote/model/media.dart';
 import 'dart:ui';
 
 import 'package:creative_movers/di/injector.dart';
@@ -55,18 +54,7 @@ class _NewPostItemState extends State<NewPostItem> {
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
   ];
-  List<MediaModel> mediaList = [
-    MediaModel(type: 'image'),
-    MediaModel(type: 'video'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image')
-  ];
+
   int pageIndex = 0;
 
   @override
