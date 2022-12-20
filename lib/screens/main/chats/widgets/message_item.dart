@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
@@ -16,7 +17,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
 part 'file_message_item.dart';
-
 part 'image_message_item.dart';
 
 class MessageItem extends StatefulWidget {
@@ -176,7 +176,7 @@ class _MessageItemState extends State<MessageItem> {
                       ),
                     ),
                     if (widget.chatMessage.media.isNotEmpty)
-                      _getMediaItem(widget.chatMessage)
+                      Flexible(child: _getMediaItem(widget.chatMessage))
                     else
                       const SizedBox()
                   ],

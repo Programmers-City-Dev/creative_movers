@@ -40,27 +40,38 @@ class _ImageMessageItemState extends State<ImageMessageItem> {
                     )
                 : null,
             child: Container(
-              height: 220,
-              width: 170,
+              constraints: BoxConstraints(
+                  // maxHeight: MediaQuery.of(context).size.height * 0.4,
+                  // maxWidth: MediaQuery.of(context).size.width * 0.7,
+                  ),
               margin: const EdgeInsets.only(right: 5, left: 5, top: 8),
               decoration: BoxDecoration(
                   color:
                       !isForMe ? Colors.grey.shade300 : AppColors.primaryColor,
                   border: Border.all(color: Colors.grey, width: 1),
-                  image: DecorationImage(
-                      colorFilter: null,
-                      fit: BoxFit.cover,
-                      image: (state is! ChatMessageLoading &&
-                              state is! ChatError)
-                          ? NetworkImage(widget.chatMessage.media[0].mediaPath!)
-                          : FileImage(
-                              File(widget.files[0]),
-                            ) as ImageProvider),
                   borderRadius: BorderRadius.circular(15)),
-              child: Center(
-                child: state is ChatMessageLoading
-                    ? const CircularProgressIndicator()
-                    : const SizedBox(),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Stack(
+                  children: [
+                    state is! ChatMessageLoading && state is! ChatError
+                        ? CachedNetworkImage(
+                            imageUrl: widget.chatMessage.media[0].mediaPath!,
+                            // width: MediaQuery.of(context).size.width,
+                            // height: MediaQuery.of(context).size.height,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(widget.files[0]),
+                            fit: BoxFit.cover,
+                          ),
+                    Center(
+                      child: state is ChatMessageLoading
+                          ? const CircularProgressIndicator()
+                          : const SizedBox(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
