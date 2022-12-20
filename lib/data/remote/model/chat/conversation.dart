@@ -1,3 +1,4 @@
+import 'package:creative_movers/data/remote/model/media.dart';
 
 class Conversation {
   Conversation({
@@ -50,32 +51,37 @@ class Conversation {
       );
 
   factory Conversation.fromMap(Map<String, dynamic> json) => Conversation(
-    id: json["id"],
-    user1Id: json["user1_id"].toString(),
-    user2Id: json["user2_id"].toString(),
-    channel: json["channel"].toString(),
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    unreadMessages: json["unread_messages"] ?? 0,
-    user1: json["user1"] == null ? null : ConversationUser.fromMap(json["user1"]),
-    user2: json["user2"] == null ? null : ConversationUser.fromMap(json["user2"]),
-    lastMessage: json["last_message"] == null ? null : Message.fromMap(json["last_message"]),
-  );
+        id: json["id"],
+        user1Id: json["user1_id"].toString(),
+        user2Id: json["user2_id"].toString(),
+        channel: json["channel"].toString(),
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        unreadMessages: json["unread_messages"] ?? 0,
+        user1: json["user1"] == null
+            ? null
+            : ConversationUser.fromMap(json["user1"]),
+        user2: json["user2"] == null
+            ? null
+            : ConversationUser.fromMap(json["user2"]),
+        lastMessage: json["last_message"] == null
+            ? null
+            : Message.fromMap(json["last_message"]),
+      );
 
   Map<String, dynamic> toMap() => {
-    "id": id,
-    "user1_id": user1Id,
-    "user2_id": user2Id,
-    "channel": channel,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "unread_messages": unreadMessages,
-    "user1": user1 == null ? null : user1!.toMap(),
-    "user2": user2 == null ? null: user2!.toMap(),
-    "last_message": lastMessage == null ? null : lastMessage!.toMap(),
-  };
+        "id": id,
+        "user1_id": user1Id,
+        "user2_id": user2Id,
+        "channel": channel,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "unread_messages": unreadMessages,
+        "user1": user1 == null ? null : user1!.toMap(),
+        "user2": user2 == null ? null : user2!.toMap(),
+        "last_message": lastMessage == null ? null : lastMessage!.toMap(),
+      };
 }
-
 
 class ConversationUser {
   ConversationUser(
@@ -113,8 +119,9 @@ class ConversationUser {
         status: status ?? this.status,
       );
 
-  factory ConversationUser.fromMap(Map<String, dynamic> json) => ConversationUser(
-    id: json["id"],
+  factory ConversationUser.fromMap(Map<String, dynamic> json) =>
+      ConversationUser(
+        id: json["id"],
         firstname: json["firstname"],
         lastname: json["lastname"],
         username: json["username"],
@@ -125,8 +132,7 @@ class ConversationUser {
         status: json["status"],
       );
 
-  Map<String, dynamic> toMap() =>
-      {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "firstname": firstname,
         "lastname": lastname,
@@ -136,8 +142,6 @@ class ConversationUser {
         "status": status,
       };
 }
-
-
 
 class Message {
   Message(
@@ -156,7 +160,7 @@ class Message {
   String userId;
   String? body;
   String conversationId;
-  List<dynamic> media;
+  List<MediaModel> media;
   String? profilePhotoPath;
   String status;
   DateTime createdAt;
@@ -166,51 +170,50 @@ class Message {
   Message copyWith(
           {int? id,
           String? userId,
-    String? body,
-    String? conversationId,
-    List<String>? media,
-    String? profilePhotoPath,
-    String? status,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    bool? shouldLoad
-  }) =>
+          String? body,
+          String? conversationId,
+          List<MediaModel>? media,
+          String? profilePhotoPath,
+          String? status,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          bool? shouldLoad}) =>
       Message(
-        id: id ?? this.id,
-        userId: userId ?? this.userId,
-        body: body ?? this.body,
-        conversationId: conversationId ?? this.conversationId,
-        media: media ?? this.media,
-        profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        shouldLoad: shouldLoad ?? this.shouldLoad
-      );
+          id: id ?? this.id,
+          userId: userId ?? this.userId,
+          body: body ?? this.body,
+          conversationId: conversationId ?? this.conversationId,
+          media: media ?? this.media,
+          profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
+          status: status ?? this.status,
+          createdAt: createdAt ?? this.createdAt,
+          updatedAt: updatedAt ?? this.updatedAt,
+          shouldLoad: shouldLoad ?? this.shouldLoad);
 
   factory Message.fromMap(Map<String, dynamic> json) => Message(
-    id: json["id"],
-    userId: json["user_id"].toString(),
-    body: json["body"],
-    conversationId: json["conversation_id"].toString(),
-    media: List<String>.from(json["media"].map((x) => x)),
-    status: json["status"].toString(),
-    profilePhotoPath: json["profile_photo_path"].toString(),
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        userId: json["user_id"].toString(),
+        body: json["body"],
+        conversationId: json["conversation_id"].toString(),
+        media: List<MediaModel>.from(
+            json["media"].map((x) => MediaModel.fromJson(x))),
+        status: json["status"].toString(),
+        profilePhotoPath: json["profile_photo_path"].toString(),
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toMap() => {
-    "id": id,
-    "user_id": userId,
-    "body": body,
-    "conversation_id": conversationId,
-    "media": List<dynamic>.from(media.map((x) => x)),
-    "status":status,
-    "profile_photo_path":profilePhotoPath,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at":updatedAt.toIso8601String(),
-  };
+        "id": id,
+        "user_id": userId,
+        "body": body,
+        "conversation_id": conversationId,
+        "media": List<dynamic>.from(media.map((x) => x)),
+        "status": status,
+        "profile_photo_path": profilePhotoPath,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+      };
 }
 
 class MessageUser {
@@ -231,14 +234,12 @@ class MessageUser {
         profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
       );
 
-  factory MessageUser.fromMap(Map<String, dynamic> json) =>
-      MessageUser(
+  factory MessageUser.fromMap(Map<String, dynamic> json) => MessageUser(
         id: json["id"],
         profilePhotoPath: json["profile_photo_path"],
       );
 
-  Map<String, dynamic> toMap() =>
-      {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "profile_photo_path": profilePhotoPath,
       };

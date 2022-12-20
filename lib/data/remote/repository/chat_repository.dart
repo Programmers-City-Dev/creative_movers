@@ -140,7 +140,7 @@ class ChatRepository {
     for (var file in files) {
       var multipartFile = await MultipartFile.fromFile(file);
       formData.files.addAll([
-        MapEntry("media", multipartFile),
+        MapEntry("media[]", multipartFile),
       ]);
     }
     log("CONVO ID: ${message.toMap()}");

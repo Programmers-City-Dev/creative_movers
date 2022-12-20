@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
-import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
@@ -184,11 +183,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void postFeed() {
-    List<MediaModel> media = mediaItems
-        .map((e) => MediaModel(
-            file: null,
-            type: e.mediaType == MediaType.image ? 'media' : 'video'))
-        .toList();
+    // List<MediaModel> media = mediaItems
+    //     .map((e) => MediaModel(
+    //         file: null,
+    //         type: e.mediaType == MediaType.image ? 'media' : 'video'))
+    //     .toList();
     _feedBloc.add(AddFeedEvent(
         pageId: widget.postType == "page_feed" ? widget.pageId : null,
         type: widget.postType!,
