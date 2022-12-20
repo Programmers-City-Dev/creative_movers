@@ -369,46 +369,46 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              injector.get<PaymentBloc>().add(
-                                  MakePaymentWithIntentEvent(int.parse("7"),
-                                      "usd", "1", "account_activation"));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 8.0),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Icon(Icons.settings,
-                                            size: 25,
-                                            color: AppColors.textColor),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          'Setting',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor),
-                                        ),
-                                      ],
-                                    ),
-                                    const Icon(Icons.chevron_right_rounded,
-                                        size: 30, color: AppColors.textColor),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     injector.get<PaymentBloc>().add(
+                          //         MakePaymentWithIntentEvent(int.parse("7"),
+                          //             "usd", "1", "account_activation"));
+                          //   },
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.symmetric(
+                          //         vertical: 16, horizontal: 8.0),
+                          //     child: Center(
+                          //       child: Row(
+                          //         mainAxisAlignment:
+                          //             MainAxisAlignment.spaceBetween,
+                          //         children: [
+                          //           Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: const [
+                          //               Icon(Icons.settings,
+                          //                   size: 25,
+                          //                   color: AppColors.textColor),
+                          //               SizedBox(
+                          //                 width: 16,
+                          //               ),
+                          //               Text(
+                          //                 'Setting',
+                          //                 style: TextStyle(
+                          //                     fontSize: 16,
+                          //                     fontWeight: FontWeight.w600,
+                          //                     color: AppColors.textColor),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           const Icon(Icons.chevron_right_rounded,
+                          //               size: 30, color: AppColors.textColor),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           InkWell(
                             onTap: () {},
                             child: Padding(

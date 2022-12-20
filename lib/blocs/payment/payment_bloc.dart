@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/data/remote/model/payment_history_data.dart';
@@ -14,6 +13,7 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:uuid/uuid.dart';
 
