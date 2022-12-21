@@ -8,6 +8,7 @@ import 'package:creative_movers/data/remote/model/chat/chat_message_request.dart
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/screens/main/chats/widgets/video_message_item.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -275,7 +276,9 @@ class _MessageItemState extends State<MessageItem> {
     if (chatMessage.media[0].type == 'image') {
       return ImageMessageItem(chatMessage: chatMessage, files: widget.files);
     } else if (chatMessage.media[0].type == 'video') {
-      return ImageMessageItem(chatMessage: chatMessage, files: widget.files);
+      return VideoMessageItem(
+        chatMessage: chatMessage,
+      );
     } else {
       return _FileMessageItem(
         chatMessage: chatMessage,
