@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/services/file_downloader_service.dart';
 import 'package:creative_movers/services/puhser_service.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:creative_movers/services/remote_configs_service.dart';
@@ -45,6 +46,7 @@ class AppConfig {
     await Firebase.initializeApp();
     cameras = await availableCameras();
     await PushNotificationService.initialise();
+    await FileDownloaderService.init();
     var pusherService = await PusherService.getInstance;
     await pusherService.initialize();
 

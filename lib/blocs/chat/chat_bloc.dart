@@ -264,4 +264,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               errorMessage: "Oops! an error occurred, try again!")));
     }
   }
+
+
 }
