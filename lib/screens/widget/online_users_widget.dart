@@ -46,50 +46,53 @@ class OnlineUsersState extends State<OnlineUsers> {
                     widget.onlineUsersNotifier.value = false;
                   });
                 }
-                return Container(
-                  height: 100,
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  alignment: Alignment.center,
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: users.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        Navigator.of(context, rootNavigator: true)
-                            .push(MaterialPageRoute(
-                          builder: (context) => MessagingScreen(
-                              conversationId: null, user: users[index]),
-                        ));
-                      },
-                      child: SizedBox(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: CircleImage(
-                                url: users[index].profilePhotoPath,
-                                withBaseUrl: false,
-                                radius: 28,
+                return users.isNotEmpty
+                    ? Container(
+                        height: 100,
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        alignment: Alignment.center,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: users.length,
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: true)
+                                  .push(MaterialPageRoute(
+                                builder: (context) => MessagingScreen(
+                                    conversationId: null, user: users[index]),
+                              ));
+                            },
+                            child: SizedBox(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: CircleImage(
+                                      url: users[index].profilePhotoPath,
+                                      withBaseUrl: false,
+                                      radius: 28,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: Center(
+                                        child: Text(
+                                      '${users[index].firstname}',
+                                      maxLines: 1,
+                                      style: const TextStyle(fontSize: 13),
+                                    )),
+                                  )
+                                ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Center(
-                                  child: Text(
-                                '${users[index].firstname}',
-                                maxLines: 1,
-                                style: const TextStyle(fontSize: 13),
-                              )),
-                            )
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                );
+                      )
+                    : const SizedBox.shrink();
               });
         }
         if (state is ChatError) {

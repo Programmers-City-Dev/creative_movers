@@ -56,12 +56,18 @@ class ChatItemState extends State<ChatItem> {
                     style: const TextStyle(
                         fontWeight: FontWeight.w700, fontSize: 16),
                   ),
-                  Text(
-                    '${lastMessage?.body}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 13, color: Colors.grey),
-                  ),
+                  // const SizedBox(
+                  //   height: 8.0,
+                  // ),
+                  lastMessage!.media.isEmpty
+                      ? Text(
+                          "${lastMessage.body}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              const TextStyle(fontSize: 13, color: Colors.grey),
+                        )
+                      : ConversationTypeWidget(message: lastMessage),
                 ],
               ),
             ),
@@ -79,7 +85,7 @@ class ChatItemState extends State<ChatItem> {
                     ),
                   ),
                 Text(
-                  AppUtils.formatTimeAgo(lastMessage!.createdAt),
+                  AppUtils.formatTimeAgo(lastMessage.createdAt),
                   style: const TextStyle(fontSize: 12),
                 )
               ],
@@ -87,6 +93,105 @@ class ChatItemState extends State<ChatItem> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ConversationTypeWidget extends StatelessWidget {
+  final Message message;
+  const ConversationTypeWidget({Key? key, required this.message})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 4.0),
+        if (message.media.first.type == "image")
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: const Border.fromBorderSide(
+                    BorderSide(width: 1, color: Colors.grey))),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text("Image"),
+                SizedBox(
+                  width: 8,
+                ),
+                Icon(
+                  Icons.photo,
+                  size: 16,
+                )
+              ],
+            ),
+          ),
+        if (message.media.first.type == "document" ||
+            message.media.first.type == "unknown")
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: const Border.fromBorderSide(
+                    BorderSide(width: 1, color: Colors.grey))),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text("File"),
+                SizedBox(
+                  width: 8,
+                ),
+                Icon(
+                  Icons.description_outlined,
+                  size: 16,
+                )
+              ],
+            ),
+          ),
+        if (message.media.first.type == "music")
+          Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: const Border.fromBorderSide(
+                      BorderSide(width: 1, color: Colors.grey))),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text("Music"),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Icon(
+                    Icons.music_note,
+                    size: 16,
+                  )
+                ],
+              )),
+        if (message.media.first.type == "video")
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: const Border.fromBorderSide(
+                    BorderSide(width: 1, color: Colors.grey))),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text("Video"),
+                SizedBox(
+                  width: 8,
+                ),
+                Icon(
+                  Icons.video_collection_outlined,
+                  size: 16,
+                )
+              ],
+            ),
+          )
+      ],
     );
   }
 }
