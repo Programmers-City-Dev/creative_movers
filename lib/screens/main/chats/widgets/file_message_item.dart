@@ -91,11 +91,16 @@ class _FileMessageItemState extends State<_FileMessageItem> {
     IsolateNameServer.registerPortWithName(
         _port.sendPort, 'downloader_send_port');
     _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
+      // String id = data[0];
+      // DownloadTaskStatus status = data[1];
       int progress = data[2];
 
-      AppUtils.showCustomToast(progress.toString());
+      if (progress ==-1) {
+        AppUtils.showCustomToast('File was not saved');
+      }
+
+      if (progress == 100) AppUtils.showCustomToast('File saved to downloads');
+
       setState(() {});
     });
 
@@ -114,12 +119,14 @@ class _FileMessageItemState extends State<_FileMessageItem> {
       String id, DownloadTaskStatus status, int progress) {
     final SendPort? send =
         IsolateNameServer.lookupPortByName('downloader_send_port');
+
     send?.send([id, status, progress]);
     // log(taskId.toString());
     log(progress.toString());
   }
 
   Future downloadFile(String url) async {
+    AppUtils.showCustomToast('Saving file..');
     final taskId = await FlutterDownloader.enqueue(
       url: url,
       headers: {},
@@ -130,8 +137,6 @@ class _FileMessageItemState extends State<_FileMessageItem> {
       openFileFromNotification:
           true, // click on notification to open downloaded file (for Android)
     );
-
-
   }
 
   Future<void> _prepare() async {
@@ -142,7 +147,7 @@ class _FileMessageItemState extends State<_FileMessageItem> {
       return;
     }
 
-    var count = 0;
+    // var count = 0;
 
     _permissionReady = await _checkPermission();
     if (_permissionReady) {

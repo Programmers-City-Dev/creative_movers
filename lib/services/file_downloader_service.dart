@@ -13,6 +13,10 @@ class FileDownloaderService {
         );
   }
 
+  static void prepare(){
+
+  }
+
 
   static void dispose() {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
