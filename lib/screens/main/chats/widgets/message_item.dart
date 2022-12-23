@@ -3,8 +3,8 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:android_path_provider/android_path_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';

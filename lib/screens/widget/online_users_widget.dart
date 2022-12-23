@@ -50,7 +50,6 @@ class OnlineUsersState extends State<OnlineUsers> {
                     ? Container(
                         height: 100,
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        alignment: Alignment.center,
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),

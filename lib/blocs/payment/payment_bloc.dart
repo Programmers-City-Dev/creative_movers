@@ -36,8 +36,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
         paymentIntentClientSecret: secret,
-        applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
-        googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
+        // applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
+        // googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
         appearance: const PaymentSheetAppearance(
             colors:
                 PaymentSheetAppearanceColors(primary: AppColors.primaryColor)),

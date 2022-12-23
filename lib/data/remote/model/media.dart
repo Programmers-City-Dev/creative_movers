@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-
 MediaModel mediaFromJson(String str) => MediaModel.fromJson(json.decode(str));
 
 String mediaToJson(MediaModel data) => json.encode(data.toJson());
@@ -27,4 +26,9 @@ class MediaModel {
         "type": type,
         "mediaPath": mediaPath,
       };
+
+  @override
+  String toString() {
+    return "MediaModel(Type: $type, Path:$mediaPath)";
+  }
 }

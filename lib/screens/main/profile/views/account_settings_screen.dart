@@ -14,6 +14,7 @@ import 'package:creative_movers/screens/widget/widget_network_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
@@ -410,10 +411,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           //   ),
                           // ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(helpAndSupportPath);
+                            },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 8.0),
+                                  horizontal: 8.0, vertical: 16),
                               child: Center(
                                 child: Row(
                                   mainAxisAlignment:
@@ -422,76 +426,34 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Icon(Icons.contact_support,
-                                            size: 25,
-                                            color: AppColors.textColor),
-                                        const SizedBox(
+                                      children: const [
+                                        Icon(
+                                          LineIcons.questionCircleAlt,
+                                          color: AppColors.textColor,
+                                        ),
+                                        SizedBox(
                                           width: 16,
                                         ),
-                                        BlocListener<PaymentBloc, PaymentState>(
-                                          bloc: injector.get<PaymentBloc>(),
-                                          listener: (context, state) {
-                                            if (state
-                                                is PaymentProcessingState) {
-                                              AppUtils
-                                                  .showAnimatedProgressDialog(
-                                                      context,
-                                                      title: "Processing");
-                                            }
-                                            if (state is PaymentFailureState) {
-                                              Navigator.of(context).pop();
-                                              AppUtils.showCustomToast(
-                                                  state.error);
-                                            }
-                                            if (state
-                                                is PaymentIntentGottenState) {
-                                              Navigator.of(context).pop();
-                                              injector.get<PaymentBloc>().add(
-                                                  MakePaymentEvent(state.intent[
-                                                      'client_secret']));
-                                            }
-
-                                            if (state
-                                                is PaymentConfirmedState) {
-                                              Navigator.of(context).pop();
-                                              AppUtils.showCustomToast(
-                                                  state.message);
-                                            }
-                                          },
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              // injector.get<PaymentBloc>().add(
-                                              //     const CreatePaymentIntentEvent(
-                                              //         20,
-                                              //         "USD",
-                                              //         "monthly",
-                                              //         "account_activation"));
-
-                                              Navigator.of(context).pushNamed(
-                                                  helpAndSupportPath);
-                                            },
-                                            child: const Text(
-                                              'Help and Support',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: AppColors.textColor),
-                                            ),
-                                          ),
-                                        ),
+                                        Text(
+                                          'Help and Support',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.textColor),
+                                        )
                                       ],
                                     ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(right: 16),
-                                      child: Icon(Icons.chevron_right_rounded,
-                                          size: 30, color: AppColors.textColor),
-                                    ),
+                                    // const Padding(
+                                    //   padding: EdgeInsets.only(right: 16),
+                                    //   child: Icon(Icons.chevron_right_rounded,
+                                    //       size: 30, color: AppColors.textColor),
+                                    // ),
                                   ],
                                 ),
                               ),
                             ),
                           ),
+
                           InkWell(
                             onTap: () {
                               AppUtils.showShowConfirmDialog(

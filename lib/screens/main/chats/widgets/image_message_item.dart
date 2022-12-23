@@ -40,7 +40,7 @@ class _ImageMessageItemState extends State<ImageMessageItem> {
                     )
                 : null,
             child: Container(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                   // maxHeight: MediaQuery.of(context).size.height * 0.4,
                   // maxWidth: MediaQuery.of(context).size.width * 0.7,
                   ),
@@ -62,7 +62,7 @@ class _ImageMessageItemState extends State<ImageMessageItem> {
                             fit: BoxFit.cover,
                           )
                         : Image.file(
-                            File(widget.files[0]),
+                            File(widget.chatMessage.media[0].mediaPath!),
                             fit: BoxFit.cover,
                           ),
                     Center(

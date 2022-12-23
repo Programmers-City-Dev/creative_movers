@@ -26,6 +26,11 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
   //   autoPlay: true,
   //   looping: true,
   // );
+
+  late final Future<Uint8List?> thumbnailData;
+
+  final _thumbmnailKey = GlobalKey();
+
   @override
   void dispose() {
     // videoPlayerController.dispose();
@@ -35,12 +40,21 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
 
   @override
   void initState() {
+    super.initState();
+
     _controller = VideoPlayerController.network(
         'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
       ..initialize().then((_) {
         setState(() {});
       });
-    super.initState();
+    thumbnailData = VideoThumbnail.thumbnailData(
+      video: widget.media.mediaPath,
+      imageFormat: ImageFormat.JPEG,
+      maxWidth: 300,
+      maxHeight: 300,
+      // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      quality: 100,
+    );
   }
 
   @override
@@ -67,14 +81,8 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
             ),
           )
         : FutureBuilder<Uint8List?>(
-            future: VideoThumbnail.thumbnailData(
-              video: widget.media.mediaPath,
-              imageFormat: ImageFormat.JPEG,
-              maxWidth: 300,
-              maxHeight: 300,
-              // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-              quality: 100,
-            ),
+            key: _thumbmnailKey,
+            future: thumbnailData,
             builder: (context, snapshot) {
               // log(widget.media.mediaPath);
               if (!snapshot.hasError) {
