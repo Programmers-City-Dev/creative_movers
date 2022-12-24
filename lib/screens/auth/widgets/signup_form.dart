@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -111,6 +112,42 @@ class _SignupFormState extends State<SignupForm> {
                 obscure: obscure,
                 icon: Icons.lock,
                 hint: context.localization.password,
+              ),
+              const SizedBox(height: 32),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                            text:
+                                "By creating an account, you agree to CreativeMovers ",
+                            style: TextStyle(
+                                height: 1.5,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.PtextColor)),
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                AppUtils.launchInAppBrowser(
+                                    context, "${Constants.baseUrl}terms");
+                              },
+                            text: "terms and conditions",
+                            style: const TextStyle(
+                              height: 1.5,
+                              color: AppColors.primaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              decoration: TextDecoration.underline,
+                            )),
+                      ],
+                    )),
               ),
               const SizedBox(
                 height: 30,

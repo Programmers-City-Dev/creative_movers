@@ -1,3 +1,5 @@
+import 'package:creative_movers/constants/constants.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -47,9 +49,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+
               _ContactUsItem(
                 tittle: 'Faqs',
                 subtittle: 'Frequently asked questions',
@@ -58,9 +58,39 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                   Navigator.pushNamed(context, faqsPath);
                 },
               ),
-              const SizedBox(
-                height: 30,
+
+              _ContactUsItem(
+                tittle: 'Terms & Conditions',
+                subtittle: 'Read about our terms & conditions',
+                icon: LineIcons.trademark,
+                onTap: () {
+                  AppUtils.launchInAppBrowser(
+                      context, "${Constants.baseUrl}terms");
+                },
               ),
+
+              _ContactUsItem(
+                tittle: 'Policies',
+                subtittle: 'Read about our policies',
+                // Policies icon
+                icon: LineIcons.readme,
+                onTap: () {
+                  AppUtils.launchInAppBrowser(
+                      context, "${Constants.baseUrl}policies");
+                },
+              ),
+
+              _ContactUsItem(
+                tittle: 'Support',
+                subtittle: 'Contact us for support',
+                // Policies icon
+                icon: Icons.support_agent_outlined,
+                onTap: () {
+                  AppUtils.launchInAppBrowser(
+                      context, "${Constants.baseUrl}support");
+                },
+              ),
+
               _ContactUsItem(
                 tittle: 'Phone Number',
                 subtittle: '0901234567',
@@ -76,9 +106,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                   );
                 },
               ),
-              const SizedBox(
-                height: 20,
-              ),
+
               _ContactUsItem(
                 tittle: 'Email',
                 subtittle: 'info@creativemovers.app',
@@ -92,45 +120,39 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                   launchUrl(emailLaunchUri);
                 },
               ),
-              const SizedBox(
-                height: 20,
-              ),
+
               _ContactUsItem(
                 tittle: 'Twitter',
                 subtittle: '@creativemovers',
                 icon: LineIcons.twitter,
                 onTap: () {
-                  final Uri _url = Uri.parse(
+                  final Uri url = Uri.parse(
                     'https://twitter.com/createmovers',
                   );
-                  launchUrl(_url, mode: LaunchMode.externalApplication);
+                  launchUrl(url, mode: LaunchMode.externalApplication);
                 },
               ),
-              const SizedBox(
-                height: 20,
-              ),
+
               _ContactUsItem(
                 tittle: 'Facebook',
                 subtittle: 'Create Movers',
-                icon: LineIcons.twitter,
+                icon: LineIcons.facebook,
                 onTap: () {
-                  final Uri _url = Uri.parse(
+                  final Uri url = Uri.parse(
                     'https://web.facebook.com/create.movers.1',
                   );
-                  launchUrl(_url, mode: LaunchMode.externalApplication);
+                  launchUrl(url, mode: LaunchMode.externalApplication);
                 },
               ),
-              const SizedBox(
-                height: 20,
-              ),
+
               _ContactUsItem(
                 tittle: 'Instagram',
                 subtittle: 'Creative Movers',
                 icon: LineIcons.instagram,
                 onTap: () {
-                  final Uri _url =
+                  final Uri url =
                       Uri.parse('https://www.instagram.com/createmovers/');
-                  launchUrl(_url, mode: LaunchMode.externalApplication);
+                  launchUrl(url, mode: LaunchMode.externalApplication);
                 },
               ),
               const SizedBox(
@@ -160,48 +182,26 @@ class _ContactUsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ListTile(
       onTap: onTap,
-      child: Container(
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: Colors.black45,
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  tittle,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(
-                  height: 3,
-                ),
-                Text(
-                  subtittle,
-                  style: const TextStyle(
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            )),
-            const SizedBox(
-              width: 20,
-            ),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Colors.grey,
-              size: 20,
-            ),
-          ],
+      leading: Icon(
+        icon,
+        color: Colors.black45,
+      ),
+      title: Text(
+        tittle,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
+      subtitle: Text(
+        subtittle,
+        style: const TextStyle(
+          fontSize: 13,
         ),
+      ),
+      trailing: const Icon(
+        Icons.arrow_forward_ios_rounded,
+        color: Colors.grey,
+        size: 20,
       ),
     );
   }
