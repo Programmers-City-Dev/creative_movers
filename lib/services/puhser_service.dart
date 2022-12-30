@@ -1,6 +1,5 @@
 import 'package:creative_movers/constants/constants.dart';
-import 'package:creative_movers/constants/storage_keys.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 
 class PusherService {
@@ -15,7 +14,6 @@ class PusherService {
   }
 
   Future<void> initialize() async {
-    var token = await StorageHelper.getString(StorageKeys.token);
     PusherOptions options = PusherOptions(
       cluster: "eu",
       // host: 'staging.creativemovers.app',
@@ -34,12 +32,12 @@ class PusherService {
     // connect at a later time than at instantiation.
     await pusher?.connect();
     pusher?.onConnectionStateChange((state) {
-      print(
+      debugPrint(
           "previousState: ${state?.previousState}, currentState: ${state?.currentState}");
     });
 
     pusher?.onConnectionError((error) {
-      print("error: ${error?.message}");
+      debugPrint("error: ${error?.message}");
     });
   }
 

@@ -111,17 +111,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AccountTypeEvent event, Emitter<AuthState> emit) async {
     emit(AccounTypeLoadingState());
     try {
-      var state = await authRepository.post_account_type(
+      var state = await authRepository.postAccountType(
           role: event.role,
           category: event.category,
           description: event.description,
-          est_capital: event.estCapital,
-          max_range: event.max_range,
-          min_range: event.min_range,
+          estCapital: event.estCapital,
+          maxRange: event.max_range,
+          minRange: event.min_range,
           name: event.name,
           photo: event.photo,
           stage: event.stage,
-          user_id: event.userId);
+          userId: event.userId);
       if (state is SuccessState) {
         emit(AccountTypeSuccesState(
           accountTypeResponse: state.value,
@@ -139,8 +139,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AddConnectionsEvent event, Emitter<AuthState> emit) async {
     emit(AddConnectionLoadingState());
     try {
-      var state = await authRepository.add_connections(
-          user_id: event.user_id, connections: event.connection);
+      var state = await authRepository.addConnections(
+          userId: event.user_id, connections: event.connection);
       if (state is SuccessState) {
         emit(AddConnectionSuccesState(
           addConnectionResponse: state.value,
@@ -174,7 +174,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       CategoriesEvent event, Emitter<AuthState> emit) async {
     emit(CategoryLoadingState());
     try {
-      var state = await authRepository.fetch_categories();
+      var state = await authRepository.fetchCategories();
       if (state is SuccessState) {
         emit(CategorySuccessState(categoriesReponse: state.value));
       } else if (state is ErrorState) {
@@ -190,7 +190,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ForgotPasswordEvent event, Emitter<AuthState> emit) async {
     emit(ForgotPasswordLoadingState());
     try {
-      var state = await authRepository.forgot_password(event.email);
+      var state = await authRepository.forgotPassword(event.email);
       if (state is SuccessState) {
         emit(ForgotPasswordSuccessState(response: state.value));
       }
@@ -207,10 +207,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ResetPasswordEvent event, Emitter<AuthState> emit) async {
     emit(ResetPasswordLoadingState());
     try {
-      var state = await authRepository.reset_password(
+      var state = await authRepository.resetPassword(
           email: event.email,
           password: event.password,
-          password_confirmation: event.password_confirmation);
+          passwordConfirmation: event.password_confirmation);
       if (state is SuccessState) {
         emit(ResetPasswordSuccessState(response: state.value));
       } else if (state is ErrorState) {
@@ -226,7 +226,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ConfirmTokenEvent event, Emitter<AuthState> emit) async {
     emit(ConfirmTokenLoadingState());
     try {
-      var state = await authRepository.confirm_token(event.token);
+      var state = await authRepository.confirmToken(event.token);
       if (state is SuccessState) {
         emit(ConfirmTokenSuccessState(response: state.value));
       } else if (state is ErrorState) {

@@ -6,7 +6,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 class HttpHelper {
   static Dio? _client;
 
-  static Future<Dio?> _getInstance([bool enabledDioLogger = false]) async {
+  static Future<Dio?> _getInstance([bool enabledDioLogger = true]) async {
     final storageToken = await StorageHelper.getString(StorageKeys.token);
     // debugPrint('TOKEN:$storageToken');
     _client ??= Dio();
@@ -22,11 +22,11 @@ class HttpHelper {
       _client!.interceptors.add(
         PrettyDioLogger(
           request: true,
-          requestHeader: true,
+          requestHeader: false,
           requestBody: true,
           responseBody: true,
-          responseHeader: true,
-          error: true,
+          responseHeader: false,
+          error: false,
           compact: true,
           maxWidth: 400,
         ),

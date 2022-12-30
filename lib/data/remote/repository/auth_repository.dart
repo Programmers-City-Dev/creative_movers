@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
@@ -124,6 +125,7 @@ class AuthRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.bioDataEndpoint, body: formData),
       successResponse: (data) {
+        // log("Bio: $data");
         return State<BioDataResponse?>.success(
             data != null ? BioDataResponse.fromJson(data) : null);
       },
@@ -150,33 +152,33 @@ class AuthRepository {
   }
 
   //Account Type Request
-  Future<State> post_account_type({
+  Future<State> postAccountType({
     String? role,
-    String? user_id,
+    String? userId,
     String? name,
     String? stage,
     List<String>? category,
-    String? est_capital,
+    String? estCapital,
     String? description,
     String? photo,
-    String? max_range,
-    String? min_range,
+    String? maxRange,
+    String? minRange,
   }) async {
     var formData = FormData.fromMap({
       "role": role,
-      "user_id": user_id,
+      "user_id": userId,
       "name": name,
       "stage": stage,
       "category": jsonEncode(category),
-      "est_capital": est_capital,
+      "est_capital": estCapital,
       "description": description,
       if (photo != null)
         "photo": [
           await MultipartFile.fromFile(photo, filename: basename(photo)),
         ],
       // "photo": photo,
-      "max_range": max_range,
-      "min_range": min_range,
+      "max_range": maxRange,
+      "min_range": minRange,
     });
     return SimplifyApiConsuming.makeRequest(
       () async =>
@@ -208,13 +210,13 @@ class AuthRepository {
   }
 
   //Add Connections Request
-  Future<State> add_connections({
-    required String? user_id,
+  Future<State> addConnections({
+    required String? userId,
     required List<Connect> connections,
   }) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.addConnectionEndpoint, body: {
-        "user_id": user_id,
+        "user_id": userId,
         "connection": jsonEncode(connections),
       }),
       successResponse: (data) {
@@ -272,7 +274,7 @@ class AuthRepository {
     );
   }
 
-  Future<State> fetch_categories() async {
+  Future<State> fetchCategories() async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.categoriesEndpoint),
       successResponse: (data) {
@@ -301,7 +303,7 @@ class AuthRepository {
     );
   }
 
-  Future<State> forgot_password(String email) async {
+  Future<State> forgotPassword(String email) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient
           .post(Endpoints.forgotPasswordEndpoint, body: {"email": email}),
@@ -331,7 +333,7 @@ class AuthRepository {
     );
   }
 
-  Future<State> confirm_token(String token) async {
+  Future<State> confirmToken(String token) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient
           .post(Endpoints.confirmTokenEndpoint, body: {"token": token}),
@@ -361,15 +363,15 @@ class AuthRepository {
     );
   }
 
-  Future<State> reset_password(
+  Future<State> resetPassword(
       {required String email,
       required String password,
-      required String password_confirmation}) async {
+      required String passwordConfirmation}) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.resetPasswordEndpoint, body: {
         "email": email,
         "password": password,
-        "password_confirmation": password_confirmation,
+        "password_confirmation": passwordConfirmation,
       }),
       successResponse: (data) {
         return State<ResetPasswordResponse?>.success(

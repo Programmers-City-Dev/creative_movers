@@ -20,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pusher_client/pusher_client.dart';
 
 part 'chat_event.dart';
-
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -113,8 +112,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       SendChatMessage event, Emitter<ChatState> emit) async {
     emit(ChatMessageLoading());
     try {
-      final state = await chatRepository
-          .sendChatMessage(message: event.message, files: [event.files.first]);
+      final state = await chatRepository.sendChatMessage(
+          message: event.message,
+          files: [if (event.files.isNotEmpty) event.files.first]);
       if (state is SuccessState) {
         ChatMessageResponse messageSent = state.value;
         emit(ChatMessageSent(chatMessageResponse: messageSent));

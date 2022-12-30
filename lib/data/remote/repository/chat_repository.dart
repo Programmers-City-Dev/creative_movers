@@ -83,8 +83,7 @@ class ChatRepository {
   //   }
   // }
 
-  Future<State> sendChannelMessage(
-      String channelName, String message) async {
+  Future<State> sendChannelMessage(String channelName, String message) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.sendLiveMessage,
           body: {"message": message, "token": channelName}),
@@ -161,7 +160,7 @@ class ChatRepository {
 
   // Send chat message on the main chat screen
   Future<State> sendChatMessage(
-      {required List<String> files,
+      {List<String>? files = const [],
       required ChatMessageRequest message}) async {
     var formData = FormData.fromMap({
       "user_id": message.userId,
@@ -169,7 +168,7 @@ class ChatRepository {
       "message": message.message,
     });
 
-    for (var file in files) {
+    for (var file in files!) {
       var multipartFile = await MultipartFile.fromFile(file);
       formData.files.addAll([
         MapEntry("media[]", multipartFile),

@@ -23,16 +23,24 @@ class Constants {
     return _config[_Config.baseUrl];
   }
 
+  static String get pusherApiKey {
+    return _config[_Config.pusherApiKey];
+  }
+
+  static String get pusherSecrete {
+    return _config[_Config.pusherSecreteKey];
+  }
+
+  static String get pusherId {
+    return _config[_Config.pusherID];
+  }
+
   static get getFlavor {
     return _config[_Config.flavor];
   }
 
-  // Pusher
-  static const pusherApiKey = "2989b98e4e4f5137d8f9";
-  static const pusherCluster = "eu";
-  static const pusherSecrete = "b287008664ae2bdd50d2";
-  static const pusherId = "1507674";
-  static const placeHolderImage = "https://media.istockphoto.com/id/1264040074/vector/placeholder-rgb-color-icon.jpg?s=612x612&w=0&k=20&c=0ZFUNL28htu-zHRF9evishuNKYQAZVrfK0-TZNjnX3U=";
+  static const placeHolderImage =
+      "https://media.istockphoto.com/id/1264040074/vector/placeholder-rgb-color-icon.jpg?s=612x612&w=0&k=20&c=0ZFUNL28htu-zHRF9evishuNKYQAZVrfK0-TZNjnX3U=";
 
   static const userCredentials = 'login_user_credentials';
   static const themeKey = "nitrade_theme_key";
@@ -48,6 +56,9 @@ class _Config {
   static const buildGradient = "BUILD_GRADIENT";
   static const sentryDSN = "SENTRY_DSN";
   static const sentryEnv = "SENTRY_ENV";
+  static const pusherApiKey = "PUSHER_API_KEY";
+  static const pusherSecreteKey = "PUSHER_SECRETE_KEY";
+  static const pusherID = "PUSHER_ID";
   static const flavor = "ENV";
 
   static Map<String, dynamic> stagingConstants = {
@@ -55,6 +66,9 @@ class _Config {
     buildGradient: "staging",
     sentryDSN: '',
     sentryEnv: 'dev',
+    pusherApiKey: '2989b98e4e4f5137d8f9',
+    pusherSecreteKey: 'b287008664ae2bdd50d2',
+    pusherID: '1507674',
     flavor: Flavor.staging
   };
   static Map<String, dynamic> devConstants = {
@@ -62,6 +76,9 @@ class _Config {
     buildGradient: "dev",
     sentryDSN: '',
     sentryEnv: 'dev',
+    pusherApiKey: '7290b6d128bdadf6255e',
+    pusherSecreteKey: 'a094cb4172d4652cb1b6',
+    pusherID: '1507673',
     flavor: Flavor.dev
   };
 
@@ -70,6 +87,9 @@ class _Config {
     buildGradient: "production",
     sentryDSN: '',
     sentryEnv: 'production',
+    pusherApiKey: '855494dc8ebe7e70cc8d',
+    pusherSecreteKey: '3bbc3aace1ddbf1d23d2',
+    pusherID: '1507675',
     flavor: Flavor.prod
   };
 }
