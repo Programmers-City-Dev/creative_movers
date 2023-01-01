@@ -290,7 +290,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                                       )))
                                 : const SizedBox(),
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
                                   child: Container(
@@ -398,40 +398,48 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                   ),
                                 ),
                                 Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 8, bottom: 16),
-                                    height: 45,
-                                    width: 45,
-                                    child: FloatingActionButton(
-                                      onPressed: () {},
-                                      child: ValueListenableBuilder<bool>(
-                                          valueListenable: noTextNotifier,
-                                          builder: (context, value, snapshot) {
-                                            return value
-                                                ? AnimatedContainer(
-                                                    duration: const Duration(
-                                                        milliseconds: 2000),
-                                                    child: const Icon(
-                                                      Icons.mic_rounded,
-                                                    ),
-                                                  )
-                                                : AnimatedContainer(
-                                                    duration: const Duration(
-                                                        milliseconds: 2000),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        if (_textController
-                                                            .text.isNotEmpty) {
-                                                          _sendMessage();
-                                                        }
-                                                      },
-                                                      child: const Icon(
-                                                        Icons.send_rounded,
-                                                      ),
-                                                    ),
-                                                  );
-                                          }),
-                                    ))
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  alignment: Alignment.center,
+                                  height: 45,
+                                  width: 45,
+                                  child: ValueListenableBuilder<bool>(
+                                      valueListenable: noTextNotifier,
+                                      builder: (context, value, snapshot) {
+                                        return FloatingActionButton(
+                                          onPressed: value ? null : () {},
+                                          backgroundColor: value
+                                              ? Colors.grey
+                                              : AppColors.primaryColor,
+                                          child: AnimatedContainer(
+                                            duration: const Duration(
+                                                milliseconds: 2000),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                if (_textController
+                                                        .text.isNotEmpty &&
+                                                    !value) {
+                                                  _sendMessage();
+                                                }
+                                              },
+                                              child: const Icon(
+                                                Icons.send_rounded,
+                                              ),
+                                            ),
+                                          ),
+                                          // return
+                                          // value
+                                          //     ? AnimatedContainer(
+                                          //         duration: const Duration(
+                                          //             milliseconds: 2000),
+                                          //         child: const Icon(
+                                          //           Icons.mic_rounded,
+                                          //         ),
+                                          //       )
+                                          // :
+                                        );
+                                      }),
+                                )
                               ],
                             ),
                           ],
