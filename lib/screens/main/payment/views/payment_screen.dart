@@ -16,58 +16,71 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
         color: AppColors.primaryColor,
-        child: Column(
+        child: Stack(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              alignment: Alignment.bottomLeft,
-              height: MediaQuery.of(context).size.height * 0.2,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  widget.isFirstTime
-                      ? const SizedBox.shrink()
-                      : Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              icon: const Icon(Icons.close,
-                                  size: 32, color: Colors.white)),
-                        ),
-                  FutureBuilder<String?>(
-                      future: StorageHelper.getString(StorageKeys.firstname),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(
-                            'Welcome ${snapshot.data}',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: AppColors.white),
-                          );
-                        }
-                        return Container();
-                      }),
-                  Text(
+            FractionallySizedBox(
+              heightFactor: 0.25,
+              alignment: Alignment.topCenter,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                alignment: Alignment.bottomLeft,
+                height: MediaQuery.of(context).size.height * 0.2,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
                     widget.isFirstTime
-                        ? 'Just one more step before you start exploring'
-                        : "Let's get your payment done to continue enjoying our services",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(color: AppColors.white),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  )
-                ],
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: IconButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  icon: const Icon(Icons.close,
+                                      size: 32, color: Colors.white)),
+                            ),
+                          ),
+                    FutureBuilder<String?>(
+                        future: StorageHelper.getString(StorageKeys.firstname),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              'Welcome ${snapshot.data}',
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: AppColors.white),
+                            );
+                          }
+                          return Container();
+                        }),
+                    Text(
+                      widget.isFirstTime
+                          ? 'Just one more step before you start exploring'
+                          : "Let's get your payment done to continue enjoying our services",
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(color: AppColors.white),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    )
+                  ],
+                ),
               ),
             ),
-            Expanded(
-              child: PaymentForm(
-                isFirstTime: widget.isFirstTime,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: FractionallySizedBox(
+                heightFactor: 0.75,
+                alignment: Alignment.bottomCenter,
+                child: PaymentForm(
+                  isFirstTime: widget.isFirstTime,
+                ),
               ),
             ),
           ],

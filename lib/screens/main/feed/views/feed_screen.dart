@@ -41,14 +41,22 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomFeedAppBar(
-        username: username,
-      ),
       body: NestedScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
+            SliverPersistentHeader(
+                // pinned: true,
+                floating: true,
+                delegate: SliverAppBarDelegate(
+                  PreferredSize(
+                    preferredSize: const Size.fromHeight(150),
+                    child: CustomFeedAppBar(
+                      username: username,
+                    ),
+                  ),
+                )),
             SliverPersistentHeader(
                 // pinned: true,
                 floating: true,

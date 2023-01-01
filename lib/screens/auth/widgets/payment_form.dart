@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -106,11 +108,11 @@ class _PaymentFormState extends State<PaymentForm> {
                   } else {
                     Navigator.of(context)
                       ..pop()
-                      ..pop();
+                      ..pop(true);
                     AppUtils.showCustomToast(state.message);
-                    injector
-                        .get<PaymentBloc>()
-                        .add(const GetSubscriptionInfoEvent());
+                    // injector
+                    //     .get<PaymentBloc>()
+                    //     .add(const GetSubscriptionInfoEvent());
                   }
                 }
               },
@@ -195,7 +197,7 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
     return SizedBox(
       // height: MediaQuery.of(context).size.height * 0.5,
       child: ListView(
-        // shrinkWrap: true,
+        shrinkWrap: true,
         children: [
           GestureDetector(
             onTap: () {
