@@ -123,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           bottom: 7,
                                           child: GestureDetector(
                                             onTap: () {
-                                              print("Testing");
+                                              // print("Testing");
                                               showCupertinoModalPopup(
                                                   context: context,
                                                   builder: (context) {

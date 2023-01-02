@@ -59,7 +59,7 @@ class _SearchResultItemState extends State<SearchResultItem>
                                 fontWeight: FontWeight.w700, fontSize: 13),
                           ),
                           Text(
-                            widget.result.role.name,
+                            '${widget.result.role?.name}',
                             // widget.result!.role!,
                             style: const TextStyle(
                                 fontSize: 13, color: Colors.grey),

@@ -11,7 +11,6 @@ import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:equatable/equatable.dart';
 
 part 'conects_event.dart';
-
 part 'conects_state.dart';
 
 class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {

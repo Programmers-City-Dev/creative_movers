@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/data/remote/model/react_response.dart';
@@ -208,7 +210,7 @@ class ConnectsRepository {
         "user_id": userId,
       }),
       successResponse: (data) {
-        return State<ReactResponse?>.success(null);
+        return State<ReactResponse?>.success(ReactResponse.fromJson(data));
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

@@ -43,7 +43,7 @@ class SearchResult {
   String username;
   String firstname;
   String lastname;
-  Role role;
+  Role? role;
   String? profilePhotoPath;
   String connected;
   bool following;
@@ -96,14 +96,14 @@ class Follower {
     required this.id,
     required this.firstname,
     required this.lastname,
-    required this.role,
+    this.role,
     required this.profilePhotoPath,
   });
 
   int id;
   String firstname;
   String lastname;
-  String role;
+  String? role;
   String profilePhotoPath;
 
   factory Follower.fromJson(Map<String, dynamic> json) => Follower(
