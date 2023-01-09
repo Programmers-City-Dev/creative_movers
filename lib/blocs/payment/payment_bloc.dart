@@ -58,6 +58,9 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         ], country: "Nigeria", currency: "NGN"));
       }
       return const Right("Payment successful");
+    } on StripeException catch (e) {
+      log("Payment error: $e", name: "PaymentBloc");
+      return Left(e.error.message ?? "Unable to process payment");
     } catch (e) {
       log("Payment error: $e", name: "PaymentBloc");
       return const Left("Unable to process payment");
