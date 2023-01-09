@@ -111,7 +111,9 @@
                 android:value="5" />
         </provider>
         <!-- End FlutterDownloader customization -->
-
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

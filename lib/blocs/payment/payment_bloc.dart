@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/constants/constants.dart';
@@ -12,7 +13,6 @@ import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:uuid/uuid.dart';
@@ -33,20 +33,30 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
   Future<Either<String, String>> makePayment(String secret) async {
     try {
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: secret,
-        // applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
-        // googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
-        appearance: const PaymentSheetAppearance(
-            colors:
-                PaymentSheetAppearanceColors(primary: AppColors.primaryColor)),
-        style: ThemeMode.light,
-        merchantDisplayName: "Creative Movers Pay",
-      ));
+      if (Platform.isAndroid) {
+        await Stripe.instance.initPaymentSheet(
+            paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: secret,
+          appearance: const PaymentSheetAppearance(
+              colors: PaymentSheetAppearanceColors(
+                  primary: AppColors.primaryColor)),
+        ));
+        await Stripe.instance.presentPaymentSheet();
+      } else {
+        await Stripe.instance.initPaymentSheet(
+            paymentSheetParameters: SetupPaymentSheetParameters(
+                paymentIntentClientSecret: secret,
+                applePay: const PaymentSheetApplePay(merchantCountryCode: "US"),
+                appearance: const PaymentSheetAppearance(
+                    colors: PaymentSheetAppearanceColors(
+                        primary: AppColors.primaryColor))));
 
-      // await Stripe.instance.presentPaymentSheet();
-      await Stripe.instance.presentPaymentSheet();
+        await Stripe.instance.presentApplePay(
+            params: const ApplePayPresentParams(cartItems: [
+          ApplePayCartSummaryItem.immediate(
+              label: "CreativeMovers Monthly", amount: "1000")
+        ], country: "Nigeria", currency: "NGN"));
+      }
       return const Right("Payment successful");
     } catch (e) {
       log("Payment error: $e", name: "PaymentBloc");
