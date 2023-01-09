@@ -43,10 +43,20 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         ));
         await Stripe.instance.presentPaymentSheet();
       } else {
+        await Stripe.instance.openApplePaySetup();
+        bool isApplePaySupported = Stripe.instance.isApplePaySupported.value;
+        if (!isApplePaySupported) {
+          return const Left("Apple pay is not supported on this device");
+        }
         await Stripe.instance.initPaymentSheet(
             paymentSheetParameters: SetupPaymentSheetParameters(
                 paymentIntentClientSecret: secret,
-                applePay: const PaymentSheetApplePay(merchantCountryCode: "US"),
+                applePay: const PaymentSheetApplePay(
+                    merchantCountryCode: "US",
+                    paymentSummaryItems: [
+                      ApplePayCartSummaryItem.immediate(
+                          label: "CreativeMovers Monthly", amount: "100")
+                    ]),
                 appearance: const PaymentSheetAppearance(
                     colors: PaymentSheetAppearanceColors(
                         primary: AppColors.primaryColor))));
@@ -54,16 +64,17 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         await Stripe.instance.presentApplePay(
             params: const ApplePayPresentParams(cartItems: [
           ApplePayCartSummaryItem.immediate(
-              label: "CreativeMovers Monthly", amount: "1000")
-        ], country: "Nigeria", currency: "NGN"));
+              label: "CreativeMovers Monthly", amount: "100")
+        ], country: "Nigeria", currency: "NGN", jcbEnabled: true));
       }
       return const Right("Payment successful");
     } on StripeException catch (e) {
       log("Payment error: $e", name: "PaymentBloc");
-      return Left(e.error.message ?? "Unable to process payment");
+      return Left(
+          e.error.message ?? "Unable to process payment: ${e.toString()}");
     } catch (e) {
       log("Payment error: $e", name: "PaymentBloc");
-      return const Left("Unable to process payment");
+      return Left("Unable to process payment: ${e.toString()}");
     }
   }
 
