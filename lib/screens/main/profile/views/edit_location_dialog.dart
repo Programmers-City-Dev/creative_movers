@@ -93,7 +93,7 @@ class EditLocationDialog extends StatelessWidget {
               stateDropdownLabel: "*State",
 
               ///Default Country
-              defaultCountry: DefaultCountry.Nigeria,
+              defaultCountry: CscCountry.Nigeria,
 
               ///Disable country dropdown (Note: use it with default country)
               //disableCountry: true,

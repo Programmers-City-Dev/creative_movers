@@ -1,4 +1,8 @@
 {
+  "identifier" : "2A771DA2",
+  "nonRenewingSubscriptions" : [
+
+  ],
   "products" : [
 
   ],
@@ -6,10 +10,44 @@
 
   },
   "subscriptionGroups" : [
+    {
+      "id" : "4939A8A7",
+      "localizations" : [
 
+      ],
+      "name" : "CM Upgrade",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "displayPrice" : "6.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "3E4F57C9",
+          "introductoryOffer" : {
+            "internalID" : "F22D36D5",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.creativemovers.m7",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "CM-M7",
+          "subscriptionGroupID" : "4939A8A7",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
   ],
   "version" : {
     "major" : 1,
-    "minor" : 0
+    "minor" : 1
   }
 }

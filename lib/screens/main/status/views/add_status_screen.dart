@@ -212,8 +212,4 @@ class _AddStatusScreenState extends State<AddStatusScreen> {
     }
   }
 
-  bool untill(Route route) {
-    route.settings.copyWith(arguments: {'showWelcomeDialog': true});
-    return route.isFirst;
-  }
 }

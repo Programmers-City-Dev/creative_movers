@@ -20,7 +20,8 @@ class CacheCachedUserDao extends BaseDao<CachedUser> {
   Future<List<CachedUser>> getAllCache() async {
     final snapshots = await store.find(await database);
     return snapshots
-        .map((snapshot) => CachedUser.fromMap(snapshot.value))
+        .map((snapshot) =>
+            CachedUser.fromMap(snapshot.value as Map<String, dynamic>))
         .toList(growable: false);
   }
 
@@ -34,7 +35,7 @@ class CacheCachedUserDao extends BaseDao<CachedUser> {
   @override
   Future<int> insert(CachedUser cacheCachedUser) async {
     await deleteAll();
-    return await store.add(await database, cacheCachedUser.toMap());
+    return await store.add(await database, cacheCachedUser.toMap()) as int;
   }
 
   @override

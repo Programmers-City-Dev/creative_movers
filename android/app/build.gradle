@@ -118,6 +118,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.stripe:stripe-android:17.1.1'
-
-//    implementation 'com.pusher:pusher-java-client:2.2.8'
+    implementation "com.android.billingclient:billing:5.1.0"
 }
