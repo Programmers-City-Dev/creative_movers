@@ -7,7 +7,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 class PaymentServices {
   PaymentServices._();
 
-  static PaymentServices get instance => PaymentServices._();
+   PaymentServices();
 
   Future<void> init() async {
     int? userId = injector.get<CacheCubit>().cachedUser?.id;

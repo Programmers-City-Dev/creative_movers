@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/constants/constants.dart';
+import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/services/file_downloader_service.dart';
 import 'package:creative_movers/services/puhser_service.dart';

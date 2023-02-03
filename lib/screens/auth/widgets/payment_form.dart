@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
+import 'package:creative_movers/cubit/in_app_payment_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/auth/widgets/details_saved_succes_dialog.dart';
@@ -8,6 +9,7 @@ import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:purchases_flutter/models/store_product_wrapper.dart';
 
 class PaymentForm extends StatefulWidget {
   const PaymentForm({Key? key, this.isFirstTime = false}) : super(key: key);
@@ -21,7 +23,7 @@ class PaymentForm extends StatefulWidget {
 class _PaymentFormState extends State<PaymentForm> {
   bool saveDetails = true;
   List<String> options = [
-    'Start Free Trial For 9 days',
+    'Start Free Trial For 7 days',
     'Pay \$7.00 now (Monthly Reoccuring Fee)'
   ];
   String selectedPaymentMode = 'free';
@@ -35,6 +37,7 @@ class _PaymentFormState extends State<PaymentForm> {
   @override
   Widget build(BuildContext context) {
     final trialPaymentBloc = PaymentBloc(injector.get());
+    var iapPaymentBloc = injector.get<InAppPaymentCubit>();
     return Form(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -74,93 +77,64 @@ class _PaymentFormState extends State<PaymentForm> {
             ),
 
             // const Spacer(),
-            BlocListener<PaymentBloc, PaymentState>(
-              bloc: injector.get<PaymentBloc>(),
-              listener: (context, state) {
-                if (state is PaymentProcessingState) {
-                  AppUtils.showAnimatedProgressDialog(context,
-                      title: "Processing");
-                }
-                if (state is PaymentFailureState) {
-                  Navigator.of(context).pop();
-                  AppUtils.showCustomToast(state.error);
-                }
-                if (state is PaymentIntentGottenState) {
-                  Navigator.of(context).pop();
-                  injector
-                      .get<PaymentBloc>()
-                      .add(MakePaymentEvent(state.intent['client_secret']));
-                }
-
-                if (state is PaymentConfirmedState) {
-                  if (widget.isFirstTime) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => WillPopScope(
-                            onWillPop: () => Future.value(false),
-                            child: DetailsSavedDialog(
-                                paymentMode: selectedPaymentMode,
-                                paymentType: paymentType,
-                                paymentAmount: paymentAmount,
-                                duration: mDuration,
-                                isFirstTime: widget.isFirstTime)),
-                        barrierDismissible: false);
-                  } else {
-                    Navigator.of(context)
-                      ..pop()
-                      ..pop(true);
-                    AppUtils.showCustomToast(state.message);
-                    // injector
-                    //     .get<PaymentBloc>()
-                    //     .add(const GetSubscriptionInfoEvent());
+            BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
+                bloc: iapPaymentBloc,
+                listener: (context, state) {
+                  if (state is InAppPaymentLoading) {
+                    AppUtils.showAnimatedProgressDialog(context,
+                        title: "Processing");
                   }
-                }
-              },
-              child: BlocConsumer<PaymentBloc, PaymentState>(
-                  bloc: trialPaymentBloc,
-                  listener: (context, state) {
-                    if (state is PaymentConfirmedState) {
-                      Navigator.of(context).pop();
+                  if (state is InAppPaymentFetchError) {
+                    Navigator.of(context).pop();
+                    AppUtils.showCustomToast(state.error.errorMessage);
+                  }
+
+                  if (state is InAppPurchaseSuccess) {
+                    Navigator.of(context).pop();
+                    if (widget.isFirstTime) {
                       showDialog(
                           context: context,
                           builder: (context) => WillPopScope(
                               onWillPop: () => Future.value(false),
                               child: DetailsSavedDialog(
-                                paymentMode: selectedPaymentMode,
-                                paymentType: paymentType,
-                                paymentAmount: paymentAmount,
-                                duration: mDuration,
-                                isFirstTime: widget.isFirstTime,
-                              )),
+                                  paymentMode: selectedPaymentMode,
+                                  paymentType: paymentType,
+                                  paymentAmount: paymentAmount,
+                                  duration: mDuration,
+                                  isFirstTime: widget.isFirstTime)),
                           barrierDismissible: false);
+                    } else {
+                      Navigator.of(context)
+                        ..pop()
+                        ..pop(true);
+                      AppUtils.showCustomToast("Payment Successful");
+                      // injector
+                      //     .get<PaymentBloc>()
+                      //     .add(const GetSubscriptionInfoEvent());
                     }
-                    if (state is PaymentFailureState) {
-                      Navigator.of(context).pop();
-                      AppUtils.showCustomToast(state.error);
-                    }
-                    if (state is PaymentProcessingState) {
-                      AppUtils.showAnimatedProgressDialog(context,
-                          title: "Processing request, please wait...");
-                    }
-                  },
-                  builder: (context, snapshot) {
-                    return CustomButton(
-                      child: const Text('CONTINUE'),
-                      onTap: () async {
-                        if (paymentType == 'paid') {
-                          injector.get<PaymentBloc>().add(
-                              MakePaymentWithIntentEvent(
-                                  int.parse(paymentAmount),
-                                  "usd",
-                                  mDuration,
-                                  "account_activation"));
-                        } else {
-                          trialPaymentBloc.add(StartFreeTrialEvent());
-                        }
-                      },
-                    );
-                  }),
-            )
+                  }
+                },
+                builder: (context, snapshot) {
+                  return CustomButton(
+                    child: const Text('CONTINUE'),
+                    onTap: () async {
+                      if (paymentType == 'paid') {
+                        // iapPaymentBloc.fetchOfferings();
+                        iapPaymentBloc.purchaseStoreProduct(const StoreProduct(
+                            "com.creativemovers.m7",
+                            'You will be charged \$7.00 on monthly bases to '
+                                'enjoy all the services as either '
+                                'creatives  or movers.',
+                            "\$6.99 / Month",
+                            6.99,
+                            "\$6.99",
+                            "USD"));
+                      } else {
+                        trialPaymentBloc.add(StartFreeTrialEvent());
+                      }
+                    },
+                  );
+                })
           ],
         ),
       ),
@@ -216,20 +190,20 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
           const SizedBox(
             height: 16,
           ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedIndex = 1;
-                widget.onSelected('paid', "77", "yearly");
-              });
-            },
-            child: PaymentOptionCard(
-              selected: selectedIndex == 1,
-              title: '\$77.00 / Year',
-              description:
-                  'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     setState(() {
+          //       selectedIndex = 1;
+          //       widget.onSelected('paid', "77", "yearly");
+          //     });
+          //   },
+          //   child: PaymentOptionCard(
+          //     selected: selectedIndex == 1,
+          //     title: '\$77.00 / Year',
+          //     description:
+          //         'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
+          //   ),
+          // ),
           const SizedBox(
             height: 16,
           ),
