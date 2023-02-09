@@ -2,7 +2,7 @@ import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/data/remote/model/subscription_response.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -196,8 +196,8 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
   }
 
   Future<void> _navigateToPayment(BuildContext context) async {
-    bool? done = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: ((context) => const PaymentScreen())));
+    bool? done = await Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: ((context) => const SubscriptionScreen())));
     if (done != null && done) {
       _paymentBloc.add(const GetSubscriptionInfoEvent());
     }

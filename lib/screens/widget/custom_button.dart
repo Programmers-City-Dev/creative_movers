@@ -8,13 +8,15 @@ class CustomButton extends StatelessWidget {
       this.onTap,
       this.isEnabled = true,
       this.height,
-      this.color})
+      this.color,
+      this.radius})
       : super(key: key);
   final VoidCallback? onTap;
   final bool isEnabled;
   final Widget? child;
   final double? height;
   final Color? color;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,8 @@ class CustomButton extends StatelessWidget {
       height: height ?? 50,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(radius ?? 0)),
               elevation: 0,
               backgroundColor: color ?? AppColors.primaryColor,
               padding: const EdgeInsets.all(16)),

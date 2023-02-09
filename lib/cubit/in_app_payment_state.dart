@@ -30,7 +30,14 @@ class UpgradProductsFetched extends InAppPaymentState {
   @override
   List<Object> get props => [packages];
 }
+class ProductsFetched extends InAppPaymentState {
+  final StoreProduct product;
 
+  const ProductsFetched(this.product);
+
+  @override
+  List<Object> get props => [product];
+}
 class InAppPaymentFetchError extends InAppPaymentState {
   final ServerErrorModel error;
 

@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:creative_movers/blocs/payment/payment_bloc.dart';
+import 'dart:developer';
+
 import 'package:creative_movers/cubit/in_app_payment_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -26,18 +27,18 @@ class _PaymentFormState extends State<PaymentForm> {
     'Start Free Trial For 7 days',
     'Pay \$7.00 now (Monthly Reoccuring Fee)'
   ];
-  String selectedPaymentMode = 'free';
+  StoreProduct? _selectedProduct;
 
-  String paymentType = '';
+  var iapPaymentBloc = injector.get<InAppPaymentCubit>();
 
-  String paymentAmount = '';
-
-  String mDuration = '';
+  @override
+  void initState() {
+    super.initState();
+    iapPaymentBloc.fetchOfferings();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final trialPaymentBloc = PaymentBloc(injector.get());
-    var iapPaymentBloc = injector.get<InAppPaymentCubit>();
     return Form(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -52,23 +53,46 @@ class _PaymentFormState extends State<PaymentForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Payment Details',
+              'Choose a payment plan',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
+            const SizedBox(height: 8),
             const Text(
-              'You will be charged \$7.00 to enjoy all the services as well as all benefits of creatives  or movers  ',
+              'After your 7 day free trial period, you will be charged \$7.00 '
+              'to enjoy all the services as well as all benefits '
+              'of creatives  or movers  ',
               style: TextStyle(fontSize: 14),
             ),
             const SizedBox(
               height: 18,
             ),
             Expanded(
-              child: PaymentOptionsWidget(
-                includeTrial: widget.isFirstTime,
-                onSelected: (type, amount, duration) {
-                  paymentType = type;
-                  paymentAmount = amount;
-                  mDuration = duration;
+              child: BlocBuilder<InAppPaymentCubit, InAppPaymentState>(
+                bloc: InAppPaymentCubit(injector.get())..fetchOfferings(),
+                builder: (context, state) {
+                  if (state is InAppPaymentLoading) {
+                    return const Center(
+                        child: CircularProgressIndicator.adaptive());
+                  }
+                  if (state is InAppPaymentFetchError) {
+                    return Center(child: Text(state.error.errorMessage));
+                  }
+                  if (state is UpgradProductsFetched) {
+                    log("PACKAGE: ${state.packages.first.toJson()}");
+                    return ListView.builder(
+                        itemCount: state.packages.length,
+                        itemBuilder: (context, index) {
+                          
+                          return PaymentOptionsWidget(
+                            storeProduct: state.packages[index].storeProduct,
+                            includeTrial: widget.isFirstTime,
+                            onSelected: (product) {
+                              _selectedProduct = product;
+                            },
+                          );
+                        });
+                  }
+                  return const SizedBox.shrink();
                 },
               ),
             ),
@@ -81,11 +105,11 @@ class _PaymentFormState extends State<PaymentForm> {
                 bloc: iapPaymentBloc,
                 listener: (context, state) {
                   if (state is InAppPaymentLoading) {
-                    AppUtils.showAnimatedProgressDialog(context,
-                        title: "Processing");
+                    // AppUtils.showAnimatedProgressDialog(context,
+                    //     title: "Processing");
                   }
                   if (state is InAppPaymentFetchError) {
-                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                     AppUtils.showCustomToast(state.error.errorMessage);
                   }
 
@@ -97,10 +121,10 @@ class _PaymentFormState extends State<PaymentForm> {
                           builder: (context) => WillPopScope(
                               onWillPop: () => Future.value(false),
                               child: DetailsSavedDialog(
-                                  paymentMode: selectedPaymentMode,
-                                  paymentType: paymentType,
-                                  paymentAmount: paymentAmount,
-                                  duration: mDuration,
+                                  paymentMode: "free",
+                                  paymentType: "monthly",
+                                  paymentAmount: "7.00",
+                                  duration: "7",
                                   isFirstTime: widget.isFirstTime)),
                           barrierDismissible: false);
                     } else {
@@ -118,19 +142,9 @@ class _PaymentFormState extends State<PaymentForm> {
                   return CustomButton(
                     child: const Text('CONTINUE'),
                     onTap: () async {
-                      if (paymentType == 'paid') {
+                      if (_selectedProduct != null) {
                         // iapPaymentBloc.fetchOfferings();
-                        iapPaymentBloc.purchaseStoreProduct(const StoreProduct(
-                            "com.creativemovers.m7",
-                            'You will be charged \$7.00 on monthly bases to '
-                                'enjoy all the services as either '
-                                'creatives  or movers.',
-                            "\$6.99 / Month",
-                            6.99,
-                            "\$6.99",
-                            "USD"));
-                      } else {
-                        trialPaymentBloc.add(StartFreeTrialEvent());
+                        iapPaymentBloc.purchaseStoreProduct(_selectedProduct!.identifier);
                       }
                     },
                   );
@@ -144,14 +158,16 @@ class _PaymentFormState extends State<PaymentForm> {
 
 class PaymentOptionsWidget extends StatefulWidget {
   final bool includeTrial;
+  final StoreProduct storeProduct;
 
   const PaymentOptionsWidget({
     Key? key,
     required this.onSelected,
     this.includeTrial = false,
+    required this.storeProduct,
   }) : super(key: key);
 
-  final Function(String, String, String) onSelected;
+  final Function(StoreProduct) onSelected;
 
   @override
   State<PaymentOptionsWidget> createState() => _PaymentOptionsWidgetState();
@@ -163,7 +179,6 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
   @override
   void initState() {
     super.initState();
-    widget.onSelected('paid', '7', "monthly");
   }
 
   @override
@@ -177,14 +192,17 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
             onTap: () {
               setState(() {
                 selectedIndex = 0;
-                widget.onSelected('paid', "7", "monthly");
+                widget.onSelected(widget.storeProduct);
               });
             },
             child: PaymentOptionCard(
               selected: selectedIndex == 0,
-              title: '\$7.00 / Month',
-              description:
-                  'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
+              title: widget.storeProduct.identifier == "com.creativemovers.m7"
+                  ? "CreativeMovers Monthly"
+                  : widget.storeProduct.title,
+              description: widget.storeProduct.description,
+              // description:
+              //     'You will be charged \$7.00 on monthly bases to enjoy all the services as either creatives  or movers.',
             ),
           ),
           const SizedBox(
@@ -207,22 +225,22 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
           const SizedBox(
             height: 16,
           ),
-          widget.includeTrial
-              ? GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = 2;
-                      widget.onSelected('trial', "0", "free");
-                    });
-                  },
-                  child: PaymentOptionCard(
-                    selected: selectedIndex == 2,
-                    title: '9 DAY FREE TRIAL',
-                    description:
-                        'Try and experience our features for 9 days and then you can pay for the full version.\n',
-                  ),
-                )
-              : const SizedBox.shrink()
+          // widget.includeTrial
+          //     ? GestureDetector(
+          //         onTap: () {
+          //           setState(() {
+          //             selectedIndex = 2;
+          //             widget.onSelected('trial', "0", "free");
+          //           });
+          //         },
+          //         child: PaymentOptionCard(
+          //           selected: selectedIndex == 2,
+          //           title: '9 DAY FREE TRIAL',
+          //           description:
+          //               'Try and experience our features for 9 days and then you can pay for the full version.\n',
+          //         ),
+          //       )
+          //     : const SizedBox.shrink()
         ],
       ),
     );
@@ -257,7 +275,7 @@ class PaymentOptionCard extends StatelessWidget {
               color: selected ? AppColors.primaryColor : Colors.grey),
           title: Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           subtitle: Text(description),
         ),

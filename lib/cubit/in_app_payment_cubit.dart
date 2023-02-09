@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/services/payment_services.dart';
@@ -51,26 +52,29 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
     }
   }
 
-  void purchaseStoreProduct(StoreProduct product,
+  void purchaseStoreProduct(String productId,
       {PurchaseType type = PurchaseType.subs}) async {
     try {
-      // emit(InAppPaymentLoading());
+      emit(InAppPaymentLoading());
       var activeSubsEntitlements =
           (await Purchases.getCustomerInfo()).entitlements.active;
       bool isActive = activeSubsEntitlements.keys.contains("pro");
+      log("isActive: $isActive");
       if (isActive) {
         emit(const InAppPaymentError(ServerErrorModel(
             errorMessage:
                 "You are already subscribed to this plan or already have an active subscription",
             statusCode: 400)));
       } else {
+        log("Product: $productId");
         var customerInfo = await paymentServices.purchaseProduct(
-          product.identifier,
+          productId,
           type: type,
         );
         emit(InAppPurchaseSuccess(customerInfo: customerInfo));
       }
     } on PlatformException catch (ex) {
+      log("ERROR: ${ex.message}");
       if (PurchasesErrorHelper.getErrorCode(ex) ==
           PurchasesErrorCode.purchaseCancelledError) {
         emit(InAppPaymentInitial());
@@ -109,6 +113,27 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
         emit(InAppPaymentFetchError(
             ServerErrorModel(errorMessage: "${ex.message}", statusCode: 400)));
       }
+    }
+  }
+
+  void fetchProduct(String productId) async {
+    try {
+      // var customerInfo = await Purchases.getCustomerInfo();
+      // log(customerInfo.originalAppUserId);
+
+      emit(InAppPaymentLoading());
+
+      var product =
+          await Purchases.getProducts([productId], type: PurchaseType.subs);
+      if (product.isEmpty) {
+        emit(const InAppPaymentFetchError(ServerErrorModel(
+            errorMessage: "Product is not available", statusCode: 400)));
+        return;
+      }
+      emit(ProductsFetched(product.first));
+    } on PlatformException catch (e) {
+      emit(InAppPaymentFetchError(
+          ServerErrorModel(errorMessage: "${e.message}", statusCode: 400)));
     }
   }
 }
