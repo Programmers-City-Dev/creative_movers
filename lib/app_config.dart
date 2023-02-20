@@ -1,14 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/constants/constants.dart';
-import 'package:creative_movers/data/remote/services/payment_services.dart';
+import 'package:creative_movers/di/injector.dart' as di;
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/services/file_downloader_service.dart';
 import 'package:creative_movers/services/puhser_service.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:creative_movers/services/remote_configs_service.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:creative_movers/di/injector.dart' as di;
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

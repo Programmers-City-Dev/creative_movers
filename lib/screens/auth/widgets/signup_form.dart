@@ -250,7 +250,6 @@ class _SignupFormState extends State<SignupForm> {
       log(
         'ERROR $e',
       );
-      // TODO
     }
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }

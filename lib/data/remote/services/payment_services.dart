@@ -5,7 +5,6 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PaymentServices {
-  PaymentServices._();
 
    PaymentServices();
 
