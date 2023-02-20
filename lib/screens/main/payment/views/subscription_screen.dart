@@ -46,21 +46,21 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 onPressed: () => Navigator.pop(context, false),
                 icon: const Icon(Icons.close)),
         actions: [
-          if (!widget.isFromSignup!)
-            GestureDetector(
-              onTap: () {
-                _appPaymentCubit.restorePurchase();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text("Restore",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w500,
-                    )),
-              ),
-            )
+          // if (!widget.isFromSignup!)
+          //   GestureDetector(
+          //     onTap: () {
+          //       _appPaymentCubit.restorePurchase();
+          //     },
+          //     child: const Padding(
+          //       padding: EdgeInsets.all(16.0),
+          //       child: Text("Restore",
+          //           style: TextStyle(
+          //             fontSize: 16,
+          //             color: Colors.redAccent,
+          //             fontWeight: FontWeight.w500,
+          //           )),
+          //     ),
+          //   )
         ],
       ),
       body: WillPopScope(

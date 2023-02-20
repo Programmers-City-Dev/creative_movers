@@ -76,102 +76,108 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                       return SingleChildScrollView(
                         child: Column(
                           children: [
-                            Card(
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    title: Text(
-                                        subscription!.type ==
-                                                "account_activation"
-                                            ? 'Account Activation'
-                                            : 'Subscription',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    subtitle: Text(
-                                        subscription.status == "trial"
-                                            ? "Free trial"
-                                            : 'Monthly Subscription'),
-                                    // trailing: Text('\$${subscription.amount}'),
-                                  ),
-                                  ListTile(
-                                    title: const Text(
-                                      'Subscription Date',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Card(
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      title: Text(
+                                          subscription!.type ==
+                                                  "account_activation"
+                                              ? 'Account Activation'
+                                              : 'Subscription',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      subtitle: Text(
+                                          subscription.status == "trial"
+                                              ? "Free trial"
+                                              : 'Monthly Subscription'),
+                                      // trailing: Text('\$${subscription.amount}'),
                                     ),
-                                    subtitle: const Text(
-                                        'This subscription was updated on this date.'),
-                                    trailing: Text(AppUtils.getDateAndTime(
-                                        subscription.updatedAt)),
-                                  ),
-                                  ListTile(
-                                    title: const Text('Subscription Status',
+                                    ListTile(
+                                      title: const Text(
+                                        'Subscription Date',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    subtitle: const Text('Subscription Status'),
-                                    trailing: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      decoration: BoxDecoration(
-                                          color: subscription.status == "active"
-                                              ? AppColors.lightBlue
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: const Text(
+                                          'This subscription was updated on this date.'),
+                                      trailing: Text(AppUtils.getDateAndTime(
+                                          subscription.updatedAt)),
+                                    ),
+                                    ListTile(
+                                      title: const Text('Subscription Status',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      subtitle:
+                                          const Text('Subscription Status'),
+                                      trailing: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        decoration: BoxDecoration(
+                                            color: subscription.status ==
+                                                    "active"
+                                                ? AppColors.lightBlue
+                                                : subscription.status == "trial"
+                                                    ? Colors.orange
+                                                    : AppColors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Text(
+                                          subscription.status == "active"
+                                              ? 'Active'
                                               : subscription.status == "trial"
-                                                  ? Colors.orange
-                                                  : AppColors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Text(
-                                        subscription.status == "active"
-                                            ? 'Active'
-                                            : subscription.status == "trial"
-                                                ? "Free Trial"
-                                                : 'Inactive',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color:
-                                                subscription.status == "active"
-                                                    ? AppColors.textColor
-                                                    : AppColors.white),
+                                                  ? "Free Trial"
+                                                  : 'Inactive',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: subscription.status ==
+                                                      "active"
+                                                  ? AppColors.textColor
+                                                  : AppColors.white),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  ListTile(
-                                    title: const Text('Expiry Date',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    trailing: Text(AppUtils.getDateAndTime(
-                                        subscription.expiryDate)),
-                                    subtitle: const Text(
-                                        'Your subscription will expire on this date.'),
-                                  ),
-                                  ListTile(
-                                    title: const Text(
-                                      'Subscription Type',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                    ListTile(
+                                      title: const Text('Expiry Date',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      trailing: Text(AppUtils.getDateAndTime(
+                                          subscription.expiryDate)),
+                                      subtitle: const Text(
+                                          'Your subscription will expire on this date.'),
                                     ),
-                                    trailing: Text(
-                                        subscription.status.toLowerCase() ==
-                                                'trial'
-                                            ? 'Not Active '
-                                            : subscription.subType),
-                                    // subtitle: const Text(''),
-                                  )
-                                ],
+                                    // ListTile(
+                                    //   title: const Text(
+                                    //     'Subscription Type',
+                                    //     style: TextStyle(
+                                    //         fontWeight: FontWeight.bold),
+                                    //   ),
+                                    //   trailing: Text(
+                                    //       subscription.status.toLowerCase() ==
+                                    //               'trial'
+                                    //           ? 'Not Active '
+                                    //           : subscription.subType),
+                                    //   // subtitle: const Text(''),
+                                    // )
+                                  ],
+                                ),
                               ),
                             ),
                             // const Spacer(),
                             const SizedBox(
                               height: 16,
                             ),
-                            // if (subscription.status.toLowerCase() != 'active')
-                            CustomButton(
-                              child: const Text('Subscribe Now'),
-                              onTap: () {
-                                _navigateToPayment(context);
-                              },
-                            ),
+                            if (subscription.status.toLowerCase() != 'active')
+                              CustomButton(
+                                child: const Text('Subscribe Now'),
+                                onTap: () {
+                                  _navigateToPayment(context);
+                                },
+                              ),
                           ],
                         ),
                       );
