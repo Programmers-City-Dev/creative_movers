@@ -15,7 +15,6 @@ import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 part 'payment_event.dart';
@@ -31,6 +30,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     on<GetPaymentHistoryEvent>(_mapGetPaymentHistoryEventToState);
     on<StartFreeTrialEvent>(_mapStartFreeTrialEventToState);
   }
+
+  bool hasActiveSubscription = false;
 
   Future<Either<String, String>> makePayment(String secret) async {
     try {
@@ -184,7 +185,14 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         ServerErrorModel errorModel = state.value;
         emit(SubscriptionLoadErrorState(errorModel.errorMessage));
       } else if (state is SuccessState) {
-        emit(SubscriptionLoadedState(state.value));
+        SubscriptionResponse sub = state.value;
+        log("SUB INFO: ${sub.user?.subscription?.status}");
+        if (sub.user?.subscription?.status.toLowerCase() == "active") {
+          hasActiveSubscription = true;
+        } else {
+          hasActiveSubscription = false;
+        }
+        emit(SubscriptionLoadedState(sub));
       }
     } catch (e) {
       emit(const SubscriptionLoadErrorState(

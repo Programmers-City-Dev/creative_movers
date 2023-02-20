@@ -60,7 +60,7 @@ class _PaymentFormState extends State<PaymentForm> {
             const Text(
               'After your 7 day free trial period, you will be charged \$7.00 '
               'to enjoy all the services as well as all benefits '
-              'of creatives  or movers  ',
+              'of CreativeMovers  ',
               style: TextStyle(fontSize: 14),
             ),
             const SizedBox(

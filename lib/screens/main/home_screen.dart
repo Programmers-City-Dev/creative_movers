@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
+import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -59,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     _navBloc.add(OpenHomeTabEvent());
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
+    injector.get<PaymentBloc>().add(const GetSubscriptionInfoEvent());
     injector.get<PaymentServices>().init();
 
     Future.delayed(const Duration(seconds: 4))

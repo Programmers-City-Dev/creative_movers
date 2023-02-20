@@ -1,8 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/data/remote/model/view_status_response.dart';
+import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/screens/main/status/views/view_status_screen.dart';
 import 'package:creative_movers/screens/main/status/widgets/create_story_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -70,14 +76,32 @@ class _StatusViewsState extends State<StatusViews> {
               children: [
                 InkWell(
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return BlocProvider.value(
-                            value: statusBloc,
-                            child: const CreateStoryDialog());
-                      },
-                    );
+                    if (injector.get<PaymentBloc>().hasActiveSubscription) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return BlocProvider.value(
+                              value: statusBloc,
+                              child: const CreateStoryDialog());
+                        },
+                      );
+                    } else {
+                      //  Show upgrade bottom sheet
+                      AppUtils.showUpgradeDialog(context,
+                          onSubscribe: () async {
+                        bool? done =
+                            await Navigator.of(context, rootNavigator: true)
+                                .push(MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const SubscriptionScreen())));
+                        if (done != null && done) {
+                          Navigator.pop(context);
+                          injector
+                              .get<PaymentBloc>()
+                              .add(const GetSubscriptionInfoEvent());
+                        }
+                      });
+                    }
                   },
                   child: CircleAvatar(
                     radius: 25,

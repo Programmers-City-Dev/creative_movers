@@ -1,16 +1,18 @@
 import 'dart:developer';
+
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
+import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+
 import 'connection_screen.dart';
 
 class MoverForm extends StatefulWidget {
@@ -396,8 +398,8 @@ class _MoverFormState extends State<MoverForm>
                     connections: state.accountTypeResponse.connect,
                     role: state.accountTypeResponse.userRole?.role,
                   )
-                : const PaymentScreen(
-                    isFirstTime: true,
+                : const SubscriptionScreen(
+                    isFromSignup: true,
                   ),
           ),
           (route) => false);

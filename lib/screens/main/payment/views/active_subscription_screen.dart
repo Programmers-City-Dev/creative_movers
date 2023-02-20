@@ -91,7 +91,7 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                                         subscription.status == "trial"
                                             ? "Free trial"
                                             : 'Monthly Subscription'),
-                                    trailing: Text('\$${subscription.amount}'),
+                                    // trailing: Text('\$${subscription.amount}'),
                                   ),
                                   ListTile(
                                     title: const Text(
@@ -165,14 +165,9 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                             const SizedBox(
                               height: 16,
                             ),
+                            // if (subscription.status.toLowerCase() != 'active')
                             CustomButton(
-                              child: Text(
-                                  subscription.status.toLowerCase() == 'active'
-                                      ? 'Topup Subscription'
-                                      : subscription.status.toLowerCase() ==
-                                              'expired'
-                                          ? "Renew Subscription"
-                                          : 'Subscribe Now'),
+                              child: const Text('Subscribe Now'),
                               onTap: () {
                                 _navigateToPayment(context);
                               },
@@ -182,7 +177,7 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
                       );
                     }
                     return const Center(
-                      child: Text("Subscription data not availbale"),
+                      child: Text("Subscription data not availble"),
                     );
                   }
                   return const SizedBox.shrink();
@@ -200,6 +195,7 @@ class _ActiveSubscriptionScreenState extends State<ActiveSubscriptionScreen> {
         MaterialPageRoute(builder: ((context) => const SubscriptionScreen())));
     if (done != null && done) {
       _paymentBloc.add(const GetSubscriptionInfoEvent());
+      injector.get<PaymentBloc>().add(const GetSubscriptionInfoEvent());
     }
   }
 }

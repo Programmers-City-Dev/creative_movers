@@ -136,4 +136,20 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
           ServerErrorModel(errorMessage: "${e.message}", statusCode: 400)));
     }
   }
+
+  void restorePurchase() async {
+    try {
+      emit(InAppPaymentLoading());
+      var customerInfo = await Purchases.restorePurchases();
+      emit(InAppPurchaseSuccess(customerInfo: customerInfo));
+    } on PlatformException catch (ex) {
+      if (PurchasesErrorHelper.getErrorCode(ex) ==
+          PurchasesErrorCode.purchaseCancelledError) {
+        emit(InAppPaymentInitial());
+      } else {
+        emit(InAppPaymentFetchError(
+            ServerErrorModel(errorMessage: "${ex.message}", statusCode: 400)));
+      }
+    }
+  }
 }

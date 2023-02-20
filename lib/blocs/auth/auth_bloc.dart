@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/addconnection_response.dart';
 import 'package:creative_movers/data/remote/model/biodata_response.dart';
@@ -14,6 +15,7 @@ import 'package:creative_movers/data/remote/model/reset_password_response.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/repository/auth_repository.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:equatable/equatable.dart';
@@ -74,6 +76,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           deviceToken: deviceToken,
           platform: platform);
       if (state is SuccessState) {
+        AuthResponse authResponse = state.value;
+        if (authResponse.user.payStatus?.toLowerCase() == "inactive") {
+          injector.get<PaymentBloc>().hasActiveSubscription = false;
+        }
         emit(LoginSuccessState(response: state.value));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;

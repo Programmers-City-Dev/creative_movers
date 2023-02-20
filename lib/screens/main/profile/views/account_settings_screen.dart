@@ -25,7 +25,7 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  final _paymentBloc = PaymentBloc(injector.get());
+  final _paymentBloc = injector.get<PaymentBloc>();
 
   @override
   void initState() {
@@ -303,6 +303,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                             bloc: _paymentBloc,
                                             // ..add(
                                             //     const GetSubscriptionInfoEvent()),
+                                            buildWhen: (previous, current) => current
+                                                is SubscriptionLoadedState,
                                             builder: (context, state) {
                                               if (state
                                                   is SubscriptionLoadedState) {

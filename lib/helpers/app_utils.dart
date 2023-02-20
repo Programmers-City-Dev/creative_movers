@@ -657,6 +657,70 @@ class AppUtils {
     return DateFormat("E MMM d, yyyy・h:mm a")
         .format(DateTime.fromMillisecondsSinceEpoch(t!));
   }
+
+  static void showUpgradeDialog(BuildContext context,
+      {required VoidCallback onSubscribe}) async {
+    showMaterialModalBottomSheet(
+        context: context,
+        expand: false,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+        builder: (_) => Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Upgrade",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 22)),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.grey),
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      children: [
+                        const Text(
+                            "Oops! you don't have permission to access this feature, "
+                            "please upgrade your account to enjoy this feature",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 16)),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        CustomButton(
+                          child: const Text('Subscribe Now'),
+                          onTap: () {
+                            onSubscribe.call();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ));
+  }
 }
 
 class CustomSnackBar {

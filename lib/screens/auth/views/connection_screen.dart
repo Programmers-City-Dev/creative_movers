@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/widgets/contact_item.dart';
+import 'package:creative_movers/screens/main/home_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -183,13 +185,24 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     }
 
     if (state is AddConnectionSuccesState) {
-      Navigator.pop(context);
-      Navigator.of(context).pushAndRemoveUntil(
+      Navigator.of(context)
+          .push(
+        MaterialPageRoute(
+            builder: (context) => const SubscriptionScreen(
+                  isFromSignup: true,
+                )),
+      )
+          .then((success) {
+        if (success != null && success) {
+          AppUtils.showCustomToast("Subscription was successful");
+        }
+        Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => const PaymentScreen(
-                    isFirstTime: true,
+              builder: (context) => const HomeScreen(
+                    showWelcomeDialog: true,
                   )),
-          (route) => false);
+        );
+      });
     }
   }
 }

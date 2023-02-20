@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:creative_movers/cubit/in_app_payment_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -9,8 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SubscriptionScreen extends StatefulWidget {
   final bool? isFromSignup;
 
-  const SubscriptionScreen({Key? key, this.isFromSignup = false})
-      : super(key: key);
+  const SubscriptionScreen({
+    Key? key,
+    this.isFromSignup = false,
+  }) : super(key: key);
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -33,7 +34,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor:
+          Theme.of(context).colorScheme.background.withOpacity(0.9),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -41,101 +43,112 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         leading: widget.isFromSignup!
             ? null
             : IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pop(context, false),
                 icon: const Icon(Icons.close)),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-            ),
-            child: TextButton(onPressed: () {}, child: const Text("Restore")),
-          )
+          if (!widget.isFromSignup!)
+            GestureDetector(
+              onTap: () {
+                _appPaymentCubit.restorePurchase();
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text("Restore",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ),
+            )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 16,
-            ),
-            const Text(
-              'Full Access\nAnd Move Forward',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+      body: WillPopScope(
+        onWillPop: () async {
+          return !widget.isFromSignup!;
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 16,
               ),
-            ),
-            const SizedBox(
-              height: 32.0,
-            ),
-            Row(
-              children: [
-                const Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
+              const Text(
+                'Full Access\nAnd Move Forward',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  'Post Stories without limit',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600]),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            Row(
-              children: [
-                const Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  'Post Stories without limit',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600]),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            Row(
-              children: [
-                const Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  'Connect with unlimited movers',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600]),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 32.0,
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(bottom: 32),
+              ),
+              const SizedBox(
+                height: 32.0,
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Post feeds without limit',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey.shade800),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Post stories without limit',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey.shade800),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Connect with unlimited movers',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey.shade800),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 32.0,
+              ),
+              Expanded(
                 child: Column(
                   children: [
                     const Spacer(),
@@ -143,13 +156,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       pId: _selectedProductId ?? '',
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 32,
                     ),
                     SubscriptionOptions(
                         subIds: _subIds, onSubSelected: (id) {}),
-                    const SizedBox(
-                      height: 32 * 2,
-                    ),
+                    const Spacer(),
                     BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
                       bloc: _appPaymentCubit,
                       listener: (context, state) {
@@ -160,32 +171,62 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               confirmButtonText: "Close",
                               onConfirmed: () => Navigator.pop(context));
                         }
+                        if (state is InAppPurchaseSuccess) {
+                          Navigator.pop(context, true);
+                        }
                       },
                       builder: (context, state) {
-                        return CustomButton(
-                          onTap: state is InAppPaymentLoading
-                              ? null
-                              : () {
-                                  if (_selectedProductId != null) {
-                                    _appPaymentCubit.purchaseStoreProduct(
-                                        _selectedProductId!);
-                                  }
-                                },
-                          radius: 32,
-                          color: Colors.white,
-                          child: Text(
-                            "Subscribe Now",
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
+                        return SafeArea(
+                          top: false,
+                          child: CustomButton(
+                              color: Theme.of(context).colorScheme.secondary,
+                              onTap: state is InAppPaymentLoading
+                                  ? null
+                                  : () {
+                                      if (_selectedProductId != null) {
+                                        _appPaymentCubit.purchaseStoreProduct(
+                                            _selectedProductId!);
+                                      }
+                                    },
+                              radius: 32,
+                              isBusy: state is InAppPaymentLoading,
+                              child: Text(
+                                state is InAppPaymentLoading
+                                    ? "Processing"
+                                    : "Subscribe Now",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
                         );
                       },
-                    )
+                    ),
+                    if (widget.isFromSignup!)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.blue),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text(
+                              "Skip for now",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                      ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -212,12 +253,13 @@ class TrialStatement extends StatelessWidget {
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
                   TextSpan(
-                      text: 'Try 7 days for free.\nThen '
+                      text: 'Try 7 days for free.\nAnd then pay '
                           '${state.product.priceString}/month',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold,
+                        // fontFamily: "roboto",
+                        color: Colors.grey.shade800,
+                        fontWeight: FontWeight.w500,
                       ))
                 ]));
           }
@@ -247,6 +289,7 @@ class _SubscriptionOptionsState extends State<SubscriptionOptions> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: widget.subIds.length,
         itemBuilder: (context, index) => Padding(
@@ -295,9 +338,9 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
       onTap: () => widget.onSelected(widget.subscriptionId),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
           border: Border.all(
               color: widget.isActive! ? Colors.white : Colors.black12,
               width: 2),
@@ -322,7 +365,7 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                 ),
                 Text("Monthly",
                     style: TextStyle(
-                        color: widget.isActive! ? Colors.white : Colors.white70,
+                        color: widget.isActive! ? Colors.white : Colors.black54,
                         fontWeight: FontWeight.w600,
                         fontSize: 16))
               ],
@@ -338,7 +381,7 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                         style: TextStyle(
                             color: widget.isActive!
                                 ? Colors.white
-                                : Colors.white70,
+                                : Colors.black54,
                             fontWeight: FontWeight.w500,
                             fontSize: 16))
                   ]));

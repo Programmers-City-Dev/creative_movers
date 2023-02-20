@@ -6,7 +6,7 @@ import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:creative_movers/theme/style/app_styles.dart';
@@ -301,8 +301,8 @@ class _CreativeFormState extends State<CreativeForm> {
                     connections: state.accountTypeResponse.connect,
                     role: state.accountTypeResponse.userRole?.role,
                   )
-                : const PaymentScreen(
-                    isFirstTime: true,
+                : const SubscriptionScreen(
+                    isFromSignup: true,
                   ),
           ),
           (route) => false);
