@@ -45,7 +45,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             : IconButton(
                 onPressed: () => Navigator.pop(context, false),
                 icon: const Icon(Icons.close)),
-        actions: [
+        actions: const [
           // if (!widget.isFromSignup!)
           //   GestureDetector(
           //     onTap: () {
