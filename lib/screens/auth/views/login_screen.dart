@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Center(
                   child: Image(
                 image: AssetImage(
-                  AppIcons.icSplashLogo,
+                  AppIcons.icAppIcon,
                 ),
                 height: 150,
                 width: 150,

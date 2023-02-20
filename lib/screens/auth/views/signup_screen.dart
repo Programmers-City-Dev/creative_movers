@@ -28,7 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Center(
                     child: Image(
                   image: AssetImage(
-                    AppIcons.icSplashLogo,
+                    AppIcons.icAppIcon,
                   ),
                   height: 150,
                   width: 150,

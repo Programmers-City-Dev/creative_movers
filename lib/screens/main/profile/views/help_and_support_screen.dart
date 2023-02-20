@@ -91,21 +91,21 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                 },
               ),
 
-              _ContactUsItem(
-                tittle: 'Phone Number',
-                subtittle: '0901234567',
-                icon: LineIcons.phone,
-                onTap: () {
-                  final Uri phoneLaunchUri = Uri(
-                    scheme: 'tel',
-                    path: '0901234567',
-                    query: '',
-                  );
-                  launchUrl(
-                    phoneLaunchUri,
-                  );
-                },
-              ),
+              // _ContactUsItem(
+              //   tittle: 'Phone Number',
+              //   subtittle: '0901234567',
+              //   icon: LineIcons.phone,
+              //   onTap: () {
+              //     final Uri phoneLaunchUri = Uri(
+              //       scheme: 'tel',
+              //       path: '0901234567',
+              //       query: '',
+              //     );
+              //     launchUrl(
+              //       phoneLaunchUri,
+              //     );
+              //   },
+              // ),
 
               _ContactUsItem(
                 tittle: 'Email',
