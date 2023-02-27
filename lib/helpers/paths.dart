@@ -14,5 +14,6 @@ const profileEditPath = '/home/profile-edit';
 const paymentPath = '/payment';
 const paymentHistoryPath = '/payment/history';
 const subscriptionPath = '/subscription';
+const deleteAccountScreen = '/delete-account';
 const helpAndSupportPath = '/help';
 const faqsPath = '/faqs';

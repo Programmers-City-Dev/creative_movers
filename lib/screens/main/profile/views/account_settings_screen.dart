@@ -160,34 +160,31 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 16.0),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Icon(Icons.person,
-                                            size: 25,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Icon(Icons.person,
+                                          size: 25, color: AppColors.textColor),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        'Profile',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
                                             color: AppColors.textColor),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          'Profile',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor),
-                                        ),
-                                      ],
-                                    ),
-                                    const Icon(Icons.chevron_right_rounded,
-                                        size: 30, color: AppColors.textColor),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Icon(Icons.chevron_right_rounded,
+                                      size: 30, color: AppColors.textColor),
+                                ],
                               ),
                             ),
                           ),
@@ -235,34 +232,31 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 8.0),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Icon(Icons.payment_outlined,
-                                            size: 25,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Icon(Icons.payment_outlined,
+                                          size: 25, color: AppColors.textColor),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        'Payment History',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
                                             color: AppColors.textColor),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          'Payment History',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor),
-                                        ),
-                                      ],
-                                    ),
-                                    const Icon(Icons.chevron_right_rounded,
-                                        size: 30, color: AppColors.textColor),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Icon(Icons.chevron_right_rounded,
+                                      size: 30, color: AppColors.textColor),
+                                ],
                               ),
                             ),
                           ),
@@ -273,145 +267,99 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 8.0),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Icon(Icons.auto_fix_high,
-                                            size: 25,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Icon(Icons.auto_fix_high,
+                                          size: 25, color: AppColors.textColor),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        'My SubScription',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
                                             color: AppColors.textColor),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          'My SubScription',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        BlocBuilder<PaymentBloc, PaymentState>(
-                                            bloc: _paymentBloc,
-                                            // ..add(
-                                            //     const GetSubscriptionInfoEvent()),
-                                            buildWhen: (previous, current) => current
-                                                is SubscriptionLoadedState,
-                                            builder: (context, state) {
-                                              if (state
-                                                  is SubscriptionLoadedState) {
-                                                var subscription = state
-                                                    .data.user!.subscription;
-                                                if (subscription != null) {
-                                                  return Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 8),
-                                                    decoration: BoxDecoration(
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      BlocBuilder<PaymentBloc, PaymentState>(
+                                          bloc: _paymentBloc,
+                                          // ..add(
+                                          //     const GetSubscriptionInfoEvent()),
+                                          buildWhen: (previous, current) =>
+                                              current
+                                                  is SubscriptionLoadedState,
+                                          builder: (context, state) {
+                                            if (state
+                                                is SubscriptionLoadedState) {
+                                              var subscription =
+                                                  state.data.user!.subscription;
+                                              if (subscription != null) {
+                                                return Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  decoration: BoxDecoration(
+                                                      color: subscription
+                                                                  .status ==
+                                                              "active"
+                                                          ? AppColors.lightBlue
+                                                          : subscription
+                                                                      .status ==
+                                                                  "trial"
+                                                              ? Colors.orange
+                                                              : AppColors.red,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5)),
+                                                  child: Text(
+                                                    subscription.status ==
+                                                            "active"
+                                                        ? 'Active'
+                                                        : subscription.status ==
+                                                                "trial"
+                                                            ? "Free Trial"
+                                                            : 'Inactive',
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         color: subscription
                                                                     .status ==
                                                                 "active"
                                                             ? AppColors
-                                                                .lightBlue
-                                                            : subscription
-                                                                        .status ==
-                                                                    "trial"
-                                                                ? Colors.orange
-                                                                : AppColors.red,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),
-                                                    child: Text(
-                                                      subscription.status ==
-                                                              "active"
-                                                          ? 'Active'
-                                                          : subscription
-                                                                      .status ==
-                                                                  "trial"
-                                                              ? "Free Trial"
-                                                              : 'Inactive',
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: subscription
-                                                                      .status ==
-                                                                  "active"
-                                                              ? AppColors
-                                                                  .textColor
-                                                              : AppColors
-                                                                  .white),
-                                                    ),
-                                                  );
-                                                }
+                                                                .textColor
+                                                            : AppColors.white),
+                                                  ),
+                                                );
                                               }
-                                              if (state
-                                                  is SubscriptionLoadingState) {
-                                                return const Text('...');
-                                              }
-                                              return SizedBox.fromSize();
-                                            }),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        const Icon(Icons.chevron_right_rounded,
-                                            size: 30,
-                                            color: AppColors.textColor),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                            }
+                                            if (state
+                                                is SubscriptionLoadingState) {
+                                              return const Text('...');
+                                            }
+                                            return SizedBox.fromSize();
+                                          }),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      const Icon(Icons.chevron_right_rounded,
+                                          size: 30, color: AppColors.textColor),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          // InkWell(
-                          //   onTap: () {
-                          //     injector.get<PaymentBloc>().add(
-                          //         MakePaymentWithIntentEvent(int.parse("7"),
-                          //             "usd", "1", "account_activation"));
-                          //   },
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.symmetric(
-                          //         vertical: 16, horizontal: 8.0),
-                          //     child: Center(
-                          //       child: Row(
-                          //         mainAxisAlignment:
-                          //             MainAxisAlignment.spaceBetween,
-                          //         children: [
-                          //           Row(
-                          //             mainAxisAlignment:
-                          //                 MainAxisAlignment.spaceBetween,
-                          //             children: const [
-                          //               Icon(Icons.settings,
-                          //                   size: 25,
-                          //                   color: AppColors.textColor),
-                          //               SizedBox(
-                          //                 width: 16,
-                          //               ),
-                          //               Text(
-                          //                 'Setting',
-                          //                 style: TextStyle(
-                          //                     fontSize: 16,
-                          //                     fontWeight: FontWeight.w600,
-                          //                     color: AppColors.textColor),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //           const Icon(Icons.chevron_right_rounded,
-                          //               size: 30, color: AppColors.textColor),
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+
                           InkWell(
                             onTap: () {
                               Navigator.of(context)
@@ -420,38 +368,70 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 16),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Icon(
-                                          LineIcons.questionCircleAlt,
-                                          color: AppColors.textColor,
-                                        ),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          'Help and Support',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor),
-                                        )
-                                      ],
-                                    ),
-                                    // const Padding(
-                                    //   padding: EdgeInsets.only(right: 16),
-                                    //   child: Icon(Icons.chevron_right_rounded,
-                                    //       size: 30, color: AppColors.textColor),
-                                    // ),
-                                  ],
-                                ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Icon(
+                                        LineIcons.questionCircleAlt,
+                                        color: AppColors.textColor,
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        'Help and Support',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.textColor),
+                                      )
+                                    ],
+                                  ),
+                                  const Icon(Icons.chevron_right_rounded,
+                                      size: 30, color: AppColors.textColor),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          InkWell(
+                            onTap: () {
+                               Navigator.of(context)
+                                  .pushNamed(deleteAccountScreen);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Icon(LineIcons.removeUser,
+                                          size: 25, color: AppColors.textColor),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        'Delete Account',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.textColor),
+                                      ),
+                                    ],
+                                  ),
+                                  const Icon(Icons.chevron_right_rounded,
+                                      size: 30, color: AppColors.textColor),
+                                ],
                               ),
                             ),
                           ),
@@ -476,38 +456,36 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 16),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Icon(
-                                          Icons.logout_rounded,
-                                          color: AppColors.textColor,
-                                        ),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          'Logout',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor),
-                                        ),
-                                      ],
-                                    ),
-                                    // const Padding(
-                                    //   padding: EdgeInsets.only(right: 16),
-                                    //   child: Icon(Icons.chevron_right_rounded,
-                                    //       size: 30, color: AppColors.textColor),
-                                    // ),
-                                  ],
-                                ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Icon(
+                                        Icons.logout_rounded,
+                                        color: AppColors.textColor,
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        'Logout',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.textColor),
+                                      ),
+                                    ],
+                                  ),
+                                  // const Padding(
+                                  //   padding: EdgeInsets.only(right: 16),
+                                  //   child: Icon(Icons.chevron_right_rounded,
+                                  //       size: 30, color: AppColors.textColor),
+                                  // ),
+                                ],
                               ),
                             ),
                           ),

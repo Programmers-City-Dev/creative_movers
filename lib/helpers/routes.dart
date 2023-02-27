@@ -8,6 +8,7 @@ import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dar
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
 import 'package:creative_movers/screens/main/payment/views/active_subscription_screen.dart';
+import 'package:creative_movers/screens/main/profile/views/delete_account_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/faqs_page.dart';
 import 'package:creative_movers/screens/main/profile/views/help_and_support_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.dart';
@@ -58,6 +59,7 @@ class AppRoutes {
     },
     profileEditPath: (_) => const ProfileEditScreen(),
     helpAndSupportPath: (_) => const HelpAndSupport(),
+    deleteAccountScreen: (_) => const DeleteAccountScreen(),
     faqsPath: (_) => const FaqScreen()
   };
 }
