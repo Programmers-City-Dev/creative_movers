@@ -7,10 +7,10 @@ import 'package:creative_movers/services/file_downloader_service.dart';
 import 'package:creative_movers/services/puhser_service.dart';
 import 'package:creative_movers/services/remote_configs_service.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+// import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -50,9 +50,9 @@ class AppConfig {
     var remoteConfigsService = await RemoteConfigsService.create();
     await remoteConfigsService.retrieveSecrets();
     await di.setup();
-    var stripeKey =
-        FirebaseRemoteConfig.instance.getString("stripe_publishable_key");
-    Stripe.publishableKey = stripeKey;
+    // var stripeKey =
+    //     FirebaseRemoteConfig.instance.getString("stripe_publishable_key");
+    // Stripe.publishableKey = stripeKey;
     var firstScreen = await AppUtils.getFirstScreen();
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));

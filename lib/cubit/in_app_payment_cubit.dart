@@ -15,6 +15,8 @@ part 'in_app_payment_state.dart';
 class InAppPaymentCubit extends Cubit<InAppPaymentState> {
   final PaymentServices paymentServices;
 
+  bool hasActiveSubscription = false;
+
   // List<PurchasableProduct> products = [];
 
   InAppPaymentCubit(this.paymentServices) : super(InAppPaymentInitial());

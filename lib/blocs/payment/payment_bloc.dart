@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/constants/constants.dart';
@@ -10,11 +9,9 @@ import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/subscription_response.dart';
 import 'package:creative_movers/data/remote/repository/payment_repository.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/theme/app_colors.dart';
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:uuid/uuid.dart';
 
 part 'payment_event.dart';
@@ -34,50 +31,51 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   bool hasActiveSubscription = false;
 
   Future<Either<String, String>> makePayment(String secret) async {
-    try {
-      if (Platform.isAndroid) {
-        await Stripe.instance.initPaymentSheet(
-            paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: secret,
-          appearance: const PaymentSheetAppearance(
-              colors: PaymentSheetAppearanceColors(
-                  primary: AppColors.primaryColor)),
-        ));
-        await Stripe.instance.presentPaymentSheet();
-      } else {
-        await Stripe.instance.openApplePaySetup();
-        bool isApplePaySupported = Stripe.instance.isApplePaySupported.value;
-        if (!isApplePaySupported) {
-          return const Left("Apple pay is not supported on this device");
-        }
-        await Stripe.instance.initPaymentSheet(
-            paymentSheetParameters: SetupPaymentSheetParameters(
-                paymentIntentClientSecret: secret,
-                applePay: const PaymentSheetApplePay(
-                    merchantCountryCode: "US",
-                    paymentSummaryItems: [
-                      ApplePayCartSummaryItem.immediate(
-                          label: "CreativeMovers Monthly", amount: "100")
-                    ]),
-                appearance: const PaymentSheetAppearance(
-                    colors: PaymentSheetAppearanceColors(
-                        primary: AppColors.primaryColor))));
+    // try {
+    //   if (Platform.isAndroid) {
+    //     await Stripe.instance.initPaymentSheet(
+    //         paymentSheetParameters: SetupPaymentSheetParameters(
+    //       paymentIntentClientSecret: secret,
+    //       appearance: const PaymentSheetAppearance(
+    //           colors: PaymentSheetAppearanceColors(
+    //               primary: AppColors.primaryColor)),
+    //     ));
+    //     await Stripe.instance.presentPaymentSheet();
+    //   } else {
+    //     await Stripe.instance.openApplePaySetup();
+    //     bool isApplePaySupported = Stripe.instance.isApplePaySupported.value;
+    //     if (!isApplePaySupported) {
+    //       return const Left("Apple pay is not supported on this device");
+    //     }
+    //     await Stripe.instance.initPaymentSheet(
+    //         paymentSheetParameters: SetupPaymentSheetParameters(
+    //             paymentIntentClientSecret: secret,
+    //             applePay: const PaymentSheetApplePay(
+    //                 merchantCountryCode: "US",
+    //                 paymentSummaryItems: [
+    //                   ApplePayCartSummaryItem.immediate(
+    //                       label: "CreativeMovers Monthly", amount: "100")
+    //                 ]),
+    //             appearance: const PaymentSheetAppearance(
+    //                 colors: PaymentSheetAppearanceColors(
+    //                     primary: AppColors.primaryColor))));
 
-        await Stripe.instance.presentApplePay(
-            params: const ApplePayPresentParams(cartItems: [
-          ApplePayCartSummaryItem.immediate(
-              label: "CreativeMovers Monthly", amount: "100")
-        ], country: "Nigeria", currency: "NGN", jcbEnabled: true));
-      }
-      return const Right("Payment successful");
-    } on StripeException catch (e) {
-      log("Payment error: $e", name: "PaymentBloc");
-      return Left(
-          e.error.message ?? "Unable to process payment: ${e.toString()}");
-    } catch (e) {
-      log("Payment error: $e", name: "PaymentBloc");
-      return Left("Unable to process payment: ${e.toString()}");
-    }
+    //     await Stripe.instance.presentApplePay(
+    //         params: const ApplePayPresentParams(cartItems: [
+    //       ApplePayCartSummaryItem.immediate(
+    //           label: "CreativeMovers Monthly", amount: "100")
+    //     ], country: "Nigeria", currency: "NGN", jcbEnabled: true));
+    //   }
+    //   return const Right("Payment successful");
+    // } on StripeException catch (e) {
+    //   log("Payment error: $e", name: "PaymentBloc");
+    //   return Left(
+    //       e.error.message ?? "Unable to process payment: ${e.toString()}");
+    // } catch (e) {
+    //   log("Payment error: $e", name: "PaymentBloc");
+    //   return Left("Unable to process payment: ${e.toString()}");
+    // }
+    return const Right("Payment successful");
   }
 
   Future<Either<ServerErrorModel, Map<String, dynamic>>> _createPaymentIntent(
