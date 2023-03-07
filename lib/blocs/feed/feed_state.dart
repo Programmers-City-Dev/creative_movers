@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'feed_bloc.dart';
 
 abstract class FeedState extends Equatable {
@@ -7,6 +8,16 @@ abstract class FeedState extends Equatable {
 class FeedInitial extends FeedState {
   @override
   List<Object> get props => [];
+}
+
+class FeedFailure extends FeedState {
+  final ServerErrorModel errorModel;
+  const FeedFailure({
+    required this.errorModel,
+  });
+
+  @override
+  List<Object?> get props => [errorModel];
 }
 
 class AddFeedLoadingState extends FeedState {
@@ -33,7 +44,7 @@ class AddFeedFaliureState extends FeedState {
 }
 
 //Get Feeds States
-class FeedLoadingState extends FeedState {
+class FeedLoading extends FeedState {
   @override
   List<Object> get props => [];
 }
@@ -119,12 +130,12 @@ class DeleteFeedLoadingState extends FeedState {
 }
 
 class DeleteFeedSuccessState extends FeedState {
-  LikeResponse likeResponse;
+  final String message;
 
-  DeleteFeedSuccessState({required this.likeResponse});
+  const DeleteFeedSuccessState({required this.message});
 
   @override
-  List<Object> get props => [likeResponse];
+  List<Object> get props => [message];
 }
 
 class DeleteFeedFaliureState extends FeedState {
@@ -157,4 +168,13 @@ class EditFeedFaliureState extends FeedState {
 
   @override
   List<Object> get props => [error];
+}
+
+class FeedReported extends FeedState {
+  final String message;
+
+  const FeedReported({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }

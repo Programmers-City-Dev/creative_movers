@@ -36,7 +36,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   List<MediaItemModel> mediaItem = [];
 
   final _postController = TextEditingController();
-  final FeedBloc _feedBloc = FeedBloc();
+  final FeedBloc _feedBloc = FeedBloc(injector.get());
 
   @override
   void initState() {

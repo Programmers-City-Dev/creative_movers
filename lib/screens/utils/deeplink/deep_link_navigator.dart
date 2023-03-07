@@ -1,8 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:developer';
+
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/deep_link/deep_link_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/models/deep_link_data.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_detail_screen.dart';
 import 'package:creative_movers/screens/main/live/views/live_stream.dart';
+import 'package:creative_movers/screens/main/profile/views/view_profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class DeeplinkNavigator {
@@ -14,11 +21,19 @@ class DeeplinkNavigator {
     if (type == null) return;
     // await RemoteConfigUtil.isConfigReady;
     await Future.delayed(const Duration(milliseconds: 500));
+    log('type: $type, id: $id, path: $path, fromInApp: $fromInApp');
     if (fromInApp) {
       injector<DeepLinkCubit>()
           .saveRecentNotification(DeepLinkData(type: type, id: id, path: path));
     } else {
-      _handleRoute(context, LiveDeepLink(type, path, data));
+      if (type == 'live_video') {
+        _handleRoute(context, LiveDeepLink(type, path, data));
+      } else if (type == 'feed') {
+        _handleRoute(context, FeedsDeepLink(type, id));
+      } else if (type == "profile") {
+        _handleRoute(context, ProfileDeepLink(type, id));
+      }
+      // _handleRoute(context, LiveDeepLink(type, path, data));
       // _handleRoute(
       //     context,
       //     FeedsDeepLink(
@@ -72,18 +87,43 @@ class FeedsDeepLink implements DeepLinkBase {
   @override
   final String type;
 
-  FeedsDeepLink(this.type);
+  final int? id;
+
+  FeedsDeepLink(this.type, this.id);
 
   @override
-  bool get isNotificationType => type.contains('mood_diary');
+  bool get isNotificationType => type.contains('feed');
 
   @override
   void navigateToPage(BuildContext context) async {
-    if (isNotificationType) {
+    navigate(
+        context,
+        FeedDetailsScreen(
+          feedId: id!,
+        ));
+  }
+}
+
+class ProfileDeepLink implements DeepLinkBase {
+  @override
+  final String type;
+
+  final int? id;
+
+  ProfileDeepLink(this.type, this.id);
+
+  @override
+  bool get isNotificationType => type.contains('feed');
+
+  @override
+  void navigateToPage(BuildContext context) async {
+    if (injector.get<CacheCubit>().cachedUser!.id == id) {
+      Navigator.of(context).pushNamed(profilePath);
+    } else {
       navigate(
           context,
-          const FeedDetailsScreen(
-            feedId: 1,
+          ViewProfileScreen(
+            userId: id!,
           ));
     }
   }

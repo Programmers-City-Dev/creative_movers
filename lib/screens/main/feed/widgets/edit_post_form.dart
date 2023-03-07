@@ -1,4 +1,5 @@
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/screens/main/feed/widgets/video_picker_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +36,7 @@ class _EditPostFormState extends State<EditPostForm> {
     super.initState();
   }
 
-  final _feedBloc = FeedBloc();
+  final _feedBloc = FeedBloc(injector.get());
 
   @override
   Widget build(BuildContext context) {

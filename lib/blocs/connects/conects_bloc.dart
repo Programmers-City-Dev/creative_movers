@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/data/remote/model/react_response.dart';
 import 'package:creative_movers/data/remote/model/search_response.dart';
@@ -9,6 +8,7 @@ import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/repository/connects_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'conects_event.dart';
 part 'conects_state.dart';

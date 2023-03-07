@@ -85,10 +85,28 @@ class GetFaqsFailureState extends ProfileState {
 class GetFaqsSuccessState extends ProfileState {
   final FaqsResponse faqsResponse;
 
-  GetFaqsSuccessState(this.faqsResponse);
+  const GetFaqsSuccessState(this.faqsResponse);
 
   @override
   List<Object> get props => [faqsResponse];
+}
+
+class AccountDeleted extends ProfileState {
+  final String message;
+
+  const AccountDeleted({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class AccountBlocked extends ProfileState {
+  final String message;
+
+  const AccountBlocked({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }
 
 // class ProfilePhotoUpdatedState extends ProfileState {

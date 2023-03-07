@@ -1,12 +1,11 @@
-import 'dart:developer';
-
 import 'package:creative_movers/app.dart';
+import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
+import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
-import 'dart:ui';
-
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
@@ -14,10 +13,15 @@ import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dar
 import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/comments_screen.dart';
 import 'package:creative_movers/screens/main/feed/widgets/edit_post_form.dart';
+import 'package:creative_movers/screens/main/feed/widgets/like_button.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
+import 'package:creative_movers/screens/main/feed/widgets/report_feed_widget.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
+import 'package:creative_movers/screens/widget/adaptive_bottomsheet_menu.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/link_preview.dart';
+import 'package:creative_movers/services/dynamic_links_service.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +29,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_stack/image_stack.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NewPostItem extends StatefulWidget {
   const NewPostItem({
@@ -46,8 +51,9 @@ class _NewPostItemState extends State<NewPostItem> {
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
   bool liked = false;
-  FeedBloc feedBloc = FeedBloc();
-  final FeedBloc _likeFeedBloc = FeedBloc();
+  FeedBloc feedBloc = FeedBloc(injector.get());
+  final FeedBloc _likeFeedBloc = FeedBloc(injector.get());
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
   CachedUser? user;
 
   late final ValueNotifier<Feed> _feedNotifier;
@@ -84,9 +90,7 @@ class _NewPostItemState extends State<NewPostItem> {
                     withBaseUrl: false,
                     url: widget.feed.type == 'user_feed'
                         ? widget.feed.user!.profilePhotoPath!
-                        : widget.feed.page!.photoPath != null
-                            ? widget.feed.page!.photoPath!
-                            : 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg',
+                        : widget.feed.page!.photoPath,
                   ),
                   const SizedBox(
                     width: 7,
@@ -167,121 +171,41 @@ class _NewPostItemState extends State<NewPostItem> {
                         ),
                 ],
               ),
-              BlocBuilder<CacheCubit, CacheState>(
-                bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
-                builder: (context, state) {
-                  if (state is CachedUserDataFetched) {
-                    user = state.cachedUser;
-                  }
-                  if (state is CachedUserDataFetched &&
-                      state.cachedUser.id.toString() == widget.feed.userId) {
-                    return BlocListener<FeedBloc, FeedState>(
-                      bloc: feedBloc,
-                      listener: (context, state) {
-                        if (state is DeleteFeedLoadingState) {
-                          AppUtils.showAnimatedProgressDialog(context,
-                              title: "Deleting Post, please wait...");
-                        }
-                        if (state is DeleteFeedSuccessState) {
-                          widget.onUpdated();
-                          Navigator.of(context).pop();
-                          // AppUtils.cancelAllShowingToasts();
-                          AppUtils.showCustomToast(
-                              "Post has been Deleted successfully");
-                        }
-                        if (state is DeleteFeedFaliureState) {
-                          Navigator.of(context).pop();
-                          AppUtils.showCustomToast(state.error);
-                        }
-                      },
-                      child: PopupMenuButton<String>(
-                        onSelected: (val) {
-                          if (val == 'Edit') {
-                            showMaterialModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return BackdropFilter(
-                                    filter:
-                                        ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                                    child: EditPostForm(
-                                      feed: widget.feed,
-                                      onSucces: () {
-                                        widget.onUpdated();
-                                        Navigator.pop(context);
-                                      },
-                                    ));
-                              },
-                              shape: const RoundedRectangleBorder(),
-                              // clipBehavior: Clip.antiAliasWithSaveLayer,
-                            );
-                          } else {
-                            feedBloc.add(DeleteFeedEvent(
-                                feed_id: widget.feed.id.toString()));
-                          }
-                        },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        itemBuilder: (context) => <PopupMenuEntry<String>>[
-                          PopupMenuItem<String>(
-                              padding: const EdgeInsets.all(10),
-                              onTap: () {
-                                // showMaterialModalBottomSheet(
-                                //   context: context,
-                                //   builder: (context) {
-                                //     return BackdropFilter(
-                                //         filter: ImageFilter.blur(
-                                //             sigmaX: 5, sigmaY: 5),
-                                //         child: EditGenderDialog(
-                                //           onSuccess: () {
-                                //             Navigator.pop(context);
-                                //           },
-                                //         ));
-                                //   },
-                                //   shape: const RoundedRectangleBorder(),
-                                //   // clipBehavior: Clip.antiAliasWithSaveLayer,
-                                // );
-                              },
-                              value: 'Edit',
-                              child: Container(
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.edit_rounded),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Text('Edit'),
-                                  ],
-                                ),
-                              )),
-                          PopupMenuItem<String>(
-                              padding: const EdgeInsets.all(10),
-                              value: 'Delete',
-                              child: SizedBox(
-                                width: 100,
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.delete_rounded),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Text('Delete'),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-                    );
-                  } else {
-                    Container(
-                      color: Colors.green,
-                      height: 55,
-                      width: 55,
-                    );
-                  }
-
-                  return const SizedBox();
-                },
-              )
+              MultiBlocListener(
+                listeners: [
+                  BlocListener(
+                    bloc: feedBloc,
+                    listener: (context, state) {
+                      if (state is DeleteFeedLoadingState) {
+                        AppUtils.showAnimatedProgressDialog(context,
+                            title: "Deleting Post, please wait...");
+                      }
+                      if (state is DeleteFeedSuccessState) {
+                        widget.onUpdated();
+                        Navigator.of(context).pop();
+                        // AppUtils.cancelAllShowingToasts();
+                        AppUtils.showCustomToast(
+                            "Post has been Deleted successfully");
+                      }
+                      if (state is DeleteFeedFaliureState) {
+                        Navigator.of(context).pop();
+                        AppUtils.showCustomToast(state.error);
+                      }
+                    },
+                  ),
+                  BlocListener<ConnectsBloc, ConnectsState>(
+                      bloc: _connectsBloc,
+                      listener: ((context, state) {
+                        _listenToAccountTypeState(context, state);
+                      }))
+                ],
+                child: IconButton(
+                  icon: const Icon(Icons.more_horiz),
+                  onPressed: () {
+                    _showFeedOptionsSheet(context, widget.feed);
+                  },
+                ),
+              ),
             ],
           ),
           // Padding(
@@ -301,7 +225,7 @@ class _NewPostItemState extends State<NewPostItem> {
           //   ),
           // ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8),
             child: ExpandableText(
               widget.feed.content!,
               expandText: 'show more',
@@ -332,12 +256,12 @@ class _NewPostItemState extends State<NewPostItem> {
                 AppUtils.launchInAppBrowser(context, url);
               },
               urlStyle: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.blue),
               style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                   color: AppColors.textColor),
             ),
           ),
@@ -581,6 +505,162 @@ class _NewPostItemState extends State<NewPostItem> {
     );
   }
 
+  Future<dynamic> _showFeedOptionsSheet(BuildContext context, Feed feed) {
+    final ProfileBloc profileBloc = ProfileBloc(injector.get())
+      ..add(FetchUserProfileEvent(feed.user?.id));
+    return showBarModalBottomSheet(
+        context: context,
+        expand: false,
+        useRootNavigator: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+        barrierColor: Colors.black.withOpacity(0.5),
+        builder: (context) {
+          return SafeArea(
+            child: BlocBuilder<ProfileBloc, ProfileState>(
+                bloc: profileBloc,
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                    );
+                  }
+                  if (state is ProfileErrorState) {
+                    return Center(
+                        child: AppPromptWidget(
+                      title: "Unable to fetch user profile",
+                      message: "Please try again later",
+                      onTap: () =>
+                          profileBloc.add(FetchUserProfileEvent(feed.user?.id)),
+                    ));
+                  }
+                  if (state is ProfileLoadedState) {
+                    String connectionStatus =
+                        (state.user.isConnected ?? '').toLowerCase();
+                    return injector
+                                .get<CacheCubit>()
+                                .cachedUser!
+                                .id
+                                .toString() !=
+                            widget.feed.userId
+                        ? BottomSheetMenuList(
+                            onSelect: (index) {
+                              if (index == 0) {
+                                _shareFeed(widget.feed);
+                              }
+                              if (index == 1) {
+                                _showConnectionPromptDialog(
+                                    context, widget.feed, connectionStatus);
+                              }
+                              if (index == 2) {
+                                _showReportDialog(context, widget.feed);
+                              }
+                            },
+                            items: [
+                                // const BottomSheetMenu(
+                                //     title: "Save",
+                                //     icon: Icon(Icons.bookmark_add)),
+                                const BottomSheetMenu(
+                                    title: "Share via",
+                                    icon: Icon(Icons.share)),
+                                BottomSheetMenu(
+                                    title: connectionStatus == "connected"
+                                        ? "Remove connection with ${widget.feed.user?.fullname}"
+                                        : connectionStatus == "pending"
+                                            ? "Cancel connection request"
+                                            : "Connect with ${widget.feed.user?.fullname}",
+                                    icon: Icon(connectionStatus == "connected"
+                                        ? Icons.cancel_rounded
+                                        : connectionStatus == "pending"
+                                            ? Icons.person_remove_outlined
+                                            : Icons.connect_without_contact)),
+                                const BottomSheetMenu(
+                                    title: "Report feed",
+                                    icon: Icon(Icons.report)),
+                              ])
+                        : BottomSheetMenuList(
+                            onSelect: (index) {
+                              if (index == 0) {
+                                _shareFeed(widget.feed);
+                              }
+                              if (index == 1) {
+                                showMaterialModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return EditPostForm(
+                                      feed: widget.feed,
+                                      onSucces: () {
+                                        widget.onUpdated();
+                                        Navigator.pop(context);
+                                      },
+                                    );
+                                  },
+                                  shape: const RoundedRectangleBorder(),
+                                  // clipBehavior: Clip.antiAliasWithSaveLayer,
+                                );
+                              } else if (index == 2) {
+                                _showDeletedFeedPrompt();
+                              }
+                            },
+                            items: const [
+                                BottomSheetMenu(
+                                    title: "Share via",
+                                    icon: Icon(Icons.share)),
+                                BottomSheetMenu(
+                                    title: "Edit feed", icon: Icon(Icons.edit)),
+                                BottomSheetMenu(
+                                    title: "Delete this feed",
+                                    icon: Icon(Icons.delete)),
+                              ]);
+                  }
+                  return const SizedBox.shrink();
+                }),
+          );
+        });
+  }
+
+  void _showDeletedFeedPrompt() {
+    AppUtils.showConfirmDialog(
+      context,
+      title: "Delete Feed",
+      message: "Are you sure you want to delete this feed?",
+      useRootNavigator: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Delete",
+    ).then((value) {
+      if (value) {
+        feedBloc.add(DeleteFeedEvent(feedId: widget.feed.id.toString()));
+      }
+    });
+  }
+
+  void _listenToAccountTypeState(BuildContext context, ConnectsState state) {
+    if (state is ConnectToUserLoadingState) {
+      AppUtils.showAnimatedProgressDialog(context);
+    }
+    if (state is ConnectToUserSuccesState) {
+      Navigator.pop(context);
+      AppUtils.showCustomToast(state.reactResponse.message!);
+    }
+    if (state is ConnectToUserFailureState) {
+      Navigator.pop(context);
+      AppUtils.showCustomToast(state.error);
+    }
+
+    if (state is AddConnectionFailureState) {
+      Navigator.pop(context);
+      CustomSnackBar.showError(context,
+          message: "Unable to complete request, please try again");
+    }
+  }
+
   String getTime(DateTime dateTime) {
     // DateTime dateTime = DateTime.parse(date);
     Duration duration = DateTime.now().difference(dateTime);
@@ -610,52 +690,51 @@ class _NewPostItemState extends State<NewPostItem> {
     String? userId = await AppUtils.getUserId();
     return userId == widget.feed.userId.toString();
   }
-}
 
-class LikeButton extends StatefulWidget {
-  final bool isLiked;
-  final bool isOk;
-  final VoidCallback onTap;
-  const LikeButton(
-      {Key? key,
-      required this.isLiked,
-      required this.onTap,
-      required this.isOk})
-      : super(key: key);
-
-  @override
-  State<LikeButton> createState() => _LikeButtonState();
-}
-
-class _LikeButtonState extends State<LikeButton> {
-  late bool liked;
-
-  @override
-  void initState() {
-    super.initState();
-    liked = widget.isLiked;
+  void _showReportDialog(BuildContext context, Feed feed) {
+    showMaterialModalBottomSheet(
+        context: context,
+        builder: ((context) {
+          return ReportFeedWidget(feed: feed);
+        }));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // log("LIKED: ${widget.isLiked}");
-    return InkWell(
-      onTap: () {
-        setState(() {
-          // liked = !liked;
-          widget.onTap();
-        });
-      },
-      child: Container(
-          child: !(liked && widget.isOk)
-              ? const Icon(
-                  Icons.thumb_up_outlined,
-                  color: AppColors.textColor,
-                )
-              : const Icon(
-                  Icons.thumb_up_outlined,
-                  color: AppColors.primaryColor,
-                )),
-    );
+  void _showConnectionPromptDialog(
+      BuildContext context, Feed feed, String connectionStatus) {
+    AppUtils.showConfirmDialog(
+      context,
+      title: connectionStatus == "connected"
+          ? "Remove Connection"
+          : connectionStatus == "pending"
+              ? "Cancel Request"
+              : "Add Connection",
+      message: connectionStatus == "connected"
+          ? "Are you sure you want to remove this connection?"
+          : connectionStatus == "pending"
+              ? "Are you sure you want to cancel your connection request"
+                  " with ${feed.user?.fullname}?"
+              : "Are you sure you want to add ${feed.user?.fullname} "
+                  "to your connections?",
+      useRootNavigator: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: connectionStatus == "connected"
+          ? "Remove"
+          : connectionStatus == "pending"
+              ? "Continue"
+              : "Connect",
+    ).then((value) {
+      if (value) {
+        _connectsBloc.add(ConnectToUserEvent(feed.userId));
+        Navigator.pop(context);
+      }
+    });
+  }
+
+  void _shareFeed(Feed feed) {
+    DynamicLinksService.createFeedDeepLink(feed).then((link) {
+      Share.share("Hello Chief, ${feed.user?.fullname} just shared a post on"
+          " CreativeMovers platform. You can click on the link below"
+          " to read more.\n\n$link");
+    });
   }
 }

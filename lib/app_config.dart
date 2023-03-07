@@ -5,7 +5,6 @@ import 'package:creative_movers/di/injector.dart' as di;
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/services/file_downloader_service.dart';
 import 'package:creative_movers/services/puhser_service.dart';
-import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:creative_movers/services/remote_configs_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -43,7 +42,7 @@ class AppConfig {
   Future<void> _setup() async {
     await Firebase.initializeApp();
     cameras = await availableCameras();
-    await PushNotificationService.initialise();
+    // await PushNotificationService.initialise();
     await FileDownloaderService.init();
     var pusherService = await PusherService.getInstance;
     await pusherService.initialize();

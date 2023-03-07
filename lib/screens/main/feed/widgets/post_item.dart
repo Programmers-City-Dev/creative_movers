@@ -26,31 +26,29 @@ class _PostItemState extends State<PostItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 20,
-                    ),
-                    const SizedBox(
-                      width: 7,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Amanda Berks',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '12 mins ago',
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 20,
+                  ),
+                  const SizedBox(
+                    width: 7,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Amanda Berks',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '12 mins ago',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               PopupMenuButton<String>(
                 shape: RoundedRectangleBorder(
@@ -126,6 +124,18 @@ class _PostItemState extends State<PostItem> {
                             Text('Share'),
                           ],
                         ),
+                      )),
+                  PopupMenuItem<String>(
+                      padding: const EdgeInsets.all(10),
+                      value: 'Report',
+                      child: Row(
+                        children: const [
+                          Icon(Icons.share_rounded),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text('Share'),
+                        ],
                       )),
                 ],
               )

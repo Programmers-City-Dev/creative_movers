@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -50,22 +51,21 @@ class _EditImageWidgetState extends State<EditImageWidget> {
             backgroundColor: AppColors.lightBlue,
             child: CircleAvatar(
               radius: widget.Imageradius,
-              child: Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(200),
-                  child: widget.uploaded == true
-                      ? Image.file(
-                          File(widget.imagePath!),
-                          fit: BoxFit.cover,
-                          width: 200,
-                          height: 200,
-                        )
-                      : Image.network(
-                          widget.imagePath!,
-                          fit: BoxFit.cover,
-                          width: 200,
-                        ),
-                ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(200),
+                child: widget.uploaded == true
+                    ? Image.file(
+                        File(widget.imagePath!),
+                        fit: BoxFit.cover,
+                        width: 200,
+                        height: 200,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: widget.imagePath!,
+                        fit: BoxFit.cover,
+                        width: 200,
+                        height: 200,
+                      ),
               ),
             ),
           ),

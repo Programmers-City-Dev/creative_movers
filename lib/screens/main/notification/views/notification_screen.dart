@@ -19,7 +19,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    // _notificationBloc.add(FetchUserNotificationsEvent());
+    _notificationBloc.add(FetchUserNotificationsEvent());
   }
 
   @override
@@ -83,7 +83,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             var notifications = context.watch<NotificationBloc>().notifications;
             if (state is UserNotificationsLoadingState) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               );
             }
             if (state is UserNotificationsLoadFailedState) {
@@ -96,18 +96,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 },
               );
             }
-            if (state is UserNotificationsLoadedState) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  _notificationBloc.add(FetchUserNotificationsEvent());
-                },
-                child: ListView.builder(
-                  itemCount: state.notifications.length,
-                  itemBuilder: (context, index) => NotificationItem(
-                      notificationData: state.notifications[index]),
-                ),
-              );
-            }
+            // if (state is UserNotificationsLoadedState) {
+            //   return RefreshIndicator(
+            //     onRefresh: () async {
+            //       _notificationBloc.add(FetchUserNotificationsEvent());
+            //     },
+            //     child: ListView.builder(
+            //       itemCount: state.notifications.length,
+            //       itemBuilder: (context, index) => NotificationItem(
+            //           notificationData: state.notifications[index]),
+            //     ),
+            //   );
+            // }
             return notifications.isNotEmpty
                 ? RefreshIndicator(
                     onRefresh: () async {
@@ -121,6 +121,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   )
                 : const AppPromptWidget(
                     message: "No notifications",
+                    canTryAgain: false,
                   );
           },
         ),

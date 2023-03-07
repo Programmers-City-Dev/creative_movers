@@ -100,14 +100,14 @@ class BuisnessRepository {
     );
   }
 
-  Future<State> edit_page({
+  Future<State> editPage({
     String? website,
     String? contact,
     String? name,
     String? stage,
-    String? page_id,
+    String? pageId,
     List<String>? category,
-    String? est_capital,
+    String? estCapital,
     String? description,
     String? photo,
   }) async {
@@ -115,8 +115,10 @@ class BuisnessRepository {
       "name": name,
       "stage": stage,
       "category": jsonEncode(category),
-      "est_capital": est_capital,
-      "page_id": page_id,
+      "est_capital": estCapital,
+      "page_id": pageId,
+      "website": website,
+      "contact": contact,
       "description": description,
       if (photo != null)
         "photo": [

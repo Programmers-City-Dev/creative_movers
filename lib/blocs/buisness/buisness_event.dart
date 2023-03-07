@@ -51,20 +51,20 @@ class EditPageEvent extends BuisnessEvent {
   final String? website;
   final String? contact;
   final String? name;
-  final String? page_id;
+  final String? pageId;
   final String? stage;
   final List<String>? category;
-  final String? est_capital;
+  final String? estCapital;
   final String? description;
 
   const EditPageEvent(
-      {this.page_id,
+      {this.pageId,
       this.website,
       this.contact,
       this.name,
       this.stage,
       this.category,
-      this.est_capital,
+      this.estCapital,
       this.description,
       this.photo});
 
@@ -74,16 +74,8 @@ class EditPageEvent extends BuisnessEvent {
   // final String? min_range;
   @override
   // TODO: implement props
-  List<Object?> get props => [
-        photo,
-        stage,
-        category,
-        name,
-        description,
-        est_capital,
-        website,
-        contact
-      ];
+  List<Object?> get props =>
+      [photo, stage, category, name, description, estCapital, website, contact];
 }
 
 class PageSuggestionsEvent extends BuisnessEvent {

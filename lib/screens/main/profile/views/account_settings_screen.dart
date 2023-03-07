@@ -8,6 +8,7 @@ import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
+import 'package:creative_movers/screens/main/profile/views/delete_account_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/screens/widget/widget_network_image.dart';
@@ -401,8 +402,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
                           InkWell(
                             onTap: () {
-                               Navigator.of(context)
-                                  .pushNamed(deleteAccountScreen);
+                              Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeleteAccountScreen()));
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -438,20 +441,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
                           InkWell(
                             onTap: () {
-                              AppUtils.showShowConfirmDialog(
+                              AppUtils.showConfirmDialog(
                                 context,
+                                title: "Logout",
                                 message: 'Are you sure you want to logout?',
                                 cancelButtonText: 'Cancel',
                                 confirmButtonText: 'Logout',
-                                onConfirmed: () {
+                              ).then((value) {
+                                if (value) {
                                   // Navigator.pop(context);
                                   _logout();
-                                },
-                                onCancel: () {
-                                  Navigator.of(mainNavKey.currentState!.context)
-                                      .pop();
-                                },
-                              );
+                                }
+                              });
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(

@@ -1,19 +1,19 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/blocs/feed/feed_bloc.dart';
+import 'package:creative_movers/data/remote/model/feeds_response.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
+import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
+import 'package:creative_movers/screens/widget/error_widget.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:creative_movers/blocs/feed/feed_bloc.dart';
-import 'package:creative_movers/data/remote/model/feeds_response.dart';
-import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
-import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
-import 'package:creative_movers/screens/widget/error_widget.dart';
-import 'package:creative_movers/theme/app_colors.dart';
-
-final FeedBloc _feedBloc = FeedBloc();
+final FeedBloc _feedBloc = FeedBloc(injector.get());
 final _focusNode = FocusNode();
 
 class FeedDetailsScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _FeedDetailsScreenState extends State<FeedDetailsScreen> {
       body: BlocBuilder<FeedBloc, FeedState>(
           bloc: _feedBloc,
           builder: (context, state) {
-            if (state is FeedLoadingState) {
+            if (state is FeedLoading) {
               return const FeedLoader();
             }
             if (state is FeedItemLoadedState) {
@@ -275,7 +275,7 @@ class CommentItemWidget extends StatefulWidget {
 }
 
 class _CommentItemWidgetState extends State<CommentItemWidget> {
-  final FeedBloc _feedBloc = FeedBloc();
+  final FeedBloc _feedBloc = FeedBloc(injector.get());
 
   @override
   void initState() {

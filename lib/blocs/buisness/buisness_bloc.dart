@@ -11,7 +11,6 @@ import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:equatable/equatable.dart';
 
 part 'buisness_event.dart';
-
 part 'buisness_state.dart';
 
 class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
@@ -109,16 +108,16 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       EditPageEvent event, Emitter<BuisnessState> emitter) async {
     emit(EditPageLoadingState());
     try {
-      var state = await buisnessRepository.edit_page(
+      var state = await buisnessRepository.editPage(
           stage: event.stage,
           category: event.category,
           description: event.description,
           name: event.name,
           photo: event.photo,
-          est_capital: event.est_capital,
+          estCapital: event.estCapital,
           contact: event.contact,
           website: event.website,
-          page_id: event.page_id);
+          pageId: event.pageId);
       if (state is SuccessState) {
         emit(EditPageSuccesState(
           buisnessProfile: state.value,

@@ -254,12 +254,4 @@ class _SignupFormState extends State<SignupForm> {
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
 
-  void showDialog() {
-    AppUtils.showShowConfirmDialog(context,
-        message: ' Welcome',
-        cancelButtonText: 'cancelButtonText',
-        confirmButtonText: '',
-        onConfirmed: () {},
-        onCancel: () {});
-  }
 }

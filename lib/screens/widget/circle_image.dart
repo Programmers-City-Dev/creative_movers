@@ -34,37 +34,41 @@ class CircleImage extends StatelessWidget {
         ),
       ),
       child: url != null
-          ? ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: withBaseUrl! ? ApiConstants.BASE_URL + url! : url!,
-                fit: BoxFit.cover,
-                width: mRadius,
-                height: mRadius,
-                placeholder: (context, url) => SizedBox(
+          ? Center(
+              child: ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl: withBaseUrl! ? ApiConstants.BASE_URL + url! : url!,
+                  fit: BoxFit.cover,
                   width: mRadius,
                   height: mRadius,
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.grey[200]!,
-                    highlightColor: Colors.grey[300]!,
-                    child: SizedBox(
-                      width: mRadius,
-                      height: mRadius,
-                    ),
-                  ),
-                ),
-                errorWidget: (context, url, error) => SizedBox(
+                  placeholder: (context, url) => SizedBox(
                     width: mRadius,
                     height: mRadius,
-                    child: Image.asset(
-                      AppImages.imagePlaceHolder,
-                      fit: BoxFit.cover,
-                    )),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey[200]!,
+                      highlightColor: Colors.grey[300]!,
+                      child: SizedBox(
+                        width: mRadius,
+                        height: mRadius,
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => SizedBox(
+                      width: mRadius,
+                      height: mRadius,
+                      child: Image.asset(
+                        AppImages.imagePlaceHolder,
+                        fit: BoxFit.cover,
+                      )),
+                ),
               ),
             )
-          : ClipOval(
-              child: Image.asset(
-                AppImages.imagePlaceHolder,
-                fit: BoxFit.cover,
+          : Center(
+              child: ClipOval(
+                child: Image.asset(
+                  AppImages.imagePlaceHolder,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
     );

@@ -705,12 +705,15 @@ class _RemoteUserViewState extends State<RemoteUserView> {
 
   void _showCloseVideoDialog(BuildContext context,
       {required VoidCallback onConfirmed}) {
-    AppUtils.showShowConfirmDialog(context,
-        message: "Are you sure you want to leave this live?",
-        cancelButtonText: "Cancel",
-        confirmButtonText: "Leave Video",
-        onConfirmed: onConfirmed, onCancel: () {
-      Navigator.of(context).pop();
+    AppUtils.showConfirmDialog(
+      context,
+      message: "Are you sure you want to leave this live?",
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Leave Video",
+    ).then((value) {
+      if (value) {
+        onConfirmed.call();
+      }
     });
   }
 }
@@ -1088,18 +1091,16 @@ class _LocalUserViewState extends State<LocalUserView> {
   }
 
   void _showCloseVideoDialog(BuildContext context) {
-    AppUtils.showShowConfirmDialog(context,
-        message: "Are you sure you want to end this video?",
-        cancelButtonText: "Cancel",
-        confirmButtonText: "End Video", onConfirmed: () async {
-      //TODO: Destroy agora engine here
-      // await widget.engine?.destroy();
-      Navigator.of(context)
-        ..pop()
-        ..pop();
-      _activeLiveNotifier.value = false;
-    }, onCancel: () {
-      Navigator.of(context).pop();
+    AppUtils.showConfirmDialog(
+      context,
+      message: "Are you sure you want to end this video?",
+      cancelButtonText: "Cancel",
+      confirmButtonText: "End Video",
+    ).then((value) {
+      if (value) {
+        Navigator.of(context).pop();
+        _activeLiveNotifier.value = false;
+      }
     });
   }
 

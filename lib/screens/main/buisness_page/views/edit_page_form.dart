@@ -47,8 +47,8 @@ class _EditPageFormState extends State<EditPageForm> {
     _nameController.text = widget.businessPage.name;
     _aboutPageController.text = widget.businessPage.description;
     _capitalController.text = widget.businessPage.estCapital;
-    _websiteController.text = widget.businessPage.website.toString();
-    _contactController.text = widget.businessPage.contact.toString();
+    _websiteController.text = widget.businessPage.website ?? '';
+    _contactController.text = widget.businessPage.contact ?? '';
     categories = widget.businessPage.category;
     stage = widget.businessPage.stage;
     if (widget.businessPage.photoPath == null) {
@@ -310,11 +310,11 @@ class _EditPageFormState extends State<EditPageForm> {
               contact: _contactController.text,
               name: _nameController.text,
               stage: stage,
-              est_capital: _capitalController.text,
+              estCapital: _capitalController.text,
               photo: uploaded == true ? image : null,
               description: _aboutPageController.text,
               category: categories,
-              page_id: widget.businessPage.id.toString(),
+              pageId: widget.businessPage.id.toString(),
               website: _websiteController.text))
           : AppUtils.showCustomToast('Select An Image');
     }

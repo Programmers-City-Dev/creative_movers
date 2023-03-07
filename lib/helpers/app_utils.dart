@@ -195,54 +195,44 @@ class AppUtils {
 
   static void cancelAllShowingToasts() => Fluttertoast.cancel();
 
-  static void showShowConfirmDialog(BuildContext context,
-      {required String message,
+  static Future<bool> showConfirmDialog(BuildContext context,
+      {String? title,
+      required String message,
       required String cancelButtonText,
       required String confirmButtonText,
-      required VoidCallback onConfirmed,
-      required VoidCallback onCancel,
+      VoidCallback? onConfirmed,
+      VoidCallback? onCancel,
       Color? color,
       bool? isDismissible,
-      Widget? icon}) {
-    showDialog(
+      bool? useRootNavigator = false,
+      Widget? icon}) async {
+    var val = await showDialog(
       context: context,
       barrierDismissible: isDismissible ?? true,
+      useRootNavigator: useRootNavigator!,
       builder: (context) => AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) icon,
-            if (icon != null)
-              const SizedBox(
-                height: 32.0,
-              ),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: color ?? Colors.grey[500]),
-            ),
-            const SizedBox(
-              height: 32.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(
-                  child: CustomButton(
-                      onTap: onConfirmed, child: Text(confirmButtonText)),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                    child: CustomButton(
-                        onTap: onCancel, child: Text(cancelButtonText))),
-              ],
-            )
-          ],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(title ?? '', style: const TextStyle(color: Colors.black)),
+        content: Text(
+          message,
+          // textAlign: TextAlign.center,
+          style: TextStyle(color: color ?? Colors.grey[700]),
         ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: Text(confirmButtonText)),
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: Text(cancelButtonText)),
+        ],
       ),
     );
+    return val;
   }
 
   static void showErrorDialog(BuildContext context,
@@ -258,6 +248,7 @@ class AppUtils {
       barrierDismissible: isDismissible ?? true,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

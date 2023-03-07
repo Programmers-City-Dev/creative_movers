@@ -9,17 +9,17 @@ import 'package:flutter/material.dart';
 class AdaptiveDialog extends StatelessWidget {
   final String? title, message, left, right;
   final bool isRedPositive;
-  final VoidCallback leftClick, rightClick;
+  final VoidCallback? leftClick, rightClick;
 
   const AdaptiveDialog(
     this.message,
     this.left,
-    this.right,
-    this.leftClick,
-    this.rightClick, {
+    this.right, {
     Key? key,
     this.title = '',
     this.isRedPositive = false,
+    this.leftClick,
+    this.rightClick,
   }) : super(key: key);
 
   @override

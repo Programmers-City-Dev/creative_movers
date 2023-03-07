@@ -35,7 +35,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
             const TextStyle(color: AppColors.textColor, fontSize: 18),
         iconTheme: const IconThemeData(color: AppColors.textColor),
         backgroundColor: AppColors.white,
-        title: const Text('Comments'),
+        title: const Text('Post'),
       ),
       body: BlocBuilder<CacheCubit, CacheState>(
         bloc: injector.get<CacheCubit>(),

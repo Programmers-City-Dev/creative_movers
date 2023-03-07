@@ -301,14 +301,15 @@ class FeedRepository {
     );
   }
 
-  Future<State> deletePost({required String feed_id}) async {
+  Future<State> deletePost({required String feedId}) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.deleteFeedEndpoint, body: {
-        "feed_id": feed_id,
+        "feed_id": feedId,
       }),
       successResponse: (data) {
-        return State<LikeResponse?>.success(
-            data != null ? LikeResponse.fromJson(data) : null);
+        // return State<LikeResponse?>.success(
+        //     data != null ? LikeResponse.fromJson(data) : null);
+        return State<String>.success(data["message"]);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -372,6 +373,43 @@ class FeedRepository {
           ServerErrorModel(
               statusCode: response.statusCode!,
               errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> reportFeed(
+      {required String type,
+      required String reason,
+      required int dataId}) async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(Endpoints.reportFeed, body: {
+        "type": type,
+        "reason": reason,
+        "data_id": dataId,
+      }),
+      successResponse: (data) {
+        return State<String>.success("Success");
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.statusCode == 500
+                  ? "Could not complete request, please try again"
+                  : response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.statusCode == 500
+                  ? "Could not complete request, please try again"
+                  : response.statusMessage ?? '',
               data: null),
         );
       },

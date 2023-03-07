@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'profile_bloc.dart';
 
 abstract class ProfileEvent extends Equatable {
@@ -73,4 +74,24 @@ class UpdateLocalUserProfileEvent extends ProfileEvent {
 class GetFaqsEvent extends ProfileEvent {
   @override
   List<Object> get props => [];
+}
+
+class DeleteAccount extends ProfileEvent {
+  final String reason;
+  final String password;
+  const DeleteAccount({
+    required this.reason,
+    required this.password,
+  });
+  @override
+  List<Object> get props => [reason, password];
+}
+
+class BlockAccount extends ProfileEvent {
+  final int userId;
+  const BlockAccount({
+    required this.userId,
+  });
+  @override
+  List<Object> get props => [userId];
 }

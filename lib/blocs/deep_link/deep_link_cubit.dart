@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/local/repository/deep_link/deep_link_repository.dart';
 import 'package:creative_movers/models/deep_link_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeepLinkCubit extends Cubit<DeepLinkData?> {
   DeepLinkRepo repo;

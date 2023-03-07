@@ -28,6 +28,7 @@ class Endpoints {
   static String deleteFeedEndpoint = '${Constants.baseUrl}api/feed/delete';
   static String commentEndpoint = '${Constants.baseUrl}api/feed/comment';
   static String likeEndpoint = '${Constants.baseUrl}api/feed/like';
+  static String reportFeed = '${Constants.baseUrl}api/feed/report';
   static String businessPageEndpoint =
       '${Constants.baseUrl}api/user/fetch-business-page';
   static String uploadStatusEndpoint =
@@ -90,6 +91,10 @@ class Endpoints {
   static String startFreeTrial = '${Constants.baseUrl}api/payment/free_trial';
 
   static String getFaqs = '${Constants.baseUrl}api/support/fetch-faq';
+
+  static String deleteAccount = '${Constants.baseUrl}api/user/delete-account';
+
+  static String blockAccount = '${Constants.baseUrl}api/user/block-account';
 
 // static const String stripe_intent = "https://api.stripe.com/v1/payment_intents";
 

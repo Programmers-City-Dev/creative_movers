@@ -24,7 +24,7 @@ Future<void> init(GetIt injector) async {
   _injectDependenciesRelatedToPayment(injector);
 
   injector.registerLazySingleton(() => NavBloc());
-  injector.registerLazySingleton(() => FeedBloc());
+  injector.registerLazySingleton(() => FeedBloc(injector.get()));
   injector.registerLazySingleton(() => StatusBloc());
   injector.registerLazySingleton(() => ConnectsBloc());
   injector.registerLazySingleton(() => NotificationBloc());

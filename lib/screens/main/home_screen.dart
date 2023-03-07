@@ -17,6 +17,8 @@ import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.d
 import 'package:creative_movers/screens/main/widgets/deeplink/deep_link_listener.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/welcome_dialog.dart';
+import 'package:creative_movers/services/dynamic_links_service.dart';
+import 'package:creative_movers/services/push_notification_service.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,11 +54,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   int _navIndex = 0;
   final NavBloc _navBloc = injector.get<NavBloc>();
+  bool initConfigured = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    initConfigsAndUpdates();
     _navBloc.add(OpenHomeTabEvent());
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
@@ -237,6 +241,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  void initConfigsAndUpdates() async {
+    if (!initConfigured) {
+      // await RemoteConfigUtil.isConfigReady;
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        if (!DynamicLinksService.isInitialized) {
+          DynamicLinksService.init();
+          DynamicLinksService.isInitialized = true;
+        }
+        PushNotificationService.initialise();
+        // setState(() {
+        initConfigured = true;
+        // });
+      });
+    }
   }
 
   _showDialogIfNecessary() {

@@ -5,7 +5,6 @@ import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/auth/widgets/contact_item.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
-import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +88,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const PaymentScreen()),
+                                            const SubscriptionScreen(
+                                              isFromSignup: true,
+                                            )),
                                     (route) => false);
                               },
                               child: Row(

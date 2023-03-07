@@ -379,4 +379,66 @@ class ProfileRepository {
       },
     );
   }
+
+  Future<State> deleteAccount(String reason, String password) async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(
+        Endpoints.deleteAccount,
+        body: {'reason': reason, 'password': password},
+      ),
+      successResponse: (data) {
+        return State<String>.success("Account deleted successfully");
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        // log('ERROR SERVER: ${response.statusCode}');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        // log('DIO SERVER: ${response.statusCode}');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> blockAccount(int userId) async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(
+        Endpoints.blockAccount,
+        body: {'account_user_id': '$userId'},
+      ),
+      successResponse: (data) {
+        return State<String>.success("Account was blocked successfully");
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
 }

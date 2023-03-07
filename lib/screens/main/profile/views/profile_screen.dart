@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
@@ -11,12 +12,14 @@ import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
 import 'package:creative_movers/screens/widget/widget_network_image.dart';
+import 'package:creative_movers/services/dynamic_links_service.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key, this.userId}) : super(key: key);
@@ -401,7 +404,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ],
                               ),
-                            ))
+                            )),
+                        AnimatedContainer(
+                          padding: const EdgeInsets.fromLTRB(
+                              16, kTextTabBarHeight, 16, 16),
+                          // height: kToolbarHeight,
+                          duration: const Duration(milliseconds: 200),
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.black.withOpacity(0.5)),
+                                      child: Icon(
+                                        Platform.isAndroid
+                                            ? Icons.arrow_back
+                                            : Icons.arrow_back_ios,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  // Container(
+                                  //   padding: const EdgeInsets.all(8),
+                                  //   decoration: BoxDecoration(
+                                  //       shape: BoxShape.circle,
+                                  //       color: Colors.black.withOpacity(0.5)),
+                                  //   child: Icon(
+                                  //     Platform.isAndroid
+                                  //         ? Icons.arrow_back
+                                  //         : Icons.arrow_back_ios,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
+                                  PopupMenuButton(
+                                    onSelected: (val) {
+                                      if (val == 1) {
+                                        _shareUserProfile(user);
+                                      }
+                                      // if (val == 2) {
+                                      //   _showBlockUserPrompt(user);
+                                      // }
+                                    },
+                                    itemBuilder: (context) => [
+                                      const PopupMenuItem(
+                                        value: 1,
+                                        child: Text('Share Profile'),
+                                      ),
+                                      // const PopupMenuItem(
+                                      //   value: 2,
+                                      //   child: Text('Block User'),
+                                      // ),
+                                    ],
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.black.withOpacity(0.5)),
+                                      child: const Icon(
+                                        Icons.more_vert,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -641,7 +725,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
           if (state is ProfileLoading) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator.adaptive(),
             );
           }
 
@@ -649,6 +733,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
       ),
     );
+  }
+
+  void _shareUserProfile(User user) {
+    DynamicLinksService.createProfileDeepLink(user).then((link) {
+      Share.share("Hello there!\nView my profile on @CreativeMovers by "
+          "clicking on the link below:\n"
+          "$link");
+    });
   }
 }
 

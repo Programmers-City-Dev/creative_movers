@@ -287,6 +287,8 @@ class Poster {
         "lastname": lastname,
         "profile_photo_path": profilePhotoPath,
       };
+
+  String get fullname => '$firstname $lastname';
 }
 
 class Link {

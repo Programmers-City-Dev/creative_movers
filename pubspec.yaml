@@ -99,6 +99,9 @@ dependencies:
   flutter_speed_dial: ^6.2.0
   flutter_downloader: ^1.9.1
   purchases_flutter: ^4.9.0
+  firebase_dynamic_links: ^5.0.15
+  package_info_plus: ^3.0.3
+  share_plus: ^6.3.1
 
 dev_dependencies:
   flutter_test:

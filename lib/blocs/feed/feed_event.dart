@@ -71,9 +71,24 @@ class EditFeedEvent extends FeedEvent {
 }
 
 class DeleteFeedEvent extends FeedEvent {
-  final String feed_id;
-  const DeleteFeedEvent({required this.feed_id});
+  final String feedId;
+  const DeleteFeedEvent({required this.feedId});
 
   @override
   List<Object?> get props => [];
+}
+
+class ReportFeed extends FeedEvent {
+  final String type;
+  final String reason;
+  final int dataId;
+  const ReportFeed(
+      {required this.type, required this.reason, required this.dataId});
+
+  @override
+  List<Object?> get props => [
+        type,
+        reason,
+        dataId,
+      ];
 }

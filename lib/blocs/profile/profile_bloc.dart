@@ -16,7 +16,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/remote/model/FaqsResponse.dart';
 
 part 'profile_event.dart';
-
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -35,6 +34,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
 
     on<GetFaqsEvent>(_mapGetFaqsEventToState);
+    on<DeleteAccount>(_mapDeleteAccountEventToState);
+    on<BlockAccount>(_mapBlockAccountEventToState);
   }
 
   FutureOr<void> _mapGetUsernameToState(
@@ -132,6 +133,41 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     } catch (e) {
       emit(GetFaqsFailureState(e.toString()));
+    }
+  }
+
+  FutureOr<void> _mapDeleteAccountEventToState(
+      DeleteAccount event, Emitter<ProfileState> emit) async {
+    try {
+      emit(ProfileLoading());
+      var state =
+          await profileRepository.deleteAccount(event.reason, event.password);
+      if (state is SuccessState) {
+        emit(AccountDeleted(message: state.value));
+      }
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(ProfileErrorState(errorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(const ProfileErrorState("An error occurred, please try again"));
+    }
+  }
+
+  FutureOr<void> _mapBlockAccountEventToState(
+      BlockAccount event, Emitter<ProfileState> emit) async {
+    try {
+      emit(ProfileLoading());
+      var state = await profileRepository.blockAccount(event.userId);
+      if (state is SuccessState) {
+        emit(AccountBlocked(message: state.value));
+      }
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(ProfileErrorState(errorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(const ProfileErrorState("An error occurred, please try again"));
     }
   }
 }

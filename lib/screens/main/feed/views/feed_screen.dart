@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
-
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
@@ -35,7 +33,7 @@ class _FeedScreenState extends State<FeedScreen> {
   final ScrollController _scrollController = ScrollController();
 
   String? username;
-  FeedBloc feedBloc = FeedBloc();
+  FeedBloc feedBloc = FeedBloc(injector.get());
   StatusBloc statusBloc = StatusBloc();
 
   @override
@@ -155,7 +153,7 @@ class _FeedScreenState extends State<FeedScreen> {
                 sliver: BlocBuilder<FeedBloc, FeedState>(
                   bloc: feedBloc,
                   builder: (context, state) {
-                    if (state is FeedLoadingState) {
+                    if (state is FeedLoading) {
                       return const SliverToBoxAdapter(child: FeedLoader());
                     }
                     if (state is FeedSuccessState) {
