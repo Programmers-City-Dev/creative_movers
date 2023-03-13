@@ -21,20 +21,25 @@ class _PostCardState extends State<PostCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Tell us about it',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Do you have anything to share ?',
-                  style: TextStyle(fontSize: 13),
-                ),
-              ],
+          GestureDetector(
+            onTap: widget.onTap,
+            child: Container(
+              width: double.infinity,
+              color: Colors.transparent,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Tell us about it',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Do you have anything to share ?',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ],
+              ),
             ),
           ),
           const Padding(
