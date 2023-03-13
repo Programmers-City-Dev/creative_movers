@@ -182,15 +182,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: Text(
                               "Your account will be charged "
                               "${state.product.currencyCode} "
-                              "${AppUtils.formatMoney(state.product.price)} for "
-                              "renewal within 24 hours "
-                              "prior to the end of the current period. "
+                              "${AppUtils.formatMoney(state.product.price)}"
+                              " after 7 days trial period. "
                               "You can cancel your subscriptions to "
                               "avoid being charged 24 hours prior to "
-                              "the end of the current period "
-                              "by going to your account settings on the "
-                              "${Platform.isIOS ? 'App Store' : 'Playstore'} "
-                              "after purchase.",
+                              "the end of the current period in "
+                              "${Platform.isIOS ? 'App Store' : 'Playstore'}"
+                              " account settings.",
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
