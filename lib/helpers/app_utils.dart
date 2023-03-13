@@ -613,6 +613,12 @@ class AppUtils {
         .format(DateTime.fromMillisecondsSinceEpoch(groupByValue));
   }
 
+  static formatMoney(num value, [String? currency]) {
+    return NumberFormat.simpleCurrency(
+            locale: 'en_US', decimalDigits: 2, name: currency ?? '')
+        .format(value);
+  }
+
   static Future<void> launchInAppBrowser(
       BuildContext context, String url) async {
     try {
@@ -712,6 +718,7 @@ class AppUtils {
               ],
             ));
   }
+
 }
 
 class CustomSnackBar {

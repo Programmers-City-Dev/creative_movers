@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:creative_movers/cubit/in_app_payment_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -159,7 +161,47 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       height: 32,
                     ),
                     SubscriptionOptions(
-                        subIds: _subIds, onSubSelected: (id) {}),
+                        subIds: _subIds,
+                        onSubSelected: (id) {
+                          _selectedProductId = id;
+                        }),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    BlocBuilder<InAppPaymentCubit, InAppPaymentState>(
+                      bloc: _appPaymentCubit..fetchProduct(_selectedProductId!),
+                      builder: (context, state) {
+                        if (state is ProductsFetched) {
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              "Your account will be charged "
+                              "${state.product.currencyCode} "
+                              "${AppUtils.formatMoney(state.product.price)} for "
+                              "renewal within 24 hours "
+                              "prior to the end of the current period. "
+                              "You can cancel your subscriptions to "
+                              "avoid being charged 24 hours prior to "
+                              "the end of the current period "
+                              "by going to your account settings on the "
+                              "${Platform.isIOS ? 'App Store' : 'Playstore'} "
+                              "after purchase.",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
                     const Spacer(),
                     BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
                       bloc: _appPaymentCubit,
@@ -249,19 +291,53 @@ class TrialStatement extends StatelessWidget {
         bloc: _appPaymentCubit..fetchProduct(pId),
         builder: (context, state) {
           if (state is ProductsFetched) {
-            return RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(
-                      text: 'Try 7 days for free.\nAnd then pay '
-                          '${state.product.priceString}/month',
-                      style: TextStyle(
-                        fontSize: 14,
-                        // fontFamily: "roboto",
-                        color: Colors.grey.shade800,
-                        fontWeight: FontWeight.w500,
-                      ))
-                ]));
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: RichText(
+                  // textAlign: TextAlign.justify,
+                  text: TextSpan(children: [
+                TextSpan(
+                    text: 'Try it out ',
+                    style: TextStyle(
+                      // fontSize: 14,
+                      // fontFamily: "roboto",
+                      color: Colors.grey.shade800,
+                      fontWeight: FontWeight.w400,
+                    )),
+                TextSpan(
+                    text: ' 7 days ',
+                    style: TextStyle(
+                      // fontSize: 14,
+                      // fontFamily: "roboto",
+                      color: Colors.grey.shade800,
+                      fontWeight: FontWeight.bold,
+                    )),
+                TextSpan(
+                    text: 'for free and then pay ',
+                    style: TextStyle(
+                      // fontSize: 14,
+                      // fontFamily: "roboto",
+                      color: Colors.grey.shade800,
+                      fontWeight: FontWeight.w400,
+                    )),
+                TextSpan(
+                    text: '${state.product.priceString}/month',
+                    style: TextStyle(
+                      // fontSize: 14,
+                      // fontFamily: "roboto",
+                      color: Colors.grey.shade800,
+                      fontWeight: FontWeight.bold,
+                    )),
+                TextSpan(
+                    text: ' after trial period ends.',
+                    style: TextStyle(
+                      // fontSize: 14,
+                      // fontFamily: "roboto",
+                      color: Colors.grey.shade800,
+                      fontWeight: FontWeight.w400,
+                    )),
+              ])),
+            );
           }
           return const SizedBox.shrink();
         },
