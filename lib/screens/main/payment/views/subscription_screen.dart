@@ -75,17 +75,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 16,
+                height: 8,
               ),
               const Text(
                 'Full Access\nAnd Move Forward',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(
-                height: 32.0,
+                height: 16.0,
               ),
               Row(
                 children: [
@@ -201,6 +201,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         }
                         return const SizedBox.shrink();
                       },
+                    ),
+                    const SizedBox(
+                      height: 8.0,
                     ),
                     const Spacer(),
                     BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
