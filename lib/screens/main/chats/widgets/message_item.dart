@@ -219,7 +219,32 @@ class _MessageItemState extends State<MessageItem> {
               if (state is ChatError) {
                 return GestureDetector(
                   onTap: () {
-                    if (_shouldLoad!) {}
+                    if (widget.chatMessage.conversationId == "-1") {
+                      _chatBloc.add(SendChatMessage(
+                          files: widget.chatMessage.media.isNotEmpty
+                              ? widget.chatMessage.media
+                                  .map((e) => e.mediaPath ?? '')
+                                  .toList()
+                              : [],
+                          message: ChatMessageRequest(
+                            userId: widget.otherUserId,
+                            message: widget.chatMessage.body!,
+                          )));
+                    } else {
+                      _chatBloc.add(SendChatMessage(
+                          files: widget.chatMessage.media.isNotEmpty
+                              ? widget.chatMessage.media
+                                  .map((e) => e.mediaPath ?? '')
+                                  .toList()
+                              : [],
+                          message: ChatMessageRequest(
+                            userId: widget.otherUserId,
+                            conversationId:
+                                int.parse(widget.chatMessage.conversationId),
+                            message: widget.chatMessage.body!,
+                          )));
+                      widget.files.clear();
+                    }
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 16.0),

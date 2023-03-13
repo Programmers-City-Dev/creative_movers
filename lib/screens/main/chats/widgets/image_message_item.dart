@@ -65,9 +65,13 @@ class _ImageMessageItemState extends State<ImageMessageItem> {
                             File(widget.chatMessage.media[0].mediaPath!),
                             fit: BoxFit.cover,
                           ),
-                    Center(
+                    Align(
+                      alignment: Alignment.center,
                       child: state is ChatMessageLoading
-                          ? const CircularProgressIndicator()
+                          ? const SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator.adaptive())
                           : const SizedBox(),
                     ),
                   ],
