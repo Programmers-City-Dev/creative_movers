@@ -58,7 +58,6 @@ class LoginFailureState extends AuthState {
 //Bio-Data State
 class BioDataLoadingState extends AuthState {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
@@ -68,7 +67,6 @@ class BioDataSuccesState extends AuthState {
   BioDataSuccesState({required this.bioDataResponse});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [bioDataResponse];
 }
 
@@ -78,14 +76,12 @@ class BioDataFailureState extends AuthState {
   BioDataFailureState({required this.error});
 
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
 //Account Type State
 class AccounTypeLoadingState extends AuthState {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
@@ -95,7 +91,6 @@ class AccountTypeSuccesState extends AuthState {
   AccountTypeSuccesState({required this.accountTypeResponse});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [accountTypeResponse];
 }
 
@@ -105,14 +100,12 @@ class AccountTypeFailureState extends AuthState {
   AccountTypeFailureState({required this.error});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [error];
 }
 
 //AddConnections  State
 class AddConnectionLoadingState extends AuthState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
@@ -122,7 +115,6 @@ class AddConnectionSuccesState extends AuthState {
   AddConnectionSuccesState({required this.addConnectionResponse});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [addConnectionResponse];
 }
 
@@ -132,14 +124,12 @@ class AddConnectionFailureState extends AuthState {
   AddConnectionFailureState({required this.error});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [error];
 }
 
 //Logout
 class LogoutLoadingState extends AuthState {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
@@ -149,7 +139,6 @@ class LogoutSuccessState extends AuthState {
   LogoutSuccessState({required this.logoutResponse});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [logoutResponse];
 }
 
@@ -157,7 +146,6 @@ class LogoutFaliureState extends AuthState {
   String error;
 
   @override
-  // TODO: implement props
   List<Object?> get props => [error];
 
   LogoutFaliureState({required this.error});
@@ -166,7 +154,6 @@ class LogoutFaliureState extends AuthState {
 //Category State
 class CategoryLoadingState extends AuthState {
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
@@ -176,7 +163,6 @@ class CategorySuccessState extends AuthState {
   CategorySuccessState({required this.categoriesReponse});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [categoriesReponse];
 }
 
@@ -184,7 +170,6 @@ class CategoryFaliureState extends AuthState {
   String error;
 
   @override
-  // TODO: implement props
   List<Object?> get props => [error];
 
   CategoryFaliureState({required this.error});

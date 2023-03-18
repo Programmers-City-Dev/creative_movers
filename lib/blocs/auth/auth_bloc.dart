@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<BioDataEvent>(_mapBioDataEventToState);
     on<AccountTypeEvent>(_mapAccountTypeEventToState);
     on<AddConnectionsEvent>(_mapAddConnectionsEventToState);
-    on<LogoutEvent>(_mapLogoutEventToState);
+    // on<LogoutEvent>(_mapLogoutEventToState);
     on<CategoriesEvent>(_mapCategoriesEventToState);
     on<ForgotPasswordEvent>(_mapForgotPasswordEventToState);
     on<ResetPasswordEvent>(_mapResetPasswordEventToState);
@@ -160,21 +160,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  FutureOr<void> _mapLogoutEventToState(
-      LogoutEvent event, Emitter<AuthState> emit) async {
-    emit(LogoutLoadingState());
-    try {
-      var state = await authRepository.logout();
-      if (state is SuccessState) {
-        emit(LogoutSuccessState(logoutResponse: state.value));
-      } else if (state is ErrorState) {
-        ServerErrorModel errorModel = state.value;
-        emit(LogoutFaliureState(error: errorModel.errorMessage));
-      }
-    } catch (e) {
-      emit(LogoutFaliureState(error: 'Oops Something went wrong'));
-    }
-  }
+  // FutureOr<void> _mapLogoutEventToState(
+  //     LogoutEvent event, Emitter<AuthState> emit) async {
+  //   emit(LogoutLoadingState());
+  //   try {
+  //     var state = await authRepository.logout();
+  //     if (state is SuccessState) {
+  //       emit(LogoutSuccessState(logoutResponse: state.value));
+  //     } else if (state is ErrorState) {
+  //       ServerErrorModel errorModel = state.value;
+  //       emit(LogoutFaliureState(error: errorModel.errorMessage));
+  //     }
+  //   } catch (e) {
+  //     emit(LogoutFaliureState(error: 'Oops Something went wrong'));
+  //   }
+  // }
 
   FutureOr<void> _mapCategoriesEventToState(
       CategoriesEvent event, Emitter<AuthState> emit) async {

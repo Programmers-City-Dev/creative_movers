@@ -1,5 +1,6 @@
 import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/notification/widgets/notification_item.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -31,42 +32,65 @@ class _NotificationScreenState extends State<NotificationScreen> {
         iconTheme: const IconThemeData(color: AppColors.textColor),
         backgroundColor: AppColors.white,
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: PopupMenuButton<String>(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              itemBuilder: (context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  padding: const EdgeInsets.all(10),
-                  value: 'Mark all as read',
-                  child: Row(
-                    children: const [
-                      Icon(Icons.check),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text('Mark all as read'),
-                    ],
-                  ),
-                ),
-                PopupMenuItem<String>(
-                    padding: const EdgeInsets.all(10),
-                    value: 'Filter',
-                    child: SizedBox(
-                      width: 100,
+          BlocConsumer<NotificationBloc, NotificationState>(
+            bloc: _notificationBloc,
+            listener: (context, state) {
+              if (state is NotificationRefreshing) {
+                AppUtils.showLoaderDialog(context);
+              }
+              if (state is UserNotificationsRefreshed) {
+                Navigator.pop(context);
+              }
+              if (state is UserNotificationsRefreshError) {
+                Navigator.pop(context);
+                AppUtils.showCustomToast(state.error, Colors.red, Colors.white);
+              }
+            },
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: PopupMenuButton<int>(
+                  onSelected: (val) {
+                    if (val == 1) {
+                      _notificationBloc
+                          .add(const MarkAllNotificationAsReadEvent());
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  itemBuilder: (context) => <PopupMenuEntry<int>>[
+                    PopupMenuItem<int>(
+                      padding: const EdgeInsets.all(10),
+                      value: 1,
                       child: Row(
                         children: const [
-                          Icon(Icons.sort),
+                          Icon(Icons.check),
                           SizedBox(
                             width: 8,
                           ),
-                          Text('Filter'),
+                          Text('Mark all as read'),
                         ],
                       ),
-                    )),
-              ],
-            ),
+                    ),
+                    PopupMenuItem<int>(
+                        padding: const EdgeInsets.all(10),
+                        value: 2,
+                        child: SizedBox(
+                          width: 100,
+                          child: Row(
+                            children: const [
+                              Icon(Icons.sort),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text('Filter'),
+                            ],
+                          ),
+                        )),
+                  ],
+                ),
+              );
+            },
           )
         ],
         title: const Text(
@@ -79,9 +103,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: BlocConsumer<NotificationBloc, NotificationState>(
           // bloc: _notificationBloc,
           listener: (context, state) {},
+          buildWhen: (previous, current) =>
+              current is UserNotificationsLoadFailedState ||
+              current is NotificationLoading ||
+              current is UserNotificationsLoadedState,
           builder: (context, state) {
             var notifications = context.watch<NotificationBloc>().notifications;
-            if (state is UserNotificationsLoadingState) {
+            if (state is NotificationLoading) {
               return const Center(
                 child: CircularProgressIndicator.adaptive(),
               );

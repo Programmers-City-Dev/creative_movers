@@ -13,6 +13,7 @@ import 'package:creative_movers/theme/app_colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -341,6 +342,52 @@ class AppUtils {
         ),
       ),
     );
+  }
+
+  static void showLoaderDialog(BuildContext context,
+      {bool? barrierDismissible = true,
+      bool isDissmissible = false,
+      bool? useRootNavigator = false,
+      String? message}) {
+    showDialog(
+        context: context,
+        barrierDismissible: barrierDismissible!,
+        useRootNavigator: useRootNavigator!,
+        barrierColor: Colors.black.withOpacity(0.5),
+        builder: (_) {
+          return Material(
+            color: Colors.transparent,
+            child: WillPopScope(
+              onWillPop: () => Future.value(isDissmissible),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(16),
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.white,
+                      ),
+                      child: Center(
+                        child: SpinKitFadingCircle(
+                          itemBuilder: (BuildContext context, int index) {
+                            return DecoratedBox(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: index.isEven ? Colors.red : Colors.green,
+                              ),
+                            );
+                          },
+                        ),
+                      )),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   static void showMessageDialog(BuildContext context,
@@ -718,7 +765,6 @@ class AppUtils {
               ],
             ));
   }
-
 }
 
 class CustomSnackBar {

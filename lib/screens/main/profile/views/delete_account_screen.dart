@@ -1,4 +1,4 @@
-import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -56,7 +56,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
           if (state is AccountDeleted) {
             Navigator.pop(context);
             AppUtils.showCustomToast("Account deleted successfully");
-            injector.get<AuthBloc>().add(LogoutEvent());
+            injector.get<NavBloc>().add(LogoutEvent());
           }
 
           if (state is ProfileErrorState) {
@@ -175,12 +175,14 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                   ),
                   CustomButton(
                     onTap: () {
-                      if (selectedReasonIndex == reasons.length - 1) {
-                        if (_formKey.currentState!.validate()) {
+                      if (selectedReasonIndex != -1) {
+                        if (selectedReasonIndex == reasons.length - 1) {
+                          if (_formKey.currentState!.validate()) {
+                            _showComnfirmDialog();
+                          }
+                        } else {
                           _showComnfirmDialog();
                         }
-                      } else {
-                        _showComnfirmDialog();
                       }
                     },
                     isEnabled: selectedReasonIndex >= 0,

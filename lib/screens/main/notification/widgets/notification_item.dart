@@ -1,3 +1,4 @@
+import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/data/remote/model/notifications_response.dart'
     as notification;
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -6,6 +7,7 @@ import 'package:creative_movers/screens/main/live/views/live_stream.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotificationItem extends StatefulWidget {
   final notification.Notification notificationData;
@@ -22,13 +24,23 @@ class _NotificationItemState extends State<NotificationItem> {
     final notifier = widget.notificationData.data.content.notifier;
     final contentData = widget.notificationData.data.content.data;
 
-    return GestureDetector(
+    bool isRead = widget.notificationData.readAt != null;
+
+    return InkWell(
       onTap: () {
         _handleClickAction();
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 1),
-        color: AppColors.white,
+        margin: const EdgeInsets.symmetric(
+          vertical: 1,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          border: Border(
+              left: BorderSide(
+                  color: isRead ? Colors.transparent : AppColors.primaryColor,
+                  width: 3)),
+        ),
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
@@ -50,7 +62,10 @@ class _NotificationItemState extends State<NotificationItem> {
                     Text(
                       _getPostDescription(notifier.name,
                           widget.notificationData.data.type, contentData),
-                      style: const TextStyle(fontSize: 13),
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight:
+                              isRead ? FontWeight.normal : FontWeight.bold),
                     ),
                     const SizedBox(
                       height: 10,
@@ -100,6 +115,8 @@ class _NotificationItemState extends State<NotificationItem> {
                 channel: widget.notificationData.data.content.data.channelId,
               ))));
     }
+    context.read<NotificationBloc>().add(MarkNotificationAsReadEvent(
+        notificationId: widget.notificationData.id.toString()));
   }
 
   String _getPostDescription(

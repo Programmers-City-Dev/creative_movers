@@ -147,9 +147,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 32.0,
-              ),
+              // const SizedBox(
+              //   height: 16.0,
+              // ),
               Expanded(
                 child: Column(
                   children: [
@@ -157,24 +157,25 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     TrialStatement(
                       pId: _selectedProductId ?? '',
                     ),
-                    const SizedBox(
-                      height: 32,
-                    ),
+                    // const SizedBox(
+                    //   height: 32,
+                    // ),
                     SubscriptionOptions(
                         subIds: _subIds,
                         onSubSelected: (id) {
                           _selectedProductId = id;
                         }),
                     const SizedBox(
-                      height: 16,
+                      height: 8,
                     ),
                     BlocBuilder<InAppPaymentCubit, InAppPaymentState>(
-                      bloc: _appPaymentCubit..fetchProduct(_selectedProductId!),
+                      bloc: InAppPaymentCubit(injector.get())
+                        ..fetchProduct(_selectedProductId!),
                       builder: (context, state) {
                         if (state is ProductsFetched) {
                           return Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
@@ -199,9 +200,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         }
                         return const SizedBox.shrink();
                       },
-                    ),
-                    const SizedBox(
-                      height: 8.0,
                     ),
                     const Spacer(),
                     BlocConsumer<InAppPaymentCubit, InAppPaymentState>(

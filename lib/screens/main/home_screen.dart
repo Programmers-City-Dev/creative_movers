@@ -8,6 +8,7 @@ import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/routes.dart';
+import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
@@ -90,6 +91,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         }
         if (state is OpenProfileTabState) {
           _navIndex = 4;
+        }
+        if (state is LogoutAppState) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const LoginScreen()),
+            (Route<dynamic> route) => false,
+          );
         }
       },
       builder: (context, state) {

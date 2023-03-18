@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -19,7 +23,8 @@ class HttpHelper {
 
     _client!.options.headers = headers;
     if (enabledDioLogger) {
-      _client!.interceptors.add(
+      _client!.interceptors.addAll([
+        AuthInterceptor(),
         PrettyDioLogger(
           request: true,
           requestHeader: false,
@@ -30,8 +35,9 @@ class HttpHelper {
           compact: true,
           maxWidth: 400,
         ),
-      );
+      ]);
     }
+
     return _client;
   }
 
@@ -69,5 +75,15 @@ class HttpHelper {
   Future<Response> delete(String url, {dynamic body}) async {
     final instance = await _getInstance();
     return instance!.delete(url);
+  }
+}
+
+class AuthInterceptor extends Interceptor {
+  @override
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    if (err.response?.statusCode == HttpStatus.unauthorized) {
+     injector.get<NavBloc>().add(LogoutEvent());
+    }
+    super.onError(err, handler);
   }
 }

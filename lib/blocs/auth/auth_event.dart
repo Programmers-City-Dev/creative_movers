@@ -97,11 +97,6 @@ class AddConnectionsEvent extends AuthEvent {
   AddConnectionsEvent({this.user_id, required this.connection});
 }
 
-class LogoutEvent extends AuthEvent {
-  @override
-  List<Object?> get props => throw UnimplementedError();
-}
-
 class CategoriesEvent extends AuthEvent {
   @override
   List<Object?> get props => throw UnimplementedError();

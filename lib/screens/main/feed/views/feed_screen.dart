@@ -255,14 +255,11 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ..add(FetchUserNotificationsEvent()),
                       child: BlocBuilder<NotificationBloc, NotificationState>(
                         builder: (context, state) {
-                          var notifications =
-                              context.watch<NotificationBloc>().notifications;
+                          var notifications = context
+                              .watch<NotificationBloc>()
+                              .notifications
+                              .where((element) => element.readAt == null);
                           if (state is UserNotificationsLoadedState) {
-                            int unreadNotifications = notifications
-                                .where((notification) =>
-                                    notification.readAt == null)
-                                .toList()
-                                .length;
                             return Stack(
                               clipBehavior: Clip.none,
                               children: [
@@ -279,7 +276,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     ));
                                   },
                                 ),
-                                unreadNotifications > 0
+                                notifications.isNotEmpty
                                     ? Positioned(
                                         top: -10,
                                         right: -5,
@@ -292,9 +289,9 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                                           child: Padding(
                                             padding: const EdgeInsets.all(4.0),
                                             child: Text(
-                                              unreadNotifications > 9
+                                              notifications.length > 9
                                                   ? "9+"
-                                                  : '$unreadNotifications',
+                                                  : '${notifications.length}',
                                               style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 12),

@@ -40,3 +40,5 @@ class OpenProfileTabEvent extends NavEvent {
   @override
   List<Object> get props => [];
 }
+
+class LogoutEvent extends NavEvent {}

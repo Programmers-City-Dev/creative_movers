@@ -83,6 +83,13 @@ class Endpoints {
 
   static String paymentHistory = '${Constants.baseUrl}api/payment/history';
 
+  // ---------------- NOTIFICATION --------------------------
+  static String updateNotifcation =
+      '${Constants.baseUrl}api/notifications/update';
+
+  static String updateAllNotifcation =
+      '${Constants.baseUrl}api/notifications/update_all';
+
   static String userNotification =
       '${Constants.baseUrl}api/notifications/fetch';
 

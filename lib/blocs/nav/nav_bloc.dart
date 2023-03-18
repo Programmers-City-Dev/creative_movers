@@ -1,6 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
 
 part 'nav_event.dart';
@@ -14,6 +19,7 @@ class NavBloc extends Bloc<NavEvent, NavState> {
     on<OpenConnectsTabEvent>(_mapOpenConnectsTabEventToState);
     on<OpenChatsTabEvent>(_mapOpenChatsTabEventToState);
     on<OpenProfileTabEvent>(_mapOpenProfileTabEventToState);
+    on<LogoutEvent>(_mapLogoutEventToState);
   }
 
   // int currentTabIndex = 0;
@@ -43,5 +49,13 @@ class NavBloc extends Bloc<NavEvent, NavState> {
 
   FutureOr<void> _mapOpenProfileTabEventToState(event, Emitter<NavState> emit) {
     emit(OpenProfileTabState());
+  }
+
+  FutureOr<void> _mapLogoutEventToState(
+      LogoutEvent event, Emitter<NavState> emit) async {
+    StorageHelper.remove(StorageKeys.token);
+    StorageHelper.setBoolean(StorageKeys.stayLoggedIn, false);
+    injector.get<CacheCubit>().clearCacheStorage();
+    emit(LogoutAppState());
   }
 }

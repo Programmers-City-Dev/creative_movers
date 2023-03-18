@@ -1,13 +1,10 @@
 import 'package:creative_movers/app.dart';
-import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
+import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
-import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
-import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/delete_account_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
@@ -449,8 +446,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                 confirmButtonText: 'Logout',
                               ).then((value) {
                                 if (value) {
-                                  // Navigator.pop(context);
-                                  _logout();
+                                  injector.get<NavBloc>().add(LogoutEvent());
                                 }
                               });
                             },
@@ -500,22 +496,5 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             }),
       ),
     );
-  }
-
-  void _logout() {
-    injector.get<AuthBloc>().add(LogoutEvent());
-    clearCache();
-    mainNavKey.currentState!.pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-      (Route<dynamic> route) => false,
-    );
-  }
-
-  void clearCache() {
-    StorageHelper.remove(StorageKeys.token);
-    StorageHelper.setBoolean(StorageKeys.stayLoggedIn, false);
-    injector.get<CacheCubit>().clearCacheStorage();
-
-    // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
 }
