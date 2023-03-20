@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:wakelock/wakelock.dart';
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
@@ -29,19 +30,21 @@ RemoteVideoState? _remoteUserState;
 
 class LiveStream extends StatefulWidget {
   final bool isBroadcaster;
+  final int broadcastId;
   final String? token;
   final bool? isFrontCamera;
   final bool? isMuted;
   final String? channel;
 
-  const LiveStream(
-      {Key? key,
-      required this.isBroadcaster,
-      this.isFrontCamera = true,
-      this.isMuted = true,
-      this.token,
-      this.channel})
-      : super(key: key);
+  const LiveStream({
+    Key? key,
+    required this.isBroadcaster,
+    required this.broadcastId,
+    this.isFrontCamera = true,
+    this.isMuted = true,
+    this.token,
+    this.channel,
+  }) : super(key: key);
 
   @override
   _LiveStreamState createState() => _LiveStreamState();
@@ -61,6 +64,7 @@ class _LiveStreamState extends State<LiveStream> {
 
   @override
   void initState() {
+    super.initState();
     logger.log("Channel: ${widget.channel}");
     if (widget.channel != null) {
       channelName = widget.channel!;
@@ -74,7 +78,7 @@ class _LiveStreamState extends State<LiveStream> {
     //       uid: "0"));
     // }
 
-    super.initState();
+    logger.log("Broadcast Id: ${widget.broadcastId}");
   }
 
   @override
@@ -98,6 +102,9 @@ class _LiveStreamState extends State<LiveStream> {
     await _engine?.enableVideo();
     await _engine?.startPreview();
 
+    // Enable wakelock
+    Wakelock.enable();
+
     // Toggle Microphone
     if (widget.isMuted!) {
       await _engine?.enableLocalAudio(false);
@@ -119,23 +126,34 @@ class _LiveStreamState extends State<LiveStream> {
         logInfo("Connection State Changed: $state, Reason:$reason");
       },
       onJoinChannelSuccess: (RtcConnection conn, int uid) {
-        logInfo("local user $uid joined");
+        logInfo("onJoinChannelSuccess: user $uid joined");
         setState(() {
           _localUserJoined = true;
         });
       },
       onUserJoined: (RtcConnection conn, int uid, int elapsed) {
-        logInfo("remote user $uid joined");
+        logInfo("onUserJoined: user $uid joined");
         setState(() {
           _remoteUid = uid;
         });
       },
+      onLeaveChannel: (connection, stats) {
+        logInfo("leave channel: ${stats.toJson()}");
+        // setState(() {
+        //   _localUserJoined = false;
+        // });
+      },
       onUserOffline:
           (RtcConnection conn, int uid, UserOfflineReasonType reason) {
-        logInfo("remote user $uid left channel");
+        logger.log("UserId: $uid left channel, Reason: $reason",
+            name: "user offline");
         setState(() {
           _remoteUid = null;
         });
+      },
+      onUserStateChanged: (connection, remoteUid, state) {},
+      onLocalVideoStateChanged: (source, state, error) {
+        logInfo("local video state changed");
       },
       onRemoteVideoStateChanged: (RtcConnection conn, x, RemoteVideoState state,
           RemoteVideoStateReason reason, i) {
@@ -177,7 +195,7 @@ class _LiveStreamState extends State<LiveStream> {
             autoSubscribeVideo: true,
             autoSubscribeAudio: true,
             defaultVideoStreamType: VideoStreamType.videoStreamLow),
-        uid: 0,
+        uid: injector.get<CacheCubit>().cachedUser?.id ?? 0,
         token: token);
   }
 
@@ -368,7 +386,10 @@ class _RemoteUserViewState extends State<RemoteUserView> {
   @override
   void dispose() {
     _chatBloc.close();
+    widget.engine?.leaveChannel();
     widget.engine?.release();
+    // Disables the wakelock again.
+    Wakelock.disable();
     super.dispose();
   }
 
@@ -383,10 +404,9 @@ class _RemoteUserViewState extends State<RemoteUserView> {
           onWillPop: () async {
             if (_activeLiveNotifier.value) {
               _showCloseVideoDialog(context, onConfirmed: () {
+                widget.engine?.leaveChannel();
                 widget.engine?.release();
-                Navigator.of(context)
-                  ..pop()
-                  ..pop();
+                Navigator.of(context).pop();
                 _activeLiveNotifier.value = false;
               });
               return false;
@@ -758,6 +778,10 @@ class _LocalUserViewState extends State<LocalUserView> {
   void dispose() {
     _chatBloc.close();
     _activeLiveNotifier.value = true;
+    widget.engine?.leaveChannel();
+    widget.engine?.release();
+    // Disables the wakelock again.
+    Wakelock.disable();
     super.dispose();
   }
 

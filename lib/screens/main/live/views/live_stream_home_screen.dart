@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:creative_movers/app_config.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -33,6 +34,7 @@ class _LiveStreamHomeScreenState extends State<LiveStreamHomeScreen> {
             ? const LiveStreamPrepScreen()
             : LiveStream(
                 isBroadcaster: widget.isBroadcaster,
+                broadcastId: injector.get<CacheCubit>().cachedUser?.id ?? 0,
               ));
   }
 }
@@ -214,6 +216,9 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                           builder: (context) => LiveStream(
                               channel: channel,
                               isBroadcaster: true,
+                              broadcastId:
+                                  injector.get<CacheCubit>().cachedUser?.id ??
+                                      0,
                               token: state.token,
                               isFrontCamera: _isFrontCamera,
                               isMuted: !_isMicOn)));

@@ -35,6 +35,7 @@ class DeepLinkListener extends StatelessWidget {
                 state?.type,
                 state?.id,
                 state?.data,
+                state?.notifier,
                 path: state?.path,
               );
             }
@@ -128,6 +129,7 @@ class _NotificationPromptListState extends State<NotificationPromptList> {
                       notification.type,
                       notification.id,
                       notification.data,
+                      notification.notifier,
                       path: notification.message,
                       fromInApp: true);
                 },

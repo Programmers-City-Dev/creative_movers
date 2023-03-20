@@ -1,10 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:creative_movers/resources/app_icons.dart';
+import 'package:creative_movers/screens/main/feed/widgets/video_preview_dialog.dart';
 import 'package:creative_movers/screens/main/status/widgets/status_video_play.dart';
+import 'package:creative_movers/screens/widget/video_thumbnail_builder.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class StatusVideoPreview extends StatefulWidget {
   const StatusVideoPreview(
@@ -36,24 +35,40 @@ class _StatusVideoPreviewState extends State<StatusVideoPreview> {
                 borderRadius: BorderRadius.circular(10),
               ),
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-              child: FutureBuilder<Uint8List?>(
-                  future: VideoThumbnail.thumbnailData(
-                    video: widget.path,
-                    imageFormat: ImageFormat.JPEG,
-                    maxWidth: MediaQuery.of(context).size.width.toInt(),
-                    // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-                    quality: 25,
-                  ),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Image.memory(
-                        snapshot.data!,
+              child: Stack(children: [
+                VideoThumnailBuilder(
+                  videoUrl: widget.path,
+                  builder: (context, imageUrl) {
+                    return SizedBox(
+                      height: 250,
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.memory(
+                        imageUrl,
                         fit: BoxFit.cover,
-                      );
-                    }
-                    return Image.asset("assets/images/slide_i.png",
-                        fit: BoxFit.cover);
-                  }),
+                      ),
+                    );
+                  },
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>
+                            VideoPreview(videoUrl: widget.path));
+                  },
+                  child: SizedBox(
+                    height: 250,
+                    width: MediaQuery.of(context).size.width,
+                    child: const Center(
+                      child: Icon(
+                        Icons.play_arrow_rounded,
+                        color: AppColors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
             ),
           ),
           Center(

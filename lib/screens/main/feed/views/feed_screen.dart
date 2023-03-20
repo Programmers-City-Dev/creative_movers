@@ -193,9 +193,23 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 }
 
-class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomFeedAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomFeedAppBar({Key? key, this.username}) : super(key: key);
   final String? username;
+
+  @override
+  State<CustomFeedAppBar> createState() => _CustomFeedAppBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(110);
+}
+
+class _CustomFeedAppBarState extends State<CustomFeedAppBar> {
+  @override
+  void initState() {
+    super.initState();
+    injector.get<NotificationBloc>().add(FetchUserNotificationsEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -251,8 +265,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                       },
                     ),
                     BlocProvider.value(
-                      value: injector.get<NotificationBloc>()
-                        ..add(FetchUserNotificationsEvent()),
+                      value: injector.get<NotificationBloc>(),
                       child: BlocBuilder<NotificationBloc, NotificationState>(
                         builder: (context, state) {
                           var notifications = context
@@ -327,9 +340,6 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(110);
 
   String greeting() {
     var hour = DateTime.now().hour;

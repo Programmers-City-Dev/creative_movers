@@ -112,6 +112,7 @@ class _NotificationItemState extends State<NotificationItem> {
       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
           builder: ((context) => LiveStream(
                 isBroadcaster: false,
+                broadcastId: widget.notificationData.data.content.notifier.id,
                 channel: widget.notificationData.data.content.data.channelId,
               ))));
     }

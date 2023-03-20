@@ -15,8 +15,8 @@ import 'package:flutter/material.dart';
 class DeeplinkNavigator {
   // this handles navigation to various routes depending on notification type
 // before being taken to specific detail pages according to id
-  static void handleAllRouting(
-      BuildContext context, String? type, int? id, Map<String, dynamic>? data,
+  static void handleAllRouting(BuildContext context, String? type, int? id,
+      Map<String, dynamic>? data, Map<String, dynamic>? notifier,
       {String? path, bool fromInApp = false}) async {
     if (type == null) return;
     // await RemoteConfigUtil.isConfigReady;
@@ -27,7 +27,14 @@ class DeeplinkNavigator {
           .saveRecentNotification(DeepLinkData(type: type, id: id, path: path));
     } else {
       if (type == 'live_video') {
-        _handleRoute(context, LiveDeepLink(type, path, data));
+        _handleRoute(
+            context,
+            LiveDeepLink(
+              type,
+              path,
+              data,
+              notifier
+            ));
       } else if (type == 'feed') {
         _handleRoute(context, FeedsDeepLink(type, id));
       } else if (type == "profile") {
@@ -63,11 +70,13 @@ class LiveDeepLink implements DeepLinkBase {
   @override
   final String? type, path;
   final Map<String, dynamic>? data;
+  final Map<String, dynamic>? notifier;
 
   LiveDeepLink(
     this.type,
     this.path,
     this.data,
+    this.notifier,
   );
 
   @override
@@ -77,7 +86,11 @@ class LiveDeepLink implements DeepLinkBase {
   void navigateToPage(BuildContext context) async {
     if (isNotificationType) {
       navigate(
-          context, LiveStream(isBroadcaster: false, channel: data?["channel"]),
+          context,
+          LiveStream(
+              isBroadcaster: false,
+              broadcastId: notifier?["id"],
+              channel: data?["channel"]),
           useRootNavigator: true);
     }
   }

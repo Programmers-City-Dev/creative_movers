@@ -100,7 +100,7 @@ class PushNotificationService {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       // log('A new onMessageOpenedApp event was published!: ${message.notification!.body}');
-      log("Live Video: ${message.data}", name: "Notification");
+      // log("Live Video: ${message.data}", name: "Notification");
 
       // Map<String, dynamic> data = message.data;
       // String type = data['type'];
@@ -110,7 +110,7 @@ class PushNotificationService {
 
       DeepLinkData? payloadNotif = _decodeNotificationData(message);
       if (payloadNotif != null) {
-        log("Live Video: ${message.data["type"]}", name: "Notification");
+        log("Live Video: ${payloadNotif.toMap()}", name: "Notification Tap");
         injector<DeepLinkCubit>().saveRecentNotification(payloadNotif);
         // DeeplinkAnalyticEvents()
         //     .appOpenedFromPushNotification(type: payloadNotification.type??'');
