@@ -11,12 +11,12 @@ import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/screens/main/status/views/view_status_screen.dart';
 import 'package:creative_movers/screens/main/status/widgets/create_story_dialog.dart';
-import 'package:creative_movers/screens/widget/video_thumbnail_builder.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:status_view/status_view.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class StatusViews extends StatefulWidget {
   final bool? curvedBottom;
@@ -180,54 +180,7 @@ class _StatusViewsState extends State<StatusViews> {
                                           .file
                                           .toString(),
                                     )
-                                  : Stack(
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        Center(
-                                          child: StatusView(
-                                            radius: 25,
-                                            spacing: 15,
-                                            strokeWidth: 2,
-                                            // indexOfSeenStatus: 2,
-                                            numberOfStatus:
-                                                _list[index].status.length,
-                                            padding: 4,
-                                            seenColor: Colors.grey,
-                                            unSeenColor: AppColors.primaryColor,
-                                            centerImageUrl: '',
-                                          ),
-                                        ),
-                                        Positioned(
-                                            bottom: 4,
-                                            right: 4,
-                                            top: 4,
-                                            child: Center(
-                                                child: CircleAvatar(
-                                              radius: 21,
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  child: VideoThumnailBuilder(
-                                                    videoUrl: _list[index]
-                                                            .status
-                                                            .last
-                                                            .file ??
-                                                        '',
-                                                    builder:
-                                                        (context, imageUrl) {
-                                                      return SizedBox(
-                                                        height: 50,
-                                                        width: 50,
-                                                        child: Image.memory(
-                                                          imageUrl,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      );
-                                                    },
-                                                  )),
-                                            )))
-                                      ],
-                                    )
+                                  : ThumbnailView(statusItem: _list[index])
                               : Stack(
                                   clipBehavior: Clip.none,
                                   children: [
@@ -299,5 +252,99 @@ class _StatusViewsState extends State<StatusViews> {
         ],
       ),
     );
+  }
+}
+
+class ThumbnailView extends StatefulWidget {
+  final Status statusItem;
+  const ThumbnailView({Key? key, required this.statusItem}) : super(key: key);
+
+  @override
+  State<ThumbnailView> createState() => _ThumbnailViewState();
+}
+
+class _ThumbnailViewState extends State<ThumbnailView> {
+  late final Future<Uint8List?> thumbnailData;
+  @override
+  void initState() {
+    super.initState();
+    thumbnailData =  getThumbnail();
+  }
+
+  Future<Uint8List?> getThumbnail() async {
+    try {
+      return await VideoThumbnail.thumbnailData(
+        video: widget.statusItem.status.first.file ?? '',
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 24,
+        maxHeight: 24,
+        // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+        quality: 100,
+      );
+    } catch (e) {
+      log("Error generating thumbnail: $e");
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Uint8List?>(
+        future: thumbnailData,
+        builder: (context, snapshot) {
+          // log(widget.media.mediaPath);
+          if (!snapshot.hasError) {
+            if (snapshot.hasData) {
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Center(
+                    child: StatusView(
+                      radius: 25,
+                      spacing: 15,
+                      strokeWidth: 2,
+                      // indexOfSeenStatus: 2,
+                      numberOfStatus: widget.statusItem.status.length,
+                      padding: 4,
+                      seenColor: Colors.grey,
+                      unSeenColor: AppColors.primaryColor,
+                      centerImageUrl: '',
+                    ),
+                  ),
+                  Positioned(
+                      bottom: 4,
+                      right: 4,
+                      top: 4,
+                      child: Center(
+                          child: CircleAvatar(
+                        radius: 21,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.memory(
+                            snapshot.data!,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                            width: 50,
+                            height: 50,
+                            alignment: Alignment.center,
+                          ),
+                        ),
+                      )))
+                ],
+              );
+            }
+          }
+          return StatusView(
+            radius: 25,
+            spacing: 15,
+            strokeWidth: 2,
+            // indexOfSeenStatus: 2,
+            numberOfStatus: widget.statusItem.status.length,
+            padding: 4,
+            seenColor: Colors.grey,
+            unSeenColor: AppColors.primaryColor,
+            centerImageUrl: widget.statusItem.status[0].file.toString(),
+          );
+        });
   }
 }

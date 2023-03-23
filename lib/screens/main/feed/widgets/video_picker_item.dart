@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:creative_movers/resources/app_icons.dart';
-import 'package:creative_movers/screens/widget/video_thumbnail_builder.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class VideoPickerItem extends StatefulWidget {
   const VideoPickerItem(
@@ -35,19 +35,24 @@ class _VideoPickerItemState extends State<VideoPickerItem> {
         height: 150,
         child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: VideoThumnailBuilder(
-              videoUrl: widget.path,
-              builder: (context, imageUrl) {
-                return Container(
-                  constraints: BoxConstraints(maxWidth: 128, maxHeight: 250),
-                  child: Image.memory(
-                    imageUrl,
-                    width: 128,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              },
-            )),
+            child: FutureBuilder<Uint8List?>(
+                future: VideoThumbnail.thumbnailData(
+                  video: widget.path,
+                  imageFormat: ImageFormat.JPEG,
+                  maxWidth: 128,
+                  // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+                  quality: 25,
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    );
+                  }
+                  return Image.asset("assets/images/slide_i.png",
+                      fit: BoxFit.cover);
+                })),
       ),
       SizedBox(
         width: 100,

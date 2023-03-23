@@ -275,7 +275,7 @@ class _NewPostItemState extends State<NewPostItem> {
           widget.feed.media.isNotEmpty
               ? Stack(children: [
                   SizedBox(
-                    height: 300,
+                    height: 250,
                     child: PageView.builder(
                       controller:
                           PageController(keepPage: true, initialPage: 0),

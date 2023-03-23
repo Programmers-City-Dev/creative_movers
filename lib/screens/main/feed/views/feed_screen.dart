@@ -48,7 +48,6 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       body: NestedScrollView(
         controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverPersistentHeader(
@@ -139,14 +138,13 @@ class _FeedScreenState extends State<FeedScreen> {
           ];
         },
         body: RefreshIndicator(
+          displacement: 50,
           onRefresh: (() async {
             await Future.delayed(const Duration(seconds: 1));
             feedBloc.add(const GetFeedEvent());
             statusBloc.add(const GetStatusEvent());
           }),
           child: CustomScrollView(
-            // controller: _scrollController,
-            physics: const BouncingScrollPhysics(),
             slivers: [
               SliverPadding(
                 padding: const EdgeInsets.all(8),
@@ -157,9 +155,12 @@ class _FeedScreenState extends State<FeedScreen> {
                       return const SliverToBoxAdapter(child: FeedLoader());
                     }
                     if (state is FeedSuccessState) {
-                      return SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
+                      return SliverToBoxAdapter(
+                        child: ListView.builder(
+                          primary: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
                             return NewPostItem(
                               feed: state.feedResponse.feeds.data[index],
                               onUpdated: () {
@@ -167,7 +168,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               },
                             );
                           },
-                          childCount: state.feedResponse.feeds.data.length,
+                          itemCount: state.feedResponse.feeds.data.length,
                         ),
                       );
                     }
