@@ -66,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
     injector.get<PaymentBloc>().add(const GetSubscriptionInfoEvent());
-    injector.get<PaymentServices>().init();
 
     Future.delayed(const Duration(seconds: 4))
         .then((value) => _showDialogIfNecessary());

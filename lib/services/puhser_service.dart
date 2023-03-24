@@ -47,4 +47,8 @@ class PusherService {
     }
     return pusher;
   }
+
+  static void logout() {
+    
+  }
 }

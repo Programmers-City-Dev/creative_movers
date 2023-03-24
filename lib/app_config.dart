@@ -10,11 +10,13 @@ import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 
 List<CameraDescription> cameras = [];
 
 enum Flavor { dev, staging, prod }
+
 
 class AppConfig {
   final String appName;

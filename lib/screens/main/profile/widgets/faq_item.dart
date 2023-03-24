@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../../../../data/remote/model/FaqsResponse.dart';
 
@@ -50,27 +50,24 @@ class _FaqItemState extends State<FaqItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(
-              child: Container(
-                width: 50,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Center(
-                    child: Text(
-                  widget.index.toString(),
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                )),
-              ),
-            ),
-            const SizedBox(
-              width: 16,
-            ),
+            // Container(
+            //   width: 50,
+            //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            //   decoration: BoxDecoration(
+            //       color: Theme.of(context).colorScheme.primary,
+            //       borderRadius: BorderRadius.circular(8)),
+            //   child: Center(
+            //       child: Text(
+            //     widget.index.toString(),
+            //     style: const TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 18,
+            //         fontWeight: FontWeight.bold),
+            //   )),
+            // ),
+            // const SizedBox(
+            //   width: 16,
+            // ),
             Expanded(
               child: ExpansionTile(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -84,10 +81,15 @@ class _FaqItemState extends State<FaqItem> {
                         color: Theme.of(context).colorScheme.primary),
                   ),
                   children: [
-                    Text(widget.faq.answer)
-                    // Html(data: widget.faq.answer, style: {
-                    //   "p": Style(color: Theme.of(context).colorScheme.onPrimary)
-                    // }),
+                    // Text(widget.faq.answer),
+                    Html(
+                      data: widget.faq.answer,
+                      style: {
+                        "p": Style(
+                          fontSize: FontSize(23),
+                        ),
+                      },
+                    ),
                     // Text(
                     //   widget.faq.answer,
                     //   key: _sizedBoxKey,

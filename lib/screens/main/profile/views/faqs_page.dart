@@ -1,4 +1,5 @@
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,14 @@ class _FaqScreenState extends State<FaqScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Faqs'),
+        title: const Text(
+          'Faqs',
+          style: TextStyle(color: AppColors.textColor),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 1,
+        iconTheme: const IconThemeData(color: AppColors.textColor),
+        titleSpacing: 0,
       ),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: _profileBloc,

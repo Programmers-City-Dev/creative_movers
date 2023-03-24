@@ -2,6 +2,7 @@ import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
+import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
@@ -40,6 +41,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             bloc: injector.get<CacheCubit>(),
             builder: (context, state) {
               if (state is CachedUserDataFetched) {
+                injector.get<PaymentServices>().init();
                 var cachedUser = state.cachedUser;
                 // log('PHOTO:${cachedUser.profilePhotoPath}');
                 return Column(
@@ -447,6 +449,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               ).then((value) {
                                 if (value) {
                                   injector.get<NavBloc>().add(LogoutEvent());
+                                  PaymentServices.logout();
                                 }
                               });
                             },

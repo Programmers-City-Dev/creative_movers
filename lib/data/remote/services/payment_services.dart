@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
@@ -5,8 +6,7 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PaymentServices {
-
-   PaymentServices();
+  PaymentServices();
 
   Future<void> init() async {
     int? userId = injector.get<CacheCubit>().cachedUser?.id;
@@ -22,11 +22,18 @@ class PaymentServices {
       purchaseConfig =
           PurchasesConfiguration("appl_HrOEKIOWyOvuTklJuyeuveaeOji");
     }
-    await Purchases.configure(purchaseConfig..appUserID = "${userId ?? ""}");
     await Purchases.setLogLevel(LogLevel.debug);
 
-    Purchases.setEmail(email ?? "");
-    Purchases.setDisplayName(displayName ?? "");
+    await Purchases.configure(purchaseConfig..appUserID = "${userId ?? ""}");
+
+    // var logInResult = await Purchases.logIn("${userId ?? ""}");
+    // if (logInResult.created) {
+    //   log("Log in successful");
+    // } else {
+    //   log("Log in failed");
+    // }
+    await Purchases.setEmail(email ?? "");
+    await Purchases.setDisplayName(displayName ?? "");
   }
 
   bool isSubcriptionActive(CustomerInfo customerInfo,
@@ -45,5 +52,9 @@ class PaymentServices {
   Future<CustomerInfo> purchaseProduct(String identifier,
       {required PurchaseType type}) async {
     return await Purchases.purchaseProduct(identifier, type: type);
+  }
+
+  static void logout() {
+    Purchases.logOut();
   }
 }

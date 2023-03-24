@@ -281,13 +281,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               },
                               child: Container(
                                 padding: const EdgeInsets.fromLTRB(10, 5, 1, 5),
-                                decoration: const BoxDecoration(
-                                    color: AppColors.black,
+                                decoration: BoxDecoration(
+                                    color: AppColors.black.withOpacity(0.5),
                                     shape: BoxShape.circle),
                                 alignment: Alignment.center,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.arrow_back_ios,
-                                  color: AppColors.white.withOpacity(.7),
+                                  color: AppColors.white,
                                 ),
                               ),
                             ),
@@ -301,8 +301,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               child: Container(
                                 padding:
                                     const EdgeInsets.fromLTRB(10, 10, 8, 10),
-                                decoration: const BoxDecoration(
-                                  color: AppColors.black,
+                                decoration: BoxDecoration(
+                                  color: AppColors.black.withOpacity(0.5),
                                   shape: BoxShape.circle,
                                 ),
                                 alignment: Alignment.center,
