@@ -27,7 +27,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
   final _phoneNumberController = TextEditingController();
   final _bioDataController = TextEditingController();
   final AuthBloc _authBloc = AuthBloc();
-  String image = '';
+  String? image;
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +153,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
   void _postBioData() {
     if (_formKey.currentState!.validate()) {
       _authBloc.add(BioDataEvent(
-          image: image.isNotEmpty ? image : null,
+          image: image,
           firstname: _firstNameController.text.toString(),
           lastname: _lastNameController.text.toString(),
           phoneNumber: _phoneNumberController.text.toString(),

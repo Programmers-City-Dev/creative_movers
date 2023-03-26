@@ -80,11 +80,11 @@ class StatusRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.data['message']}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: "Unable to fetch status updates",
               data: null),
         );
       },

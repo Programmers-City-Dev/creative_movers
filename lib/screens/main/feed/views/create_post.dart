@@ -268,7 +268,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       Navigator.pop(context);
       widget.postType != "page_feed"
           ? Navigator.of(context).pushNamed(feedsPath)
-          : Navigator.pop(context);
+          : Navigator.pop(context, true);
     }
   }
 

@@ -31,10 +31,10 @@ class _CreatePostCardState extends State<CreatePostCard> {
                 Row(
                   children: [
                     const AddImageWidget(
-                      ImageBgradius: 20,
-                      Imageradius: 18,
-                      IconBgradius: 7,
-                      Iconradius: 6,
+                      imageBgradius: 20,
+                      imageRadius: 18,
+                      iconBgRadius: 7,
+                      iconRadius: 6,
                       iconSize: 0,
                       iconBgCOlor: Colors.green,
                     ),

@@ -37,10 +37,12 @@ class NewPostItem extends StatefulWidget {
     required this.feed,
     this.onCommentBoxClicked,
     required this.onUpdated,
+    this.onDeleted,
   }) : super(key: key);
   final Feed feed;
   final VoidCallback? onCommentBoxClicked;
   final VoidCallback onUpdated;
+  final Function(Feed feed)? onDeleted;
 
   @override
   _NewPostItemState createState() => _NewPostItemState();
@@ -182,6 +184,7 @@ class _NewPostItemState extends State<NewPostItem> {
                       }
                       if (state is DeleteFeedSuccessState) {
                         widget.onUpdated();
+                        widget.onDeleted?.call(widget.feed);
                         Navigator.of(context).pop();
                         // AppUtils.cancelAllShowingToasts();
                         AppUtils.showCustomToast(

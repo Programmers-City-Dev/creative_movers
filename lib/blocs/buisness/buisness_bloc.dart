@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/data/remote/model/create_page_response.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
@@ -9,6 +8,7 @@ import 'package:creative_movers/data/remote/model/suggested_page_response.dart';
 import 'package:creative_movers/data/remote/repository/buisness_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'buisness_event.dart';
 part 'buisness_state.dart';
@@ -16,6 +16,8 @@ part 'buisness_state.dart';
 class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
   final BuisnessRepository buisnessRepository =
       BuisnessRepository(HttpHelper());
+
+  List<Feed> feeds = [];
 
   BuisnessBloc() : super(BuisnessInitial()) {
     on<BuisnessEvent>((event, emit) {});
@@ -138,6 +140,8 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
     try {
       var state = await buisnessRepository.getPageFeeds(event.page_id);
       if (state is SuccessState) {
+        // FeedsResponse feedsResponse = state.value;
+        // feeds = feedsResponse.feeds.data;
         emit(PageFeedsSuccesState(feedsResponse: state.value));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;

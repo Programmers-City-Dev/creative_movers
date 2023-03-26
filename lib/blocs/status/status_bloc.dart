@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/upload_status_response.dart';
@@ -9,6 +8,7 @@ import 'package:creative_movers/data/remote/model/view_status_response.dart';
 import 'package:creative_movers/data/remote/repository/status_repository.dart';
 import 'package:creative_movers/helpers/http_helper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'status_event.dart';
 part 'status_state.dart';

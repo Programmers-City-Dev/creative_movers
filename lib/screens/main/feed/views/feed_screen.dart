@@ -61,37 +61,72 @@ class _FeedScreenState extends State<FeedScreen> {
                     ),
                   ),
                 )),
-            SliverPersistentHeader(
-                // pinned: true,
-                floating: true,
-                delegate: SliverAppBarDelegate(
-                  PreferredSize(
-                    preferredSize: const Size.fromHeight(90),
-                    child: BlocBuilder<StatusBloc, StatusState>(
-                      bloc: statusBloc,
-                      builder: (context, state) {
-                        if (state is StatusLoadingState) {
-                          return const StatusShimmer();
-                        }
-                        if (state is StatusSuccessState) {
-                          return BlocProvider.value(
-                            value: statusBloc,
-                            child: StatusViews(
-                              curvedBottom: true,
-                              viewStatusResponse: state.viewStatusResponse,
-                            ),
-                          );
-                        }
-                        if (state is StatusFaliureState) {
-                          return Center(
-                            child: Text(state.error),
-                          );
-                        }
-                        return const StatusShimmer();
-                      },
-                    ),
-                  ),
-                )),
+            SliverToBoxAdapter(
+              child: BlocBuilder<StatusBloc, StatusState>(
+                bloc: statusBloc,
+                builder: (context, state) {
+                  if (state is StatusLoadingState) {
+                    return const SizedBox(height: 90, child: StatusShimmer());
+                  }
+                  if (state is StatusSuccessState) {
+                    return BlocProvider.value(
+                      value: statusBloc,
+                      child: StatusViews(
+                        curvedBottom: true,
+                        viewStatusResponse: state.viewStatusResponse,
+                      ),
+                    );
+                  }
+                  if (state is StatusFaliureState) {
+                    return Center(
+                      child: AppPromptWidget(
+                        message: state.error,
+                        onTap: () {
+                          statusBloc.add(const GetStatusEvent());
+                        },
+                      ),
+                    );
+                  }
+                  return const StatusShimmer();
+                },
+              ),
+            ),
+            // SliverPersistentHeader(
+            //     // pinned: true,
+            //     floating: true,
+            //     delegate: SliverAppBarDelegate(
+            //       PreferredSize(
+            //         preferredSize: const Size.fromHeight(120),
+            //         child: BlocBuilder<StatusBloc, StatusState>(
+            //           bloc: statusBloc,
+            //           builder: (context, state) {
+            //             if (state is StatusLoadingState) {
+            //               return const StatusShimmer();
+            //             }
+            //             if (state is StatusSuccessState) {
+            //               return BlocProvider.value(
+            //                 value: statusBloc,
+            //                 child: StatusViews(
+            //                   curvedBottom: true,
+            //                   viewStatusResponse: state.viewStatusResponse,
+            //                 ),
+            //               );
+            //             }
+            //             if (state is StatusFaliureState) {
+            //               return Center(
+            //                 child: AppPromptWidget(
+            //                   message: state.error,
+            //                   onTap: () {
+            //                     statusBloc.add(const GetStatusEvent());
+            //                   },
+            //                 ),
+            //               );
+            //             }
+            //             return const StatusShimmer();
+            //           },
+            //         ),
+            //       ),
+            //     )),
             SliverToBoxAdapter(child: PostCard(
               onTap: () {
                 if (injector.get<PaymentBloc>().hasActiveSubscription) {

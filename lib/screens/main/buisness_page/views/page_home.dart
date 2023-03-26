@@ -198,48 +198,63 @@ class _PageHomeState extends State<PageHome> {
             InkWell(
                 onTap: () {
                   log(widget.page.id.toString());
-                  Navigator.of(context).push(MaterialPageRoute(
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
                     builder: (context) => CreatePostScreen(
                       pageId: widget.page.id.toString(),
                       postType: "page_feed",
                     ),
-                  ));
+                  ))
+                      .then((value) {
+                    if (value ?? false) {
+                      _buisnessBloc
+                          .add(PageFeedsEvent(widget.page.id.toString()));
+                    }
+                  });
                 },
                 child: const CreatePostCard()),
-            BlocBuilder<BuisnessBloc, BuisnessState>(
-              bloc: _buisnessBloc,
-              builder: (context, state) {
-                if (state is PageFeedsLoadingState) {
-                  return const FeedLoader();
-                }
-                if (state is PageFeedsSuccesState) {
-                  return state.feedsResponse.feeds.data.isNotEmpty
-                      ? ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: state.feedsResponse.feeds.data.length,
-                          itemBuilder: (context, index) => NewPostItem(
-                            feed: state.feedsResponse.feeds.data[index],
-                            onUpdated: () {},
-                          ),
-                        )
-                      : const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: Text('You have no feeds yet ..'),
-                          ),
-                        );
-                }
-                if (state is PageFeedsFailureState) {
-                  return AppPromptWidget(
-                    isSvgResource: true,
-                    message: state.error,
-                    onTap: () => _buisnessBloc
-                        .add(PageFeedsEvent(widget.page.id.toString())),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
+            BlocProvider.value(
+              value: _buisnessBloc,
+              child: BlocBuilder<BuisnessBloc, BuisnessState>(
+                bloc: _buisnessBloc,
+                builder: (context, state) {
+                  var feeds = context.watch<BuisnessBloc>().feeds;
+                  if (state is PageFeedsLoadingState) {
+                    return const FeedLoader();
+                  }
+                  if (state is PageFeedsSuccesState) {
+                    return state.feedsResponse.feeds.data.isNotEmpty
+                        ? ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: state.feedsResponse.feeds.data.length,
+                            itemBuilder: (context, index) => NewPostItem(
+                              feed: state.feedsResponse.feeds.data[index],
+                              onUpdated: () {},
+                              onDeleted: (feed) {
+                                _buisnessBloc.add(
+                                    PageFeedsEvent(widget.page.id.toString()));
+                              },
+                            ),
+                          )
+                        : const Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: Text('You have no feeds yet ..'),
+                            ),
+                          );
+                  }
+                  if (state is PageFeedsFailureState) {
+                    return AppPromptWidget(
+                      isSvgResource: true,
+                      message: state.error,
+                      onTap: () => _buisnessBloc
+                          .add(PageFeedsEvent(widget.page.id.toString())),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ],
         ),

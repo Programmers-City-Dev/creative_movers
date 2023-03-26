@@ -85,8 +85,8 @@ class _FaqItemState extends State<FaqItem> {
                     Html(
                       data: widget.faq.answer,
                       style: {
-                        "p": Style(
-                          fontSize: FontSize(23),
+                        "body": Style(
+                          fontSize: FontSize(22),
                         ),
                       },
                     ),
