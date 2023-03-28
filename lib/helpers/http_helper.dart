@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
+import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
@@ -22,7 +24,7 @@ class HttpHelper {
     if (storageToken != null) headers['Authorization'] = 'Bearer $storageToken';
 
     _client!.options.headers = headers;
-    if (enabledDioLogger) {
+    if (Constants.getFlavor == Flavor.dev) {
       _client!.interceptors.addAll([
         AuthInterceptor(),
         PrettyDioLogger(
@@ -82,7 +84,7 @@ class AuthInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (err.response?.statusCode == HttpStatus.unauthorized) {
-     injector.get<NavBloc>().add(LogoutEvent());
+      injector.get<NavBloc>().add(LogoutEvent());
     }
     super.onError(err, handler);
   }

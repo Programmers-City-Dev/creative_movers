@@ -35,7 +35,7 @@ class Constants {
     return _config[_Config.pusherID];
   }
 
-  static get getFlavor {
+  static Flavor get getFlavor {
     return _config[_Config.flavor];
   }
 
