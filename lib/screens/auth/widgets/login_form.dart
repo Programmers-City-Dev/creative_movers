@@ -6,6 +6,7 @@ import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
@@ -238,7 +239,7 @@ class _LoginFormState extends State<LoginForm> {
         StorageKeys.firstname, response.user.firstname.toString());
     StorageHelper.setString(StorageKeys.user_id, response.user.id.toString());
 
-    // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
+    injector.get<PaymentServices>().init();
   }
 
   Widget currentPage(BuildContext context, String? stage) {

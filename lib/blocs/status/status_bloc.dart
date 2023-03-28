@@ -40,7 +40,7 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
     } catch (e) {
       log(e.toString());
       emit(AddStatusFaliureState(error: "Ooops Something went wrong. $e."));
-      // TODO
+      
     }
   }
 
@@ -58,7 +58,7 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
       }
     } catch (e) {
       emit(StatusFaliureState(error: "Ooops Something went wrong."));
-      // TODO
+      
     }
   }
 }

@@ -41,6 +41,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.black),
         leading: widget.isFromSignup!
             ? null
@@ -168,38 +169,56 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     const SizedBox(
                       height: 8,
                     ),
-                    BlocBuilder<InAppPaymentCubit, InAppPaymentState>(
-                      bloc: InAppPaymentCubit(injector.get())
+                    BlocProvider(
+                      create: (context) => InAppPaymentCubit(injector.get())
                         ..fetchProduct(_selectedProductId!),
-                      builder: (context, state) {
-                        if (state is ProductsFetched) {
-                          return Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "Your account will be charged "
-                              "${state.product.currencyCode} "
-                              "${AppUtils.formatMoney(state.product.price)}"
-                              " after 7 days trial period. "
-                              "You can cancel your subscriptions to "
-                              "avoid being charged 24 hours prior to "
-                              "the end of the current period in "
-                              "${Platform.isIOS ? 'App Store' : 'Playstore'}"
-                              " account settings.",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                      child: BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
+                        listener: (context, state) {
+                          if (state is InAppPaymentFetchError) {
+                            AppUtils.showErrorDialog(context,
+                                isDismissible: false,
+                                message:
+                                    "Unable to fetch subscription details, "
+                                    "please try again",
+                                title: "Server Error",
+                                confirmButtonText: "Retry", onConfirmed: () {
+                              Navigator.pop(context);
+                              context
+                                  .read<InAppPaymentCubit>()
+                                  .fetchProduct(_selectedProductId!);
+                            });
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is ProductsFetched) {
+                            return Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
+                              child: Text(
+                                "Your account will be charged "
+                                "${state.product.currencyCode} "
+                                "${AppUtils.formatMoney(state.product.price)}"
+                                " after 7 days trial period. "
+                                "You can cancel your subscriptions to "
+                                "avoid being charged 24 hours prior to "
+                                "the end of the current period in "
+                                "${Platform.isIOS ? 'App Store' : 'Playstore'}"
+                                " account settings.",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
                     ),
                     const Spacer(),
                     BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
@@ -244,25 +263,25 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         );
                       },
                     ),
-                    if (widget.isFromSignup!)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                foregroundColor: Colors.blue),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              "Skip for now",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                      ),
+                    // if (widget.isFromSignup!)
+                    //   Padding(
+                    //     padding: const EdgeInsets.only(top: 16),
+                    //     child: TextButton(
+                    //         style: TextButton.styleFrom(
+                    //             foregroundColor: Colors.blue),
+                    //         onPressed: () {
+                    //           Navigator.pop(context);
+                    //         },
+                    //         child: const Text(
+                    //           "Skip for now",
+                    //           style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontSize: 16,
+                    //             decoration: TextDecoration.underline,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         )),
+                    //   ),
                   ],
                 ),
               ),

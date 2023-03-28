@@ -1,18 +1,18 @@
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:creative_movers/blocs/cache/cache_cubit.dart';
-import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PaymentServices {
   PaymentServices();
 
   Future<void> init() async {
-    int? userId = injector.get<CacheCubit>().cachedUser?.id;
+    String? userId = await StorageHelper.getString(StorageKeys.user_id);
 
-    String? email = injector.get<CacheCubit>().cachedUser?.email;
-    String? displayName = injector.get<CacheCubit>().cachedUser?.fullname;
+    String? email = await StorageHelper.getString(StorageKeys.email);
+
+    String? displayName = await StorageHelper.getString(StorageKeys.username);
 
     late final PurchasesConfiguration purchaseConfig;
     if (Platform.isAndroid) {
@@ -24,7 +24,7 @@ class PaymentServices {
     }
     await Purchases.setLogLevel(LogLevel.debug);
 
-    await Purchases.configure(purchaseConfig..appUserID = "${userId ?? ""}");
+    await Purchases.configure(purchaseConfig..appUserID = userId ?? "");
 
     // var logInResult = await Purchases.logIn("${userId ?? ""}");
     // if (logInResult.created) {

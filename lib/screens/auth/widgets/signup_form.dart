@@ -4,6 +4,8 @@ import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
+import 'package:creative_movers/data/remote/services/payment_services.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/extension.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
@@ -213,7 +215,6 @@ class _SignupFormState extends State<SignupForm> {
     if (state is RegistrationSuccessState) {
       cacheToken(state.response);
       Navigator.of(context).pop();
-
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const MoreDetailsScreen(),
@@ -245,7 +246,10 @@ class _SignupFormState extends State<SignupForm> {
           StorageKeys.registrationStage, response.user.regStatus.toString());
       StorageHelper.setString(StorageKeys.token, response.user.apiToken!);
       StorageHelper.setString(StorageKeys.username, response.user.username);
+      StorageHelper.setString(StorageKeys.email, response.user.email);
+      StorageHelper.setString(StorageKeys.user_id, response.user.id.toString());
       // StorageHelper.setString(StorageKeys.firstname, response.user.firstname!);
+      injector.get<PaymentServices>().init();
     } catch (e) {
       log(
         'ERROR $e',
@@ -253,5 +257,4 @@ class _SignupFormState extends State<SignupForm> {
     }
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }
-
 }

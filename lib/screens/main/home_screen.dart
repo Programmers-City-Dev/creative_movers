@@ -5,7 +5,6 @@ import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/blocs/nav/nav_bloc.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
-import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/routes.dart';
 import 'package:creative_movers/screens/auth/views/login_screen.dart';
@@ -13,6 +12,7 @@ import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dar
 import 'package:creative_movers/screens/main/chats/views/chat_screen.dart';
 import 'package:creative_movers/screens/main/contacts/views/contact_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/feed_screen.dart';
+import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/account_settings_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_edit_screen.dart';
 import 'package:creative_movers/screens/main/widgets/deeplink/deep_link_listener.dart';
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     _navBloc.add(OpenHomeTabEvent());
     injector.get<ProfileBloc>().add(GetUsernameEvent());
     injector.get<ProfileBloc>().add(const FetchUserProfileEvent());
-    injector.get<PaymentBloc>().add(const GetSubscriptionInfoEvent());
+    // injector.get<PaymentBloc>().add(const GetSubscriptionInfoEvent());
 
     Future.delayed(const Duration(seconds: 4))
         .then((value) => _showDialogIfNecessary());
@@ -109,13 +109,32 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             },
             child: Scaffold(
                 backgroundColor: AppColors.smokeWhite,
-                body: IndexedStack(index: _navIndex, children: <Widget>[
-                  _buildOffstageNavigator(0),
-                  _buildOffstageNavigator(1),
-                  _buildOffstageNavigator(2),
-                  _buildOffstageNavigator(3),
-                  _buildOffstageNavigator(4),
-                ]),
+                body: BlocListener<PaymentBloc, PaymentState>(
+                  bloc: injector.get<PaymentBloc>(),
+                  listener: (context, state) {
+                    if (state is SubscriptionLoadedState) {
+                      // log("message: ${state.data.user?.subscription?.status}");
+                      if (state.data.user?.subscription?.status != 'active') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((
+                              context,
+                            ) =>
+                                    const SubscriptionScreen(
+                                      isFromSignup: true,
+                                    )))).then((value) {});
+                      }
+                    }
+                  },
+                  child: IndexedStack(index: _navIndex, children: <Widget>[
+                    _buildOffstageNavigator(0),
+                    _buildOffstageNavigator(1),
+                    _buildOffstageNavigator(2),
+                    _buildOffstageNavigator(3),
+                    _buildOffstageNavigator(4),
+                  ]),
+                ),
                 bottomNavigationBar: BottomNavigationBar(
                   selectedItemColor: AppColors.primaryColor,
                   unselectedItemColor: AppColors.grey,

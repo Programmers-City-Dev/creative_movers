@@ -32,7 +32,7 @@ class _MoverFormState extends State<MoverForm>
   List<Map<String, String>> baseplans = [
     {'min': '1', 'max': '500'},
     {'min': '501', 'max': '2000'},
-    {'min': '2001', 'max': '5000'},
+    {'min': '2000', 'max': '5000'},
     {'min': 'other', 'max': ''}
   ];
 
@@ -40,13 +40,12 @@ class _MoverFormState extends State<MoverForm>
 
   List<String> plans = [
     '500 - below',
-    '501 - 2000',
-    '2001 - 5000',
-    '5000 - above',
+    '501 - 2K',
+    '2K - 5K',
+    '5K - above',
     'Other'
   ];
   List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
-  final String _groupValue = '';
   String _preferedStage = 'Seed';
   String? min = '';
   String? max = '';
@@ -56,6 +55,7 @@ class _MoverFormState extends State<MoverForm>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocListener<AuthBloc, AuthState>(
       bloc: _authBloc,
       listener: (context, state) {
@@ -63,316 +63,309 @@ class _MoverFormState extends State<MoverForm>
       },
       child: Form(
         key: myFormKey,
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      'Select Preferred Investment Range',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    FormField<Map<String, String>>(
-                      initialValue: initialValue,
-                      autovalidateMode: AutovalidateMode.disabled,
-                      validator: (value) {
-                        // return 'selext';
-                        if (initialValue.isEmpty) {
-                          return 'Please choose a range';
-                        }
-                        return null;
-                        // return 'hh';
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+                child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'Select Preferred Investment Range',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  FormField<Map<String, String>>(
+                    initialValue: initialValue,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    validator: (value) {
+                      // return 'selext';
+                      if (initialValue.isEmpty) {
+                        return 'Please choose a range';
+                      }
+                      return null;
+                      // return 'hh';
 
-                        // if (value!.isEmpty ) {
-                        //   return 'Please select some categories';
-                        // }
-                        // if (value!.length > 5) {
-                        //   return "Can't select more than 5 categories";
-                        // }
-                        // return null;
-                      },
-                      builder: (state) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RadioGroup<Map<String, String>>.builder(
-                              activeColor: AppColors.chipsColor,
-                              groupValue: initialValue,
-                              onChanged: (value) {
-                                initialValue = value!;
-                                log(value.toString());
-                                setState(() {
-                                  if (value['min'] == 'other') {
-                                    min = _minController.text.toString();
-                                    max = _maxController.text.toString();
-                                  } else {
-                                    min = value['min'];
-                                    max = value['max'];
-                                    initialValue = value;
-                                  }
-                                });
-                              },
-                              items: baseplans,
-                              itemBuilder: (value) => RadioButtonBuilder(
-                                  value['min'] != 'other'
-                                      ? '${value['min']} -  ${value['max']}'
-                                      : 'other ',
-                                  textPosition: RadioButtonTextPosition.right),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 2000),
-                              child: Visibility(
-                                  visible: initialValue['min'] == 'other',
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Expanded(
-                                          child: TextFormField(
-                                        onChanged: (val) {
-                                          setState(() {});
-                                        },
-                                        controller: _minController,
-                                        validator: ((value) {
-                                          if (initialValue['min'] == 'other' &&
-                                              _minController.text.isEmpty) {
-                                            return 'Enter your min  range';
-                                          }
-                                          return null;
-                                        }),
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        keyboardType: TextInputType.number,
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(8),
-                                            hintText: 'From'),
-                                      )),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
-                                      Expanded(
-                                          child: TextFormField(
-                                        onChanged: (val) {
-                                          setState(() {});
-                                        },
-                                        validator: ((value) {
-                                          if (initialValue['min'] == 'other' &&
-                                              _maxController.text.isEmpty) {
-                                            return 'Enter your max  range';
-                                          }
-                                          return null;
-                                        }),
-                                        controller: _maxController,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        keyboardType: TextInputType.number,
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            contentPadding: EdgeInsets.all(8),
-                                            hintText: 'To'),
-                                      )),
-                                    ],
-                                  )),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              state.hasError ? state.errorText! : '',
-                              style: TextStyle(
-                                  color: state.hasError
-                                      ? Colors.redAccent
-                                      : Colors.green),
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    const Text(
-                      'What categories of investment \nare you interested in ?',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                    Column(
-                      children: [
-                        FormField<List<String>>(
-                            autovalidateMode: AutovalidateMode.disabled,
-                            initialValue: categories,
-                            validator: (val) {
-                              if (categories.isEmpty) {
-                                return 'Select at least one category';
-                              }
-                              return null;
+                      // if (value!.isEmpty ) {
+                      //   return 'Please select some categories';
+                      // }
+                      // if (value!.length > 5) {
+                      //   return "Can't select more than 5 categories";
+                      // }
+                      // return null;
+                    },
+                    builder: (state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RadioGroup<Map<String, String>>.builder(
+                            activeColor: AppColors.chipsColor,
+                            groupValue: initialValue,
+                            onChanged: (value) {
+                              initialValue = value!;
+                              log(value.toString());
+                              setState(() {
+                                if (value['min'] == 'other') {
+                                  min = _minController.text.toString();
+                                  max = _maxController.text.toString();
+                                } else {
+                                  min = value['min'];
+                                  max = value['max'];
+                                  initialValue = value;
+                                }
+                              });
                             },
-                            builder: (state) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: AppColors.textColor),
-                                        ),
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(18.0),
-                                          child: Text('Select Category'),
-                                        ),
+                            items: baseplans,
+                            itemBuilder: (value) => RadioButtonBuilder(
+                                value['min'] != 'other'
+                                    ? '${value['min']} - ${value['max']}'
+                                    : 'other ',
+                                textPosition: RadioButtonTextPosition.right),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 2000),
+                            child: Visibility(
+                                visible: initialValue['min'] == 'other',
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                        child: TextFormField(
+                                      onChanged: (val) {
+                                        setState(() {});
+                                      },
+                                      controller: _minController,
+                                      validator: ((value) {
+                                        if (initialValue['min'] == 'other' &&
+                                            _minController.text.isEmpty) {
+                                          return 'Enter your min  range';
+                                        }
+                                        return null;
+                                      }),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(8),
+                                          hintText: 'From'),
+                                    )),
+                                    const SizedBox(
+                                      width: 16,
+                                    ),
+                                    Expanded(
+                                        child: TextFormField(
+                                      onChanged: (val) {
+                                        setState(() {});
+                                      },
+                                      validator: ((value) {
+                                        if (initialValue['min'] == 'other' &&
+                                            _maxController.text.isEmpty) {
+                                          return 'Enter your max  range';
+                                        }
+                                        return null;
+                                      }),
+                                      controller: _maxController,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          contentPadding: EdgeInsets.all(8),
+                                          hintText: 'To'),
+                                    )),
+                                  ],
+                                )),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            state.hasError ? state.errorText! : '',
+                            style: TextStyle(
+                                color: state.hasError
+                                    ? Colors.redAccent
+                                    : Colors.green),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  const Text(
+                    'What categories of investment \nare you interested in ?',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  ),
+                  Column(
+                    children: [
+                      FormField<List<String>>(
+                          autovalidateMode: AutovalidateMode.disabled,
+                          initialValue: categories,
+                          validator: (val) {
+                            if (categories.isEmpty) {
+                              return 'Select at least one category';
+                            }
+                            return null;
+                          },
+                          builder: (state) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                InkWell(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppColors.textColor),
                                       ),
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => SearchDropdown(
-                                            onSaved: (list) {
+                                      width: MediaQuery.of(context).size.width,
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(18.0),
+                                        child: Text('Select Category'),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => SearchDropdown(
+                                          onSaved: (list) {
+                                            setState(() {
+                                              categories = list;
+                                            });
+                                          },
+                                        ),
+                                      );
+                                    }),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Wrap(
+                                  alignment: WrapAlignment.start,
+                                  runAlignment: WrapAlignment.start,
+                                  direction: Axis.horizontal,
+                                  spacing: 5,
+                                  children: List<Widget>.generate(
+                                      categories.length,
+                                      (index) => Chip(
+                                            label: Text(categories[index]),
+                                            deleteIcon: const Icon(Icons.close),
+                                            onDeleted: () {
                                               setState(() {
-                                                categories = list;
+                                                categories
+                                                    .remove(categories[index]);
                                               });
                                             },
-                                          ),
-                                        );
-                                      }),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Wrap(
-                                    alignment: WrapAlignment.start,
-                                    runAlignment: WrapAlignment.start,
-                                    direction: Axis.horizontal,
-                                    spacing: 5,
-                                    children: List<Widget>.generate(
-                                        categories.length,
-                                        (index) => Chip(
-                                              label: Text(categories[index]),
-                                              deleteIcon:
-                                                  const Icon(Icons.close),
-                                              onDeleted: () {
-                                                setState(() {
-                                                  categories.remove(
-                                                      categories[index]);
-                                                });
-                                              },
-                                            )),
-                                  ),
-                                  Text(
-                                    state.hasError ? state.errorText! : '',
-                                    // ?? state.value?.length.toString()! + '/5 selected',
-                                    style: TextStyle(
-                                        color: state.hasError
-                                            ? Colors.redAccent
-                                            : Colors.green),
-                                  )
-                                ],
-                              );
-                            })
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Text(
-                      'Preferred stage of investment',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                    FormField<String>(
-                      autovalidateMode: AutovalidateMode.disabled,
-                      validator: (value) {
-                        if (_preferedStage.isEmpty) {
-                          return 'select a preferred stage';
-                        }
-                        return null;
-                      },
-                      builder: (state) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RadioGroup<String>.builder(
-                              activeColor: AppColors.chipsColor,
-                              groupValue: _preferedStage,
-                              onChanged: (value) {
-                                setState(() {
-                                  _preferedStage = value!;
-                                });
-                              },
-                              items: stages,
-                              itemBuilder: (value) => RadioButtonBuilder(value,
-                                  textPosition: RadioButtonTextPosition.right),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              state.hasError ? state.errorText! : '',
-                              style: TextStyle(
-                                  color: state.hasError
-                                      ? Colors.redAccent
-                                      : Colors.green),
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    )
-                  ],
-                ),
-              )),
-              CustomButton(
-                onTap: () {
-                  postAccountType();
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //   builder: (context) => const ConnectionScreen(),
-                  // ));
+                                          )),
+                                ),
+                                Text(
+                                  state.hasError ? state.errorText! : '',
+                                  // ?? state.value?.length.toString()! + '/5 selected',
+                                  style: TextStyle(
+                                      color: state.hasError
+                                          ? Colors.redAccent
+                                          : Colors.green),
+                                )
+                              ],
+                            );
+                          })
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Text(
+                    'Preferred stage of investment',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  ),
+                  FormField<String>(
+                    autovalidateMode: AutovalidateMode.disabled,
+                    validator: (value) {
+                      if (_preferedStage.isEmpty) {
+                        return 'select a preferred stage';
+                      }
+                      return null;
+                    },
+                    builder: (state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RadioGroup<String>.builder(
+                            activeColor: AppColors.chipsColor,
+                            groupValue: _preferedStage,
+                            onChanged: (value) {
+                              setState(() {
+                                _preferedStage = value!;
+                              });
+                            },
+                            items: stages,
+                            itemBuilder: (value) => RadioButtonBuilder(value,
+                                textPosition: RadioButtonTextPosition.right),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            state.hasError ? state.errorText! : '',
+                            style: TextStyle(
+                                color: state.hasError
+                                    ? Colors.redAccent
+                                    : Colors.green),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
+            )),
+            CustomButton(
+              onTap: () {
+                postAccountType();
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => const ConnectionScreen(),
+                // ));
 
-                  if (myFormKey.currentState!.validate()) {
-                    print('validated');
-                  }
-                },
-                isEnabled: true,
-                child: const Text('Complete Registration'),
-              )
-            ],
-          ),
+                // if (myFormKey.currentState!.validate()) {
+                //   debugPrint('validated');
+                // }
+              },
+              isEnabled: true,
+              child: const Text('Complete Registration'),
+            )
+          ],
         ),
       ),
     );
   }
 
   void postAccountType() {
+    bool other = initialValue["min"] == "other";
     if (myFormKey.currentState!.validate()) {
-      log(min!);
       _authBloc.add(AccountTypeEvent(
           role: 'mover',
-          min_range: min,
-          max_range: max,
+          min_range: other ? _minController.text.toString() : min,
+          max_range: other ? _maxController.text.toString() : max,
           category: categories,
           stage: _preferedStage));
     }

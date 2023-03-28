@@ -37,7 +37,6 @@ class _BuisnessPageScreenState extends State<BuisnessPageScreen> {
   String userType = 'home';
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pages = [
       PageHome(
