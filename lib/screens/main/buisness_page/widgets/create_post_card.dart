@@ -2,6 +2,9 @@ import 'package:creative_movers/screens/widget/add_image_wigdet.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../app.dart';
+import '../../live/views/live_stream_home_screen.dart';
+
 class CreatePostCard extends StatefulWidget {
   const CreatePostCard({Key? key}) : super(key: key);
 
@@ -19,11 +22,11 @@ class _CreatePostCardState extends State<CreatePostCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-           padding: EdgeInsets.symmetric(horizontal: 16),
+           padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16,),
+                const SizedBox(height: 16,),
                 Row(
                   children: [
                     const AddImageWidget(
@@ -38,10 +41,10 @@ class _CreatePostCardState extends State<CreatePostCard> {
                       child: Container(
                         margin: const EdgeInsets.all(10),
                         padding: const EdgeInsets.all(10),
-                        child: const Text('Whats on your mind ?'),
                         decoration: BoxDecoration(
                             color: AppColors.lightGrey,
                             borderRadius: BorderRadius.circular(20)),
+                        child: const Text('Whats on your mind ?'),
                       ),
                     )
                   ],
@@ -56,7 +59,7 @@ class _CreatePostCardState extends State<CreatePostCard> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -94,7 +97,10 @@ class _CreatePostCardState extends State<CreatePostCard> {
                     ],
                   ),
                 ),
-                Container(
+                InkWell(
+                  onTap: (){
+                    _joinLiveStream();
+                  },
                   child: Row(
                     children: const [
                       Icon(
@@ -117,5 +123,61 @@ class _CreatePostCardState extends State<CreatePostCard> {
         ],
       ),
     );
+  }
+  void _joinLiveStream() {
+    Navigator.of(mainNavKey.currentState!.context)
+        .push(MaterialPageRoute(
+      builder: (context) => const LiveStreamHomeScreen(
+        isBroadcaster: true,
+      ),
+    ));
+    // showMaterialModalBottomSheet(
+    //     context: mainNavKey.currentState!.context,
+    //     expand: false,
+    //     shape: const RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.only(
+    //       topLeft: Radius.circular(20),
+    //       topRight: Radius.circular(20),
+    //     )),
+    //     builder: (ctx) {
+    //       return Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           const Center(
+    //             child: Padding(
+    //               padding: EdgeInsets.all(8.0),
+    //               child: Text(
+    //                 "Choose your role",
+    //                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    //               ),
+    //             ),
+    //           ),
+    //           ListTile(
+    //             onTap: () {
+    //               Navigator.of(mainNavKey.currentState!.context)
+    //                   .push(MaterialPageRoute(
+    //                 builder: (context) => const LiveStreamHomeScreen(
+    //                   isBroadcaster: true,
+    //                 ),
+    //               ));
+    //             },
+    //             leading: const Icon(Icons.announcement_outlined),
+    //             title: const Text("Host"),
+    //           ),
+    //           ListTile(
+    //             onTap: () {
+    //               Navigator.of(mainNavKey.currentState!.context)
+    //                   .push(MaterialPageRoute(
+    //                 builder: (context) => const LiveStreamHomeScreen(
+    //                   isBroadcaster: false,
+    //                 ),
+    //               ));
+    //             },
+    //             leading: const Icon(Icons.speaker_outlined),
+    //             title: const Text("Guest"),
+    //           ),
+    //         ],
+    //       );
+    //     });
   }
 }

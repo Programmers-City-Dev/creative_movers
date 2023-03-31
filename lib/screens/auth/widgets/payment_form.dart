@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -34,7 +33,7 @@ class _PaymentFormState extends State<PaymentForm> {
 
   @override
   Widget build(BuildContext context) {
-    final _trialPaymentBloc = PaymentBloc(injector.get());
+    final trialPaymentBloc = PaymentBloc(injector.get());
     return Form(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -59,15 +58,19 @@ class _PaymentFormState extends State<PaymentForm> {
             const SizedBox(
               height: 18,
             ),
-            PaymentOptionsWidget(
-              includeTrial: widget.isFirstTime,
-              onSelected: (type, amount, duration) {
-                paymentType = type;
-                paymentAmount = amount;
-                mDuration = duration;
-              },
+            Expanded(
+              child: PaymentOptionsWidget(
+                includeTrial: widget.isFirstTime,
+                onSelected: (type, amount, duration) {
+                  paymentType = type;
+                  paymentAmount = amount;
+                  mDuration = duration;
+                },
+              ),
             ),
-            const Spacer(),
+            const SizedBox(height: 18,),
+
+            // const Spacer(),
             BlocListener<PaymentBloc, PaymentState>(
               bloc: injector.get<PaymentBloc>(),
               listener: (context, state) {
@@ -111,7 +114,7 @@ class _PaymentFormState extends State<PaymentForm> {
                 }
               },
               child: BlocConsumer<PaymentBloc, PaymentState>(
-                  bloc: _trialPaymentBloc,
+                  bloc: trialPaymentBloc,
                   listener: (context, state) {
                     if (state is PaymentConfirmedState) {
                       Navigator.of(context).pop();
@@ -145,7 +148,7 @@ class _PaymentFormState extends State<PaymentForm> {
                               CreatePaymentIntentEvent(int.parse(paymentAmount),
                                   "usd", mDuration, "account_activation"));
                         } else {
-                          _trialPaymentBloc.add(StartFreeTrialEvent());
+                          trialPaymentBloc.add(StartFreeTrialEvent());
                         }
                       },
                     );
@@ -185,7 +188,7 @@ class _PaymentOptionsWidgetState extends State<PaymentOptionsWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      // height: MediaQuery.of(context).size.height * 0.5,
       child: ListView(
         // shrinkWrap: true,
         children: [

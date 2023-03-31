@@ -17,7 +17,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<String> categories = [];
-  RangeValues _values = RangeValues(10, 50);
+  RangeValues _values = const RangeValues(10, 50);
   TextEditingController from_controller = TextEditingController();
   TextEditingController to_controller = TextEditingController();
   String userType = 'all';
@@ -40,7 +40,6 @@ class _SearchScreenState extends State<SearchScreen> {
         bloc: _connectsBloc,
         listener: (context, state) {
           _listenToSearchState(context,state);
-          // TODO: implement listener
         },
         child: SafeArea(
           child: Container(
@@ -73,17 +72,17 @@ class _SearchScreenState extends State<SearchScreen> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            userType = 'movers';
+                            userType = 'mover';
                           });
                         },
                         child: Chip(
-                            backgroundColor: userType == 'movers'
+                            backgroundColor: userType == 'mover'
                                 ? AppColors.primaryColor
                                 : Colors.grey.shade300,
                             label: Text(
                               'Movers',
                               style: TextStyle(
-                                  color: userType == 'movers'
+                                  color: userType == 'mover'
                                       ? AppColors.white
                                       : AppColors.textColor),
                             )),
@@ -136,7 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 16,
                   ),
                   const Text(
-                    'Buisness Category',
+                    'Business Category',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
@@ -147,14 +146,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: BoxDecoration(
                           border: Border.all(color: AppColors.textColor),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(18.0),
-                          child: Text('Select Category'),
-                        ),
                         width: MediaQuery
                             .of(context)
                             .size
                             .width,
+                        child: const Padding(
+                          padding: EdgeInsets.all(18.0),
+                          child: Text('Select Category'),
+                        ),
                       ),
                       onTap: () {
                         showDialog(
@@ -293,6 +292,7 @@ class _SearchScreenState extends State<SearchScreen> {
 void search(){
       _connectsBloc.add(SearchEvent(userType, _searchValueController.text));
 }
+
 
   void _listenToSearchState(BuildContext context, ConnectsState state) {
     if (state is SearchLoadingState) {

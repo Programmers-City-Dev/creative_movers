@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:creative_movers/app_config.dart';
+import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/data/remote/model/payment_history_data.dart';
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
 import 'package:creative_movers/data/remote/model/state.dart';
 import 'package:creative_movers/data/remote/model/subscription_response.dart';
 import 'package:creative_movers/data/remote/repository/payment_repository.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
+import 'package:creative_movers/theme/app_colors.dart';
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:uuid/uuid.dart';
 
 part 'payment_event.dart';
+
 part 'payment_state.dart';
 
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
@@ -33,18 +37,20 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
         paymentIntentClientSecret: secret,
-        applePay: true,
-        googlePay: true,
+        // applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
+        googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
+        appearance: const PaymentSheetAppearance(
+            colors:
+                PaymentSheetAppearanceColors(primary: AppColors.primaryColor)),
         style: ThemeMode.light,
-        merchantCountryCode: "US",
         merchantDisplayName: "Creative Movers Pay",
       ));
 
+      // await Stripe.instance.presentPaymentSheet();
       await Stripe.instance.presentPaymentSheet();
-      // await Stripe.instance.presentPaymentSheet(parameters: secret);
       return const Right("Payment successful");
     } catch (e) {
-      print("Payment error: $e");
+      log("Payment error: $e", name: "PaymentBloc");
       return const Left("Unable to process payment");
     }
   }
@@ -61,6 +67,11 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         "metadata": {
           "order_id": orderId,
           "email": email,
+          "app_env": Constants.getFlavor == Flavor.dev
+              ? "dev"
+              : Constants.getFlavor == Flavor.staging
+                  ? "staging"
+                  : "prod",
           "amount": amount.toString(),
           "duration": duration,
           "payment_for": paymentFor
@@ -75,11 +86,11 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         log("ERROR OCCURRED");
         return Left(ServerErrorModel(statusCode: 400, errorMessage: res.value));
       }
-      return Left(ServerErrorModel(
+      return const Left(ServerErrorModel(
           statusCode: 400,
           errorMessage: "Something went wrong, please try again"));
     } catch (e) {
-      return Left(ServerErrorModel(
+      return const Left(ServerErrorModel(
           statusCode: 400, errorMessage: "Unable to complete payment request"));
     }
   }

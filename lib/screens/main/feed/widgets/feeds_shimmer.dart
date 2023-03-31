@@ -10,7 +10,9 @@ class FeedsShimer extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Shimmer.fromColors(
 
-        period: Duration(milliseconds: 1000),
+        period: const Duration(milliseconds: 1000),
+          baseColor: Colors.grey[200]!,
+          highlightColor: Colors.grey[300]!,
           child: Column(
             children: [
               Row(
@@ -35,7 +37,7 @@ class FeedsShimer extends StatelessWidget {
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey,),
 
                           ),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
                           Container(
                             height: 10,
                             width: 70,
@@ -60,9 +62,7 @@ class FeedsShimer extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-          baseColor: Colors.grey[200]!,
-          highlightColor: Colors.grey[300]!),
+          )),
     );
   }
 }

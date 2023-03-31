@@ -9,21 +9,21 @@ import 'package:image_stack/image_stack.dart';
 
 enum ConnectState { idle, success, loading }
 
-class ResultItem extends StatefulWidget {
-  const ResultItem({Key? key, required this.result}) : super(key: key);
-  final Result result;
+class SearchResultItem extends StatefulWidget {
+  const SearchResultItem({Key? key, required this.result}) : super(key: key);
+  final SearchResult result;
 
   @override
-  _ResultItemState createState() => _ResultItemState();
+  _SearchResultItemState createState() => _SearchResultItemState();
 }
 
-class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMixin{
+class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepAliveClientMixin{
   List<String> images = [
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
   ];
-  ConnectsBloc _connectsBloc = ConnectsBloc();
-  ConnectsBloc _connectsBloc2 = ConnectsBloc();
+  final ConnectsBloc _connectsBloc = ConnectsBloc();
+  final ConnectsBloc _connectsBloc2 = ConnectsBloc();
   ConnectState connectState = ConnectState.idle;
 
   @override
@@ -33,7 +33,7 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
               radius: 31,
               foregroundColor: Colors.red,
@@ -80,36 +80,36 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                             onPressed: connectState != ConnectState.loading
                                 ? () {
                               connectState = ConnectState.loading;
-                              _connectsBloc.add(SendRequestEvent(
+                              _connectsBloc.add(ConnectToUserEvent(
                                   widget.result.id.toString()));
                             }
                                 : null,
+                            style: TextButton.styleFrom(
+                                backgroundColor: AppColors.lightBlue),
                             child: connectState == ConnectState.idle
-                                ? Text('Connect')
+                                ? const Text('Connect')
                                 : connectState == ConnectState.loading
                                 ? const SizedBox(
+                              height: 10,
+                              width: 10,
                               child: CircularProgressIndicator(
                                 color: AppColors.primaryColor,
                                 strokeWidth: 2,
                               ),
-                              height: 10,
-                              width: 10,
                             )
-                                : Text('Pending..'),
-                            style: TextButton.styleFrom(
-                                backgroundColor: AppColors.lightBlue),
+                                : const Text('Pending..'),
                           ) :
                           widget.result.connected == 'Connected' ?  TextButton(
                             onPressed: () {},
-                            child: const Text('Connected'),
                             style: TextButton.styleFrom(
                                 backgroundColor: AppColors.lightBlue),
+                            child: const Text('Connected'),
                           )
                           : TextButton(
                             onPressed: () {},
-                            child: const Text('Pending..'),
                             style: TextButton.styleFrom(
                                 backgroundColor: AppColors.lightBlue),
+                            child: const Text('Pending..'),
                           ),
                         ),
                         const SizedBox(
@@ -123,11 +123,11 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                           bloc: _connectsBloc2,
                           builder: (context, state) {
                             return state is FollowLoadingState
-                                ? Container(
+                                ? const SizedBox(
                               width: 10,
                               height: 10,
                               child:
-                              const CircularProgressIndicator(
+                              CircularProgressIndicator(
                                 color: AppColors.primaryColor,
                                 strokeWidth: 2,
                               ),
@@ -136,8 +136,8 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                                 ? InkWell(
                               onTap: () {
                                 _connectsBloc2.add(FollowEvent(
-                                    user_id: widget.result.id
-                                        .toString()));
+                                    userId: widget.result.id
+                                                        .toString()));
                               },
                               child: SvgPicture.asset(
                                 'assets/svgs/added.svg',
@@ -147,8 +147,8 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                                 : InkWell(
                               onTap: () {
                                 _connectsBloc2.add(FollowEvent(
-                                    user_id: widget.result.id
-                                        .toString()));
+                                    userId: widget.result.id
+                                                        .toString()));
                               },
                               child: const Icon(
                                 Icons.person_add,
@@ -204,14 +204,14 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
                       widget.result.followers.isNotEmpty
                           ? widget.result.followers[0].firstname
                           : '',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     widget.result.followers.length > 1 ?
                     Text('+${widget.result.followers.length - 1}') :
-                    Text(''),
+                    const Text(''),
                   ],
                 )
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),
@@ -221,19 +221,19 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
   }
 
   void listenToSendRequestState(BuildContext context, ConnectsState state) {
-    if (state is SendRequestLoadingState) {
+    if (state is ConnectToUserLoadingState) {
       setState(() {
         connectState = ConnectState.loading;
 
       });
     }
-    if (state is SendRequestSuccesState) {
+    if (state is ConnectToUserSuccesState) {
       setState(() {
         connectState = ConnectState.success;
         AppUtils.showCustomToast('Request Sent');
       });
     }
-    if (state is SendRequestFailureState) {
+    if (state is ConnectToUserFailureState) {
       setState(() {
         AppUtils.showCustomToast(state.error);
         connectState = ConnectState.idle;
@@ -261,7 +261,7 @@ class _ResultItemState extends State<ResultItem> with AutomaticKeepAliveClientMi
 
 class StackedImages extends StatefulWidget {
   const StackedImages({Key? key, required this.user}) : super(key: key);
-  final Result user;
+  final SearchResult user;
 
 
   @override
@@ -277,7 +277,7 @@ class _StackedImagesState extends State<StackedImages> {
       children: [
         ImageStack(
 
-          imageList: [],
+          imageList: const [],
           totalCount: images.length,
           // If larger than images.length, will show extra empty circle
           imageRadius: 20,
@@ -294,7 +294,7 @@ class _StackedImagesState extends State<StackedImages> {
           'Peter C. ',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        Text('+ are following'),
+        const Text('+ are following'),
       ],
     );
   }

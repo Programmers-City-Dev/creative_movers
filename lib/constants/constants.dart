@@ -8,15 +8,18 @@ class Constants {
   static void setEnvironmentVariables(Flavor flavor) {
     switch (flavor) {
       case Flavor.dev:
-        _config = _Config.debugConstants;
+        _config = _Config.devConstants;
         break;
       case Flavor.prod:
         _config = _Config.prodConstants;
         break;
+      case Flavor.staging:
+        _config = _Config.stagingConstants;
+        break;
     }
   }
 
-  static get baseUrl {
+  static String get baseUrl {
     return _config[_Config.baseUrl];
   }
 
@@ -24,13 +27,20 @@ class Constants {
     return _config[_Config.flavor];
   }
 
+  // Pusher
+  static const pusherApiKey = "2989b98e4e4f5137d8f9";
+  static const pusherCluster = "eu";
+  static const pusherSecrete = "b287008664ae2bdd50d2";
+  static const pusherId = "1507674";
+  static const placeHolderImage = "https://media.istockphoto.com/id/1264040074/vector/placeholder-rgb-color-icon.jpg?s=612x612&w=0&k=20&c=0ZFUNL28htu-zHRF9evishuNKYQAZVrfK0-TZNjnX3U=";
+
   static const userCredentials = 'login_user_credentials';
   static const themeKey = "nitrade_theme_key";
   static const firstTimeUserKey = "first_time_user_key";
-  static const agoraAppId = "ab9a79c1cfc7491a92c574140c234529";
+  static const agoraAppId = "30d7ce9ee6844b3c9736b3ef38ab4d48";
 }
 
-/// Allows this class to be only visible to this file*/
+/// Allows this class to be only visible to this file
 ///
 class _Config {
   static const baseUrl = "BASE_URL";
@@ -39,13 +49,21 @@ class _Config {
   static const sentryEnv = "SENTRY_ENV";
   static const flavor = "ENV";
 
-  static Map<String, dynamic> debugConstants = {
-    baseUrl: "https://creativemovers.app/",
+  static Map<String, dynamic> stagingConstants = {
+    baseUrl: "https://staging.creativemovers.app/",
+    buildGradient: "staging",
+    sentryDSN: '',
+    sentryEnv: 'dev',
+    flavor: Flavor.staging
+  };
+  static Map<String, dynamic> devConstants = {
+    baseUrl: "https://dev.creativemovers.app/",
     buildGradient: "dev",
     sentryDSN: '',
     sentryEnv: 'dev',
     flavor: Flavor.dev
   };
+
   static Map<String, dynamic> prodConstants = {
     baseUrl: "https://creativemovers.app/",
     buildGradient: "production",

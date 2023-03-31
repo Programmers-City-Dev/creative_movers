@@ -69,7 +69,7 @@ class Sugestedpage {
     description: json["description"],
     website: json["website"],
     contact: json["contact"],
-    photoPath: json["photo_path"] == null ? null : json["photo_path"],
+    photoPath: json["photo_path"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
   );
@@ -84,7 +84,7 @@ class Sugestedpage {
     "description": description,
     "website": website,
     "contact": contact,
-    "photo_path": photoPath == null ? null : photoPath,
+    "photo_path": photoPath,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
   };
@@ -106,9 +106,7 @@ class EnumValues<T> {
   EnumValues(this.map);
 
   Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
+    reverseMap ??= map.map((k, v) => MapEntry(v, k));
     return reverseMap!;
   }
 }

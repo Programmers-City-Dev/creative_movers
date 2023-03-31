@@ -19,6 +19,8 @@ class SimplifyApiConsuming {
   ///@Param [statusCodeSuccess] an [int] status code to validate success of the request, if [isStatusCode] == true
   ///@Param [successResponse] a [Function] to execute if request is successful, must have a return statement
   /// Returns [Future<ResponseModel>]
+  ///
+  ///
   static Future<State> makeRequest(
       Future<Response<dynamic>> Function() requestFunction,
       {bool isStatusCode = true,
@@ -32,14 +34,14 @@ class SimplifyApiConsuming {
           statusCodeSuccess, successResponse, errorResponse!);
     } on SocketException {
       return State<ServerErrorModel>.error(
-        ServerErrorModel(
+        const ServerErrorModel(
             statusCode: 400,
             errorMessage: "Something went wrong "
                 "please check your internet connection and try again",
             data: null),
       );
     } on DioError catch (e) {
-      print("dio error request is ${e.response}");
+      print("dio error request is:  ${e.response?.requestOptions.queryParameters}");
       if (dioErrorResponse != null) {
         return dioErrorResponse(e.response!);
       } else {
@@ -61,13 +63,17 @@ class SimplifyApiConsuming {
     }
   }
 
+
+
+
   static Future<State> _makeRequest(
-      Future<Response> requestFunction(),
+      Future<Response> Function() requestFunction,
       bool isStatusCode,
       int statusCodeSuccess,
-      State successResponse(dynamic data),
-      State errorResponse(Response data)) async {
+      State Function(dynamic data) successResponse,
+      State Function(Response data) errorResponse) async {
     var response = await requestFunction();
+
 
     if (isStatusCode) {
       return _handleResponseBasedOnStatusCode(
@@ -78,11 +84,15 @@ class SimplifyApiConsuming {
     }
   }
 
+
+
+
+
   static State _handleResponseBasedOnStatusCode(
       Response response,
       int statusCodeSuccess,
-      State successResponse(dynamic data),
-      State errorResponse(Response data)) {
+      State Function(dynamic data) successResponse,
+      State Function(Response data) errorResponse) {
     if (response.statusCode == statusCodeSuccess) {
       return successResponse(response.data);
     } else {
@@ -91,10 +101,11 @@ class SimplifyApiConsuming {
   }
 
   static State _handleResponseBasedOnDataReturned(Response response,
-      State successResponse(dynamic data), State errorResponse(Response data)) {
+      State Function(dynamic data) successResponse, State Function(Response data) errorResponse) {
     if (response.data['status'] == 'success') {
       return successResponse(response.data);
     }
     return errorResponse(response);
   }
+
 }

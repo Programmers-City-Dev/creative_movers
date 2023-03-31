@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
+import 'package:creative_movers/data/remote/model/FaqsResponse.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/addconnection_response.dart';
 import 'package:creative_movers/data/remote/model/biodata_response.dart';
@@ -26,7 +26,7 @@ class ProfileRepository {
       required String password,
       required String username}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.register_endpoint, body: {
+      () => httpClient.post(Endpoints.registerEndpoint, body: {
         "email": email,
         "password": password,
         "username": username,
@@ -60,7 +60,7 @@ class ProfileRepository {
   //Login Request
   Future<State> login({required String email, required String password}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.login_endpoint, body: {
+      () => httpClient.post(Endpoints.loginEndpoint, body: {
         "email": email,
         "password": password,
       }),
@@ -98,7 +98,7 @@ class ProfileRepository {
       required String biodata,
       String? image}) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.biodata_endpoint, body: {
+      () => httpClient.post(Endpoints.bioDataEndpoint, body: {
         "firstname": firstname,
         "lastname": lastname,
         "phone": phoneNumber,
@@ -145,7 +145,7 @@ class ProfileRepository {
     String? min_range,
   }) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.acount_type_endpoint, body: {
+      () => httpClient.post(Endpoints.accountTypeEndpoint, body: {
         "role": role,
         "user_id": user_id,
         "name": name,
@@ -189,7 +189,7 @@ class ProfileRepository {
     required List<Connect> connections,
   }) async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.add_connection_endpoint, body: {
+      () => httpClient.post(Endpoints.addConnectionEndpoint, body: {
         "user_id": user_id,
         "connection": jsonEncode(connections),
       }),
@@ -326,6 +326,37 @@ class ProfileRepository {
       successResponse: (data) {
         return State<UpdateProfileResponse?>.success(
             UpdateProfileResponse.fromJson(data));
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> getFaqs() async {
+    return SimplifyApiConsuming.makeRequest(
+      () => httpClient.post(
+        Endpoints.getFaqs,
+      ),
+      successResponse: (data) {
+        return State<FaqsResponse?>.success(
+            data != null ? FaqsResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {

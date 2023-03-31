@@ -1,6 +1,5 @@
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/widgets/stream_comment_item.dart';
-import 'package:creative_movers/screens/widget/search_field.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -33,24 +32,27 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                     height: 50,
                   ),
                   Container(
-                    margin: EdgeInsets.all(16),
+                    margin: const EdgeInsets.all(16),
                     height: 50,
                     child: Row(
                       children: [
                         TextButton(
                           onPressed: () {},
+                          style: TextButton.styleFrom(
+                              backgroundColor: AppColors.red),
                           child: const Text(
                             'LIVE',
                             style: TextStyle(color: AppColors.smokeWhite),
                           ),
-                          style: TextButton.styleFrom(
-                              backgroundColor: AppColors.red),
                         ),
                         const SizedBox(
                           width: 10,
                         ),
                         TextButton(
                           onPressed: () {},
+                          style: TextButton.styleFrom(
+                              backgroundColor:
+                                  AppColors.commentBg.withOpacity(0.6)),
                           child: Row(
                             children: const [
                               Icon(
@@ -67,14 +69,11 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                               ),
                             ],
                           ),
-                          style: TextButton.styleFrom(
-                              backgroundColor:
-                                  AppColors.commentBg.withOpacity(0.6)),
                         )
                       ],
                     ),
                   ),
-                  Expanded(child: const SizedBox.expand()),
+                  const Expanded(child: SizedBox.expand()),
                   Container(
                     height: 350,
                     decoration: BoxDecoration(
@@ -88,7 +87,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                                   const StreamCommentItem(),
                               itemCount: 10,
                               shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                             ),
                             Align(
                               alignment: Alignment.topCenter,

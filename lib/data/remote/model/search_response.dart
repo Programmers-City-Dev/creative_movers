@@ -14,10 +14,10 @@ class SearchResponse {
     required this.users,
   });
 
-  List<Result> users;
+  List<SearchResult> users;
 
   factory SearchResponse.fromJson(Map<String, dynamic> json) => SearchResponse(
-        users: List<Result>.from(json["users"].map((x) => Result.fromJson(x))),
+        users: List<SearchResult>.from(json["users"].map((x) => SearchResult.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -25,8 +25,8 @@ class SearchResponse {
       };
 }
 
-class Result {
-  Result({
+class SearchResult {
+  SearchResult({
     required this.id,
     required this.username,
     required this.firstname,
@@ -48,7 +48,7 @@ class Result {
   bool following;
   List<Follower> followers;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory SearchResult.fromJson(Map<String, dynamic> json) => SearchResult(
         id: json["id"],
         username: json["username"],
         firstname: json["firstname"],
@@ -84,9 +84,7 @@ class EnumValues<T> {
   EnumValues(this.map);
 
   Map<T, String>? get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
+    reverseMap ??= map.map((k, v) => MapEntry(v, k));
     return reverseMap;
   }
 }

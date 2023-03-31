@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
@@ -29,9 +30,9 @@ class _CreativeFormState extends State<CreativeForm> {
 
   List<String> stages = ['Pre-seed', 'Seed', 'Start up', 'Expansion'];
   String cat = '';
-  String stage = '';
+  String stage = 'Seed';
   String image = '';
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _capitalController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _pagenameController = TextEditingController();
@@ -112,11 +113,11 @@ class _CreativeFormState extends State<CreativeForm> {
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppColors.textColor),
                               ),
+                              width: MediaQuery.of(context).size.width,
                               child: const Padding(
                                 padding: EdgeInsets.all(18.0),
                                 child: Text('Select Category'),
                               ),
-                              width: MediaQuery.of(context).size.width,
                             ),
                             onTap: () {
                               showDialog(
@@ -199,7 +200,7 @@ class _CreativeFormState extends State<CreativeForm> {
                     radius: const Radius.circular(5),
                     strokeWidth: 1,
                     borderType: BorderType.RRect,
-                    child: Container(
+                    child: SizedBox(
                       height: 170,
                       child: Stack(
                         children: [
@@ -208,6 +209,7 @@ class _CreativeFormState extends State<CreativeForm> {
                             child: Container(
                               child: Center(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
                                     Icon(
                                       Icons.add_photo_alternate_outlined,
@@ -217,7 +219,6 @@ class _CreativeFormState extends State<CreativeForm> {
                                     Text(
                                         'Add Cover Image On YOur Buisness Page'),
                                   ],
-                                  mainAxisAlignment: MainAxisAlignment.center,
                                 ),
                               ),
                             ),
@@ -262,15 +263,20 @@ class _CreativeFormState extends State<CreativeForm> {
   }
 
   void postAccountType() {
-    if (_formKey.currentState!.validate()) {
-      _authBloc.add(AccountTypeEvent(
-          role: 'creative',
-          name: _pagenameController.text,
-          stage: stage,
-          category: selectedCategories,
-          est_capital: _capitalController.text,
-          photo: image,
-          description: _descriptionController.text));
+    if(image.isNotEmpty){
+      if (_formKey.currentState!.validate()) {
+        _authBloc.add(AccountTypeEvent(
+            role: 'creative',
+            name: _pagenameController.text,
+            stage: stage,
+            category: selectedCategories,
+            estCapital: _capitalController.text,
+            photo: image,
+            description: _descriptionController.text));
+      }
+
+    }else{
+      AppUtils.showCustomToast('Select Image',Colors.blue);
     }
   }
 
@@ -281,6 +287,8 @@ class _CreativeFormState extends State<CreativeForm> {
 
     if (state is AccountTypeFailureState) {
       Navigator.pop(context);
+      log("Error creating creative account: ${state.error}",
+          name: "CREATIVE FORM");
       CustomSnackBar.showError(context, message: state.error);
     }
 

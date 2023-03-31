@@ -1,5 +1,3 @@
-import 'package:creative_movers/data/remote/model/feeds_response.dart';
-import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -44,24 +42,24 @@ class WelcomeDialog extends StatelessWidget {
                     height: 32,
                   ),
                   CustomButton(
+                    onTap: onNavigate,
                     child: const Text(
                       'Complete Profile',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onTap: onNavigate,
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   CustomButton(
-                    child: const Text(
-                      'Remind me later',
-                      style: TextStyle(color: Colors.black),
-                    ),
                     color: Colors.white,
                     onTap: () {
                       Navigator.of(context).pop();
                     },
+                    child: const Text(
+                      'Remind me later',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ],
               ),

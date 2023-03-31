@@ -18,14 +18,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class AppUtils {
-
   AppUtils._();
 
   static List<EthnicityModel> get ethnicities {
-    Map<String, dynamic> _data = {
+    Map<String, dynamic> data = {
       "Mixed / Multiple ethnic groups": [
         "White and Black Caribbean",
         "White and Black African",
@@ -41,7 +39,7 @@ class AppUtils {
     };
 
     List<EthnicityModel> list = [];
-    _data.forEach((k, v) => list.add(EthnicityModel(title: k, values: v)));
+    data.forEach((k, v) => list.add(EthnicityModel(title: k, values: v)));
     return list;
   }
 
@@ -84,7 +82,31 @@ class AppUtils {
     return toBeginningOfSentenceCase(s)!;
   }
 
-  static String getTime(DateTime dateTime) {
+  static String getTime(DateTime date) {
+    final DateFormat formatter = DateFormat.jm();
+    return formatter.format(date);
+  }
+
+  static String getLastSeen(DateTime date) {
+    String lastSeen = "";
+
+    if (date.year == DateTime.now().year) {
+      String d = DateFormat("E, MMM d").format(date);
+      if (date.day == DateTime.now().day) {
+        lastSeen = 'Today ';
+      } else if (date.day == DateTime.now().day - 1) {
+        lastSeen = 'Yesterday ';
+      } else {
+        lastSeen = d;
+      }
+      String time = getTime(date);
+      return "$lastSeen @ $time";
+    }
+    String time = getTime(date);
+    return "$lastSeen @ $time";
+  }
+
+  static String getTimeAgo(DateTime dateTime) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     // DateTime dateTime = DateTime.parse(date);
@@ -207,14 +229,14 @@ class AppUtils {
               children: [
                 Expanded(
                   child: CustomButton(
-                      child: Text(confirmButtonText), onTap: onConfirmed),
+                      onTap: onConfirmed, child: Text(confirmButtonText)),
                 ),
                 const SizedBox(
                   width: 16,
                 ),
                 Expanded(
                     child: CustomButton(
-                        child: Text(cancelButtonText), onTap: onCancel)),
+                        onTap: onCancel, child: Text(cancelButtonText))),
               ],
             )
           ],
@@ -272,7 +294,7 @@ class AppUtils {
             const SizedBox(
               height: 32.0,
             ),
-            CustomButton(child: Text(confirmButtonText), onTap: onConfirmed),
+            CustomButton(onTap: onConfirmed, child: Text(confirmButtonText)),
           ],
         ),
       ),
@@ -369,8 +391,8 @@ class AppUtils {
               height: 32.0,
             ),
             CustomButton(
-              child: const Text('CONTINUE'),
               onTap: onClose,
+              child: const Text('CONTINUE'),
             )
           ],
         ),
@@ -389,7 +411,8 @@ class AppUtils {
     );
   }
 
-  static Future<List<String>> fetchImages({bool allowMultiple = false}) async {
+  static Future<List<String>> fetchImages(
+      {bool allowMultiple = false, List<String>? allowedExtensions}) async {
     try {
       FilePicker filePicker = FilePicker.platform;
       FilePickerResult? result = await filePicker.pickFiles(
@@ -398,7 +421,7 @@ class AppUtils {
         dialogTitle: 'SELECT IMAGE',
         withData: true,
         allowMultiple: allowMultiple,
-        // allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        allowedExtensions: allowedExtensions,
       );
       if (result != null) {
         return result.files.map((file) => file.path!).toList();
@@ -538,10 +561,21 @@ class AppUtils {
         type: FileType.custom,
         allowCompression: true,
         allowMultiple: allowMultiple,
-        allowedExtensions: ['mp4', 'mov', 'jpg', 'jpeg', 'png'],
-      ).then((value) {
-        onSelect!(value);
-      });
+        allowedExtensions: [
+          'mp4',
+          'mov',
+          'jpg',
+          'jpeg',
+          'png',
+          'pdf',
+          'doc',
+          'docx'
+        ],
+      );
+      //     .then((value) {
+      //   onSelect!(value);
+      //   return null;
+      // });
       if (result != null) {
         return result.files;
       } else {
@@ -554,6 +588,16 @@ class AppUtils {
 
   static String getDateAndTime(DateTime createdAt) {
     return DateFormat("MMMM dd, yyyy hh:mm a").format(createdAt);
+  }
+
+  static String formatTimeAgo(DateTime date) {
+    if (date.day == DateTime.now().day) {
+      return 'Today ${DateFormat("hh:mm a").format(date)}';
+    } else if (date.day == DateTime.now().day - 1) {
+      return 'Yesterday ${DateFormat("hh:mm a").format(date)}';
+    }
+
+    return DateFormat.yMMMEd().format(date);
   }
 
   static String getGroupLabel(int groupByValue) {
@@ -597,6 +641,11 @@ class AppUtils {
       debugPrint(e.toString());
       return Future.error("error");
     }
+  }
+
+  static String formatDateTime(int? t) {
+    return DateFormat("E MMM d, yyyy・h:mm a")
+        .format(DateTime.fromMillisecondsSinceEpoch(t!));
   }
 }
 

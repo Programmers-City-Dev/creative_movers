@@ -4,13 +4,7 @@ import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/screens/auth/views/confirm_token_form.dart';
 import 'package:creative_movers/screens/auth/views/forgot_password_form.dart';
 import 'package:creative_movers/screens/auth/views/reset_password_form.dart';
-import 'package:creative_movers/screens/auth/widgets/form_field.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
-import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ForgotPasswordModal extends StatefulWidget {
   const ForgotPasswordModal({Key? key, required this.onComplete})

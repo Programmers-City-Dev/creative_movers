@@ -40,16 +40,16 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               widget.label!,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontSize: 13,
                   fontWeight: FontWeight.w400),
             ),
           ),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
           decoration: BoxDecoration(
-            border: Border.all(color: Color(0xFFBDBDBD).withOpacity(.4)),
+            border: Border.all(color: const Color(0xFFBDBDBD).withOpacity(.4)),
             borderRadius: BorderRadius.circular(10),
           ),
           child: CustomDropdownMenuExpansionTile(
@@ -60,7 +60,7 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
             childrenPadding: EdgeInsets.zero,
             title: Text(
               widget.headTitle!,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF3E3E3E),
                 fontSize: 14,
               ),

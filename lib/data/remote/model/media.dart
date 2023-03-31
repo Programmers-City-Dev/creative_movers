@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 
 MediaModel mediaFromJson(String str) => MediaModel.fromJson(json.decode(str));
 
@@ -13,19 +12,19 @@ String mediaToJson(MediaModel data) => json.encode(data.toJson());
 class MediaModel {
   MediaModel({
     this.type,
-    this.file,
+    this.mediaPath,
   });
 
   String? type;
-  MultipartFile? file;
+  String? mediaPath;
 
   factory MediaModel.fromJson(Map<String, dynamic> json) => MediaModel(
         type: json["type"],
-        file: json["file"],
+        mediaPath: json["mediaPath"],
       );
 
   Map<String, dynamic> toJson() => {
         "type": type,
-        "file": file,
+        "mediaPath": mediaPath,
       };
 }

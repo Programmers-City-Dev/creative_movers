@@ -5,7 +5,7 @@ class ServerErrorModel extends Equatable {
   final String errorMessage;
   final dynamic data;
 
-  ServerErrorModel({required this.statusCode, required this.errorMessage, this.data});
+  const ServerErrorModel({required this.statusCode, required this.errorMessage, this.data});
 
   @override
   List<Object> get props => [errorMessage];

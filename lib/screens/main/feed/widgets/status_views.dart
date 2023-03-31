@@ -1,15 +1,16 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
+import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/data/remote/model/view_status_response.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/status/views/add_status_screen.dart';
 import 'package:creative_movers/screens/main/status/views/view_status_screen.dart';
+import 'package:creative_movers/screens/main/status/widgets/create_story_dialog.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:status_view/status_view.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class StatusViews extends StatefulWidget {
   final bool? curvedBottom;
@@ -26,9 +27,8 @@ class StatusViews extends StatefulWidget {
 class _StatusViewsState extends State<StatusViews> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    if (widget.viewStatusResponse.activeStatus!.status.isNotEmpty ) {
+    if (widget.viewStatusResponse.activeStatus!.status.isNotEmpty) {
       log(widget.viewStatusResponse.activeStatus!.status.length.toString());
       Status? status = widget.viewStatusResponse.activeStatus;
       status?.firstname = 'My status';
@@ -43,6 +43,7 @@ class _StatusViewsState extends State<StatusViews> {
 
   @override
   Widget build(BuildContext context) {
+    var statusBloc = context.read<StatusBloc>();
     return Container(
       decoration: BoxDecoration(
         borderRadius: widget.curvedBottom!
@@ -62,15 +63,21 @@ class _StatusViewsState extends State<StatusViews> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             height: 90,
             padding: const EdgeInsets.all(8.0),
             child: Stack(
               children: [
                 InkWell(
                   onTap: () {
-                    AppUtils.showStoryDialog(context);
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddStatusScreen(),));
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return BlocProvider.value(
+                            value: statusBloc,
+                            child: const CreateStoryDialog());
+                      },
+                    );
                   },
                   child: CircleAvatar(
                     radius: 25,
@@ -121,30 +128,171 @@ class _StatusViewsState extends State<StatusViews> {
                         padding: const EdgeInsets.only(right: 8.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).push(
+
+                                MaterialPageRoute(
+                                  fullscreenDialog: true,
+                              maintainState: true,
+
                               builder: (context) => ViewStatusScreen(
+                                alllStatus: _list,
                                 status: (_list[index].status),
+                                currentStatus: index,
                               ),
                             ));
                           },
-                          child: StatusView(
-                            radius: 25,
-                            spacing: 15,
-                            strokeWidth: 2,
-                            // indexOfSeenStatus: 2,
-                            numberOfStatus: _list[index].status.length,
-                            padding: 4,
-                            seenColor: Colors.grey,
-                            unSeenColor: AppColors.primaryColor,
-                            centerImageUrl: _list[index].profilePhotoPath,
-                          ),
+                          child: _list[index].status.last.mediaType != null
+                              ? _list[index].status.last.mediaType == 'image'
+                                  ? StatusView(
+                                      radius: 25,
+                                      spacing: 15,
+                                      strokeWidth: 2,
+                                      // indexOfSeenStatus: 2,
+                                      numberOfStatus:
+                                          _list[index].status.length,
+                                      padding: 4,
+                                      seenColor: Colors.grey,
+                                      unSeenColor: AppColors.primaryColor,
+                                      centerImageUrl: _list[index]
+                                          .status.last
+                                          .file
+                                          .toString(),
+                                    )
+                                  : FutureBuilder<Uint8List?>(
+                                      future: VideoThumbnail.thumbnailData(
+                                        video: _list[index].status.last.file ?? '',
+                                        imageFormat: ImageFormat.JPEG,
+                                        maxWidth: 24,
+                                        maxHeight: 24,
+                                        // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+                                        quality: 100,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // log(widget.media.mediaPath);
+                                        if (!snapshot.hasError) {
+                                          if (snapshot.hasData) {
+                                          return  Stack(
+                                              clipBehavior: Clip.none,
+                                              children: [
+                                                Center(
+                                                  child: StatusView(
+                                                    radius: 25,
+                                                    spacing: 15,
+                                                    strokeWidth: 2,
+                                                    // indexOfSeenStatus: 2,
+                                                    numberOfStatus:
+                                                    _list[index].status.length,
+                                                    padding: 4,
+                                                    seenColor: Colors.grey,
+                                                    unSeenColor: AppColors.primaryColor, centerImageUrl: '',
+
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                    bottom: 4,
+                                                    right: 4,
+                                                    top: 4,
+                                                    child: Center(
+                                                        child: CircleAvatar(
+                                                          radius: 21,
+
+                                                          child: ClipRRect(
+                                                            
+                                                            borderRadius: BorderRadius.circular(20),
+                                                            
+                                                            child: Image.memory(
+
+                                                              snapshot.data!,
+                                                              fit: BoxFit.cover,
+                                                              filterQuality:
+                                                              FilterQuality.high,
+                                                              width: 50,
+                                                              height: 50,
+                                                              alignment: Alignment.center,
+                                                            ),
+                                                          ),
+                                                        )))
+                                              ],
+                                            );
+
+
+
+                                          }
+                                        }
+                                        return StatusView(
+                                          radius: 25,
+                                          spacing: 15,
+                                          strokeWidth: 2,
+                                          // indexOfSeenStatus: 2,
+                                          numberOfStatus:
+                                          _list[index].status.length,
+                                          padding: 4,
+                                          seenColor: Colors.grey,
+                                          unSeenColor: AppColors.primaryColor,
+                                          centerImageUrl: _list[index]
+                                              .status[0]
+                                              .file
+                                              .toString(),
+                                        );
+                                      })
+                              : Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Center(
+                                      child: StatusView(
+                                        radius: 25,
+                                        spacing: 15,
+                                        strokeWidth: 2,
+                                        // indexOfSeenStatus: 2,
+                                        numberOfStatus:
+                                            _list[index].status.length,
+                                        padding: 4,
+                                        seenColor: Colors.grey,
+                                        unSeenColor: AppColors.primaryColor,
+                                        centerImageUrl: _list[index]
+                                            .status.last
+                                            .file
+                                            .toString(),
+                                      ),
+                                    ),
+                                    Positioned(
+                                        bottom: 4,
+                                        right: 4,
+                                        top: 4,
+                                        child: Center(
+                                            child: CircleAvatar(
+                                          radius: 21,
+                                          backgroundColor: Color(int.parse(
+                                              _list[index].status.last.bgColor!,radix: 16)),
+
+                                          child: Center(
+                                              child: SizedBox(
+                                                  height: 23,
+                                                  width: 23,
+                                                  child: Center(
+                                                      child: Text(
+                                                    _list[index]
+                                                        .status.last
+                                                        .text!,
+                                                    style: const TextStyle(
+                                                        fontSize: 5,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        color: Colors.white),
+                                                    maxLines: 4,
+                                                    textAlign: TextAlign.center,
+                                                  )))),
+
+                                        )))
+                                  ],
+                                ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Center(
                             child: Text(
-                         _list[index].firstname,
+                          _list[index].firstname,
                           style: const TextStyle(fontSize: 10),
                         )),
                       )

@@ -2,14 +2,15 @@ import 'package:creative_movers/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// import 'package:paybliz/presenter/view/screens/home/views/home_screen.dart';
 
 final GlobalKey<NavigatorState> mainNavKey = GlobalKey<NavigatorState>();
 
 class CreativeMoversApp extends StatelessWidget {
   final AppConfig appConfig;
   final Widget defaultScreen;
-  const CreativeMoversApp({Key? key, required this.appConfig, required this.defaultScreen})
+
+  const CreativeMoversApp(
+      {Key? key, required this.appConfig, required this.defaultScreen})
       : super(key: key);
 
   @override
@@ -35,15 +36,14 @@ class CreativeMoversApp extends StatelessWidget {
         Locale('ru', ''),
       ],
       theme: ThemeData(
+          fontFamily: "Poppins",
           pageTransitionsTheme: const PageTransitionsTheme(
-        builders: {
-          TargetPlatform.android: ZoomPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        },
-      )),
+            builders: {
+              TargetPlatform.android: ZoomPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            },
+          )),
       home: defaultScreen,
     );
   }
-
-  
 }

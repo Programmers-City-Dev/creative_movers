@@ -44,7 +44,7 @@ class UpdateProfileEvent extends ProfileEvent {
   final String? firstName;
   final String? lastName;
 
-  UpdateProfileEvent(
+  const UpdateProfileEvent(
       {this.imagePath,
       this.isProfilePhoto,
       this.phone,
@@ -68,4 +68,9 @@ class UpdateLocalUserProfileEvent extends ProfileEvent {
 
   @override
   List<Object> get props => [user];
+}
+
+class GetFaqsEvent extends ProfileEvent {
+  @override
+  List<Object> get props => [];
 }

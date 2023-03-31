@@ -17,6 +17,9 @@ class _OnboardingItemState extends State<OnboardingItem> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
+        decoration:  BoxDecoration(
+            image: DecorationImage(fit: BoxFit.cover, image: AssetImage(widget.img))
+        ),
         child: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -28,9 +31,6 @@ class _OnboardingItemState extends State<OnboardingItem> {
                 AppColors.OnboardingColor.withOpacity(1)
 
               ])),
-        ),
-        decoration:  BoxDecoration(
-            image: DecorationImage(fit: BoxFit.cover, image: AssetImage(widget.img))
         ),
       ),
       Container(

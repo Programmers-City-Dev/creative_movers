@@ -71,7 +71,7 @@ class _PostItemState extends State<PostItem> {
                         ),
                       )),
                   PopupMenuItem<String>(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       value: 'Notification',
                       child: Container(
                         child: Row(
@@ -85,9 +85,9 @@ class _PostItemState extends State<PostItem> {
                         ),
                       )),
                   PopupMenuItem<String>(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       value: 'Delete',
-                      child: Container(
+                      child: SizedBox(
                         width: 100,
                         child: Row(
                           children: const [

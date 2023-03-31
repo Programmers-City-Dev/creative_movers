@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class StatusImagePreview extends StatefulWidget {
@@ -19,14 +18,14 @@ class _StatusImagePreviewState extends State<StatusImagePreview> {
       child: Container(
         height: 400,
         width: MediaQuery.of(context).size.width,
-        child: Image.file(
-          File(widget.image!),
-          fit: BoxFit.cover,
-        ),
         decoration: BoxDecoration(
           // image: DecorationImage(image:  AssetImage(AppIcons.imgSlide1)),
           color: Colors.blue,
           borderRadius: BorderRadius.circular(10),
+        ),
+        child: Image.file(
+          File(widget.image!),
+          fit: BoxFit.cover,
         ),
 
       ),

@@ -1,18 +1,12 @@
-import 'dart:developer';
-
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/blocs/notification/notification_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/blocs/status/status_bloc.dart';
-import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/main/feed/views/create_post.dart';
 import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
 import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
-import 'package:creative_movers/screens/main/feed/widgets/post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
 import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
 import 'package:creative_movers/screens/main/search/views/search__screen.dart';
@@ -40,7 +34,7 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   void initState() {
     feedBloc.add(const GetFeedEvent());
-    statusBloc.add(GetStatusEvent());
+    statusBloc.add(const GetStatusEvent());
     super.initState();
   }
 
@@ -55,6 +49,44 @@ class _FeedScreenState extends State<FeedScreen> {
         physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
+            SliverPersistentHeader(
+                // pinned: true,
+                floating: true,
+                delegate: SliverAppBarDelegate(
+                  PreferredSize(
+                    preferredSize: const Size.fromHeight(90),
+                    child: BlocBuilder<StatusBloc, StatusState>(
+                      bloc: statusBloc,
+                      builder: (context, state) {
+                        if (state is StatusLoadingState) {
+                          return const StatusShimmer();
+                        }
+                        if (state is StatusSuccessState) {
+                          return BlocProvider.value(
+                            value: statusBloc,
+                            child: StatusViews(
+                              curvedBottom: true,
+                              viewStatusResponse: state.viewStatusResponse,
+                            ),
+                          );
+                        }
+                        if (state is StatusFaliureState) {
+                          return Center(
+                            child: Text(state.error),
+                          );
+                        }
+                        return const StatusShimmer();
+                      },
+                    ),
+                  ),
+                )),
+            SliverToBoxAdapter(child: PostCard(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const CreatePostScreen(),
+                ));
+              },
+            )),
             // SliverPersistentHeader(
             //     pinned: true,
             //     floating: true,
@@ -80,47 +112,12 @@ class _FeedScreenState extends State<FeedScreen> {
           onRefresh: (() async {
             await Future.delayed(const Duration(seconds: 1));
             feedBloc.add(const GetFeedEvent());
-            statusBloc.add(GetStatusEvent());
+            statusBloc.add(const GetStatusEvent());
           }),
           child: CustomScrollView(
             // controller: _scrollController,
             physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverPersistentHeader(
-                  // pinned: true,
-                  floating: true,
-                  delegate: SliverAppBarDelegate(
-                    PreferredSize(
-                      preferredSize: const Size.fromHeight(90),
-                      child: BlocBuilder<StatusBloc, StatusState>(
-                        bloc: statusBloc,
-                        builder: (context, state) {
-                          if (state is StatusLoadingState) {
-                            return const StatusShimmer();
-                          }
-                          if (state is StatusSuccessState) {
-                            return StatusViews(
-                              curvedBottom: true,
-                              viewStatusResponse: state.viewStatusResponse,
-                            );
-                          }
-                          if (state is StatusFaliureState) {
-                            return Center(
-                              child: Text(state.error),
-                            );
-                          }
-                          return const StatusShimmer();
-                        },
-                      ),
-                    ),
-                  )),
-              SliverToBoxAdapter(child: PostCard(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreatePostScreen(),
-                  ));
-                },
-              )),
               SliverPadding(
                 padding: const EdgeInsets.all(8),
                 sliver: BlocBuilder<FeedBloc, FeedState>(
@@ -135,11 +132,12 @@ class _FeedScreenState extends State<FeedScreen> {
                           (BuildContext context, int index) {
                             return NewPostItem(
                               feed: state.feedResponse.feeds.data[index],
+                              onUpdated: () {
+                                feedBloc.add(const GetFeedEvent());
+                              },
                             );
                           },
                           childCount: state.feedResponse.feeds.data.length,
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
                         ),
                       );
                     }
@@ -150,7 +148,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               child: AppPromptWidget(
                                 isSvgResource: true,
                                 message: state.error,
-                                onTap: () => feedBloc.add(GetFeedEvent()),
+                                onTap: () => feedBloc.add(const GetFeedEvent()),
                               )));
                     }
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -236,6 +234,7 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 .toList()
                                 .length;
                             return Stack(
+                              clipBehavior: Clip.none,
                               children: [
                                 GestureDetector(
                                   child: const Icon(
@@ -252,14 +251,25 @@ class CustomFeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 ),
                                 unreadNotifications > 0
                                     ? Positioned(
-                                        top: 0,
-                                        right: 0,
+                                        top: -10,
+                                        right: -5,
                                         child: Container(
-                                          height: 10,
-                                          width: 10,
+                                          // height: 10,
+                                          // width: 10,
                                           decoration: const BoxDecoration(
                                               color: Colors.red,
                                               shape: BoxShape.circle),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Text(
+                                              unreadNotifications > 9
+                                                  ? "9+"
+                                                  : '$unreadNotifications',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
                                         ),
                                       )
                                     : const SizedBox.shrink()

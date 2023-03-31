@@ -1,6 +1,5 @@
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/invite_contact_screen.dart';
-import 'package:creative_movers/screens/main/buisness_page/widgets/create_post_card.dart';
 import 'package:flutter/material.dart';
 class FollowingScreen extends StatefulWidget {
   const FollowingScreen({Key? key}) : super(key: key);
@@ -24,7 +23,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
       child: Container(child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-        Container(
+        SizedBox(
           height: 50,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -36,7 +35,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
             ),
           ),
         ),
-        SizedBox(height: 16,),
+        const SizedBox(height: 16,),
         const Padding(
           padding: EdgeInsets.all(10.0),
           child: Text(
@@ -55,7 +54,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
               style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12)),
 
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InviteContactScreen(),));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const InviteContactScreen(),));
               },
               child: const Text(
                 'INVITE CONTACTS',

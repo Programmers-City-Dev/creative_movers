@@ -1,35 +1,41 @@
-import 'dart:developer';
 
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
-import 'package:creative_movers/data/remote/model/media.dart';
+import 'dart:ui';
+
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/my_page_tab.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
 import 'package:creative_movers/screens/main/feed/views/comments_screen.dart';
+import 'package:creative_movers/screens/main/feed/widgets/edit_post_form.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
+import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/link_preview.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_stack/image_stack.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 
 class NewPostItem extends StatefulWidget {
   const NewPostItem({
     Key? key,
     required this.feed,
     this.onCommentBoxClicked,
+    required this.onUpdated,
   }) : super(key: key);
   final Feed feed;
   final VoidCallback? onCommentBoxClicked;
+  final VoidCallback onUpdated;
 
   @override
   _NewPostItemState createState() => _NewPostItemState();
@@ -50,18 +56,7 @@ class _NewPostItemState extends State<NewPostItem> {
     'https://i.pinimg.com/736x/d2/b9/67/d2b967b386e178ee3a148d3a7741b4c0.jpg',
     'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg'
   ];
-  List<MediaModel> mediaList = [
-    MediaModel(type: 'image'),
-    MediaModel(type: 'video'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image'),
-    MediaModel(type: 'image')
-  ];
+
   int pageIndex = 0;
 
   @override
@@ -82,100 +77,95 @@ class _NewPostItemState extends State<NewPostItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: widget.feed.type == 'user_feed'
-                          ? NetworkImage(widget.feed.user!.profilePhotoPath!)
-                          : widget.feed.page!.photoPath != null
-                              ? NetworkImage(widget.feed.page!.photoPath!)
-                              : const NetworkImage(
-                                  'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg'),
-                    ),
-                    const SizedBox(
-                      width: 7,
-                    ),
-                    widget.feed.type == 'user_feed'
-                        ? InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(viewProfilePath,
-                                  arguments: {
-                                    "user_id": int.parse(widget.feed.userId)
-                                  });
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${widget.feed.user?.firstname} ${widget.feed.user?.lastname}',
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  AppUtils.getTime(widget.feed.updatedAt),
-                                  style: const TextStyle(fontSize: 10),
-                                ),
-                              ],
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              widget.feed.userId != user?.id.toString()
-                                  ? Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          ViewBuisnessPageScreen(
-                                              pageId: widget.feed.page!.id
-                                                  .toString()),
-                                    ))
-                                  : Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                      builder: (context) => const MyPageTab(),
-                                    ));
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '  ${widget.feed.page!.name} ',
-                                      maxLines: 1,
-                                      softWrap: true,
-                                      overflow: TextOverflow.ellipsis,
-                                      strutStyle:
-                                          const StrutStyle(fontSize: 12.0),
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const Text('🅿️')
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      ' Posetd by ${widget.feed.user?.firstname} ',
-                                      maxLines: 1,
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                    Text(
-                                      AppUtils.getTime(widget.feed.updatedAt),
-                                      style: const TextStyle(fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+              Row(
+                children: [
+                  CircleImage(
+                    radius: 20,
+                    withBaseUrl: false,
+                    url: widget.feed.type == 'user_feed'
+                        ? widget.feed.user!.profilePhotoPath!
+                        : widget.feed.page!.photoPath != null
+                            ? widget.feed.page!.photoPath!
+                            : 'https://businessexperttips.com/wp-content/uploads/2022/01/3.jpg',
+                  ),
+                  const SizedBox(
+                    width: 7,
+                  ),
+                  widget.feed.type == 'user_feed'
+                      ? InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(viewProfilePath,
+                                arguments: {
+                                  "user_id": int.parse(widget.feed.userId)
+                                });
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${widget.feed.user?.firstname} ${widget.feed.user?.lastname}',
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                AppUtils.getTimeAgo(widget.feed.updatedAt),
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                            ],
                           ),
-                  ],
-                ),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            widget.feed.userId != user?.id.toString()
+                                ? Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ViewBuisnessPageScreen(
+                                            pageId: widget.feed.page!.id
+                                                .toString()),
+                                  ))
+                                : Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const MyPageTab(),
+                                  ));
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '  ${widget.feed.user?.firstname} ${widget.feed.user?.lastname} ',
+                                    maxLines: 1,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    strutStyle:
+                                        const StrutStyle(fontSize: 12.0),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  // const Text()
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '🅿️ ${widget.feed.page?.name} ',
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                  Text(
+                                    AppUtils.getTimeAgo(widget.feed.updatedAt),
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                ],
               ),
               BlocBuilder<CacheCubit, CacheState>(
                 bloc: injector.get<CacheCubit>()..fetchCachedUserData(),
@@ -185,40 +175,101 @@ class _NewPostItemState extends State<NewPostItem> {
                   }
                   if (state is CachedUserDataFetched &&
                       state.cachedUser.id.toString() == widget.feed.userId) {
-                    return PopupMenuButton<String>(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      itemBuilder: (context) => <PopupMenuEntry<String>>[
-                        PopupMenuItem<String>(
-                            padding: const EdgeInsets.all(10),
-                            value: 'Edit',
-                            child: Container(
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.edit_rounded),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text('Edit'),
-                                ],
-                              ),
-                            )),
-                        PopupMenuItem<String>(
-                            padding: const EdgeInsets.all(10),
-                            value: 'Delete',
-                            child: SizedBox(
-                              width: 100,
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.delete_rounded),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text('Delete'),
-                                ],
-                              ),
-                            )),
-                      ],
+                    return BlocListener<FeedBloc, FeedState>(
+                      bloc: feedBloc,
+                      listener: (context, state) {
+                        if (state is DeleteFeedLoadingState) {
+                          AppUtils.showAnimatedProgressDialog(context,
+                              title: "Deleting Post, please wait...");
+                        }
+                        if (state is DeleteFeedSuccessState) {
+                          widget.onUpdated();
+                          Navigator.of(context).pop();
+                          // AppUtils.cancelAllShowingToasts();
+                          AppUtils.showCustomToast(
+                              "Post has been Deleted successfully");
+                        }
+                        if (state is DeleteFeedFaliureState) {
+                          Navigator.of(context).pop();
+                          AppUtils.showCustomToast(state.error);
+                        }
+                      },
+                      child: PopupMenuButton<String>(
+                        onSelected: (val) {
+                          if (val == 'Edit') {
+                            showMaterialModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return BackdropFilter(
+                                    filter:
+                                        ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                    child: EditPostForm(
+                                      feed: widget.feed,
+                                      onSucces: () {
+                                        widget.onUpdated();
+                                        Navigator.pop(context);
+                                      },
+                                    ));
+                              },
+                              shape: const RoundedRectangleBorder(),
+                              // clipBehavior: Clip.antiAliasWithSaveLayer,
+                            );
+                          } else {
+                            feedBloc.add(DeleteFeedEvent(
+                                feed_id: widget.feed.id.toString()));
+                          }
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        itemBuilder: (context) => <PopupMenuEntry<String>>[
+                          PopupMenuItem<String>(
+                              padding: const EdgeInsets.all(10),
+                              onTap: () {
+                                // showMaterialModalBottomSheet(
+                                //   context: context,
+                                //   builder: (context) {
+                                //     return BackdropFilter(
+                                //         filter: ImageFilter.blur(
+                                //             sigmaX: 5, sigmaY: 5),
+                                //         child: EditGenderDialog(
+                                //           onSuccess: () {
+                                //             Navigator.pop(context);
+                                //           },
+                                //         ));
+                                //   },
+                                //   shape: const RoundedRectangleBorder(),
+                                //   // clipBehavior: Clip.antiAliasWithSaveLayer,
+                                // );
+                              },
+                              value: 'Edit',
+                              child: Container(
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.edit_rounded),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text('Edit'),
+                                  ],
+                                ),
+                              )),
+                          PopupMenuItem<String>(
+                              padding: const EdgeInsets.all(10),
+                              value: 'Delete',
+                              child: SizedBox(
+                                width: 100,
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.delete_rounded),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text('Delete'),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
                     );
                   } else {
                     Container(
@@ -305,9 +356,9 @@ class _NewPostItemState extends State<NewPostItem> {
                       controller:
                           PageController(keepPage: true, initialPage: 0),
                       pageSnapping: true,
-                      onPageChanged: (currentindex) {
+                      onPageChanged: (currentIndex) {
                         setState(() {
-                          pageIndex = currentindex;
+                          pageIndex = currentIndex;
                           itemScrollController.scrollTo(
                               index: pageIndex,
                               duration: const Duration(seconds: 2),
@@ -332,7 +383,7 @@ class _NewPostItemState extends State<NewPostItem> {
                                       AppColors.black.withOpacity(0.8),
                                   padding: EdgeInsets.zero,
                                   label: Text(
-                                    '${pageIndex + 1}/${mediaList.length} ',
+                                    '${pageIndex + 1}/${widget.feed.media.length} ',
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                         fontSize: 10,
@@ -410,54 +461,25 @@ class _NewPostItemState extends State<NewPostItem> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  child: Row(
-                    children: [
-                      BlocConsumer<FeedBloc, FeedState>(
-                        bloc: _likeFeedBloc,
-                        listener: (_, state) {
-                          if (state is LikeSuccessState) {
-                            widget.feed.liked = !widget.feed.liked;
-                          }
-                          if (state is LikeFaliureState) {
-                            AppUtils.showCustomToast("Unable to send like");
-                          }
-                          // log("STATE: $state\n VALUE: ${widget.feed.liked}");
-                        },
-                        builder: (context, feedState) {
+                Row(
+                  children: [
+                    BlocConsumer<FeedBloc, FeedState>(
+                      bloc: _likeFeedBloc,
+                      listener: (_, state) {
+                        if (state is LikeSuccessState) {
+                          widget.feed.liked = !widget.feed.liked;
+                        }
+                        if (state is LikeFaliureState) {
+                          AppUtils.showCustomToast("Unable to send like");
+                        }
+                        // log("STATE: $state\n VALUE: ${widget.feed.liked}");
+                      },
+                      builder: (context, feedState) {
+                        // log("STATE: $feedState\n VALUE: ${widget.feed.liked}");
+                        if (feedState is LikeSuccessState) {
                           // log("STATE: $feedState\n VALUE: ${widget.feed.liked}");
-                          if (feedState is LikeSuccessState) {
-                            // log("STATE: $feedState\n VALUE: ${widget.feed.liked}");
-                            return LikeButton(
-                                isLiked: widget.feed.liked,
-                                isOk: true,
-                                onTap: () {
-                                  _likeFeedBloc.add(LikeEvent(
-                                      feeId: widget.feed.id.toString()));
-                                });
-                          }
-                          if (feedState is LikeLoadingState) {
-                            return const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: SizedBox(
-                                  width: 10,
-                                  height: 10,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  )),
-                            );
-                          }
-                          if (feedState is LikeFaliureState) {
-                            return LikeButton(
-                                isLiked: widget.feed.liked,
-                                isOk: false,
-                                onTap: () {
-                                  _likeFeedBloc.add(LikeEvent(
-                                      feeId: widget.feed.id.toString()));
-                                });
-                          }
                           return LikeButton(
                               isLiked: widget.feed.liked,
                               isOk: true,
@@ -465,18 +487,46 @@ class _NewPostItemState extends State<NewPostItem> {
                                 _likeFeedBloc.add(LikeEvent(
                                     feeId: widget.feed.id.toString()));
                               });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      const Text(
-                        'Like',
-                        style: TextStyle(fontSize: 13),
-                      )
-                    ],
-                  ),
+                        }
+                        if (feedState is LikeLoadingState) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: SizedBox(
+                                width: 10,
+                                height: 10,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                )),
+                          );
+                        }
+                        if (feedState is LikeFaliureState) {
+                          return LikeButton(
+                              isLiked: widget.feed.liked,
+                              isOk: false,
+                              onTap: () {
+                                _likeFeedBloc.add(LikeEvent(
+                                    feeId: widget.feed.id.toString()));
+                              });
+                        }
+                        return LikeButton(
+                            isLiked: widget.feed.liked,
+                            isOk: true,
+                            onTap: () {
+                              _likeFeedBloc.add(
+                                  LikeEvent(feeId: widget.feed.id.toString()));
+                            });
+                      },
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Text(
+                      'Like',
+                      style: TextStyle(fontSize: 13),
+                    )
+                  ],
                 ),
+                const SizedBox(width: 20,),// Temporary sized box
                 InkWell(
                   onTap: () {
                     if (widget.onCommentBoxClicked != null) {
@@ -506,21 +556,21 @@ class _NewPostItemState extends State<NewPostItem> {
                     ],
                   ),
                 ),
-                Row(
-                  children: const [
-                    Icon(
-                      Icons.share_rounded,
-                      color: AppColors.textColor,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Share',
-                      style: TextStyle(fontSize: 13),
-                    )
-                  ],
-                ),
+                // Row(
+                //   children: const [
+                //     Icon(
+                //       Icons.share_rounded,
+                //       color: AppColors.textColor,
+                //     ),
+                //     SizedBox(
+                //       width: 5,
+                //     ),
+                //     Text(
+                //       'Share',
+                //       style: TextStyle(fontSize: 13),
+                //     )
+                //   ],
+                // ),
               ],
             ),
           )

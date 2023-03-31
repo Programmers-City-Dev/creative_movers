@@ -118,7 +118,7 @@ class _EditFullnameDialogState extends State<EditFullnameDialog> {
                             hintText: 'Update FirstName',
                             border: OutlineInputBorder()),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       ),
                       TextFormField(

@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
@@ -17,8 +16,7 @@ part 'buisness_event.dart';
 part 'buisness_state.dart';
 
 class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
-  final BuisnessRepository buisnessRepository =
-      BuisnessRepository(HttpHelper());
+  final BuisnessRepository buisnessRepository = BuisnessRepository(HttpHelper());
 
   BuisnessBloc() : super(BuisnessInitial()) {
     on<BuisnessEvent>((event, emit) {});
@@ -28,6 +26,7 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
     on<PageSuggestionsEvent>(_mapPageSuggestionEvent);
     on<PageFeedsEvent>(_mapPageFeedsEvent);
     on<FollowPageEvent>(_mapFollowPageEvent);
+    on<LikePageEvent>(_mapLikePageEvent);
     on<GetPageEvent>(_mapGetPageEvent);
 
   }
@@ -45,7 +44,6 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit(BuisnessFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -62,7 +60,6 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit(PageSuggestionsFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -79,7 +76,6 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit(GetPageFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -105,7 +101,7 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit( CreatePageFailureState(error: 'Oops Something went wrong'));
-      // TODO
+
     }
   }
 
@@ -149,23 +145,37 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       }
     } catch (e) {
       emit(PageFeedsFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
   void _mapFollowPageEvent(
       FollowPageEvent event, Emitter<BuisnessState> emitter) async {
-    emit(PageFeedsLoadingState());
+    emit(FollowPageLoadingState());
     try {
       var state = await buisnessRepository.followPage(event.page_id);
       if (state is SuccessState) {
-        emit(PageFeedsSuccesState(feedsResponse: state.value));
+        emit(FollowPageSuccesState(message: state.value));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
-        emit(PageFeedsFailureState(error: errorModel.errorMessage));
+        emit(FollowPageFailureState(error: errorModel.errorMessage));
       }
     } catch (e) {
-      emit(PageFeedsFailureState(error: 'Oops Something went wrong'));
-      // TODO
+      emit(FollowPageFailureState(error: 'Oops Something went wrong'));
+    }
+  }
+
+  void _mapLikePageEvent(
+      LikePageEvent event, Emitter<BuisnessState> emitter) async {
+    emit(LikePageLoadingState());
+    try {
+      var state = await buisnessRepository.likePage(event.page_id);
+      if (state is SuccessState) {
+        emit(LikePageSuccesState(message: state.value));
+      } else if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(LikePageFailureState(error: errorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(LikePageFailureState(error: 'Oops Something went wrong'));
     }
   }
 }

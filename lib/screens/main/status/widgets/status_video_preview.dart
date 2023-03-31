@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:creative_movers/resources/app_icons.dart';
-import 'package:creative_movers/screens/main/feed/widgets/video_preview_dialog.dart';
 import 'package:creative_movers/screens/main/status/widgets/status_video_play.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +26,12 @@ class _StatusVideoPreviewState extends State<StatusVideoPreview> {
             child: Container(
               height: 300,
               width:  MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: const DecorationImage(image: AssetImage(AppIcons.imgSlide1)),
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               child: FutureBuilder<Uint8List?>(
                   future: VideoThumbnail.thumbnailData(
                     video: widget.path,
@@ -45,12 +50,6 @@ class _StatusVideoPreviewState extends State<StatusVideoPreview> {
                     return Image.asset("assets/images/slide_i.png",
                         fit: BoxFit.cover);
                   }),
-              decoration: BoxDecoration(
-                image: const DecorationImage(image: AssetImage(AppIcons.imgSlide1)),
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
 
             ),
           ),

@@ -1,5 +1,4 @@
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -14,12 +13,11 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: height ?? 50,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: color ?? AppColors.primaryColor,
+              elevation: 0, backgroundColor: color ?? AppColors.primaryColor,
               padding: const EdgeInsets.all(16)),
           onPressed: isEnabled ? onTap : null,
           child: Center(

@@ -1,7 +1,6 @@
 
 import 'dart:convert';
 
-import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 
 UpdateProfileResponse updateProfileResponseFromJson(String str) => UpdateProfileResponse.fromJson(json.decode(str));

@@ -13,10 +13,11 @@ class ConnectsRepository {
 
   ConnectsRepository(this.httpHelper);
 
-  Future<State> getConnects() async {
+  Future<State> getConnects(String? userId) async {
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(
-        Endpoints.fetch_connections_endpoint,
+       userId == null ?  Endpoints.fetchConnectionsEndpoint :Endpoints.fetchUserConnectionsEndpoint,
+        body: {'user_id':userId}
       ),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(
@@ -43,12 +44,11 @@ class ConnectsRepository {
       },
     );
   }
-
 
   Future<State> getPendingRequest() async {
     return await SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(
-        Endpoints.pending_request_endpoint,
+      () => httpHelper.post(
+        Endpoints.pendingRequestEndpoint,
       ),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(
@@ -76,17 +76,10 @@ class ConnectsRepository {
     );
   }
 
-
   Future<State> search({String? role, String? searchValue}) async {
-
     return await SimplifyApiConsuming.makeRequest(
-      () => httpHelper.post(
-        Endpoints.search_endpoint,
-        body:{
-          "role" :role,
-          "search_value":searchValue
-        }
-      ),
+      () => httpHelper.post(Endpoints.searchEndpoint,
+          body: {"role": role, "search_value": searchValue}),
       successResponse: (data) {
         return State<SearchResponse?>.success(
             data != null ? SearchResponse.fromJson(data) : null);
@@ -113,19 +106,141 @@ class ConnectsRepository {
     );
   }
 
-  Future<State> react({String? connection_id, String? action}) async {
+  Future<State> searchConnects({String? user_id, String? searchValue}) async {
+    return await SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(Endpoints.searchConnectsEndpoint,
+          body: {"user_id": user_id, "search_value": searchValue}),
+      successResponse: (data) {
+        return State<FetchConnectionResponse?>.success(
+            data != null ? FetchConnectionResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
 
+  Future<State> react({String? connectionId, String? action}) async {
+    return await SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(Endpoints.requestReactEndpoint,
+          body: {"connection_id": connectionId, "action": action}),
+      successResponse: (data) {
+        return State<ReactResponse?>.success(
+            data != null ? ReactResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> sendRequest({
+    String? userId,
+  }) async {
+    return await SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(Endpoints.sendRequestEndpoint, body: {
+        "user_id": userId,
+      }),
+      successResponse: (data) {
+        return State<ReactResponse?>.success(
+            data != null ? ReactResponse.fromJson(data) : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> followRequest({
+    String? userId,
+  }) async {
+    return await SimplifyApiConsuming.makeRequest(
+      () => httpHelper.post(Endpoints.followEndpoint, body: {
+        "user_id": userId,
+      }),
+      successResponse: (data) {
+        return State<ReactResponse?>.success(null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+
+  Future<State> getSuggestedConnects() async {
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(
-        Endpoints.request_react_endpoint,
-        body:{
-          "connection_id" :connection_id,
-          "action":action
-        }
+        Endpoints.suggestedConnects,
       ),
       successResponse: (data) {
-        return State<ReactResponse?>.success(
-            data != null ? ReactResponse.fromJson(data) : null);
+        return State<List<SearchResult>?>.success(data != null
+            ? List<SearchResult>.from(
+                data["suggested"].map((e) => SearchResult.fromJson(e)))
+            : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -148,78 +263,4 @@ class ConnectsRepository {
       },
     );
   }
-
-
-  Future<State> send_request({String? user_id, }) async {
-
-    return await SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(
-          Endpoints.send_request_endpoint,
-          body:{
-            "user_id" :user_id,
-
-          }
-      ),
-      successResponse: (data) {
-        return State<ReactResponse?>.success(
-            data != null ? ReactResponse.fromJson(data) : null);
-      },
-      statusCodeSuccess: 200,
-      errorResponse: (response) {
-        debugPrint('ERROR SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data.toString(),
-              data: null),
-        );
-      },
-      dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
-              data: null),
-        );
-      },
-    );
-  }
-
-  Future<State> follow_request({String? user_id, }) async {
-
-    return await SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(
-          Endpoints.follow_endpoint,
-          body:{
-            "user_id" :user_id,
-
-          }
-      ),
-      successResponse: (data) {
-        return State<ReactResponse?>.success(
-            data != null ? ReactResponse.fromJson(data) : null);
-      },
-      statusCodeSuccess: 200,
-      errorResponse: (response) {
-        debugPrint('ERROR SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data.toString(),
-              data: null),
-        );
-      },
-      dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
-        return State<ServerErrorModel>.error(
-          ServerErrorModel(
-              statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
-              data: null),
-        );
-      },
-    );
-  }
-
 }

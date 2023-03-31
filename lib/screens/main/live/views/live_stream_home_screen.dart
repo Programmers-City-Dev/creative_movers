@@ -1,11 +1,10 @@
-import 'dart:developer';
 
 import 'package:camera/camera.dart';
 import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
-import 'package:creative_movers/screens/main/live/views/join_meeting.dart';
+import 'package:creative_movers/screens/main/live/views/live_stream.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +31,7 @@ class _LiveStreamHomeScreenState extends State<LiveStreamHomeScreen> {
     return Scaffold(
         body: !ready && widget.isBroadcaster
             ? const LiveStreamPrepScreen()
-            : Meeting(
+            : LiveStream(
                 isBroadcaster: widget.isBroadcaster,
               ));
   }
@@ -57,23 +56,26 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
   @override
   void initState() {
     super.initState();
-    cameraController = CameraController(
-      _isFrontCamera ? cameras[1] : cameras[0],
-      ResolutionPreset.medium,
-      enableAudio: false,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-    cameraController!.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
+    // log("CAMES: ${cameras.length}");
+    if (cameras.isNotEmpty) {
+      cameraController = CameraController(
+        _isFrontCamera ? cameras[1] : cameras[0],
+        ResolutionPreset.medium,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
+      cameraController!.initialize().then((_) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {});
+      });
+    }
   }
 
   @override
   void dispose() {
-    cameraController!.dispose();
+    cameraController?.dispose();
     super.dispose();
   }
 
@@ -82,158 +84,163 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
     return Stack(
       fit: StackFit.expand,
       children: [
-        if (cameraController!.value.isInitialized)
-          CameraPreview(cameraController!)
-        else
-          Container(),
-        Container(
-          color: Colors.black.withOpacity(0.5),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.08,
-                    horizontal: 16.0),
-                child: Card(
-                  elevation: 0.5,
-                  color: AppColors.primaryColor.withOpacity(0.1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                              onTap: () => Navigator.of(context).pop(),
-                              child: const Icon(Icons.arrow_back_ios,
-                                  color: Colors.white)),
-                          const Text(
-                            "Before Start",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                _isFrontCamera = !_isFrontCamera;
-                                cameraController = CameraController(
-                                  _isFrontCamera ? cameras[1] : cameras[0],
-                                  ResolutionPreset.high,
-                                  enableAudio: false,
-                                  imageFormatGroup: ImageFormatGroup.jpeg,
-                                );
-                                cameraController!.initialize().then((_) {
-                                  if (!mounted) {
-                                    return;
-                                  }
-                                  setState(() {});
-                                });
-                              },
-                              child: const Icon(Icons.cameraswitch_outlined,
-                                  color: Colors.white)),
-                        ]),
-                  ),
-                ),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Text(
-                    "Microphone",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 42,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+        if (cameraController != null && cameraController!.value.isInitialized)
+          CameraPreview(
+            cameraController!,
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.08,
+                        horizontal: 16.0),
+                    child: Card(
+                      elevation: 0.5,
+                      color: AppColors.primaryColor.withOpacity(0.1),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                  onTap: () => Navigator.of(context).pop(),
+                                  child: const Icon(Icons.arrow_back_ios,
+                                      color: Colors.white)),
+                              const Text(
+                                "Before Start",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    _isFrontCamera = !_isFrontCamera;
+                                    cameraController = CameraController(
+                                      _isFrontCamera ? cameras[1] : cameras[0],
+                                      ResolutionPreset.high,
+                                      enableAudio: false,
+                                      imageFormatGroup: ImageFormatGroup.jpeg,
+                                    );
+                                    cameraController!.initialize().then((_) {
+                                      if (!mounted) {
+                                        return;
+                                      }
+                                      setState(() {});
+                                    });
+                                  },
+                                  child: const Icon(Icons.cameraswitch_outlined,
+                                      color: Colors.white)),
+                            ]),
+                      ),
                     ),
                   ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Text(
+                        "Microphone",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 42,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16.0,
+                      ),
+                      Text(
+                        "Would you like to enable microphone?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.lightGrey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Expanded(
+                      child: SvgPicture.asset('assets/svgs/microphone.svg')),
                   SizedBox(
-                    height: 16.0,
-                  ),
-                  Text(
-                    "Would you like to enable microphone?",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.lightGrey,
+                    width: 100,
+                    height: 65,
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: CupertinoSwitch(
+                          value: _isMicOn,
+                          activeColor: AppColors.primaryColor,
+                          trackColor: AppColors.black.withOpacity(0.6),
+                          onChanged: (value) {
+                            setState(() {
+                              _isMicOn = value;
+                            });
+                          }),
                     ),
                   ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: BlocConsumer<ChatBloc, ChatState>(
+                      bloc: _chatBloc,
+                      listener: (context, state) {
+                        if (state is AgoraTokenGotten) {
+                          cameraController?.dispose();
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => LiveStream(
+                                      isBroadcaster: true,
+                                      token: state.token,
+                                      isFrontCamera: _isFrontCamera,
+                                      isMuted: !_isMicOn)));
+                        }
+                        if (state is AgoraTokenFailed) {
+                          AppUtils.showCustomToast(state.error);
+                        }
+                      },
+                      builder: (context, state) {
+                        return CustomButton(
+                          onTap: state is ChatMessageLoading
+                              ? null
+                              : () {
+                                  _chatBloc.add(const GenerateAgoraToken(
+                                      channelName: "CreativeMovers"));
+                                },
+                          color: AppColors.primaryColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state is ChatMessageLoading
+                                    ? "Preparing"
+                                    : "Lets Go →",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(
+                                width: 16.0,
+                              ),
+                              state is ChatMessageLoading
+                                  ? const SpinKitThreeBounce(
+                                      color: Colors.white,
+                                      size: 24,
+                                    )
+                                  : Container()
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
-              const Spacer(),
-              Expanded(child: SvgPicture.asset('assets/svgs/microphone.svg')),
-              SizedBox(
-                width: 100,
-                height: 65,
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: CupertinoSwitch(
-                      value: _isMicOn,
-                      activeColor: AppColors.primaryColor,
-                      trackColor: AppColors.black.withOpacity(0.6),
-                      onChanged: (value) {
-                        setState(() {
-                          _isMicOn = value;
-                        });
-                      }),
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: BlocConsumer<ChatBloc, ChatState>(
-                  bloc: _chatBloc,
-                  listener: (context, state) {
-                    if (state is AgoraTokenGotten) {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => Meeting(
-                              isBroadcaster: true,
-                              token: state.token,
-                              isFrontCamera: _isFrontCamera,
-                              isMuted: _isMicOn)));
-                    }
-                    if (state is AgoraTokenFailed) {
-                      AppUtils.showCustomToast(state.error);
-                    }
-                  },
-                  builder: (context, state) {
-                    return CustomButton(
-                      onTap: state is ChatLoading
-                          ? null
-                          : () {
-                              _chatBloc.add(const GenerateAgoraToken(
-                                  channelName: "TestChannnel"));
-                            },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            state is ChatLoading ? "Preparing" : "Lets Go →",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          const SizedBox(
-                            width: 16.0,
-                          ),
-                          state is ChatLoading
-                              ? const SpinKitThreeBounce(
-                                  color: Colors.white,
-                                  size: 24,
-                                )
-                              : Container()
-                        ],
-                      ),
-                      color: AppColors.primaryColor,
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-        ),
+            ),
+          )
       ],
     );
   }

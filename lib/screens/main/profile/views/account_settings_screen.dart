@@ -29,6 +29,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   void initState() {
     injector.get<CacheCubit>().fetchCachedUserData();
+    _paymentBloc.add(const GetSubscriptionInfoEvent());
     super.initState();
   }
 
@@ -140,7 +141,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         ),
                         Text(
                           cachedUser.email!,
-                          style: TextStyle(),
+                          style: const TextStyle(),
                         ),
                       ],
                     ),
@@ -298,9 +299,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                     Row(
                                       children: [
                                         BlocBuilder<PaymentBloc, PaymentState>(
-                                            bloc: _paymentBloc
-                                              ..add(
-                                                  const GetSubscriptionInfoEvent()),
+                                            bloc: _paymentBloc,
+                                            // ..add(
+                                            //     const GetSubscriptionInfoEvent()),
                                             builder: (context, state) {
                                               if (state
                                                   is SubscriptionLoadedState) {
@@ -369,7 +370,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              injector.get<PaymentBloc>().add(
+                                  CreatePaymentIntentEvent(int.parse("7"),
+                                      "usd", "1", "account_activation"));
+                            },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 8.0),
@@ -456,12 +461,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                           },
                                           child: GestureDetector(
                                             onTap: () async {
-                                              injector.get<PaymentBloc>().add(
-                                                  const CreatePaymentIntentEvent(
-                                                      20,
-                                                      "USD",
-                                                      "monthly",
-                                                      "account_activation"));
+                                              // injector.get<PaymentBloc>().add(
+                                              //     const CreatePaymentIntentEvent(
+                                              //         20,
+                                              //         "USD",
+                                              //         "monthly",
+                                              //         "account_activation"));
+
+                                              Navigator.of(context).pushNamed(helpAndSupportPath);
                                             },
                                             child: const Text(
                                               'Help and Support',
@@ -563,6 +570,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   void clearCache() {
     StorageHelper.remove(StorageKeys.token);
     StorageHelper.setBoolean(StorageKeys.stayLoggedIn, false);
+    injector.get<CacheCubit>().clearCacheStorage();
 
     // StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
   }

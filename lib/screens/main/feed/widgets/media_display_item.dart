@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+import '../../../widget/image_previewer.dart';
+
 class MediaDisplayItem extends StatefulWidget {
   const MediaDisplayItem({Key? key, required this.media}) : super(key: key);
 
@@ -45,13 +47,26 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
   @override
   Widget build(BuildContext context) {
     return widget.media.type == 'image'
-        ? Container(
-            height: 250,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(widget.media.mediaPath))),
-          )
+        ? GestureDetector(
+      onTap:  () => showDialog(
+        context: context,
+        // isDismissible: false,
+        // enableDrag: false,
+        barrierDismissible: true,
+        builder: (context) => ImagePreviewer(
+          imageUrl: widget.media.mediaPath,
+          heroTag: "cover_photo",
+          tightMode: true,
+        ),
+      ),
+          child: Container(
+              height: 250,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(widget.media.mediaPath))),
+            ),
+        )
         : FutureBuilder<Uint8List?>(
             future: VideoThumbnail.thumbnailData(
               video: widget.media.mediaPath,
@@ -67,7 +82,7 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
               if (!snapshot.hasError) {
                 if (snapshot.hasData) {
                   return Stack(children: [
-                    Container(
+                    SizedBox(
                       height: 250,
                       width: MediaQuery.of(context).size.width,
                       child: Image.memory(
@@ -78,7 +93,7 @@ class _MediaDisplayItemState extends State<MediaDisplayItem> {
                     ),
                     GestureDetector(
                       onTap: (){showDialog(context: context, builder: (context) => VideoPreview(videoUrl: widget.media.mediaPath));},
-                      child: Container(
+                      child: SizedBox(
                         height: 250,
                         width: MediaQuery.of(context).size.width,
                         child: const Center(

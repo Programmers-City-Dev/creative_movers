@@ -32,7 +32,7 @@ class _LinkPreviewState extends State<LinkPreview> {
             padding: const EdgeInsets.only(bottom: 0.0),
             child: AnyLinkPreview(
               link: urls.first,
-              displayDirection: uiDirection.uiDirectionHorizontal,
+              displayDirection: UIDirection.uiDirectionHorizontal,
               showMultimedia: true,
               bodyMaxLines: 3,
               titleStyle: const TextStyle(

@@ -1,11 +1,7 @@
 import 'package:creative_movers/app.dart';
-import 'package:creative_movers/screens/main/live/views/join_meeting.dart';
 import 'package:creative_movers/screens/main/live/views/live_stream_home_screen.dart';
-import 'package:creative_movers/screens/main/views/live_stream_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({Key? key, this.onTap}) : super(key: key);
@@ -114,54 +110,60 @@ class _PostCardState extends State<PostCard> {
   }
 
   void _joinLiveStream() {
-    showMaterialModalBottomSheet(
-        context: mainNavKey.currentState!.context,
-        expand: false,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        )),
-        builder: (ctx) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Choose your role",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.of(mainNavKey.currentState!.context)
-                      .push(MaterialPageRoute(
-                    builder: (context) => const LiveStreamHomeScreen(
-                      isBroadcaster: true,
-                    ),
-                  ));
-                },
-                leading: const Icon(Icons.announcement_outlined),
-                title: const Text("Host"),
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.of(mainNavKey.currentState!.context)
-                      .push(MaterialPageRoute(
-                    builder: (context) => const LiveStreamHomeScreen(
-                      isBroadcaster: false,
-                    ),
-                  ));
-                },
-                leading: const Icon(Icons.speaker_outlined),
-                title: const Text("Guest"),
-              ),
-            ],
-          );
-        });
+    Navigator.of(mainNavKey.currentState!.context)
+        .push(MaterialPageRoute(
+      builder: (context) => const LiveStreamHomeScreen(
+        isBroadcaster: true,
+      ),
+    ));
+    // showMaterialModalBottomSheet(
+    //     context: mainNavKey.currentState!.context,
+    //     expand: false,
+    //     shape: const RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.only(
+    //       topLeft: Radius.circular(20),
+    //       topRight: Radius.circular(20),
+    //     )),
+    //     builder: (ctx) {
+    //       return Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           const Center(
+    //             child: Padding(
+    //               padding: EdgeInsets.all(8.0),
+    //               child: Text(
+    //                 "Choose your role",
+    //                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    //               ),
+    //             ),
+    //           ),
+    //           ListTile(
+    //             onTap: () {
+    //               Navigator.of(mainNavKey.currentState!.context)
+    //                   .push(MaterialPageRoute(
+    //                 builder: (context) => const LiveStreamHomeScreen(
+    //                   isBroadcaster: true,
+    //                 ),
+    //               ));
+    //             },
+    //             leading: const Icon(Icons.announcement_outlined),
+    //             title: const Text("Host"),
+    //           ),
+    //           ListTile(
+    //             onTap: () {
+    //               Navigator.of(mainNavKey.currentState!.context)
+    //                   .push(MaterialPageRoute(
+    //                 builder: (context) => const LiveStreamHomeScreen(
+    //                   isBroadcaster: false,
+    //                 ),
+    //               ));
+    //             },
+    //             leading: const Icon(Icons.speaker_outlined),
+    //             title: const Text("Guest"),
+    //           ),
+    //         ],
+    //       );
+    //     });
   }
 }
 

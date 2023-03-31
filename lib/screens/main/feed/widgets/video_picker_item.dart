@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class VideoPickerItem extends StatefulWidget {
@@ -27,6 +25,14 @@ class _VideoPickerItemState extends State<VideoPickerItem> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
+        decoration: BoxDecoration(
+          image: const DecorationImage(image: AssetImage(AppIcons.imgSlide1)),
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        width: 100,
+        height: 150,
         child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: FutureBuilder<Uint8List?>(
@@ -47,16 +53,8 @@ class _VideoPickerItemState extends State<VideoPickerItem> {
                   return Image.asset("assets/images/slide_i.png",
                       fit: BoxFit.cover);
                 })),
-        decoration: BoxDecoration(
-          image: const DecorationImage(image: AssetImage(AppIcons.imgSlide1)),
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        width: 100,
-        height: 150,
       ),
-      Container(
+      SizedBox(
         width: 100,
         height: 150,
         child: Column(
@@ -81,10 +79,10 @@ class _VideoPickerItemState extends State<VideoPickerItem> {
           ],
         ),
       ),
-      Container(
+      const SizedBox(
         width: 100,
         height: 150,
-        child: const Center(
+        child: Center(
           child: Icon(
             Icons.play_arrow,
             color: AppColors.primaryColor,

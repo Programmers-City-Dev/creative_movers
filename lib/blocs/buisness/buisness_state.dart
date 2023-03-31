@@ -170,12 +170,12 @@ class FollowPageLoadingState extends BuisnessState{
 
 }
 class FollowPageSuccesState extends BuisnessState{
-  BuisnessProfile buisnessProfile;
-  FollowPageSuccesState({required this.buisnessProfile});
+  final String message;
+  const FollowPageSuccesState({required this.message});
 
   @override
   // TODO: implement props
-  List<Object?> get props =>[buisnessProfile];
+  List<Object?> get props =>[message];
 
 
 }
@@ -183,6 +183,36 @@ class FollowPageFailureState extends BuisnessState{
   String error;
 
   FollowPageFailureState({required this.error});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>[];
+
+
+}
+
+
+class LikePageLoadingState extends BuisnessState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+
+}
+class LikePageSuccesState extends BuisnessState{
+  final String message;
+  const LikePageSuccesState({required this.message});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>[message];
+
+
+}
+class LikePageFailureState extends BuisnessState{
+  String error;
+
+  LikePageFailureState({required this.error});
 
   @override
   // TODO: implement props

@@ -33,7 +33,6 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         bloc: _authBloc,
         listener: (context, state) {
           _listenToAccountTypeState(context, state);
-          // TODO: implement listener
           //
         },
         child: Container(
@@ -71,7 +70,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           ? 'We found some movers you might like to connect with'
                           : 'We found some creatives you might like to connect with',
                       style:
-                          TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                          const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                     ),
                     Align(
                       alignment: Alignment.centerRight,
@@ -169,7 +168,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
 
   void addConnections() {
     _authBloc.add(AddConnectionsEvent(
-      connection: widget.connections,
+      connection: myConnects,
     ));
   }
 

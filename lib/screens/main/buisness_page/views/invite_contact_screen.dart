@@ -16,14 +16,14 @@ class _InviteContactScreenState extends State<InviteContactScreen> {
       appBar: AppBar(title: const Text('Invite Contacts',style: TextStyle(fontSize: 16),),),
       backgroundColor: AppColors.smokeWhite,
       body: Container(
-        padding: EdgeInsets.all(18),
+        padding: const EdgeInsets.all(18),
         child: Column(
           children: [
             Expanded(
                 child: ListView.builder(
                   itemCount: 5,
               shrinkWrap: true,
-              itemBuilder: (context, index) => ContactItem(),
+              itemBuilder: (context, index) => const ContactItem(),
             ))
           ],
         ),

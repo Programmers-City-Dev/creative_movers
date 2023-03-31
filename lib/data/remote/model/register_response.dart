@@ -4,7 +4,6 @@
 
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 AuthResponse authResponseFromMap(String str) =>
@@ -41,9 +40,9 @@ class AuthResponse {
       );
 
   Map<String, dynamic> toMap() => {
-        "status": status == null ? null : status,
+        "status": status,
         "user": user == null ? null : user.toMap(),
-        "message": message == null ? null : message,
+        "message": message,
       };
 }
 
@@ -52,6 +51,8 @@ class User {
       {required this.id,
       this.firstname,
       this.lastname,
+      this.isFollowing,
+      this.isConnected,
       required this.username,
       required this.email,
       required this.phone,
@@ -104,35 +105,38 @@ class User {
   final String? country;
   final String? state;
   final String? ethnicity;
+  final bool? isFollowing;
+  final String? isConnected;
 
-  User copyWith({
-    int? id,
-    String? firstname,
-    String? lastname,
-    String? username,
-    String? email,
-    String? phone,
-    DateTime? dob,
-    DateTime? emailVerifiedAt,
-    String? role,
-    String? payStatus,
-    String? regStatus,
-    String? gender,
-    String? currentTeamId,
-    String? profilePhotoPath,
-    String? biodata,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? apiToken,
-    String? coverPhotoPath,
-    dynamic countryId,
-    List<dynamic>? followers,
-    List<dynamic>? following,
-    List<Connect>? connections,
-    String? country,
-    String? state,
-    String? ethnicity,
-  }) =>
+  User copyWith(
+          {int? id,
+          String? firstname,
+          String? lastname,
+          String? username,
+          String? email,
+          String? phone,
+          DateTime? dob,
+          DateTime? emailVerifiedAt,
+          String? role,
+          String? payStatus,
+          String? regStatus,
+          String? gender,
+          String? currentTeamId,
+          String? profilePhotoPath,
+          String? biodata,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? apiToken,
+          String? coverPhotoPath,
+          dynamic countryId,
+          List<dynamic>? followers,
+          List<dynamic>? following,
+          List<Connect>? connections,
+          String? country,
+          String? state,
+          String? ethnicity,
+          bool? isFollowing,
+          final String? isConnected}) =>
       User(
         id: id ?? this.id,
         firstname: firstname ?? this.firstname,
@@ -156,6 +160,8 @@ class User {
         countryId: countryId ?? this.countryId,
         followers: followers ?? this.followers,
         following: following ?? this.following,
+        isFollowing: isFollowing ?? this.isFollowing,
+        isConnected: isConnected ?? this.isConnected,
         connections: connections ?? this.connections,
         country: country ?? this.country,
         state: country ?? this.state,
@@ -163,11 +169,11 @@ class User {
       );
 
   factory User.fromMap(Map<String, dynamic> json) => User(
-        id: json["id"] == null ? null : json["id"],
+        id: json["id"],
         firstname: json["firstname"],
         lastname: json["lastname"],
-        username: json["username"] == null ? null : json["username"],
-        email: json["email"] == null ? null : json["email"],
+        username: json["username"],
+        email: json["email"],
         phone: json["phone"],
         gender: json["gender"],
         dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
@@ -175,8 +181,10 @@ class User {
             ? null
             : DateTime.parse(json["email_verified_at"]),
         role: json["role"],
-        payStatus: json["pay_status"] == null ? null : json["pay_status"],
-        regStatus: json["reg_status"] == null ? null : json["reg_status"],
+        payStatus: json["pay_status"],
+        regStatus: json["reg_status"],
+        isFollowing: json["is_following"],
+        isConnected: json["is_connected"],
         currentTeamId: json["current_team_id"],
         profilePhotoPath: json["profile_photo_path"],
         biodata: json["biodata"],
@@ -186,43 +194,45 @@ class User {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        apiToken: json["api_token"] == null ? null : json["api_token"],
+        apiToken: json["api_token"],
         coverPhotoPath:
-            json["cover_photo_path"] == null ? null : json["cover_photo_path"],
+            json["cover_photo_path"],
         countryId: json["country_id"],
         followers: json["followers"] == null
             ? null
             : List<dynamic>.from(json["followers"].map((x) => x)),
-        // following: json["following"] == null ?null : List<dynamic>.from(json["following"].map((x) => x)),
+        following: json["following"] == null
+            ? null
+            : List<dynamic>.from(json["following"].map((x) => x)),
         connections: json["connections"] == null
             ? null
             : List<dynamic>.from(json["connections"].map((x) => x)),
-        country: json["country"] == null ? null : json["country"],
-        state: json["state"] == null ? null : json["state"],
-        ethnicity: json["ethnicity"] == null ? null : json["ethnicity"],
+        country: json["country"],
+        state: json["state"],
+        ethnicity: json["ethnicity"],
       );
 
   Map<String, dynamic> toMap() => {
-        "id": id == null ? null : id,
+        "id": id,
         "firstname": firstname,
         "lastname": lastname,
-        "username": username == null ? null : username,
-        "email": email == null ? null : email,
+        "username": username,
+        "email": email,
         "phone": phone,
         "gender": gender,
         "dob": dob == null ? null : dob!.toIso8601String(),
         "email_verified_at":
             emailVerifiedAt == null ? null : emailVerifiedAt!.toIso8601String(),
         "role": role,
-        "pay_status": payStatus == null ? null : payStatus,
-        "reg_status": regStatus == null ? null : regStatus,
+        "pay_status": payStatus,
+        "reg_status": regStatus,
         "current_team_id": currentTeamId,
         "profile_photo_path": profilePhotoPath,
         "biodata": biodata,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
-        "api_token": apiToken == null ? null : apiToken,
-        "cover_photo_path": coverPhotoPath == null ? null : coverPhotoPath,
+        "api_token": apiToken,
+        "cover_photo_path": coverPhotoPath,
         "country_id": countryId,
         "followers": followers == null
             ? null
@@ -230,6 +240,8 @@ class User {
         "following": following == null
             ? null
             : List<dynamic>.from(following!.map((x) => x)),
+        "isFollowing": isFollowing,
+        "is_connected": isConnected,
         "connections": connections == null
             ? null
             : List<dynamic>.from(connections!.map((x) => x)),

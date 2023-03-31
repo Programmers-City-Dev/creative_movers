@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddImageWidget extends StatefulWidget {
@@ -40,6 +39,7 @@ class _AddImageWidgetState extends State<AddImageWidget> {
             radius: widget.ImageBgradius,
             backgroundColor: AppColors.lightBlue,
             child: CircleAvatar(
+              radius: widget.Imageradius,
               child: Container(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(200),
@@ -50,7 +50,6 @@ class _AddImageWidgetState extends State<AddImageWidget> {
                   ),
                 ),
               ),
-              radius: widget.Imageradius,
             ),
           ),
           Positioned(

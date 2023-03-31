@@ -108,17 +108,27 @@ class GetPageEvent extends BuisnessEvent {
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [page_id];
 }
 
 class FollowPageEvent extends BuisnessEvent {
   String page_id;
 
-  FollowPageEvent(this.page_id);
+  FollowPageEvent({required this.page_id});
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [page_id];
+}
+
+class LikePageEvent extends BuisnessEvent {
+  String page_id;
+
+  LikePageEvent({required this.page_id});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [page_id];
 }
 
 // class

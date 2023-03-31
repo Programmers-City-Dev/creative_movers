@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
@@ -12,6 +11,9 @@ import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../data/remote/model/FaqsResponse.dart';
 
 part 'profile_event.dart';
 
@@ -31,6 +33,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UpdateLocalUserProfileEvent>((event, emit) {
       emit(ProfileLoadedState(user: event.user));
     });
+
+    on<GetFaqsEvent>(_mapGetFaqsEventToState);
   }
 
   FutureOr<void> _mapGetUsernameToState(
@@ -111,6 +115,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       log("EXCEPTION: $e");
       emit(const ProfileUpdateErrorState(
           "Oops! Something went wrong, please try again"));
+    }
+  }
+
+  FutureOr<void> _mapGetFaqsEventToState(
+      GetFaqsEvent event, Emitter<ProfileState> emit) async {
+    try {
+      emit(GetFaqsLoadingState());
+      var state = await profileRepository.getFaqs();
+      if (state is SuccessState) {
+        emit(GetFaqsSuccessState(state.value));
+      }
+      if (state is ErrorState) {
+        ServerErrorModel errorModel = state.value;
+        emit(GetFaqsFailureState(errorModel.errorMessage));
+      }
+    } catch (e) {
+      emit(GetFaqsFailureState(e.toString()));
     }
   }
 }

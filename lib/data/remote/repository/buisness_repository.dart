@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:creative_movers/constants/enpoints.dart';
-import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/data/remote/model/create_page_response.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
@@ -22,7 +21,7 @@ class BuisnessRepository {
 
   Future<State> getBuisnessPage() {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.buisness_page_endpoint),
+          () => httpHelper.post(Endpoints.businessPageEndpoint),
       successResponse: (data) {
         return State<BuisnessProfile?>.success(
             data != null ? BuisnessProfile.fromJson(data) : null);
@@ -73,7 +72,7 @@ class BuisnessRepository {
     });
     return SimplifyApiConsuming.makeRequest(
           () async =>
-          httpHelper.post(Endpoints.create_page_endpoint, body: formData),
+          httpHelper.post(Endpoints.createPageEndpoint, body: formData),
       successResponse: (data) {
         return State<CreatePageResponse?>.success(
             data != null ? CreatePageResponse.fromJson(data) : null);
@@ -129,7 +128,7 @@ class BuisnessRepository {
     });
     return SimplifyApiConsuming.makeRequest(
           () async =>
-          httpHelper.post(Endpoints.edit_page_endpoint, body: formData),
+          httpHelper.post(Endpoints.editPageEndpoint, body: formData),
       successResponse: (data) {
         return State<CreatePageResponse?>.success(
             data != null ? CreatePageResponse.fromJson(data) : null);
@@ -158,10 +157,10 @@ class BuisnessRepository {
   }
 
 
-  Future<State> getPageFeeds(String page_id) {
+  Future<State> getPageFeeds(String pageId) {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.page_feeds_endpoint,body: {
-            "page_id":page_id
+          () => httpHelper.post(Endpoints.pageFeedsEndpoint,body: {
+            "page_id":pageId
           }),
       successResponse: (data) {
         return State<FeedsResponse?>.success(
@@ -188,14 +187,45 @@ class BuisnessRepository {
       },
     );
   }
-  Future<State> followPage(String page_id) {
+
+  Future<State> followPage(String pageId) {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.follow_page_endpoint,body: {
-            "page_id":page_id
+          () => httpHelper.post(Endpoints.followPageEndpoint,body: {
+            "page_id":pageId
           }),
       successResponse: (data) {
-        return State<BuisnessProfile?>.success(
-            data != null ? BuisnessProfile.fromJson(data) : null);
+        return State<String?>.success(
+            data != null ? data['message'] : null);
+      },
+      statusCodeSuccess: 200,
+      errorResponse: (response) {
+        debugPrint('ERROR SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data.toString(),
+              data: null),
+        );
+      },
+      dioErrorResponse: (response) {
+        debugPrint('DIO SERVER');
+        return State<ServerErrorModel>.error(
+          ServerErrorModel(
+              statusCode: response.statusCode!,
+              errorMessage: response.data['message'],
+              data: null),
+        );
+      },
+    );
+  }
+  Future<State> likePage(String pageId) {
+    return SimplifyApiConsuming.makeRequest(
+          () => httpHelper.post(Endpoints.likePageEndpoint,body: {
+        "page_id":pageId
+      }),
+      successResponse: (data) {
+        return State<String?>.success(
+            data != null ? data['message'] : null);
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
@@ -221,7 +251,7 @@ class BuisnessRepository {
 
   Future<State> getPageSuggestions() {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.page_suggestion_endpoint),
+          () => httpHelper.post(Endpoints.pageSuggestionEndpoint),
       successResponse: (data) {
         return State<SuggestedPageResponse?>.success(
             data != null ? SuggestedPageResponse.fromJson(data) : null);
@@ -250,7 +280,7 @@ class BuisnessRepository {
 
   Future<State> getPage(String id) {
     return SimplifyApiConsuming.makeRequest(
-          () => httpHelper.post(Endpoints.get_page_endpoint,body: {"page_id":id}),
+          () => httpHelper.post(Endpoints.getPageEndpoint,body: {"page_id":id}),
       successResponse: (data) {
         return State<GetPageResponse?>.success(
             data != null ? GetPageResponse.fromJson(data) : null);

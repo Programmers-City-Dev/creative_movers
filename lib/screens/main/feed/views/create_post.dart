@@ -1,7 +1,7 @@
+import 'dart:io';
 
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
-import 'package:creative_movers/data/remote/model/media.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/paths.dart';
@@ -12,10 +12,12 @@ import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({Key? key, this.postType = "user_feed", this.pageId}) : super(key: key);
+  const CreatePostScreen({Key? key, this.postType = "user_feed", this.pageId})
+      : super(key: key);
   final String? postType;
   final String? pageId;
 
@@ -73,7 +75,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: AppColors.primaryColor,
+                        backgroundColor: AppColors.primaryColor,
                       ),
                       onPressed:
                           mediaItems.isEmpty && _postController.text.isEmpty
@@ -119,7 +121,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                 ),
                 mediaItems.isNotEmpty
-                    ? Container(
+                    ? SizedBox(
                         height: 150,
                         child: ListView.builder(
                             physics: const BouncingScrollPhysics(),
@@ -181,14 +183,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void postFeed() {
-    List<MediaModel> media = mediaItems
-        .map((e) => MediaModel(
-            file: null,
-            type: e.mediaType == MediaType.image ? 'media' : 'video'))
-        .toList();
+    // List<MediaModel> media = mediaItems
+    //     .map((e) => MediaModel(
+    //         file: null,
+    //         type: e.mediaType == MediaType.image ? 'media' : 'video'))
+    //     .toList();
     _feedBloc.add(AddFeedEvent(
-      pageId: widget.postType == "page_feed" ? widget.pageId:null,
-        type: widget.postType!, content: _postController.text, media: mediaFiles));
+        pageId: widget.postType == "page_feed" ? widget.pageId : null,
+        type: widget.postType!,
+        content: _postController.text,
+        media: mediaFiles));
   }
 
   void _listenToAddFeedState(BuildContext context, FeedState state) {
@@ -203,9 +207,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     if (state is AddFeedSuccessState) {
       Navigator.pop(context);
-      widget.postType != "page_feed"?
-      Navigator.of(context).pushNamed(feedsPath):  Navigator.pop(context);
-          
+      widget.postType != "page_feed"
+          ? Navigator.of(context).pushNamed(feedsPath)
+          : Navigator.pop(context);
     }
   }
 
@@ -224,34 +228,68 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _fetchMedia() async {
-    var images = ['jpg', 'jpeg', 'png', 'webp','PNG'];
+    var images = ['jpg', 'jpeg', 'png', 'webp', 'PNG'];
     var videos = ['mp4', 'mov'];
-    var files = await AppUtils.fetchMedia(allowMultiple: true,onSelect: (result){
 
-      if (result!.files.isNotEmpty) {
-        for (var file in result.files) {
-          if (images.where((element) => element == file.extension).isNotEmpty) {
-            mediaItems
-                .add(MediaItemModel(mediaType: MediaType.image, path: file.path));
-            mediaFiles.add(file.path!);
+    var pickedFiles = [];
+    AppUtils.selectImage(context, (p0) {
+      setState(() {
+        pickedFiles = p0.map((e) => File(e)).toList();
+      });
+      if (pickedFiles.isNotEmpty) {
+        for (File file in pickedFiles) {
+          if (images
+              .where((element) =>
+                  element == p.extension(file.path).replaceFirst('.', ''))
+              .isNotEmpty) {
+            mediaItems.add(
+                MediaItemModel(mediaType: MediaType.image, path: file.path));
+
+            mediaFiles.add(file.path);
+            AppUtils.showCustomToast(mediaFiles.length.toString());
+            AppUtils.showCustomToast(file.path.toString());
 
             setState(() {});
           } else if (videos
-              .where((element) => element == file.extension)
+              .where((element) => element == p.extension(file.path))
               .isNotEmpty) {
-            mediaItems
-                .add(MediaItemModel(mediaType: MediaType.video, path: file.path));
-            mediaFiles.add(file.path!);
+            mediaItems.add(
+                MediaItemModel(mediaType: MediaType.video, path: file.path));
+            mediaFiles.add(file.path);
             // log('VIDEO ${mediaFiles[0].file?.filename}');
 
             setState(() {});
           }
         }
       }
-
     });
 
-
+    // var files = await AppUtils.fetchMedia(
+    //     allowMultiple: true,
+    //     onSelect: (result) {
+    //       if (result!.files.isNotEmpty) {
+    //         for (var file in result.files) {
+    //           if (images
+    //               .where((element) => element == file.extension)
+    //               .isNotEmpty) {
+    //             mediaItems.add(MediaItemModel(
+    //                 mediaType: MediaType.image, path: file.path));
+    //             mediaFiles.add(file.path!);
+    //
+    //             setState(() {});
+    //           } else if (videos
+    //               .where((element) => element == file.extension)
+    //               .isNotEmpty) {
+    //             mediaItems.add(MediaItemModel(
+    //                 mediaType: MediaType.video, path: file.path));
+    //             mediaFiles.add(file.path!);
+    //             // log('VIDEO ${mediaFiles[0].file?.filename}');
+    //
+    //             setState(() {});
+    //           }
+    //         }
+    //       }
+    //     });
   }
 }
 

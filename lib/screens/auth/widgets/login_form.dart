@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
-import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -13,19 +12,16 @@ import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/views/account_type_screen.dart';
 import 'package:creative_movers/screens/auth/views/forgot_password_modal.dart';
-import 'package:creative_movers/screens/auth/views/login_screen.dart';
 import 'package:creative_movers/screens/auth/views/more_details_screen.dart';
 import 'package:creative_movers/screens/main/payment/views/payment_screen.dart';
 import 'package:creative_movers/screens/auth/views/signup_screen.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/theme/app_colors.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'form_field.dart';
 
@@ -259,9 +255,9 @@ class _LoginFormState extends State<LoginForm> {
     } else if (stage == 'account_type') {
       return const PaymentScreen();
     } else if (stage == 'payment') {
-      return HomeScreen();
+      return const HomeScreen();
     } else {
-      return HomeScreen();
+      return const HomeScreen();
     }
   }
 }

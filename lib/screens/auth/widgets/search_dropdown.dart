@@ -42,7 +42,7 @@ class _SearchDropdownState extends State<SearchDropdown> {
   ];
   List<String> filterlist = List.empty();
   List<String> selectedList = [];
-  AuthBloc _authBloc = AuthBloc();
+  final AuthBloc _authBloc = AuthBloc();
 
   // List<String> filterlist = [];
   final TextEditingController _controller = TextEditingController();
@@ -53,7 +53,7 @@ class _SearchDropdownState extends State<SearchDropdown> {
       body: Container(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -62,7 +62,7 @@ class _SearchDropdownState extends State<SearchDropdown> {
                   TextButton(
                       style: TextButton.styleFrom(
                           backgroundColor: AppColors.lightBlue,
-                          shape: StadiumBorder()),
+                          shape: const StadiumBorder()),
                       onPressed: () {
                         widget.onSaved!(selectedList);
                         Navigator.pop(context);
@@ -129,7 +129,7 @@ class _SearchDropdownState extends State<SearchDropdown> {
                   suffixIcon: Visibility(
                     visible: _controller.text.isNotEmpty,
                     child: Container(
-                      margin: EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
                       child: TextButton(
                         onPressed: () {
                           setState(() {
@@ -138,14 +138,14 @@ class _SearchDropdownState extends State<SearchDropdown> {
                             _controller.clear();
                           });
                         },
-                        child: const Text('Add'),
                         style: TextButton.styleFrom(
-                          shape: StadiumBorder(),
+                          shape: const StadiumBorder(),
                           backgroundColor: AppColors.lightBlue,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 15,
                           ),
                         ),
+                        child: const Text('Add'),
                       ),
                     ),
                   ),
@@ -199,7 +199,7 @@ class _SearchDropdownState extends State<SearchDropdown> {
                     return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) => Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: InkWell(
                           onTap: () {
                             setState(() {
@@ -209,10 +209,10 @@ class _SearchDropdownState extends State<SearchDropdown> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Text(
                               filterlist[index],
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ),
                         ),
@@ -223,10 +223,10 @@ class _SearchDropdownState extends State<SearchDropdown> {
                   } else  {
                     return Column(
                       children:  [
-                        SizedBox(height: 100,),
+                        const SizedBox(height: 100,),
                         const Text('Ooops an error occured '),
-                        SizedBox(height: 10,),
-                        CustomButton(onTap: (){_authBloc.add(CategoriesEvent());}, child: Text('Retry'),)
+                        const SizedBox(height: 10,),
+                        CustomButton(onTap: (){_authBloc.add(CategoriesEvent());}, child: const Text('Retry'),)
                       ],
                     );
                   }

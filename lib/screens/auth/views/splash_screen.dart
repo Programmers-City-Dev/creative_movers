@@ -14,10 +14,10 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    var d = Duration(seconds: 5);
+    var d = const Duration(seconds: 5);
     Future.delayed(d).then((value) => {
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => OnboardingScreen()))
+              MaterialPageRoute(builder: (context) => const OnboardingScreen()))
         });
   }
 

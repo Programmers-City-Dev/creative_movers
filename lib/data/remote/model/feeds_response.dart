@@ -187,7 +187,7 @@ class Comment {
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
         id: json["id"],
         userId: json["user_id"],
-        comment: json["comment"] == null ? null : json["comment"],
+        comment: json["comment"],
         feedId: json["feed_id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
@@ -197,7 +197,7 @@ class Comment {
   Map<String, dynamic> toJson() => {
         "id": id,
         "user_id": userId,
-        "comment": comment == null ? null : comment,
+        "comment": comment,
         "feed_id": feedId,
         "created_at": createdAt.toString(),
         "updated_at": updatedAt.toString(),
@@ -301,13 +301,13 @@ class Link {
   bool active;
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-        url: json["url"] == null ? null : json["url"],
+        url: json["url"],
         label: json["label"],
         active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url == null ? null : url,
+        "url": url,
         "label": label,
         "active": active,
       };
@@ -325,14 +325,14 @@ class PostPage {
   String? photoPath;
 
   factory PostPage.fromJson(Map<String, dynamic> json) => PostPage(
-        id: json["id"] == null ? null : json["id"],
-        name: json["name"] == null ? null : json["name"],
-        photoPath: json["photo_path"] == null ? null : json["photo_path"],
+        id: json["id"],
+        name: json["name"],
+        photoPath: json["photo_path"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id == null ? null : id,
-        "name": name == null ? null : name,
-        "photo_path": photoPath == null ? null : photoPath,
+        "id": id,
+        "name": name,
+        "photo_path": photoPath,
       };
 }

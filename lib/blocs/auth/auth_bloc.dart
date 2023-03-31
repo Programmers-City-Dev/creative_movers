@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:core';
-import 'dart:core';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
 import 'package:creative_movers/data/remote/model/addconnection_response.dart';
 import 'package:creative_movers/data/remote/model/biodata_response.dart';
@@ -118,13 +116,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           role: event.role,
           category: event.category,
           description: event.description,
-          est_capital: event.est_capital,
+          est_capital: event.estCapital,
           max_range: event.max_range,
           min_range: event.min_range,
           name: event.name,
           photo: event.photo,
           stage: event.stage,
-          user_id: event.user_id);
+          user_id: event.userId);
       if (state is SuccessState) {
         emit(AccountTypeSuccesState(
           accountTypeResponse: state.value,
@@ -170,7 +168,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(LogoutFaliureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -187,7 +184,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(CategoryFaliureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -205,8 +201,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(ForgotPasswordFailureState(error: 'Oops Something went wrong '));
-      // TODO
-
     }
   }
 
@@ -226,7 +220,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(ResetPasswordFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 
@@ -243,7 +236,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(ConfirmTokenFailureState(error: 'Oops Something went wrong'));
-      // TODO
     }
   }
 }

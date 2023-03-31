@@ -1,4 +1,3 @@
-import 'package:creative_movers/screens/main/notification/widgets/notification_item.dart';
 import 'package:flutter/material.dart';
 
 class PageNotifications extends StatefulWidget {

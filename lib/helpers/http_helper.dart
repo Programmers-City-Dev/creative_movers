@@ -14,22 +14,23 @@ class HttpHelper {
     Map<String, dynamic> headers = {};
     headers['Content-Type'] = 'application/json';
     headers['Accept'] = 'application/json';
+    headers['Cache-Control'] = 'no-cache';
     if (storageToken != null) headers['Authorization'] = 'Bearer $storageToken';
 
     _client!.options.headers = headers;
     if (enabledDioLogger) {
-      // _client!.interceptors.add(
-      //   PrettyDioLogger(
-      //     request: false,
-      //     requestHeader: false,
-      //     requestBody: false,
-      //     responseBody: false,
-      //     responseHeader: false,
-      //     error: true,
-      //     compact: true,
-      //     maxWidth: 400,
-      //   ),
-      // );
+      _client!.interceptors.add(
+        PrettyDioLogger(
+          request: true,
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: true,
+          error: true,
+          compact: true,
+          maxWidth: 400,
+        ),
+      );
     }
     return _client;
   }

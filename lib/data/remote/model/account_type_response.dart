@@ -73,20 +73,20 @@ class Connect {
       );
 
   factory Connect.fromJson(Map<String, dynamic> json) => Connect(
-    id: json["id"] == null ? null : json["id"],
-    firstname: json["firstname"] == null ? null : json["firstname"],
-    lastname: json["lastname"] == null ? null : json["lastname"],
-    role: json["role"] == null ? null : json["role"],
-    profilePhotoPath: json["profile_photo_path"] == null ? null : json["profile_photo_path"],
+    id: json["id"],
+    firstname: json["firstname"],
+    lastname: json["lastname"],
+    role: json["role"],
+    profilePhotoPath: json["profile_photo_path"],
 
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-    "firstname": firstname == null ? null : firstname,
-    "lastname": lastname == null ? null : lastname,
-    "role": role == null ? null : role,
-    "profile_photo_path": profilePhotoPath == null ? null : profilePhotoPath,
+    "id": id,
+    "firstname": firstname,
+    "lastname": lastname,
+    "role": role,
+    "profile_photo_path": profilePhotoPath,
 
   };
 }

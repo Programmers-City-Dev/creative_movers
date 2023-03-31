@@ -1,14 +1,13 @@
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
-import 'package:creative_movers/resources/app_icons.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/about_page_screen.dart';
 import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
 import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
-import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/theme/app_colors.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_stack/image_stack.dart';
 
 class ViewBuisnessPageScreen extends StatefulWidget {
@@ -22,7 +21,8 @@ class ViewBuisnessPageScreen extends StatefulWidget {
 
 class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
   final BuisnessBloc _buisnessBloc = BuisnessBloc();
-  final BuisnessBloc _buisnessBloc2 = BuisnessBloc();
+  late bool isFollowing;
+  late bool liked;
 
   @override
   void initState() {
@@ -32,18 +32,48 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BuisnessBloc, BuisnessState>(
+    return BlocConsumer<BuisnessBloc, BuisnessState>(
+      listener: (ctx, state) {
+        if (state is GetPageSuccesState) {
+          // log(state.getPageResponse.page!.isLiked.toString());
+          // log(state.getPageResponse.page!.isFollowing.toString());
+
+          if (state.getPageResponse.page?.isFollowing != null) {
+            isFollowing = state.getPageResponse.page!.isFollowing!;
+            // liked = state.getPageResponse.page!.isLiked!;
+
+          }
+          if (state.getPageResponse.page?.isLiked != null) {
+            liked = state.getPageResponse.page!.isLiked!;
+            // log(liked.toString());
+
+          }
+        }
+
+        _buisnessBloc.add(PageFeedsEvent(widget.pageId.toString()));
+      },
+      buildWhen: (prevState, currentState) {
+        return currentState is GetPageLoadingState ||
+            currentState is GetPageSuccesState ||
+            currentState is GetPageFailureState;
+      },
+      listenWhen: (prevState, currentState) {
+        return currentState is GetPageLoadingState ||
+            currentState is GetPageSuccesState ||
+            currentState is GetPageFailureState;
+      },
       bloc: _buisnessBloc,
       builder: (context, state) {
         if (state is GetPageLoadingState) {
           return const Center(child: CircularProgressIndicator());
         }
         if (state is GetPageSuccesState) {
-          _buisnessBloc2.add(PageFeedsEvent(widget.pageId.toString()));
           return Scaffold(
+            backgroundColor: AppColors.smokeWhite,
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     height: 250,
@@ -83,178 +113,405 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 20),
                                   ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
+
                                   Row(
                                     children: [
-                                      ImageStack.providers(
-                                        imageBorderWidth: 1,
-                                        providers: const [
-                                          NetworkImage(
-                                              'https://encrypted-tbn0.gstatic.com/imag'
-                                              'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                              'IsMSaTdFerTaA&usqp=CAU'),
-                                          NetworkImage(
-                                              'https://encrypted-tbn0.gstatic.com/imag'
-                                              'es?q=tbn:ANd9GcSEEpS06Ncz7d5uaqQvvcQeB'
-                                              'IsMSaTdFerTaA&usqp=CAU'),
-                                          NetworkImage(
-                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                            'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                            'LZKNzyR9E9kzjH55-w&usqp=CAU',
-                                          ),
-                                          NetworkImage(
-                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9'
-                                            'GcTvSxYr3ogP7Xpf9ivCAiMA8yYKb4RC5XIO-8OiqiAwci_hZurI_'
-                                            'LZKNzyR9E9kzjH55-w&usqp=CAU',
-                                          )
-                                        ],
-                                        totalCount: 5,
-                                        imageCount: 5,
+                                      Expanded(
+                                        child: ImageStack(
+                                          imageBorderWidth: 1,
+                                          totalCount: state.getPageResponse
+                                                      .page!.followers!.length >
+                                                  5
+                                              ? 5
+                                              : state.getPageResponse.page!
+                                                  .followers!.length,
+                                          imageCount: state.getPageResponse
+                                              .page!.followers!.length,
+                                          imageList: state
+                                              .getPageResponse.page!.followers!
+                                              .map((e) => e.profilePhotoPath)
+                                              .toList(),
+                                        ),
                                       ),
                                       const SizedBox(
                                         width: 10,
                                       ),
+                                      BlocConsumer<BuisnessBloc, BuisnessState>(
+                                        bloc: _buisnessBloc,
+                                        buildWhen: (prevState, currentState) {
+                                          return currentState
+                                                  is LikePageLoadingState ||
+                                              currentState
+                                                  is LikePageSuccesState ||
+                                              currentState
+                                                  is LikePageFailureState;
+                                        },
+                                        listener: (context, state) {
+                                          if (state is LikePageSuccesState) {
+                                            AppUtils.showCustomToast(
+                                                state.message);
+                                            setState(() {
+                                              liked = !liked;
+                                              isFollowing == false
+                                                  ? isFollowing = true
+                                                  : isFollowing = isFollowing;
+                                              // log(liked.toString());
+                                            });
+                                          }
+                                        },
+                                        builder: (context, buisnessState) {
+                                          return Center(
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  shape: const StadiumBorder()),
+                                              onPressed: () {
+                                                _buisnessBloc.add(LikePageEvent(
+                                                    page_id: widget.pageId));
+                                              },
+                                              child: buisnessState
+                                                      is LikePageLoadingState
+                                                  ? const Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 25),
+                                                      child: SizedBox(
+                                                        height: 20,
+                                                        width: 20,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Colors.blue,
+                                                          strokeWidth: 2,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : liked
+                                                      ? const Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      8.0),
+                                                          child: Icon(
+                                                            Icons
+                                                                .thumb_up_outlined,
+                                                            size: 15,
+                                                            color: Colors.blue,
+                                                          ),
+                                                        )
+                                                      : const Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      8.0),
+                                                          child: Icon(
+                                                            Icons
+                                                                .thumb_up_outlined,
+                                                            size: 15,
+                                                            color:
+                                                                Colors.blueGrey,
+                                                          ),
+                                                        ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      BlocConsumer<BuisnessBloc, BuisnessState>(
+                                        bloc: _buisnessBloc,
+                                        buildWhen: (prevState, currentState) {
+                                          return currentState
+                                                  is FollowPageLoadingState ||
+                                              currentState
+                                                  is FollowPageSuccesState ||
+                                              currentState
+                                                  is FollowPageFailureState;
+                                        },
+                                        listener: (context, state) {
+                                          if (state is FollowPageSuccesState) {
+                                            AppUtils.showCustomToast(
+                                                state.message);
+                                            setState(() {
+                                              isFollowing = !isFollowing;
+                                            });
+                                          }
+                                        },
+                                        builder: (context, buisnessState) {
+                                          return Center(
+                                            child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    shape:
+                                                        const StadiumBorder()),
+                                                onPressed: () {
+                                                  _buisnessBloc.add(
+                                                      FollowPageEvent(
+                                                          page_id:
+                                                              widget.pageId));
+                                                },
+                                                child: buisnessState
+                                                        is FollowPageLoadingState
+                                                    ? const Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 25),
+                                                        child: SizedBox(
+                                                          height: 20,
+                                                          width: 20,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            color: Colors.blue,
+                                                            strokeWidth: 2,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : !isFollowing
+                                                        ? const Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        8.0),
+                                                            child:
+                                                                Text('Follow'),
+                                                          )
+                                                        : const Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        8.0),
+                                                            child: Text(
+                                                                'Unfollow'),
+                                                          )),
+                                          );
+                                        },
+                                      ),
                                     ],
                                   ),
+
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => AboutPageScreen(
-                                          page: state.getPageResponse.page!,
-                                        ),
-                                      ));
-                                    },
-                                    child: Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.arrow_back,
-                                          color: AppColors.white,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          'More about Creative Movers',
-                                          style: TextStyle(
-                                              color: AppColors.white,
-                                              fontSize: 13),
-                                        )
-                                      ],
-                                    ),
-                                  )
+
+                                  // Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     InkWell(
+                                  //       onTap: () {
+                                  //         Navigator.of(context)
+                                  //             .push(MaterialPageRoute(
+                                  //           builder: (context) =>
+                                  //               AboutPageScreen(
+                                  //             page: state.getPageResponse.page!,
+                                  //           ),
+                                  //         ));
+                                  //       },
+                                  //       child: Row(
+                                  //         children: const [
+                                  //           Icon(
+                                  //             Icons.arrow_back,
+                                  //             color: AppColors.white,
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 5,
+                                  //           ),
+                                  //           Text(
+                                  //             'More about Creative Movers',
+                                  //             style: TextStyle(
+                                  //                 color: AppColors.white,
+                                  //                 fontSize: 13),
+                                  //           )
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Center(
+                                  //       child: TextButton(
+                                  //           style: TextButton.styleFrom(
+                                  //               backgroundColor: Colors.white,
+                                  //               shape: const StadiumBorder()),
+                                  //           onPressed: () {},
+                                  //           child: const Padding(
+                                  //             padding: EdgeInsets.symmetric(
+                                  //                 horizontal: 10),
+                                  //             child: Text('Follow'),
+                                  //           )),
+                                  //     )
+                                  //   ],
+                                  // )
                                 ],
                               ),
                             ))
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                            child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              '756+ ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16),
-                            ),
-                            const Text(
-                              'Followers ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 13,
-                                  color: AppColors.textColor),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            CustomButton(
-                              height: 50,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SvgPicture.asset(AppIcons.svgFollowing,
-                                      color: Colors.white),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  const Text('Follow'),
-                                ],
-                              ),
-                              onTap: () {},
-                            ),
-                          ],
-                        )),
-                        const SizedBox(
-                          width: 15,
+                        const Padding(
+                          padding: EdgeInsets.only(left: 16),
+                          child: Text(
+                            'About Page',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
                         ),
-                        Expanded(
-                            child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Center(
-                              child: Column(
-                                children: const [
-                                  Text(
-                                    '454+ ',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16),
-                                  ),
-                                  Text(
-                                    'Connections ',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                        color: AppColors.textColor),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 50,
-                              child: TextButton(
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: AppColors.lightBlue),
-                                  onPressed: () {},
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SvgPicture.asset(
-                                        AppIcons.svgConnects,
-                                        color: AppColors.primaryColor,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      const Text('Connect'),
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        ))
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ExpandableText(
+                            state.getPageResponse.page!.description,
+                            style: const TextStyle(
+                                color: Colors.blueGrey, fontSize: 14),
+                            expandText: 'Read more',
+                            maxLines: 5,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                    backgroundColor: AppColors.lightBlue,
+                                    shape: const StadiumBorder()),
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => AboutPageScreen(
+                                      page: state.getPageResponse.page!,
+                                    ),
+                                  ));
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Text('More about page'),
+                                )),
+                          ),
+                        )
                       ],
                     ),
                   ),
+
+                  // Padding(
+                  //   padding: const EdgeInsets.all(16),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Expanded(
+                  //           child: Column(
+                  //             mainAxisSize: MainAxisSize.min,
+                  //             children: [
+                  //               const Text(
+                  //                 '756+ ',
+                  //                 style: TextStyle(
+                  //                     fontWeight: FontWeight.w500,
+                  //                     fontSize: 16),
+                  //               ),
+                  //               const Text(
+                  //                 'Followers ',
+                  //                 style: TextStyle(
+                  //                     fontWeight: FontWeight.w500,
+                  //                     fontSize: 13,
+                  //                     color: AppColors.textColor),
+                  //               ),
+                  //               const SizedBox(
+                  //                 height: 5,
+                  //               ),
+                  //               CustomButton(
+                  //                 height: 50,
+                  //                 child: Row(
+                  //                   mainAxisSize: MainAxisSize.min,
+                  //                   children: [
+                  //                     SvgPicture.asset(AppIcons.svgFollowing,
+                  //                         color: Colors.white),
+                  //                     SizedBox(
+                  //                       width: 5,
+                  //                     ),
+                  //                     const Text('Follow'),
+                  //                   ],
+                  //                 ),
+                  //                 onTap: () {},
+                  //               ),
+                  //             ],
+                  //           )),
+                  //       const SizedBox(
+                  //         width: 15,
+                  //       ),
+                  //       Expanded(
+                  //           child: Column(
+                  //             mainAxisSize: MainAxisSize.min,
+                  //             crossAxisAlignment: CrossAxisAlignment.stretch,
+                  //             children: [
+                  //               Center(
+                  //                 child: Column(
+                  //                   children: const [
+                  //                     Text(
+                  //                       '454+ ',
+                  //                       style: TextStyle(
+                  //                           fontWeight: FontWeight.w500,
+                  //                           fontSize: 16),
+                  //                     ),
+                  //                     Text(
+                  //                       'Connections ',
+                  //                       style: TextStyle(
+                  //                           fontWeight: FontWeight.w500,
+                  //                           fontSize: 13,
+                  //                           color: AppColors.textColor),
+                  //                     ),
+                  //                     SizedBox(
+                  //                       height: 5,
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: 50,
+                  //                 child: TextButton(
+                  //                     style: TextButton.styleFrom(
+                  //                         backgroundColor: AppColors.lightBlue),
+                  //                     onPressed: () {},
+                  //                     child: Row(
+                  //                       mainAxisSize: MainAxisSize.min,
+                  //                       children: [
+                  //                         SvgPicture.asset(
+                  //                           AppIcons.svgConnects,
+                  //                           color: AppColors.primaryColor,
+                  //                         ),
+                  //                         const SizedBox(
+                  //                           width: 10,
+                  //                         ),
+                  //                         const Text('Connect'),
+                  //                       ],
+                  //                     )),
+                  //               ),
+                  //             ],
+                  //           ))
+                  //     ],
+                  //   ),
+                  // ),
+
                   BlocBuilder<BuisnessBloc, BuisnessState>(
-                    bloc: _buisnessBloc2,
+                    bloc: _buisnessBloc,
+                    buildWhen: (prevState, currentState) {
+                      return currentState is PageFeedsLoadingState ||
+                          currentState is PageFeedsSuccesState ||
+                          currentState is PageFeedsFailureState;
+                    },
                     builder: (context, state) {
                       if (state is PageFeedsLoadingState) {
-                        return FeedLoader();
+                        return const FeedLoader();
                       }
                       if (state is PageFeedsSuccesState) {
                         return state.feedsResponse.feeds.data.isNotEmpty
@@ -264,15 +521,21 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                                 itemCount:
                                     state.feedsResponse.feeds.data.length,
                                 itemBuilder: (context, index) => NewPostItem(
-                                    feed:
-                                        state.feedsResponse.feeds.data[index]),
-                              )
-                            : const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20),
-                                  child: Text('You have no feeds yet ..'),
+                                  feed: state.feedsResponse.feeds.data[index],
+                                  onUpdated: () {},
                                 ),
-                              );
+                              )
+                            : Center(
+                                child: AppPromptWidget(
+                                canTryAgain: true,
+                                imagePath: 'assets/pngs/empty.png',
+                                message: 'There are no feeds here.',
+                                buttonText: 'Refresh',
+                                onTap: () {
+                                  _buisnessBloc.add(
+                                      PageFeedsEvent(widget.pageId.toString()));
+                                },
+                              ));
                       }
                       if (state is PageFeedsFailureState) {
                         return AppPromptWidget(
@@ -282,7 +545,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
                               .add(PageFeedsEvent(widget.pageId.toString())),
                         );
                       }
-                      return FeedLoader();
+                      return const FeedLoader();
                     },
                   ),
                 ],
@@ -295,7 +558,7 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
             child: Text(state.error),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

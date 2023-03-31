@@ -41,6 +41,10 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
         children: [
           Container(
             padding: const EdgeInsets.all(25),
+            decoration: const BoxDecoration(
+                color: AppColors.white,
+                boxShadow: [BoxShadow(color: Colors.blue, blurRadius: 30)],
+                borderRadius: BorderRadius.only()),
             child: Center(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -48,6 +52,7 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Center(
                             child: AddImageWidget(
@@ -131,14 +136,9 @@ class _MoreDetailsFormState extends State<MoreDetailsForm> {
                         )
                         // Container(decoration: ,)
                       ],
-                      mainAxisSize: MainAxisSize.min,
                     )),
               ),
             ),
-            decoration: const BoxDecoration(
-                color: AppColors.white,
-                boxShadow: [BoxShadow(color: Colors.blue, blurRadius: 30)],
-                borderRadius: BorderRadius.only()),
           ),
           // Positioned(
           //    top: -50,
