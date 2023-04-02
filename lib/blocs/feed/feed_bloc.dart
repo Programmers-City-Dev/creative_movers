@@ -50,8 +50,8 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     emit(EditFeedLoadingState());
     try {
       var response = await feedRepository.editFeed(
-        feed_id: event.feed_id,
-        page_id: event.pageId,
+        feedId: event.feed_id,
+        pageId: event.pageId,
         content: event.content,
         media: event.media,
       );
@@ -115,7 +115,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     try {
       emit(CommentsLoadingState());
       var response = await feedRepository.postComments(
-          comment: event.comment, feed_id: event.feedId);
+          comment: event.comment, feedId: event.feedId);
       if (response is SuccessState) {
         emit(CommentsSuccessState(postCommentsResponse: response.value));
       }
@@ -132,7 +132,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       LikeEvent event, Emitter<FeedState> emit) async {
     try {
       emit(LikeLoadingState());
-      var response = await feedRepository.postLike(feed_id: event.feeId);
+      var response = await feedRepository.postLike(feedId: event.feeId);
       if (response is SuccessState) {
         emit(LikeSuccessState(likeResponse: response.value));
       }

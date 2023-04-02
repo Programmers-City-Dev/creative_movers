@@ -82,7 +82,7 @@ class ConnectsBloc extends Bloc<ConnectsEvent, ConnectsState> {
     emit(ConnectsLoadingState());
     try {
       var state = await connectsRepository.searchConnects(
-          searchValue: event.searchValue, user_id: event.user_id);
+          searchValue: event.searchValue, userId: event.user_id);
       if (state is SuccessState) {
         emit(ConnectsSuccesState(connectsResponse: state.value));
       } else if (state is ErrorState) {

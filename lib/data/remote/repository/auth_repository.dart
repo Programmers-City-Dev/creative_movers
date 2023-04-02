@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
@@ -45,7 +44,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -54,11 +53,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -84,7 +85,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -93,11 +94,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -131,7 +134,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -140,11 +143,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -189,7 +194,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -198,11 +203,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: response.data),
         );
       },
@@ -225,7 +232,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -234,11 +241,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -254,7 +263,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -263,11 +272,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -283,7 +294,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -292,11 +303,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -313,7 +326,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -322,11 +335,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -343,7 +358,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -352,11 +367,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },
@@ -379,7 +396,7 @@ class AuthRepository {
       },
       statusCodeSuccess: 200,
       errorResponse: (response) {
-        debugPrint('ERROR SERVER');
+        debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -388,11 +405,13 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER');
+        debugPrint('DIO SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
-              errorMessage: response.data['message'],
+              errorMessage: response.statusCode == 500
+                  ? "Unable to process your request, please try again"
+                  : response.data['message'],
               data: null),
         );
       },

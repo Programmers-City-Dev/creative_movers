@@ -85,13 +85,13 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
       CreatePageEvent event, Emitter<BuisnessState> emitter) async {
     emit(CreatePageLoadingState());
     try {
-      var state = await buisnessRepository.create_page(
+      var state = await buisnessRepository.createPage(
         stage: event.stage,
         category: event.category,
         description: event.description,
         name: event.name,
         photo: event.photo,
-        est_capital: event.est_capital,
+        estCapital: event.est_capital,
         contact: event.contact,
         website: event.website,
       );

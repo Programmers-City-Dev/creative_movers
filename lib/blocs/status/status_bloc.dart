@@ -27,8 +27,8 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
     try {
       var response = await statusRepository.uploadStatus(
           text: event.text,
-          bg_color: event.bg_color,
-          font_name: event.font_name,
+          bgColor: event.bg_color,
+          fontName: event.font_name,
           media: event.media);
       if (response is SuccessState) {
         emit(AddStatusSuccessState(uploadStatusResponse: response.value));
@@ -40,7 +40,6 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
     } catch (e) {
       log(e.toString());
       emit(AddStatusFaliureState(error: "Ooops Something went wrong. $e."));
-      
     }
   }
 
@@ -58,7 +57,6 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
       }
     } catch (e) {
       emit(StatusFaliureState(error: "Ooops Something went wrong."));
-      
     }
   }
 }

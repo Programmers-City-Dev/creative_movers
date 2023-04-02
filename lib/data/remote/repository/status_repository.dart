@@ -16,14 +16,14 @@ class StatusRepository {
   StatusRepository(this.httpHelper);
   Future<State> uploadStatus({
     required String? text,
-    String? bg_color,
-    String? font_name,
+    String? bgColor,
+    String? fontName,
     List<String>? media,
   }) async {
     var formData = FormData.fromMap({
       "text": text,
-      "bg_color": bg_color,
-      "font_name": font_name,
+      "bg_color": bgColor,
+      "font_name": fontName,
     });
     log("IMAGES: $media");
     if (media != null) {

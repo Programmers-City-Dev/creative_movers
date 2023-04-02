@@ -122,10 +122,10 @@ class FeedRepository {
   }
 
   Future<State> postComments(
-      {required String feed_id, required String comment}) async {
+      {required String feedId, required String comment}) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.commentEndpoint, body: {
-        "feed_id": feed_id,
+        "feed_id": feedId,
         "comment": comment,
       }),
       successResponse: (data) {
@@ -154,10 +154,10 @@ class FeedRepository {
     );
   }
 
-  Future<State> postLike({required String feed_id}) async {
+  Future<State> postLike({required String feedId}) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.likeEndpoint, body: {
-        "feed_id": feed_id,
+        "feed_id": feedId,
       }),
       successResponse: (data) {
         return State<LikeResponse?>.success(
@@ -334,15 +334,15 @@ class FeedRepository {
   }
 
   Future<State> editFeed({
-    String? page_id,
-    required String feed_id,
+    String? pageId,
+    required String feedId,
     required String content,
     required List<String> media,
   }) async {
     var formData = FormData.fromMap({
       "type": 'user_feed',
-      "page_id": page_id,
-      "feed_id": feed_id,
+      "page_id": pageId,
+      "feed_id": feedId,
       "content": content,
     });
     log("IMAGES: $media");

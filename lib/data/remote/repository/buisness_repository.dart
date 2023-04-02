@@ -48,13 +48,13 @@ class BuisnessRepository {
     );
   }
 
-  Future<State> create_page({
+  Future<State> createPage({
     String? website,
     String? contact,
     String? name,
     String? stage,
     List<String>? category,
-    String? est_capital,
+    String? estCapital,
     String? description,
     String? photo,
   }) async {
@@ -62,7 +62,7 @@ class BuisnessRepository {
       "name": name,
       "stage": stage,
       "category": jsonEncode(category),
-      "est_capital": est_capital,
+      "est_capital": estCapital,
       "description": description,
       if (photo != null)
         "photo": [

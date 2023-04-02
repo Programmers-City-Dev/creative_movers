@@ -91,7 +91,7 @@ class ProfileRepository {
   }
 
   //Post Bio Data Request
-  Future<State> post_biodata(
+  Future<State> postBiodata(
       {required String firstname,
       required String lastname,
       required String phoneNumber,
@@ -132,30 +132,30 @@ class ProfileRepository {
   }
 
   //Account Type Request
-  Future<State> post_account_type({
+  Future<State> postAccountType({
     String? role,
-    String? user_id,
+    String? userId,
     String? name,
     String? stage,
     String? category,
-    String? est_capital,
+    String? estCapital,
     String? description,
     String? photo,
-    String? max_range,
-    String? min_range,
+    String? maxRange,
+    String? minRange,
   }) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.accountTypeEndpoint, body: {
         "role": role,
-        "user_id": user_id,
+        "user_id": userId,
         "name": name,
         "stage": stage,
         "category": category,
-        "est_capital": est_capital,
+        "est_capital": estCapital,
         "description": description,
         "photo": photo,
-        "max_range": max_range,
-        "min_range": min_range,
+        "max_range": maxRange,
+        "min_range": minRange,
       }),
       successResponse: (data) {
         return State<AccountTypeResponse?>.success(
@@ -184,13 +184,13 @@ class ProfileRepository {
   }
 
   //Add Connections Request
-  Future<State> add_connections({
-    required String? user_id,
+  Future<State> addConnections({
+    required String? userId,
     required List<Connect> connections,
   }) async {
     return SimplifyApiConsuming.makeRequest(
       () => httpClient.post(Endpoints.addConnectionEndpoint, body: {
-        "user_id": user_id,
+        "user_id": userId,
         "connection": jsonEncode(connections),
       }),
       successResponse: (data) {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/get_connects_response.dart';
 import 'package:creative_movers/data/remote/model/react_response.dart';
@@ -109,10 +107,10 @@ class ConnectsRepository {
     );
   }
 
-  Future<State> searchConnects({String? user_id, String? searchValue}) async {
+  Future<State> searchConnects({String? userId, String? searchValue}) async {
     return await SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.searchConnectsEndpoint,
-          body: {"user_id": user_id, "search_value": searchValue}),
+          body: {"user_id": userId, "search_value": searchValue}),
       successResponse: (data) {
         return State<FetchConnectionResponse?>.success(
             data != null ? FetchConnectionResponse.fromJson(data) : null);
