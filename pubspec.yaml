@@ -36,7 +36,7 @@ dependencies:
   pin_code_fields: ^7.3.0
   group_radio_button: ^1.1.0
   dotted_border: ^2.0.0+1
-  intl: ^0.17.0
+  intl: ^0.18.1
   dropdown_search: ^5.0.3
   image_stack: ^2.1.0
   cupertino_icons: ^1.0.2
@@ -74,7 +74,7 @@ dependencies:
   photo_view:
     git:
       url: https://github.com/bluefireteam/photo_view
-      ref: master
+      ref: main
   firebase_core: ^2.3.0
   firebase_messaging: ^14.1.1
   firebase_remote_config: ^3.0.6

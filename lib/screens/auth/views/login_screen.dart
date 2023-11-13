@@ -18,11 +18,11 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               SizedBox(
                 height: kToolbarHeight * 2,
               ),
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 16,
               ),
               Text(
-                'Signin',
+                'Sign in',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
               ),
               SizedBox(

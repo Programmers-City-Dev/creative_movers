@@ -1,4 +1,5 @@
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
+import 'package:creative_movers/helpers/subscription_helper.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/contacts/views/movers_tab.dart';
 import 'package:creative_movers/screens/main/contacts/views/pending_request_screen.dart';
@@ -97,8 +98,12 @@ class _ContactScreenState extends State<ContactScreen>
                 ),
                 GestureDetector(
                   onTap: () => setState(() {
-                    selectedIndex = 2;
-                    _tabController.animateTo(selectedIndex);
+                    SubscriptionHelper().performSubscriptionCheckAndNavigate(
+                        context: context,
+                        onActiveSubscription: () {
+                          selectedIndex = 2;
+                          _tabController.animateTo(selectedIndex);
+                        });
                   }),
                   child: Chip(
                       avatar: Icon(

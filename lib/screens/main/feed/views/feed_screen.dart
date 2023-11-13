@@ -2,18 +2,16 @@
 
 import 'package:creative_movers/blocs/feed/feed_bloc.dart';
 import 'package:creative_movers/blocs/notification/notification_bloc.dart';
-import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
-import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/subscription_helper.dart';
 import 'package:creative_movers/screens/main/feed/views/create_post.dart';
 import 'package:creative_movers/screens/main/feed/widgets/feed_loader.dart';
 import 'package:creative_movers/screens/main/feed/widgets/new_post_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/post_card.dart';
 import 'package:creative_movers/screens/main/feed/widgets/status_views.dart';
 import 'package:creative_movers/screens/main/notification/views/notification_screen.dart';
-import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
 import 'package:creative_movers/screens/main/search/views/search__screen.dart';
 import 'package:creative_movers/screens/main/status/widgets/status_shimmer.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
@@ -129,26 +127,13 @@ class _FeedScreenState extends State<FeedScreen> {
             //     )),
             SliverToBoxAdapter(child: PostCard(
               onTap: () {
-                if (injector.get<PaymentBloc>().hasActiveSubscription) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreatePostScreen(),
-                  ));
-                } else {
-                  //  Show upgrade bottom sheet
-                  AppUtils.showUpgradeDialog(context, onSubscribe: () async {
-                    bool? done =
-                        await Navigator.of(context, rootNavigator: true).push(
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    const SubscriptionScreen())));
-                    if (done != null && done) {
-                      Navigator.pop(context);
-                      injector
-                          .get<PaymentBloc>()
-                          .add(const GetSubscriptionInfoEvent());
-                    }
-                  });
-                }
+                SubscriptionHelper().performSubscriptionCheckAndNavigate(
+                    context: context,
+                    onActiveSubscription: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const CreatePostScreen(),
+                      ));
+                    });
               },
             )),
             // SliverPersistentHeader(
@@ -263,29 +248,33 @@ class _CustomFeedAppBarState extends State<CustomFeedAppBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BlocProvider.value(
-                      value: injector.get<ProfileBloc>(),
-                      child: BlocBuilder<ProfileBloc, ProfileState>(
-                        builder: (context, state) {
-                          return Text(
-                              'Hello ${context.watch<ProfileBloc>().firstname}!',
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.black));
-                        },
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BlocProvider.value(
+                        value: injector.get<ProfileBloc>(),
+                        child: BlocBuilder<ProfileBloc, ProfileState>(
+                          builder: (context, state) {
+                            return Text(
+                                'Hello ${context.watch<ProfileBloc>().firstname}!',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black));
+                          },
+                        ),
                       ),
-                    ),
-                    Text('${greeting()} 🌞',
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.black)),
-                  ],
+                      Text('${greeting()} 🌞',
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.black)),
+                    ],
+                  ),
                 ),
                 Row(
                   children: [

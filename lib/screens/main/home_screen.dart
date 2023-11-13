@@ -112,19 +112,20 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 body: BlocListener<PaymentBloc, PaymentState>(
                   bloc: injector.get<PaymentBloc>(),
                   listener: (context, state) {
-                    if (state is SubscriptionLoadedState) {
+                    // if (state is SubscriptionLoadedState) {
+                    if (false) {
                       // log("message: ${state.data.user?.subscription?.status}");
-                      if (state.data.user?.subscription?.status != 'active') {
-                        Navigator.push(
+                      // if (state.data.user?.subscription?.status != 'active') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((
                             context,
-                            MaterialPageRoute(
-                                builder: ((
-                              context,
-                            ) =>
-                                    const SubscriptionScreen(
-                                      isFromSignup: true,
-                                    )))).then((value) {});
-                      }
+                          ) =>
+                                  const SubscriptionScreen(
+                                    isFromSignup: true,
+                                  )))).then((value) {});
+                      // }
                     }
                   },
                   child: IndexedStack(index: _navIndex, children: <Widget>[

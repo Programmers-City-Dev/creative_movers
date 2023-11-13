@@ -45,7 +45,7 @@ class _AddContactsWidgetState extends State<AddContactsWidget> {
           const Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
-              ' This  list is empty find out people you might love to connect to and grow your audience',
+              ' This list is empty find out people you might love to connect to and grow your audience',
               textAlign: TextAlign.center,
             ),
           ),

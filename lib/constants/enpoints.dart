@@ -78,8 +78,7 @@ class Endpoints {
   static String getPageEndpoint =
       '${Constants.baseUrl}api/user/fetch-business-page-details';
 
-  static String activeSubscription =
-      '${Constants.baseUrl}api/payment/subscription';
+  static String activeSubscription = '${Constants.baseUrl}api/payment/subscription';
 
   static String paymentHistory = '${Constants.baseUrl}api/payment/history';
 

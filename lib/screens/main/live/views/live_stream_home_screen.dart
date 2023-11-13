@@ -161,9 +161,9 @@ class _LiveStreamPrepScreenState extends State<LiveStreamPrepScreen>
                   ),
                 ),
               ),
-              Column(
+              const Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     "Microphone",
                     textAlign: TextAlign.center,

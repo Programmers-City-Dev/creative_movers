@@ -1,4 +1,5 @@
 import 'package:creative_movers/app.dart';
+import 'package:creative_movers/helpers/subscription_helper.dart';
 import 'package:creative_movers/screens/main/live/views/live_stream_home_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,11 @@ class _PostCardState extends State<PostCard> {
                 ),
                 InkWell(
                   onTap: () {
-                    _joinLiveStream();
+                    SubscriptionHelper().performSubscriptionCheckAndNavigate(
+                        context: context,
+                        onActiveSubscription: () {
+                          _joinLiveStream();
+                        });
                   },
                   child: SizedBox(
                     child: Row(

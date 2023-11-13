@@ -1,6 +1,7 @@
 import 'package:creative_movers/blocs/connects/conects_bloc.dart';
 import 'package:creative_movers/data/remote/model/search_response.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/subscription_helper.dart';
 import 'package:creative_movers/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,7 +76,7 @@ class _SearchResultItemState extends State<SearchResultItem>
                             listenToSendRequestState(context, state);
                             // TODO: implement listener
                           },
-                          child: widget.result.connected == 'Not Connected'
+                          child: SubscriptionHelper.hasActiveSubscription() ? widget.result.connected == 'Not Connected'
                               ? TextButton(
                                   onPressed: connectState !=
                                           ConnectState.loading
@@ -112,7 +113,7 @@ class _SearchResultItemState extends State<SearchResultItem>
                                       style: TextButton.styleFrom(
                                           backgroundColor: AppColors.lightBlue),
                                       child: const Text('Pending..'),
-                                    ),
+                                    ):const SizedBox.shrink(),
                         ),
                         const SizedBox(
                           width: 5,

@@ -287,7 +287,7 @@ class _EditPageFormState extends State<EditPageForm> {
       Navigator.of(context).pushReplacementNamed(bizPath);
       // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MyPageTab(),));
 
-      CustomSnackBar.show(context,
+      CustomSnackBar.showMessage(context,
           message: 'You Successfully created a page',
           backgroundColor: Colors.green);
       // Navigator.of(context).pushAndRemoveUntil(

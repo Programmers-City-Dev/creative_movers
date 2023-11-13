@@ -772,7 +772,7 @@ class CustomSnackBar {
 
   CustomSnackBar({required this.context});
 
-  CustomSnackBar.show(
+  CustomSnackBar.showMessage(
     this.context, {
     required String message,
     Function? action,
@@ -780,25 +780,64 @@ class CustomSnackBar {
     Color? backgroundColor,
   }) {
     final snackBar = SnackBar(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       action: action == null
           ? null
           : SnackBarAction(
               label: actionMessage ?? "OK",
               onPressed: () => action,
-              textColor: AppColors.white,
+              textColor: Theme.of(context).colorScheme.primary,
             ),
-      backgroundColor: backgroundColor ?? backgroundColor ?? Colors.black,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        // side: BorderSide(
+        //     width: 1, color: Theme.of(context).colorScheme.primary)
+      ),
+      backgroundColor: AppColors.darkBlue,
       content: Text(
         message,
         style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: AppColors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'Poppins',
+          color: Colors.white,
         ),
       ),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  CustomSnackBar.show(
+    this.context, {
+    required Widget body,
+    Function? action,
+    String? actionMessage,
+    Color? backgroundColor,
+  }) {
+    final snackBar = SnackBar(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.all(18),
+      duration: const Duration(seconds: 5),
+      dismissDirection: DismissDirection.horizontal,
+      action: action == null
+          ? null
+          : SnackBarAction(
+              label: actionMessage ?? "OK",
+              onPressed: () => action,
+              textColor: Colors.white,
+            ),
+      backgroundColor: Colors.black,
+      content: body,
+      behavior: SnackBarBehavior.floating,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      snackBar,
+    );
   }
 
   CustomSnackBar.showError(
@@ -809,12 +848,13 @@ class CustomSnackBar {
     Color? backgroundColor,
   }) {
     final snackBar = SnackBar(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       action: action == null
           ? null
           : SnackBarAction(
               label: actionMessage ?? "OK",
               onPressed: () => action,
-              textColor: AppColors.white,
+              textColor: Colors.white,
             ),
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
@@ -824,9 +864,44 @@ class CustomSnackBar {
       content: Text(
         message,
         style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: AppColors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  CustomSnackBar.showSuccess(
+    this.context, {
+    required String message,
+    Function? action,
+    String? actionMessage,
+    Color? backgroundColor,
+  }) {
+    final snackBar = SnackBar(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      action: action == null
+          ? null
+          : SnackBarAction(
+              label: actionMessage ?? "OK",
+              onPressed: () => action,
+              textColor: Colors.white,
+            ),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      backgroundColor: backgroundColor ?? backgroundColor ?? Colors.green,
+      content: Text(
+        message,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'Poppins',
+          color: Colors.white,
         ),
       ),
     );

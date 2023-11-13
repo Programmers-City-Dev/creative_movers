@@ -268,7 +268,7 @@ class _CreatePageFormState extends State<CreatePageForm> {
 
       // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MyPageTab(),));
 
-      CustomSnackBar.show(context,
+      CustomSnackBar.showMessage(context,
           message: 'You Successfully created a page',
           backgroundColor: Colors.green);
       // Navigator.of(context).pushAndRemoveUntil(

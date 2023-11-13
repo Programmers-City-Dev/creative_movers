@@ -14,6 +14,7 @@ import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_p
 import 'package:creative_movers/screens/main/feed/views/comments_screen.dart';
 import 'package:creative_movers/screens/main/feed/widgets/edit_post_form.dart';
 import 'package:creative_movers/screens/main/feed/widgets/like_button.dart';
+import 'package:creative_movers/screens/main/feed/widgets/likers_sheet.dart';
 import 'package:creative_movers/screens/main/feed/widgets/media_display_item.dart';
 import 'package:creative_movers/screens/main/feed/widgets/report_feed_widget.dart';
 import 'package:creative_movers/screens/onboarding/widgets/dot_indicator.dart';
@@ -350,32 +351,46 @@ class _NewPostItemState extends State<NewPostItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              widget.feed.likes.length < 2
-                  ? ImageStack(
-                      imageList: widget.feed.likes
-                          .map((e) => e.user.profilePhotoPath!)
-                          .toList(),
-                      totalCount: widget.feed.likes.length,
-                      // If larger than images.length, will show extra empty circle
-                      imageRadius: 25,
-                      // Radius of each images
-                      imageCount: widget.feed.likes.length,
-                      // Maximum number of images to be shown in stack
-                      imageBorderWidth: 0, // Border width around the images
-                    )
-                  : ImageStack(
-                      imageList: [
-                        widget.feed.likes.elementAt(0).user.profilePhotoPath!,
-                        widget.feed.likes.elementAt(1).user.profilePhotoPath!,
-                      ],
-                      totalCount: widget.feed.likes.length,
-                      // If larger than images.length, will show extra empty circle
-                      imageRadius: 25,
-                      // Radius of each images
-                      imageCount: 2,
-                      // Maximum number of images to be shown in stack
-                      imageBorderWidth: 0, // Border width around the images
-                    ),
+              GestureDetector(
+                onTap: () {
+                  _showLikersSheet(
+                      context, widget.feed.likes.map((e) => e.user).toList());
+                },
+                child: Container(
+                  child: widget.feed.likes.length < 2
+                      ? ImageStack(
+                          imageList: widget.feed.likes
+                              .map((e) => e.user.profilePhotoPath!)
+                              .toList(),
+                          totalCount: widget.feed.likes.length,
+                          // If larger than images.length, will show extra empty circle
+                          imageRadius: 25,
+                          // Radius of each images
+                          imageCount: widget.feed.likes.length,
+                          // Maximum number of images to be shown in stack
+                          imageBorderWidth: 0, // Border width around the images
+                        )
+                      : ImageStack(
+                          imageList: [
+                            widget.feed.likes
+                                .elementAt(0)
+                                .user
+                                .profilePhotoPath!,
+                            widget.feed.likes
+                                .elementAt(1)
+                                .user
+                                .profilePhotoPath!,
+                          ],
+                          totalCount: widget.feed.likes.length,
+                          // If larger than images.length, will show extra empty circle
+                          imageRadius: 25,
+                          // Radius of each images
+                          imageCount: 2,
+                          // Maximum number of images to be shown in stack
+                          imageBorderWidth: 0, // Border width around the images
+                        ),
+                ),
+              ),
               Text(
                 '${widget.feed.comments.length} commented',
                 style: const TextStyle(fontSize: 12),
@@ -469,8 +484,8 @@ class _NewPostItemState extends State<NewPostItem> {
                       ));
                     }
                   },
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Icon(
                         Icons.comment,
                         color: AppColors.textColor,
@@ -625,6 +640,21 @@ class _NewPostItemState extends State<NewPostItem> {
                   }
                   return const SizedBox.shrink();
                 }),
+          );
+        });
+  }
+
+  Future<dynamic> _showLikersSheet(BuildContext context, List<Poster> posters) {
+    return showBarModalBottomSheet(
+        context: context,
+        expand: false,
+        useRootNavigator: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+        barrierColor: Colors.black.withOpacity(0.5),
+        builder: (context) {
+          return SafeArea(
+            child: LikersSheet(likers: posters),
           );
         });
   }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class AppColors {
   static const primaryColor = Color(0xFF4285f4);
+  static const darkBlue = Color(0xFF0D1398);
   static const OnboardingColor = Color(0xCD203CDD);
   static const gradient = Color(0xFF0e0ba0);
   static const gradient2 = Color(0xFF02156B);

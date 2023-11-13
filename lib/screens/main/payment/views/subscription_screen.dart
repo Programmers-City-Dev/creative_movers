@@ -263,6 +263,29 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         );
                       },
                     ),
+                    // widget.isFromSignup!
+                    //     ? Padding(
+                    //         padding: const EdgeInsets.all(8.0),
+                    //         child: Row(
+                    //           children: [
+                    //             Expanded(
+                    //                 child: TextButton(
+                    //                     style: TextButton.styleFrom(
+                    //                         padding: const EdgeInsets.all(16),
+                    //                         foregroundColor: Colors.black),
+                    //                     onPressed: () {
+                    //                       Navigator.pop(context);
+                    //                     },
+                    //                     child: const Text(
+                    //                       'Skip for now',
+                    //                       style: TextStyle(
+                    //                           fontSize: 16,
+                    //                           fontWeight: FontWeight.w600),
+                    //                     )))
+                    //           ],
+                    //         ),
+                    //       )
+                    //     : const SizedBox.shrink()
                     // if (widget.isFromSignup!)
                     //   Padding(
                     //     padding: const EdgeInsets.only(top: 16),
@@ -295,6 +318,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
 class TrialStatement extends StatelessWidget {
   final String pId;
+
   TrialStatement({
     Key? key,
     required this.pId,
@@ -367,6 +391,7 @@ class TrialStatement extends StatelessWidget {
 class SubscriptionOptions extends StatefulWidget {
   final List<String> subIds;
   final Function(String) onSubSelected;
+
   const SubscriptionOptions({
     Key? key,
     required this.subIds,
@@ -406,6 +431,7 @@ class SubscriptionItem extends StatefulWidget {
   final bool? isActive;
   final String subscriptionId;
   final Function(String subscriptionId) onSelected;
+
   const SubscriptionItem({
     Key? key,
     this.isActive = false,

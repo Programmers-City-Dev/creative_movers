@@ -232,6 +232,12 @@ class _CommentBoxState extends State<CommentBox> {
                               widget.onCommentSent(_commentController.text);
                               _commentController.clear();
                               _focusNode.unfocus();
+                              // SubscriptionHelper()
+                              //     .performSubscriptionCheckAndNavigate(
+                              //         context: context,
+                              //         onActiveSubscription: () {
+                              //
+                              //         });
                             },
                       child: AnimatedContainer(
                         padding: const EdgeInsets.all(8.0),

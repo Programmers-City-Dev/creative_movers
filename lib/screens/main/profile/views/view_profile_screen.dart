@@ -11,6 +11,7 @@ import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/extension.dart';
+import 'package:creative_movers/helpers/subscription_helper.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/profile/views/profile_screen.dart';
 import 'package:creative_movers/screens/main/profile/views/user_connects_screen.dart';
@@ -388,84 +389,78 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
 
                                                   //CONNECTS BUTTON
 
-                                                  BlocConsumer<ConnectsBloc,
-                                                      ConnectsState>(
-                                                    bloc: _connectsBloc,
-                                                    listener: (context, state) {
-                                                      listenToConnectState(
-                                                          context, state);
-                                                    },
-                                                    buildWhen: (prevstate,
-                                                        currentState) {
-                                                      return currentState
-                                                              is ConnectToUserLoadingState ||
-                                                          currentState
-                                                              is ConnectToUserSuccesState ||
-                                                          currentState
-                                                              is ConnectToUserFailureState;
-                                                    },
-                                                    builder: (context,
-                                                        connectState) {
-                                                      return Expanded(
-                                                          child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .stretch,
-                                                        children: [
-                                                          const SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 50,
-                                                            child: TextButton(
-                                                                style: TextButton.styleFrom(
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .lightBlue),
-                                                                onPressed: () {
-                                                                  _connectsBloc.add(
-                                                                      ConnectToUserEvent(user
-                                                                          .id
-                                                                          .toString()));
-                                                                },
-                                                                child: connectState
-                                                                        is ConnectToUserLoadingState
-                                                                    ? const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                        width:
-                                                                            20,
-                                                                        child: CircularProgressIndicator
-                                                                            .adaptive(),
-                                                                      )
-                                                                    : Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          SvgPicture
-                                                                              .asset(
-                                                                            AppIcons.svgConnects,
-                                                                            color:
-                                                                                AppColors.primaryColor,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            width:
-                                                                                10,
-                                                                          ),
-                                                                          Text(isConnected == 'Connected'
-                                                                              ? 'Disconnect'
-                                                                              : isConnected == 'Pending'
-                                                                                  ? 'Cancel Request'
-                                                                                  : 'Connect'),
-                                                                        ],
-                                                                      )),
-                                                          ),
-                                                        ],
-                                                      ));
-                                                    },
-                                                  )
+                                                  SubscriptionHelper
+                                                          .hasActiveSubscription()
+                                                      ? BlocConsumer<
+                                                          ConnectsBloc,
+                                                          ConnectsState>(
+                                                          bloc: _connectsBloc,
+                                                          listener:
+                                                              (context, state) {
+                                                            listenToConnectState(
+                                                                context, state);
+                                                          },
+                                                          buildWhen: (prevstate,
+                                                              currentState) {
+                                                            return currentState
+                                                                    is ConnectToUserLoadingState ||
+                                                                currentState
+                                                                    is ConnectToUserSuccesState ||
+                                                                currentState
+                                                                    is ConnectToUserFailureState;
+                                                          },
+                                                          builder: (context,
+                                                              connectState) {
+                                                            return Expanded(
+                                                                child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .stretch,
+                                                              children: [
+                                                                const SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 50,
+                                                                  child: TextButton(
+                                                                      style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue),
+                                                                      onPressed: () {
+                                                                        _connectsBloc.add(ConnectToUserEvent(user
+                                                                            .id
+                                                                            .toString()));
+                                                                      },
+                                                                      child: connectState is ConnectToUserLoadingState
+                                                                          ? const SizedBox(
+                                                                              height: 20,
+                                                                              width: 20,
+                                                                              child: CircularProgressIndicator.adaptive(),
+                                                                            )
+                                                                          : Row(
+                                                                              mainAxisSize: MainAxisSize.min,
+                                                                              children: [
+                                                                                SvgPicture.asset(
+                                                                                  AppIcons.svgConnects,
+                                                                                  color: AppColors.primaryColor,
+                                                                                ),
+                                                                                const SizedBox(
+                                                                                  width: 10,
+                                                                                ),
+                                                                                Text(isConnected == 'Connected'
+                                                                                    ? 'Disconnect'
+                                                                                    : isConnected == 'Pending'
+                                                                                        ? 'Cancel Request'
+                                                                                        : 'Connect'),
+                                                                              ],
+                                                                            )),
+                                                                ),
+                                                              ],
+                                                            ));
+                                                          },
+                                                        )
+                                                      : const SizedBox.shrink()
                                                 ],
                                               ),
                                             ),
@@ -546,7 +541,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                                     Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       right: 8),
                                                               child: SizedBox(
                                                                 width: 120,

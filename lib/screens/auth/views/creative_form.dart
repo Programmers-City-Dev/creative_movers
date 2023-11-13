@@ -19,6 +19,7 @@ import 'connection_screen.dart';
 
 class CreativeForm extends StatefulWidget {
   final List<String> categories;
+
   const CreativeForm({Key? key, required this.categories}) : super(key: key);
 
   @override
@@ -223,17 +224,20 @@ class _CreativeFormState extends State<CreativeForm> {
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: _fetchImage,
-                            child: ClipRRect(
-                              child: Image.file(
-                                File(image),
-                                width: AppUtils.getDeviceSize(context).width,
-                                height: 170,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
+                          image.isNotEmpty
+                              ? InkWell(
+                                  onTap: _fetchImage,
+                                  child: ClipRRect(
+                                    child: Image.file(
+                                      File(image),
+                                      width:
+                                          AppUtils.getDeviceSize(context).width,
+                                      height: 170,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink()
                         ],
                       ),
                     ),

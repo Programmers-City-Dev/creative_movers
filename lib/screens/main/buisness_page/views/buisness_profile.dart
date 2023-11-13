@@ -1,5 +1,6 @@
 import 'package:creative_movers/blocs/buisness/buisness_bloc.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
+import 'package:creative_movers/helpers/subscription_helper.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/create_page_onboarding.dart';
 import 'package:creative_movers/screens/main/buisness_page/views/view_buisness_page_screen.dart';
 import 'package:creative_movers/theme/app_colors.dart';
@@ -66,9 +67,9 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(20)),
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(
                     Icons.stacked_bar_chart_rounded,
                     color: AppColors.smokeWhite,
@@ -286,10 +287,18 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreatePageOnboarding(),
-                                ));
+
+
+                                SubscriptionHelper().performSubscriptionCheckAndNavigate(
+                                    context: context,
+                                    onActiveSubscription: () {
+
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) =>
+                                        const CreatePageOnboarding(),
+                                      ));
+                                    });
+
                               },
                               child: Container(
                                 color: Colors.white,

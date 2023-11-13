@@ -46,9 +46,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         SizedBox(
                           height: 100,
                         ),
@@ -93,8 +93,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                             )),
                                     (route) => false);
                               },
-                              child: Row(
-                                children: const [
+                              child: const Row(
+                                children: [
                                   Text(
                                     'Skip',
                                     style:
@@ -111,7 +111,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           ),
                           TextButton(
                               style: TextButton.styleFrom(
-                                  backgroundColor: AppColors.primaryColor,
+                                  backgroundColor: AppColors.darkBlue,
                                   shape: const StadiumBorder(),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16)),
@@ -144,17 +144,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 itemBuilder: (context, index) => ContactItem(
                   onTap: () {
                     setState(() {
-                      if (myConnects.contains(widget.connections[index])) {
-                        myConnects.remove(widget.connections[index]);
-                        log(
-                          'MY CONNECTS: $myConnects',
-                        );
-                      } else {
-                        myConnects.add(widget.connections[index]);
-                        log(
-                          'MY CONNECTS: ${myConnects.length}',
-                        );
-                      }
+                      _handleConnection(index);
                       // isAdded = !isAdded;
                     });
                   },
@@ -204,6 +194,26 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                   )),
         );
       });
+    }
+  }
+
+  void _handleConnection(int index) {
+    if (myConnects.contains(widget.connections[index])) {
+      myConnects.remove(widget.connections[index]);
+      log(
+        'MY CONNECTS: $myConnects',
+      );
+    } else {
+      if (myConnects.length >= 5) {
+        CustomSnackBar.showMessage(context,
+            message: 'You can only connect to 5 persons until you subscribe.');
+      } else {
+        myConnects.add(widget.connections[index]);
+      }
+
+      log(
+        'MY CONNECTS: ${myConnects.length}',
+      );
     }
   }
 }

@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 part 'payment_event.dart';
+
 part 'payment_state.dart';
 
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
@@ -117,6 +118,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           statusCode: 400, errorMessage: "Unable to complete payment request"));
     }
   }
+
   //   FutureOr<void> _mapCreatePaymentIntentEventToState(
   //     CreatePaymentIntentEvent event, Emitter<PaymentState> emit) async {
   //   try {
