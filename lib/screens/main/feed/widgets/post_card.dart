@@ -57,11 +57,11 @@ class _PostCardState extends State<PostCard> {
                 Expanded(
                   child: InkWell(
                     onTap: widget.onTap,
-                    child: Row(
+                    child: const Row(
                       children: [
                         Expanded(
                           child: Row(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.photo_size_select_actual,
                                 color: AppColors.primaryColor,
@@ -78,7 +78,7 @@ class _PostCardState extends State<PostCard> {
                         ),
                         Expanded(
                           child: Row(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.videocam_rounded,
                                 color: Colors.purple,
@@ -105,9 +105,9 @@ class _PostCardState extends State<PostCard> {
                           _joinLiveStream();
                         });
                   },
-                  child: SizedBox(
+                  child: const SizedBox(
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(
                           Icons.video_call_rounded,
                           color: Colors.red,

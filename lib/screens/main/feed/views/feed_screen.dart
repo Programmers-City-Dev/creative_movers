@@ -127,13 +127,9 @@ class _FeedScreenState extends State<FeedScreen> {
             //     )),
             SliverToBoxAdapter(child: PostCard(
               onTap: () {
-                SubscriptionHelper().performSubscriptionCheckAndNavigate(
-                    context: context,
-                    onActiveSubscription: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const CreatePostScreen(),
-                      ));
-                    });
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const CreatePostScreen(),
+                ));
               },
             )),
             // SliverPersistentHeader(

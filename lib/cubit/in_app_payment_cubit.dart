@@ -92,8 +92,7 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
     try {
       emit(InAppPaymentProcessing());
       var customerInfo = await Purchases.getCustomerInfo();
-      bool isActive = paymentServices
-          .isSubcriptionActive(customerInfo, entitlements: ["pro"]);
+      bool isActive = paymentServices.isSubcriptionActive(customerInfo, entitlements: ["pro"]);
 
       if (isActive) {
         emit(InAppPaymentInitial());

@@ -11,11 +11,13 @@ import 'package:creative_movers/data/remote/repository/profile_repository.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/remote/model/FaqsResponse.dart';
 
 part 'profile_event.dart';
+
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -23,6 +25,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   String firstname = '';
 
   final ProfileRepository profileRepository;
+  ValueNotifier<String?> selectedCountryNotifier = ValueNotifier(null);
+  ValueNotifier<String?> selectedStateNotifier = ValueNotifier(null);
 
   ProfileBloc(this.profileRepository) : super(ProfileInitial()) {
     on<GetUsernameEvent>(_mapGetUsernameToState);

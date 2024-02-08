@@ -5,7 +5,7 @@ import 'package:creative_movers/screens/main/payment/views/subscription_screen.d
 import 'package:flutter/material.dart';
 
 class SubscriptionHelper {
- static bool hasActiveSubscription() {
+  static bool hasActiveSubscription() {
     return injector.get<PaymentBloc>().hasActiveSubscription;
   }
 

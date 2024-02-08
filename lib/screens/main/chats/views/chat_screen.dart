@@ -69,8 +69,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   padding: const EdgeInsets.all(16),
                   children: [
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         Expanded(
                           child: SearchField(
                             hint: 'Search Chats',

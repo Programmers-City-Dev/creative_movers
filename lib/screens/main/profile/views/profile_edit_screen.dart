@@ -586,9 +586,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                               sigmaX: 2, sigmaY: 2),
                                           child: EditLocationDialog(
                                             onSuccess: (updatedUser) {
-                                              _updateUserProfile(
-                                                  updatedUser.toMap());
-
+                                              _updateUserProfile(updatedUser.toMap());
                                               setState(() {
                                                 user = user.copyWith(
                                                     country:
@@ -624,6 +622,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                                     child: EditLocationDialog(
                                       onSuccess: (updatedUser) {
+                                        AppUtils.showCustomToast(
+                                            updatedUser.state.toString());
                                         _updateUserProfile(updatedUser.toMap());
 
                                         setState(() {

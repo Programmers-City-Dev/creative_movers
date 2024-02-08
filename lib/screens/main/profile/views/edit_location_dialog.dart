@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/blocs/profile/profile_bloc.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -9,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
-class EditLocationDialog extends StatelessWidget {
+class EditLocationDialog extends StatefulWidget {
   final Function(User user) onSuccess;
   final String? initialCountry;
 
@@ -17,6 +19,11 @@ class EditLocationDialog extends StatelessWidget {
       {Key? key, required this.onSuccess, required this.initialCountry})
       : super(key: key);
 
+  @override
+  State<EditLocationDialog> createState() => _EditLocationDialogState();
+}
+
+class _EditLocationDialogState extends State<EditLocationDialog> {
   final _profileBloc = ProfileBloc(injector.get());
 
   String? countryValue;
@@ -34,7 +41,7 @@ class EditLocationDialog extends StatelessWidget {
         }
         if (state is ProfileUpdateLoadedState) {
           // log("USER:${state.updateProfileResponse.toJson()}");
-          onSuccess(state.updateProfileResponse.user);
+          widget.onSuccess(state.updateProfileResponse.user);
           Navigator.of(context).pop();
           // AppUtils.cancelAllShowingToasts();
           AppUtils.showCustomToast("Country  has been updated successfully");
@@ -117,9 +124,28 @@ class EditLocationDialog extends StatelessWidget {
               onCountryChanged: (value) {
                 countryValue = value;
                 stateValue = null;
+                _profileBloc.selectedCountryNotifier.value = value;
+                _profileBloc.selectedStateNotifier.value = null;
+                // AppUtils.showCustomToast(stateValue.toString());
+                // Future.delayed(
+                //   const Duration(milliseconds: 400),
+                //   () {
+                //     AppUtils.showCustomToast(countryValue.toString());
+                //   },
+                // );
               },
               onStateChanged: (value) {
                 stateValue = value;
+                _profileBloc.selectedStateNotifier.value = value;
+
+                // log(stateValue.toString());
+                // AppUtils.showCustomToast(stateValue.toString());
+                // Future.delayed(
+                //   const Duration(milliseconds: 400),
+                //   () {
+                //     AppUtils.showCustomToast(countryValue.toString());
+                //   },
+                // );
               },
               onCityChanged: (value) {},
             ),
@@ -128,6 +154,15 @@ class EditLocationDialog extends StatelessWidget {
             ),
             CustomButton(
               onTap: () {
+                // AppUtils.showCustomToast(stateValue.toString());
+                // Future.delayed(
+                //   const Duration(milliseconds: 400),
+                //   ()
+                //     AppUtils.showCustomToast(countryValue.toString());
+                //   },
+                // );
+                // AppUtils.showCustomToast(msg)
+
                 if (countryValue != null &&
                     stateValue != null &&
                     stateValue != "*State") {

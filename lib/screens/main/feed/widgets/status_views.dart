@@ -76,32 +76,35 @@ class _StatusViewsState extends State<StatusViews> {
               children: [
                 InkWell(
                   onTap: () {
-                    if (injector.get<PaymentBloc>().hasActiveSubscription) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return BlocProvider.value(
-                              value: statusBloc,
-                              child: const CreateStoryDialog());
-                        },
-                      );
-                    } else {
-                      //  Show upgrade bottom sheet
-                      AppUtils.showUpgradeDialog(context,
-                          onSubscribe: () async {
-                        bool? done =
-                            await Navigator.of(context, rootNavigator: true)
-                                .push(MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const SubscriptionScreen())));
-                        if (done != null && done) {
-                          Navigator.pop(context);
-                          injector
-                              .get<PaymentBloc>()
-                              .add(const GetSubscriptionInfoEvent());
-                        }
-                      });
-                    }
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return BlocProvider.value(
+                            value: statusBloc,
+                            child: const CreateStoryDialog());
+                      },
+                    );
+
+                    // if (injector.get<PaymentBloc>().hasActiveSubscription) {
+                    //
+                    //
+                    // } else {
+                    //   //  Show upgrade bottom sheet
+                    //   AppUtils.showUpgradeDialog(context,
+                    //       onSubscribe: () async {
+                    //     bool? done =
+                    //         await Navigator.of(context, rootNavigator: true)
+                    //             .push(MaterialPageRoute(
+                    //                 builder: ((context) =>
+                    //                     const SubscriptionScreen())));
+                    //     if (done != null && done) {
+                    //       Navigator.pop(context);
+                    //       injector
+                    //           .get<PaymentBloc>()
+                    //           .add(const GetSubscriptionInfoEvent());
+                    //     }
+                    //   });
+                    // }
                   },
                   child: CircleAvatar(
                     radius: 25,
@@ -257,6 +260,7 @@ class _StatusViewsState extends State<StatusViews> {
 
 class ThumbnailView extends StatefulWidget {
   final Status statusItem;
+
   const ThumbnailView({Key? key, required this.statusItem}) : super(key: key);
 
   @override
@@ -265,10 +269,11 @@ class ThumbnailView extends StatefulWidget {
 
 class _ThumbnailViewState extends State<ThumbnailView> {
   late final Future<Uint8List?> thumbnailData;
+
   @override
   void initState() {
     super.initState();
-    thumbnailData =  getThumbnail();
+    thumbnailData = getThumbnail();
   }
 
   Future<Uint8List?> getThumbnail() async {

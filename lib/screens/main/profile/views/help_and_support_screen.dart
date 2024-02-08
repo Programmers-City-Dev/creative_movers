@@ -152,7 +152,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                 onTap: () {
                   final Uri url =
                       Uri.parse('https://www.instagram.com/createmovers/');
-                  launchUrl(url, mode: LaunchMode.externalApplication);
+                  launchUrl(url, mode: LaunchMode.inAppWebView);
                 },
               ),
               const SizedBox(
