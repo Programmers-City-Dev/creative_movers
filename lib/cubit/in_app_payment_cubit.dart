@@ -6,6 +6,7 @@ import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 // import 'package:in_app_purchase/in_app_purchase.dart';
 // import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -92,7 +93,8 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
     try {
       emit(InAppPaymentProcessing());
       var customerInfo = await Purchases.getCustomerInfo();
-      bool isActive = paymentServices.isSubcriptionActive(customerInfo, entitlements: ["pro"]);
+      bool isActive = paymentServices
+          .isSubcriptionActive(customerInfo, entitlements: ["pro"]);
 
       if (isActive) {
         emit(InAppPaymentInitial());

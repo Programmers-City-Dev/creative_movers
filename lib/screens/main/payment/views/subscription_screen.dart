@@ -154,15 +154,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               Expanded(
                 child: Column(
                   children: [
-                    const Spacer(),
-                    TrialStatement(
-                      pId: _selectedProductId ?? '',
+                    const SizedBox(
+                      height: 40,
                     ),
+                    // TrialStatement(
+                    //   pId: _selectedProductId ?? '',
+                    // ),
                     // const SizedBox(
                     //   height: 32,
                     // ),
                     SubscriptionOptions(
                         subIds: _subIds,
+                        showFreeOption: widget.isFromSignup!,
                         onSubSelected: (id) {
                           _selectedProductId = id;
                         }),
@@ -201,8 +204,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               child: Text(
                                 "Your account will be charged "
                                 "${state.product.currencyCode} "
-                                "${AppUtils.formatMoney(state.product.price)}"
-                                " after 7 days trial period. "
+                                "${AppUtils.formatMoney(state.product.price)} "
+                                // " after 7 days trial period. "
                                 "You can cancel your subscriptions to "
                                 "avoid being charged 24 hours prior to "
                                 "the end of the current period in "
@@ -220,49 +223,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         },
                       ),
                     ),
-                    const Spacer(),
-                    BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
-                      bloc: _appPaymentCubit,
-                      listener: (context, state) {
-                        if (state is InAppPaymentError) {
-                          AppUtils.showErrorDialog(context,
-                              message: state.error.errorMessage,
-                              title: "Subscription Error",
-                              confirmButtonText: "Close",
-                              onConfirmed: () => Navigator.pop(context));
-                        }
-                        if (state is InAppPurchaseSuccess) {
-                          Navigator.pop(context, true);
-                        }
-                      },
-                      builder: (context, state) {
-                        return SafeArea(
-                          top: false,
-                          child: CustomButton(
-                              color: Theme.of(context).colorScheme.secondary,
-                              onTap: state is InAppPaymentLoading
-                                  ? null
-                                  : () {
-                                      if (_selectedProductId != null) {
-                                        _appPaymentCubit.purchaseStoreProduct(
-                                            _selectedProductId!);
-                                      }
-                                    },
-                              radius: 32,
-                              isBusy: state is InAppPaymentLoading,
-                              child: Text(
-                                state is InAppPaymentLoading
-                                    ? "Processing"
-                                    : "Subscribe Now",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
-                        );
-                      },
+                    const SizedBox(
+                      height: 20,
                     ),
+
                     // widget.isFromSignup!
                     //     ? Padding(
                     //         padding: const EdgeInsets.all(8.0),
@@ -285,7 +249,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     //           ],
                     //         ),
                     //       )
-                    //     : const SizedBox.shrink()
+                    //     : const SizedBox.shrink(),
                     // if (widget.isFromSignup!)
                     //   Padding(
                     //     padding: const EdgeInsets.only(top: 16),
@@ -307,6 +271,53 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     //   ),
                   ],
                 ),
+              ),
+              BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
+                bloc: _appPaymentCubit,
+                listener: (context, state) {
+                  if (state is InAppPaymentError) {
+                    AppUtils.showErrorDialog(context,
+                        message: state.error.errorMessage,
+                        title: "Subscription Error",
+                        confirmButtonText: "Close",
+                        onConfirmed: () => Navigator.pop(context));
+                  }
+                  if (state is InAppPurchaseSuccess) {
+                    Navigator.pop(context, true);
+                  }
+                },
+                builder: (context, state) {
+                  return SafeArea(
+                    top: false,
+                    child: CustomButton(
+                        color: Theme.of(context).colorScheme.secondary,
+                        onTap: state is InAppPaymentLoading
+                            ? null
+                            : () {
+                                if (_selectedProductId != null) {
+                                  _appPaymentCubit.purchaseStoreProduct(
+                                      _selectedProductId!);
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                              },
+                        radius: 32,
+                        isBusy: state is InAppPaymentLoading,
+                        child: Text(
+                          state is InAppPaymentLoading
+                              ? "Processing"
+                              : (_selectedProductId == null &&
+                                      widget.isFromSignup!)
+                                  ? "Continue"
+                                  : "Subscribe Now",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                  );
+                },
               ),
             ],
           ),
@@ -390,12 +401,14 @@ class TrialStatement extends StatelessWidget {
 
 class SubscriptionOptions extends StatefulWidget {
   final List<String> subIds;
-  final Function(String) onSubSelected;
+  final Function(String?) onSubSelected;
+  final bool? showFreeOption;
 
   const SubscriptionOptions({
     Key? key,
     required this.subIds,
     required this.onSubSelected,
+    this.showFreeOption = false,
   }) : super(key: key);
 
   @override
@@ -407,34 +420,55 @@ class _SubscriptionOptionsState extends State<SubscriptionOptions> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: widget.subIds.length,
-        itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: SubscriptionItem(
-                isActive: _activeIndex == index,
-                subscriptionId: widget.subIds[index],
-                onSelected: (id) {
-                  setState(() {
-                    widget.onSubSelected(id);
-                    _activeIndex = index;
-                  });
-                },
-              ),
-            ));
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        ...List.generate(
+            widget.subIds.length,
+            (index) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: SubscriptionItem(
+                    isActive: _activeIndex == index,
+                    subscriptionId: widget.subIds[index],
+                    onSelected: (id) {
+                      setState(() {
+                        widget.onSubSelected(id);
+                        _activeIndex = index;
+                      });
+                    },
+                  ),
+                )),
+        if (widget.showFreeOption!)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: SubscriptionItem(
+              isActive: _activeIndex == -1,
+              subscriptionId: null,
+              isFree: true,
+              onSelected: (id) {
+                setState(() {
+                  widget.onSubSelected(id);
+                  _activeIndex = -1;
+                });
+              },
+            ),
+          )
+      ],
+    );
   }
 }
 
 class SubscriptionItem extends StatefulWidget {
   final bool? isActive;
-  final String subscriptionId;
-  final Function(String subscriptionId) onSelected;
+  final bool? isFree;
+  final String? subscriptionId;
+  final Function(String? subscriptionId) onSelected;
 
   const SubscriptionItem({
     Key? key,
     this.isActive = false,
+    this.isFree = false,
     required this.subscriptionId,
     required this.onSelected,
   }) : super(key: key);
@@ -449,7 +483,9 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
   @override
   void initState() {
     super.initState();
-    _appPaymentCubit.fetchProduct(widget.subscriptionId);
+    if (widget.subscriptionId != null) {
+      _appPaymentCubit.fetchProduct(widget.subscriptionId!);
+    }
   }
 
   @override
@@ -483,7 +519,7 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                   activeColor: Colors.white,
                   onChanged: (value) {},
                 ),
-                Text("Monthly",
+                Text(widget.isFree! ? "Continue for free" : "Monthly",
                     style: TextStyle(
                         color: widget.isActive! ? Colors.white : Colors.black54,
                         fontWeight: FontWeight.w600,
@@ -497,7 +533,9 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                   return RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: "${state.product.priceString}/month",
+                        text: widget.isFree!
+                            ? "0.00/month"
+                            : "${state.product.priceString}/month",
                         style: TextStyle(
                             color: widget.isActive!
                                 ? Colors.white

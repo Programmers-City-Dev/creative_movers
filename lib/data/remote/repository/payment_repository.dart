@@ -57,7 +57,6 @@ class PaymentRepository {
       () => httpClient.post(Endpoints.activeSubscription),
       successResponse: (data) {
         return State<SubscriptionResponse?>.success(
-
             SubscriptionResponse.fromMap(data));
       },
       statusCodeSuccess: 200,

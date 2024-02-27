@@ -37,6 +37,7 @@ class CreativeMoversApp extends StatelessWidget {
       ],
       theme: ThemeData(
           fontFamily: "Poppins",
+          useMaterial3: false,
           pageTransitionsTheme: const PageTransitionsTheme(
             builders: {
               TargetPlatform.android: ZoomPageTransitionsBuilder(),

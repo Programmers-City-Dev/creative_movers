@@ -95,7 +95,7 @@ class _FileMessageItemState extends State<_FileMessageItem> {
       // DownloadTaskStatus status = data[1];
       int progress = data[2];
 
-      if (progress ==-1) {
+      if (progress == -1) {
         AppUtils.showCustomToast('File was not saved');
       }
 
@@ -116,7 +116,7 @@ class _FileMessageItemState extends State<_FileMessageItem> {
 
   @pragma('vm:entry-point')
   static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
+      String id, int status, int progress) {
     final SendPort? send =
         IsolateNameServer.lookupPortByName('downloader_send_port');
 
