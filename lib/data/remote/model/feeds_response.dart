@@ -141,7 +141,7 @@ class Feed {
       comments:
           List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
       likes: List<Like>.from(json["likes"].map((x) => Like.fromJson(x))),
-      user: Poster.fromJson(json["user"]),
+      user:json["user"] == null?null: Poster.fromJson(json["user"]),
       page: json["page"] == null ? null : PostPage.fromJson(json["page"]));
 
   Map<String, dynamic> toJson() => {
@@ -330,6 +330,7 @@ class PostPage {
         id: json["id"],
         name: json["name"],
         photoPath: json["photo_path"],
+
       );
 
   Map<String, dynamic> toJson() => {

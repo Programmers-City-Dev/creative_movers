@@ -56,7 +56,7 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
   }
 
   void purchaseStoreProduct(String productId,
-      {PurchaseType type = PurchaseType.subs}) async {
+      {PurchaseType type = PurchaseType.subs,required StoreProduct product}) async {
     try {
       emit(InAppPaymentLoading());
       var activeSubsEntitlements =
@@ -72,7 +72,7 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
         log("Product: $productId");
         var customerInfo = await paymentServices.purchaseProduct(
           productId,
-          type: type,
+          type: type, product: product,
         );
         emit(InAppPurchaseSuccess(customerInfo: customerInfo));
       }

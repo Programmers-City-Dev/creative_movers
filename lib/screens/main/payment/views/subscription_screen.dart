@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/cubit/in_app_payment_cubit.dart';
@@ -6,6 +7,7 @@ import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:purchases_flutter/models/store_product_wrapper.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   final bool? isFromSignup;
@@ -22,9 +24,11 @@ class SubscriptionScreen extends StatefulWidget {
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   final List<String> _subIds = [
     'com.creativemovers.m7',
+    // 'test_sub',
   ];
 
   String? _selectedProductId;
+  StoreProduct? product;
   final InAppPaymentCubit _appPaymentCubit = InAppPaymentCubit(injector.get());
 
   @override
@@ -164,11 +168,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     //   height: 32,
                     // ),
                     SubscriptionOptions(
-                        subIds: _subIds,
-                        showFreeOption: widget.isFromSignup!,
-                        onSubSelected: (id) {
-                          _selectedProductId = id;
-                        }),
+                      subIds: _subIds,
+                      showFreeOption: widget.isFromSignup!,
+                      onSubSelected: (id) {
+                        _selectedProductId = id;
+                        log(_selectedProductId.toString());
+                        setState(() {});
+                      },
+                      onProductSelected: (StoreProduct? Sproduct) {
+                        product = Sproduct;
+                        setState(() {});
+                      },
+                    ),
                     const SizedBox(
                       height: 8,
                     ),
@@ -294,9 +305,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         onTap: state is InAppPaymentLoading
                             ? null
                             : () {
+                                log(_selectedProductId.toString());
                                 if (_selectedProductId != null) {
                                   _appPaymentCubit.purchaseStoreProduct(
-                                      _selectedProductId!);
+                                      _selectedProductId!,
+                                      product: product!);
                                 } else {
                                   Navigator.pop(context);
                                 }
@@ -402,6 +415,7 @@ class TrialStatement extends StatelessWidget {
 class SubscriptionOptions extends StatefulWidget {
   final List<String> subIds;
   final Function(String?) onSubSelected;
+  final Function(StoreProduct?) onProductSelected;
   final bool? showFreeOption;
 
   const SubscriptionOptions({
@@ -409,6 +423,7 @@ class SubscriptionOptions extends StatefulWidget {
     required this.subIds,
     required this.onSubSelected,
     this.showFreeOption = false,
+    required this.onProductSelected,
   }) : super(key: key);
 
   @override
@@ -437,6 +452,9 @@ class _SubscriptionOptionsState extends State<SubscriptionOptions> {
                         _activeIndex = index;
                       });
                     },
+                    onProductSelected: (StoreProduct? product) {
+                      widget.onProductSelected(product);
+                    },
                   ),
                 )),
         if (widget.showFreeOption!)
@@ -448,9 +466,12 @@ class _SubscriptionOptionsState extends State<SubscriptionOptions> {
               isFree: true,
               onSelected: (id) {
                 setState(() {
-                  widget.onSubSelected(id);
+                  widget.onSubSelected(null);
                   _activeIndex = -1;
                 });
+              },
+              onProductSelected: (StoreProduct? subscriptionId) {
+                widget.onProductSelected(null);
               },
             ),
           )
@@ -464,6 +485,7 @@ class SubscriptionItem extends StatefulWidget {
   final bool? isFree;
   final String? subscriptionId;
   final Function(String? subscriptionId) onSelected;
+  final Function(StoreProduct? subscriptionId) onProductSelected;
 
   const SubscriptionItem({
     Key? key,
@@ -471,6 +493,7 @@ class SubscriptionItem extends StatefulWidget {
     this.isFree = false,
     required this.subscriptionId,
     required this.onSelected,
+    required this.onProductSelected,
   }) : super(key: key);
 
   @override
@@ -479,6 +502,7 @@ class SubscriptionItem extends StatefulWidget {
 
 class _SubscriptionItemState extends State<SubscriptionItem> {
   final InAppPaymentCubit _appPaymentCubit = InAppPaymentCubit(injector.get());
+  StoreProduct? selectedProduct;
 
   @override
   void initState() {
@@ -491,7 +515,12 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.onSelected(widget.subscriptionId),
+      onTap: () {
+        widget.onSelected(widget.subscriptionId);
+        if (selectedProduct != null) {
+          widget.onProductSelected(selectedProduct);
+        }
+      },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
@@ -526,23 +555,29 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                         fontSize: 16))
               ],
             ),
-            BlocBuilder<InAppPaymentCubit, InAppPaymentState>(
+            BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
               bloc: _appPaymentCubit,
+              listener: _listenToPaymentState,
               builder: (context, state) {
                 if (state is ProductsFetched) {
-                  return RichText(
-                      text: TextSpan(children: [
-                    TextSpan(
-                        text: widget.isFree!
-                            ? "0.00/month"
-                            : "${state.product.priceString}/month",
-                        style: TextStyle(
-                            color: widget.isActive!
-                                ? Colors.white
-                                : Colors.black54,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16))
-                  ]));
+                  return InkWell(
+                    onTap: () {
+                      widget.onProductSelected(state.product);
+                    },
+                    child: RichText(
+                        text: TextSpan(children: [
+                      TextSpan(
+                          text: widget.isFree!
+                              ? "0.00/month"
+                              : "${state.product.priceString}/month",
+                          style: TextStyle(
+                              color: widget.isActive!
+                                  ? Colors.white
+                                  : Colors.black54,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16))
+                    ])),
+                  );
                 }
                 return const SizedBox.shrink();
               },
@@ -551,5 +586,13 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
         ),
       ),
     );
+  }
+
+  void _listenToPaymentState(BuildContext context, InAppPaymentState state) {
+    if (state is ProductsFetched) {
+      selectedProduct = state.product;
+      widget.onProductSelected(state.product);
+      setState(() {});
+    }
   }
 }

@@ -67,6 +67,7 @@ class FeedRepository {
     return SimplifyApiConsuming.makeRequest(
       () => httpHelper.post(Endpoints.fetchFeedEndpoint),
       successResponse: (data) {
+        log(data.toString());
         return State<FeedsResponse?>.success(
             data != null ? FeedsResponse.fromJson(data) : null);
       },

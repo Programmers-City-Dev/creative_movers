@@ -256,8 +256,10 @@ class AuthRepository {
 
   Future<State> logout() async {
     return SimplifyApiConsuming.makeRequest(
-      () => httpClient.post(Endpoints.logoutEndpoint),
+      () => httpClient.post(Endpoints.logoutEndpoint,),
+
       successResponse: (data) {
+
         return State<LogoutResponse?>.success(
             data != null ? LogoutResponse.fromJson(data) : null);
       },

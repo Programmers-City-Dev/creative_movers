@@ -178,7 +178,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
                             return NewPostItem(
-                              feed: state.feedResponse.feeds.data[index],
+                              feed: state.feedResponse.feeds.data[index]!,
                               onUpdated: () {
                                 feedBloc.add(const GetFeedEvent());
                               },

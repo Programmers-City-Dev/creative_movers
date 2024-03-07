@@ -89,6 +89,7 @@ class SimplifyApiConsuming {
     if (response.statusCode == statusCodeSuccess) {
       return successResponse(response.data);
     } else {
+
       return errorResponse(response);
     }
   }

@@ -50,8 +50,9 @@ class PaymentServices {
   }
 
   Future<CustomerInfo> purchaseProduct(String identifier,
-      {required PurchaseType type}) async {
-    return await Purchases.purchaseProduct(identifier, type: type);
+      {required PurchaseType type,required StoreProduct? product}) async {
+    // return await Purchases.purchaseProduct(identifier, type: type);
+    return await Purchases.purchaseStoreProduct(product!);
   }
 
   static void logout() {

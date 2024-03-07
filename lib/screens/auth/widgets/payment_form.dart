@@ -82,7 +82,6 @@ class _PaymentFormState extends State<PaymentForm> {
                     return ListView.builder(
                         itemCount: state.packages.length,
                         itemBuilder: (context, index) {
-                          
                           return PaymentOptionsWidget(
                             storeProduct: state.packages[index].storeProduct,
                             includeTrial: widget.isFirstTime,
@@ -144,7 +143,7 @@ class _PaymentFormState extends State<PaymentForm> {
                     onTap: () async {
                       if (_selectedProduct != null) {
                         // iapPaymentBloc.fetchOfferings();
-                        iapPaymentBloc.purchaseStoreProduct(_selectedProduct!.identifier);
+                        // iapPaymentBloc.purchaseStoreProduct(_selectedProduct!.identifier);
                       }
                     },
                   );

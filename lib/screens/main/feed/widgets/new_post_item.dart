@@ -92,8 +92,8 @@ class _NewPostItemState extends State<NewPostItem> {
                     radius: 20,
                     withBaseUrl: false,
                     url: widget.feed.type == 'user_feed'
-                        ? widget.feed.user!.profilePhotoPath!
-                        : widget.feed.page!.photoPath,
+                        ? widget.feed.user?.profilePhotoPath!
+                        : widget.feed.page?.photoPath,
                   ),
                   const SizedBox(
                     width: 7,

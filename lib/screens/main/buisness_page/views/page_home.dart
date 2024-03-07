@@ -229,7 +229,7 @@ class _PageHomeState extends State<PageHome> {
                             shrinkWrap: true,
                             itemCount: state.feedsResponse.feeds.data.length,
                             itemBuilder: (context, index) => NewPostItem(
-                              feed: state.feedsResponse.feeds.data[index],
+                              feed: state.feedsResponse.feeds.data[index]!,
                               onUpdated: () {},
                               onDeleted: (feed) {
                                 _buisnessBloc.add(
