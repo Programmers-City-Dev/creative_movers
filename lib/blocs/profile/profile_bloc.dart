@@ -152,9 +152,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
         emit(ProfileErrorState(errorModel.errorMessage));
+        log(errorModel.errorMessage);
       }
-    } catch (e) {
+    } catch (e,stack) {
       emit(const ProfileErrorState("An error occurred, please try again"));
+      log(e.toString());
+      log(stack.toString());
+
     }
   }
 

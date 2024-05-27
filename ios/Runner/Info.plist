@@ -6,8 +6,6 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-    <false/>
 	<key>CFBundleDisplayName</key>
 	<string>CreativeMovers</string>
 	<key>CFBundleExecutable</key>
@@ -48,6 +46,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

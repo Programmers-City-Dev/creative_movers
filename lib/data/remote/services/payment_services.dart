@@ -16,8 +16,7 @@ class PaymentServices {
 
     late final PurchasesConfiguration purchaseConfig;
     if (Platform.isAndroid) {
-      purchaseConfig =
-          PurchasesConfiguration("goog_brurElscbAFgxsuPonOPivXlPds");
+      purchaseConfig = PurchasesConfiguration("goog_brurElscbAFgxsuPonOPivXlPds");
     } else if (Platform.isIOS) {
       purchaseConfig =
           PurchasesConfiguration("appl_HrOEKIOWyOvuTklJuyeuveaeOji");

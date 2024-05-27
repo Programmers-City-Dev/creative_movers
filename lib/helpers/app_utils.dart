@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/models/ethnicity.dart';
 import 'package:creative_movers/resources/app_icons.dart';
@@ -62,6 +64,7 @@ class AppUtils {
     } else {
       //-----------Login Check--------------
       if (isLoggedIn) {
+        injector.get<CacheCubit>().fetchCachedUserData();
         return const HomeScreen();
       } else {
         return const LoginScreen();

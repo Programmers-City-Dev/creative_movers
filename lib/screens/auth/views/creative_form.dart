@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/helpers/storage_helper.dart';
 import 'package:creative_movers/screens/auth/widgets/search_dropdown.dart';
@@ -298,18 +300,25 @@ class _CreativeFormState extends State<CreativeForm> {
     if (state is AccountTypeSuccesState) {
       Navigator.pop(context);
       StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => state.accountTypeResponse.connect.isNotEmpty
-                ? ConnectionScreen(
-                    connections: state.accountTypeResponse.connect,
-                    role: state.accountTypeResponse.userRole?.role,
-                  )
-                : const SubscriptionScreen(
-                    isFromSignup: true,
-                  ),
-          ),
-          (route) => false);
+      if (state is AccountTypeSuccesState) {
+        Navigator.pop(context);
+        StorageHelper.setBoolean(StorageKeys.stayLoggedIn, true);
+        var user = injector.get<CacheCubit>().cachedUser;
+
+        // if (user?.accountType?.toLowerCase() != 'premium') {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => state.accountTypeResponse.connect.isNotEmpty
+                  ? ConnectionScreen(
+                      connections: state.accountTypeResponse.connect,
+                      role: state.accountTypeResponse.userRole?.role,
+                    )
+                  : const SubscriptionScreen(
+                      isFromSignup: true,
+                    ),
+            ),
+            (route) => false);
+      }
     }
   }
 

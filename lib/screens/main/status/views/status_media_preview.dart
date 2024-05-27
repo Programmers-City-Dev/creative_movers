@@ -185,6 +185,7 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
     );
   }
 
+
   void getMedia(List<PlatformFile> files) {
     var images = ['jpg', 'jpeg', 'png', 'webp'];
     var videos = ['mp4', 'mov'];
@@ -262,8 +263,9 @@ class _StatusMediaPreviewState extends State<StatusMediaPreview> {
 
     if (state is AddStatusSuccessState) {
       Navigator.pop(context);
+      context.read<StatusBloc>().add(const GetStatusEvent());
       // Navigator.of(context).pushNamed(feedsPath);
-      Navigator.of(context).push(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => const HomeScreen(),
       ));
     }

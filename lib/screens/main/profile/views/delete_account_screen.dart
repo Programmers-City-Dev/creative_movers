@@ -295,7 +295,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                                 }
                               },
                               color: Colors.red,
-                              isEnabled: selectedReasonIndex != 0,
+                              // isEnabled: selectedReasonIndex != 0,
                               child: const Text("Delete",
                                   style: TextStyle(color: Colors.white)),
                             )

@@ -1,3 +1,4 @@
+import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/blocs/status/status_bloc.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/resources/app_icons.dart';
@@ -109,10 +110,10 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                                           Colors.lightBlue,
                                         ]),
                                     borderRadius: BorderRadius.circular(15)),
-                                child: Center(
+                                child: const Center(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: const [
+                                    children: [
                                       CircleAvatar(
                                         radius: 30,
                                         backgroundColor: AppColors.white,
@@ -142,7 +143,7 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                           ),
                           InkWell(
                             onTap: () {
-                              _fetchMedia(context);
+                              _fetchMedia(context,statusBloc);
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -161,10 +162,10 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
                                           Colors.indigo,
                                           Colors.lightBlue,
                                         ])),
-                                child: Center(
+                                child: const Center(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: const [
+                                    children: [
                                       CircleAvatar(
                                         radius: 30,
                                         backgroundColor: AppColors.white,
@@ -202,21 +203,26 @@ class _CreateStoryDialogState extends State<CreateStoryDialog> {
     );
   }
 
-  void _fetchMedia(BuildContext context) async {
+  void _fetchMedia(BuildContext context, StatusBloc bloc) async {
     var images = ['jpg', 'jpeg', 'png', 'webp'];
     var videos = ['mp4', 'mov'];
-    var files = await AppUtils.fetchMedia(
-        allowMultiple: true,
-        onSelect: (result) {
-          if (result != null) {
-            if (result.files.isNotEmpty) {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => StatusMediaPreview(
-                  files: result.files,
-                ),
-              ));
-            } else {}
-          }
-        });
+    var files =
+        await AppUtils.fetchMedia(allowMultiple: true, onSelect: (result) {});
+
+    // AppUtils.showCustomToast(files.length.toString() ?? '');
+
+    // if (file != null) {
+    if (files.isNotEmpty) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BlocProvider.value(
+          value: bloc,
+          child: StatusMediaPreview(
+            files: files,
+
+          ),
+        ),
+      ));
+    } else {}
+    // }
   }
 }

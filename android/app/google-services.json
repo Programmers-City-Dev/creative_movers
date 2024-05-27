@@ -29,6 +29,14 @@
             {
               "client_id": "492370844178-7v7be9hj8u1adgc033e7ngjqhg6icrnl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "492370844178-e2sj8u2ho2c04agcrj3fledaferqs7c9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.creativemovers.app",
+                "app_store_id": "6444662400"
+              }
             }
           ]
         }

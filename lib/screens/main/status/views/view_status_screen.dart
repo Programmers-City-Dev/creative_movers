@@ -52,11 +52,16 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
               : status.mediaType == 'image'
                   ? StoryItem.pageImage(
                       url: status.file!,
-                      caption: Text(status.text.toString()),
+                      caption: Text(
+                        status.text ?? '',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
+                      ),
                       controller: storyController,
                     )
                   : StoryItem.pageVideo(status.file!,
-                      caption: Text(status.text.toString()), controller: storyController),
+                      caption: Text(status.text.toString()),
+                      controller: storyController),
         );
 
         //Once it converts all statusElement for each user it
@@ -115,7 +120,7 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
         //   controller: storyController,
         // ),
         ,
-        onStoryShow: (s,i) {
+        onStoryShow: (s, i) {
           print("Showing a story");
         },
         onComplete: () {

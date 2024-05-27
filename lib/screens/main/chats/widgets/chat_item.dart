@@ -1,4 +1,6 @@
+import 'package:creative_movers/blocs/chat/chat_bloc.dart';
 import 'package:creative_movers/data/remote/model/chat/conversation.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:creative_movers/screens/main/chats/views/messaging_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
@@ -18,7 +20,8 @@ class ChatItem extends StatefulWidget {
 class ChatItemState extends State<ChatItem> {
   @override
   Widget build(BuildContext context) {
-    var lastMessage = widget.conversation.lastMessage;
+    var lastMessage = injector.get<ChatBloc>().chatMessagesNotifier.value.lastOrNull ?? widget.conversation.lastMessage;
+    // var lastMessage = widget.conversation.lastMessage;
     var user1 = widget.conversation.user1;
 
     ConversationUser? user;

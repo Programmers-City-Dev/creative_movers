@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
+import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
+import 'package:creative_movers/helpers/subscription_helper.dart';
 import 'package:creative_movers/screens/auth/widgets/contact_item.dart';
 import 'package:creative_movers/screens/main/home_screen.dart';
 import 'package:creative_movers/screens/main/payment/views/subscription_screen.dart';
@@ -36,124 +39,114 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
           _listenToAccountTypeState(context, state);
           //
         },
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                      ),
+                      Text(
+                        'Add Connects',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      // Expanded(
+                      //     child: SearchField(
+                      //   hint: 'Search Contacts',
+                      // )),
+                    ],
+                  ),
+                  Text(
+                    widget.role == 'creative'
+                        ? 'We found some movers you might like to connect with'
+                        : 'We found some creatives you might like to connect with',
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Text(
-                          'Add Connects',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
+                        TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: AppColors.lightGrey,
+                                shape: const StadiumBorder(),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16)),
+                            onPressed: () {
+                              _goToNextScreen(context);
+                            },
+                            child: const Row(
+                              children: [
+                                Text(
+                                  'Skip',
+                                  style: TextStyle(color: AppColors.textColor),
+                                ),
+                                Icon(
+                                  Icons.skip_next_outlined,
+                                  color: AppColors.textColor,
+                                ),
+                              ],
+                            )),
+                        const SizedBox(
                           width: 10,
                         ),
-                        // Expanded(
-                        //     child: SearchField(
-                        //   hint: 'Search Contacts',
-                        // )),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: AppColors.darkBlue,
+                                shape: const StadiumBorder(),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16)),
+                            onPressed: () {
+                              addConnections();
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (context) => const PaymentScreen(),
+                              // ));
+                            },
+                            child: const Text(
+                              'Add',
+                              style: TextStyle(color: AppColors.white),
+                            ))
                       ],
                     ),
-                    Text(
-                      widget.role == 'creative'
-                          ? 'We found some movers you might like to connect with'
-                          : 'We found some creatives you might like to connect with',
-                      style: const TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w600),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextButton(
-                              style: TextButton.styleFrom(
-                                  backgroundColor: AppColors.lightGrey,
-                                  shape: const StadiumBorder(),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16)),
-                              onPressed: () {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SubscriptionScreen(
-                                              isFromSignup: true,
-                                            )),
-                                    (route) => false);
-                              },
-                              child: const Row(
-                                children: [
-                                  Text(
-                                    'Skip',
-                                    style:
-                                        TextStyle(color: AppColors.textColor),
-                                  ),
-                                  Icon(
-                                    Icons.skip_next_outlined,
-                                    color: AppColors.textColor,
-                                  ),
-                                ],
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          TextButton(
-                              style: TextButton.styleFrom(
-                                  backgroundColor: AppColors.darkBlue,
-                                  shape: const StadiumBorder(),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16)),
-                              onPressed: () {
-                                addConnections();
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //   builder: (context) => const PaymentScreen(),
-                                // ));
-                              },
-                              child: const Text(
-                                'Add',
-                                style: TextStyle(color: AppColors.white),
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(
-                  thickness: 2,
-                ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Divider(
+                thickness: 2,
               ),
-              Expanded(
-                  child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: widget.connections.length,
-                itemBuilder: (context, index) => ContactItem(
-                  onTap: () {
-                    setState(() {
-                      _handleConnection(index);
-                      // isAdded = !isAdded;
-                    });
-                  },
-                  isAdded: myConnects.contains(widget.connections[index]),
-                  connect: widget.connections[index],
-                ),
-              ))
-            ],
-          ),
+            ),
+            Expanded(
+                child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: widget.connections.length,
+              itemBuilder: (context, index) => ContactItem(
+                onTap: () {
+                  setState(() {
+                    _handleConnection(index);
+                    // isAdded = !isAdded;
+                  });
+                },
+                isAdded: myConnects.contains(widget.connections[index]),
+                connect: widget.connections[index],
+              ),
+            ))
+          ],
         ),
       ),
     );
@@ -176,24 +169,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     }
 
     if (state is AddConnectionSuccesState) {
-      Navigator.of(context)
-          .push(
-        MaterialPageRoute(
-            builder: (context) => const SubscriptionScreen(
-                  isFromSignup: true,
-                )),
-      )
-          .then((success) {
-        if (success != null && success) {
-          AppUtils.showCustomToast("Subscription was successful");
-        }
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => const HomeScreen(
-                    showWelcomeDialog: true,
-                  )),
-        );
-      });
+      _goToNextScreen(context);
     }
   }
 
@@ -204,7 +180,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         'MY CONNECTS: $myConnects',
       );
     } else {
-      if (myConnects.length >= 5) {
+      if (myConnects.length >= 5 &&
+          !SubscriptionHelper.hasActiveSubscription()) {
         CustomSnackBar.showMessage(context,
             message: 'You can only connect to 5 persons until you subscribe.');
       } else {
@@ -215,5 +192,28 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         'MY CONNECTS: ${myConnects.length}',
       );
     }
+  }
+
+  void _goToNextScreen(BuildContext context) {
+    var user = injector.get<CacheCubit>().cachedUser;
+
+    // if (user?.accountType?.toLowerCase() != 'premium') {
+      Navigator.of(context)
+          .push(
+        MaterialPageRoute(
+            builder: (context) => const SubscriptionScreen(
+                  isFromSignup: true,
+                )),).then((success) {
+        if (success != null && success) {
+          AppUtils.showCustomToast("Subscription was successful");
+        }
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => const HomeScreen(
+                    showWelcomeDialog: true,
+                  )),
+        );
+      });
+
   }
 }

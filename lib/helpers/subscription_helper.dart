@@ -1,3 +1,4 @@
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/blocs/payment/payment_bloc.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -6,6 +7,10 @@ import 'package:flutter/material.dart';
 
 class SubscriptionHelper {
   static bool hasActiveSubscription() {
+    if (injector.get<CacheCubit>().cachedUser?.accountType?.toLowerCase() ==
+        'premium') {
+      return true;
+    }
     return injector.get<PaymentBloc>().hasActiveSubscription;
   }
 

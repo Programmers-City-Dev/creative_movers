@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
 import 'package:creative_movers/data/remote/model/create_page_response.dart';
 import 'package:creative_movers/data/remote/model/feeds_response.dart';
@@ -73,10 +75,16 @@ class BuisnessBloc extends Bloc<BuisnessEvent, BuisnessState> {
           getPageResponse: state.value,
         ));
       } else if (state is ErrorState) {
+
         ServerErrorModel errorModel = state.value;
+        log(errorModel.errorMessage.toString());
         emit(GetPageFailureState(error: errorModel.errorMessage));
       }
-    } catch (e) {
+    } catch (e,stack) {
+
+      log(e.toString());
+      log(stack.toString());
+
       emit(GetPageFailureState(error: 'Oops Something went wrong'));
     }
   }

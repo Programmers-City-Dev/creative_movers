@@ -27,6 +27,8 @@ class PushNotificationService {
   PushNotificationService._();
 
   static Future initialise() async {
+    var token = await getDeviceToken();
+    log(token.toString());
     if (Platform.isIOS) {
       _fcm.requestPermission(
           alert: true,
@@ -78,16 +80,19 @@ class PushNotificationService {
     FirebaseMessaging.onBackgroundMessage(_showBackgroundNotification);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // log('A new onMessageOpenedApp event was published!: ${message.data}');
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null && !kIsWeb) {
+      try {
+        log('A new onMessageOpenedApp event was published!: ${message.data}');
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        // if (notification != null && android != null  && !kIsWeb) {
+        // if (notification != null  && !kIsWeb) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
-          notification.body,
+          notification?.title,
+          notification?.body,
           NotificationDetails(
             android: AndroidNotificationDetails(
+
               channel.id,
               channel.name,
               channelDescription: channel.description,
@@ -95,7 +100,11 @@ class PushNotificationService {
             ),
           ),
         );
+      } catch (e) {
+        log(e.toString());
+        // TODO
       }
+      // }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

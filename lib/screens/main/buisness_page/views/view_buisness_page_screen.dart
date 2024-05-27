@@ -48,9 +48,10 @@ class _ViewBuisnessPageScreenState extends State<ViewBuisnessPageScreen> {
             // log(liked.toString());
 
           }
+          _buisnessBloc.add(PageFeedsEvent(widget.pageId.toString()));
+
         }
 
-        _buisnessBloc.add(PageFeedsEvent(widget.pageId.toString()));
       },
       buildWhen: (prevState, currentState) {
         return currentState is GetPageLoadingState ||

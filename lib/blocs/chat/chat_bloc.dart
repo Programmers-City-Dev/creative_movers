@@ -20,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pusher_client/pusher_client.dart';
 
 part 'chat_event.dart';
+
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -117,6 +118,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           files: [if (event.files.isNotEmpty) event.files.first]);
       if (state is SuccessState) {
         ChatMessageResponse messageSent = state.value;
+        injector.get<ChatBloc>().add(FetchConversationsEvent());
         emit(ChatMessageSent(chatMessageResponse: messageSent));
       } else if (state is ErrorState) {
         ServerErrorModel errorModel = state.value;
@@ -153,8 +155,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       FetchConversationsMessagesEvent event, Emitter<ChatState> emit) async {
     emit(ChatMessageLoading());
     try {
-      final state = await chatRepository
-          .fetchChatConversationMessages(event.conversationId);
+      final state = await chatRepository.fetchChatConversationMessages(event.conversationId);
+
       if (state is SuccessState) {
         ConversationMessagesResponse response = state.value;
         chatMessagesNotifier.value = response.conversationData.messages;

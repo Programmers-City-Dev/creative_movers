@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:creative_movers/data/local/dao/cache_user_dao.dart';
 import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/di/injector.dart';
+import 'package:creative_movers/helpers/app_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,11 +16,17 @@ class CacheCubit extends Cubit<CacheState> {
   CacheCubit() : super(CacheInitial());
 
   void fetchCachedUserData() async {
+    // AppUtils.showCustomToast(
+    //     cachedUser!.accountType!.toLowerCase().toString());
     try {
       var dataList = await injector.get<CacheCachedUserDao>().getAllCache();
       if (dataList.isNotEmpty) {
         CachedUser cachedUser = dataList.first;
+
+
         this.cachedUser = cachedUser;
+        // AppUtils.showCustomToast(cachedUser.accountType!.toLowerCase());
+
         emit(CachedUserDataFetched(cachedUser: cachedUser));
       }
     } catch (e) {

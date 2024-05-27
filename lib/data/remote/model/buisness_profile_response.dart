@@ -227,11 +227,11 @@ class Follower {
   String pageId;
   DateTime createdAt;
   DateTime updatedAt;
-  String role;
-  String username;
-  String firstname;
-  String lastname;
-  String biodata;
+  dynamic role;
+  dynamic username;
+  dynamic firstname;
+  dynamic lastname;
+  dynamic biodata;
   String profilePhotoPath;
 
   factory Follower.fromJson(Map<String, dynamic> json) => Follower(
@@ -239,13 +239,14 @@ class Follower {
         userId: json["user_id"],
         pageId: json["page_id"],
         createdAt: DateTime.parse(json["created_at"]),
+
         updatedAt: DateTime.parse(json["updated_at"]),
         role: json["role"],
         username: json["username"],
         firstname: json["firstname"],
         lastname: json["lastname"],
         biodata: json["biodata"],
-        profilePhotoPath: json["profile_photo_path"],
+        profilePhotoPath: json["profile_photo_path"]??'',
       );
 
   Map<String, dynamic> toJson() => {

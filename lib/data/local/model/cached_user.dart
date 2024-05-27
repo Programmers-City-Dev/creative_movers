@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 class CachedUser extends Equatable {
   const CachedUser({
     required this.id,
+    required this.accountType,
     this.firstname,
     this.lastname,
     this.username,
@@ -35,6 +36,7 @@ class CachedUser extends Equatable {
   final String? lastname;
   final String? username;
   final String? email;
+  final String? accountType;
   final String? phone;
   final DateTime? emailVerifiedAt;
   final String? role;
@@ -77,6 +79,7 @@ class CachedUser extends Equatable {
           String? state,
           String? gender,
           String? ethnicity,
+          String? accountType,
           DateTime? dateOfBirth}) =>
       CachedUser(
         id: id ?? this.id,
@@ -84,6 +87,7 @@ class CachedUser extends Equatable {
         lastname: lastname ?? this.lastname,
         username: username ?? this.username,
         gender: gender ?? this.gender,
+        accountType: accountType ?? this.accountType,
         ethnicity: ethnicity ?? this.ethnicity,
         email: email ?? this.email,
         phone: phone ?? this.phone,
@@ -113,6 +117,7 @@ class CachedUser extends Equatable {
         phone: json["phone"],
         gender: json["gender"],
         ethnicity: json["ethnicity"],
+        accountType: json["account_type"],
         emailVerifiedAt: json["email_verified_at"] == null
             ? null
             : DateTime.parse(json["email_verified_at"]),
@@ -145,6 +150,7 @@ class CachedUser extends Equatable {
         "phone": phone,
         "gender": gender,
         "ethnicity": ethnicity,
+        "account_type": accountType,
         "email_verified_at":
             emailVerifiedAt == null ? null : createdAt!.toIso8601String(),
         "role": role,
@@ -187,5 +193,6 @@ class CachedUser extends Equatable {
         apiToken,
         country,
         state,
+        accountType,
       ];
 }

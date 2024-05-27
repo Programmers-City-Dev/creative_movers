@@ -424,6 +424,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                                   height: 5,
                                                                 ),
                                                                 SizedBox(
+
                                                                   height: 50,
                                                                   child: TextButton(
                                                                       style: TextButton.styleFrom(backgroundColor: AppColors.lightBlue),
@@ -548,6 +549,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                                 child:
                                                                     GestureDetector(
                                                                   child: Card(
+
                                                                     elevation:
                                                                         0,
                                                                     shape: RoundedRectangleBorder(
@@ -588,6 +590,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                                               ),
                                                                             ),
                                                                           ),
+
                                                                           Center(
                                                                             child:
                                                                                 Padding(
@@ -604,6 +607,13 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                                                       ),
                                                                     ),
                                                                   ),
+                                                                      onTap: () {
+                                                                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                          builder: (context) => ViewProfileScreen(
+                                                                            userId: user.connections![index]['id'],
+                                                                          ),
+                                                                        ));
+                                                                      },
                                                                 ),
                                                               ),
                                                             ),

@@ -111,6 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                           );
                         }
+
                         if (state is ChatError) {
                           return Center(
                               child: AppPromptWidget(

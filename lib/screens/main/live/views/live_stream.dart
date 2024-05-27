@@ -316,18 +316,18 @@ class LiveStreamWidget extends StatelessWidget {
         name: "LiveChat");
     return Stack(
       children: [
-        if (!widget.isBroadcaster &&
-            _remoteUserState == RemoteVideoState.remoteVideoStateDecoding &&
-            _remoteUid != null)
+        if (!widget.isBroadcaster && _remoteUserState == RemoteVideoState.remoteVideoStateDecoding && _remoteUid != null)
+
           Center(
             child: RemoteUserView(engine, channelName, _remoteUid),
           ),
-        if (!widget.isBroadcaster &&
-            _remoteUserState == RemoteVideoState.remoteVideoStateStopped)
+
+        if (!widget.isBroadcaster && _remoteUserState == RemoteVideoState.remoteVideoStateStopped)
+
           const LiveEndedWidget(),
-        if (!widget.isBroadcaster &&
-            (_remoteUserState != RemoteVideoState.remoteVideoStateDecoding &&
-                _remoteUserState != RemoteVideoState.remoteVideoStateStopped))
+
+        if (!widget.isBroadcaster && (_remoteUserState != RemoteVideoState.remoteVideoStateDecoding && _remoteUserState != RemoteVideoState.remoteVideoStateStopped))
+
           const Center(
             child: CircularProgressIndicator(),
           ),

@@ -95,7 +95,7 @@ android {
         staging {
             dimension "creative_movers"
             applicationIdSuffix ".staging"
-            versionNameSuffix "-staging"
+//            versionNameSuffix "-staging"
         }
         prod {
             dimension "creative_movers"

@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:creative_movers/blocs/auth/auth_bloc.dart';
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/constants.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
+import 'package:creative_movers/data/local/model/cached_user.dart';
 import 'package:creative_movers/data/remote/model/register_response.dart';
 import 'package:creative_movers/data/remote/services/payment_services.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -249,6 +251,10 @@ class _SignupFormState extends State<SignupForm> {
       StorageHelper.setString(StorageKeys.email, response.user.email);
       StorageHelper.setString(StorageKeys.user_id, response.user.id.toString());
       // StorageHelper.setString(StorageKeys.firstname, response.user.firstname!);
+
+      injector
+          .get<CacheCubit>()
+          .updateCachedUserData(CachedUser.fromMap(response.user.toMap()));
       injector.get<PaymentServices>().init();
     } catch (e) {
       log(

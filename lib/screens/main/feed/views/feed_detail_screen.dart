@@ -143,9 +143,9 @@ class _FeedDetailsWidgetState extends State<FeedDetailsWidget> {
                       feedId: ' ${widget.feed.id}',
                       user: Poster(
                           id: int.parse(widget.feed.userId),
-                          firstname: widget.feed.user!.firstname,
-                          lastname: widget.feed.user!.lastname,
-                          profilePhotoPath: widget.feed.user!.profilePhotoPath),
+                          firstname: user.firstname.toString(),
+                          lastname: user.lastname.toString(),
+                          profilePhotoPath: user.profilePhotoPath),
                       shouldLoad: true));
                   _commentScrollController.animateTo(
                     _commentScrollController.position.maxScrollExtent,

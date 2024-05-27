@@ -12,6 +12,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 class DynamicLinksService {
   static bool isInitialized = false;
+
   DynamicLinksService._();
 
   static init() async {
@@ -80,8 +81,10 @@ class DynamicLinksService {
             : Uri.parse(""),
         title: 'CreativeMovers - Business Social Network',
       ),
-      androidParameters:
-          AndroidParameters(packageName: packageInfo.packageName),
+      androidParameters: AndroidParameters(
+        packageName: packageInfo.packageName,
+        minimumVersion: 0,
+      ),
       iosParameters: IOSParameters(
           bundleId: packageInfo.packageName, appStoreId: "6444662400"),
     );

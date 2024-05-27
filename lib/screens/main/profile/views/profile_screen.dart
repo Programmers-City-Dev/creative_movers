@@ -8,6 +8,7 @@ import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/paths.dart';
 import 'package:creative_movers/resources/app_icons.dart';
 import 'package:creative_movers/screens/main/profile/views/user_connects_screen.dart';
+import 'package:creative_movers/screens/main/profile/views/view_profile_screen.dart';
 import 'package:creative_movers/screens/widget/circle_image.dart';
 import 'package:creative_movers/screens/widget/error_widget.dart';
 import 'package:creative_movers/screens/widget/image_previewer.dart';
@@ -575,67 +576,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             //
                                             //   });
                                             // },
-                                            child: Card(
-                                              elevation: 0,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(6)),
-                                              shadowColor: AppColors.smokeWhite,
-                                              child: Center(
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    CircleAvatar(
-                                                      radius: 25,
-                                                      backgroundColor:
-                                                          Colors.blueAccent,
-                                                      child: CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                          user.connections![
-                                                                  index][
-                                                              "profile_photo_path"],
-                                                        ),
-                                                        radius: 23,
-                                                      ),
+
+                                            child: SizedBox(
+                                              width: 120,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                    builder: (context) => ViewProfileScreen(
+                                                      userId: user.connections![index]['id'],
                                                     ),
-                                                    Center(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child: Text(
-                                                          '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 11),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign:
-                                                              TextAlign.center,
+                                                  ));
+                                                },
+                                                child: Card(
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(6)),
+                                                  shadowColor: AppColors.smokeWhite,
+                                                  child: Center(
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 25,
+                                                          backgroundColor:
+                                                              Colors.blueAccent,
+                                                          child: CircleAvatar(
+                                                            backgroundImage:
+                                                                NetworkImage(
+                                                              user.connections![
+                                                                      index][
+                                                                  "profile_photo_path"],
+                                                            ),
+                                                            radius: 23,
+                                                          ),
                                                         ),
-                                                      ),
+                                                        Center(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(5.0),
+                                                            child: Text(
+                                                              '${user.connections![index]['firstname']} ${user.connections![index]['lastname']}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize: 11),
+                                                              overflow: TextOverflow
+                                                                  .ellipsis,
+                                                              textAlign:
+                                                                  TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Center(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(1.0),
+                                                            child: Text(
+                                                              '${user.connections![index]['role']}',
+                                                              style: const TextStyle(
+                                                                  fontSize: 10,
+                                                                  color: Colors
+                                                                      .blueGrey),
+                                                              overflow: TextOverflow
+                                                                  .ellipsis,
+                                                              textAlign:
+                                                                  TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
-                                                    Center(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(1.0),
-                                                        child: Text(
-                                                          '${user.connections![index]['role']}',
-                                                          style: const TextStyle(
-                                                              fontSize: 10,
-                                                              color: Colors
-                                                                  .blueGrey),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
                                             ),

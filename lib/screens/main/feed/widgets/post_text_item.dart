@@ -41,7 +41,7 @@ class PostTextItem extends StatelessWidget {
                     : ' ${feed!.page?.name} 🌞',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text(feed!.content!),
+              Text(feed!.content ?? ""),
               Text(
                 AppUtils.getTimeAgo(feed!.createdAt),
                 style: const TextStyle(fontSize: 12, color: Colors.grey),

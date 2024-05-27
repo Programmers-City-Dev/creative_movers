@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/buisness_profile_response.dart';
@@ -283,6 +284,7 @@ class BuisnessRepository {
       statusCodeSuccess: 200,
       errorResponse: (response) {
         debugPrint('ERROR SERVER');
+        log(response.data.toString());
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
@@ -292,6 +294,8 @@ class BuisnessRepository {
       },
       dioErrorResponse: (response) {
         debugPrint('DIO SERVER');
+        log(response.data.toString());
+
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,

@@ -231,7 +231,7 @@ class _NewPostItemState extends State<NewPostItem> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8),
             child: ExpandableText(
-              widget.feed.content!,
+              widget.feed.content ?? '',
               expandText: 'show more',
               collapseText: "show less",
               maxLines: 6,
@@ -765,8 +765,8 @@ class _NewPostItemState extends State<NewPostItem> {
 
   void _shareFeed(Feed feed) {
     DynamicLinksService.createFeedDeepLink(feed).then((link) {
-      Share.share("Hello Chief, ${feed.user?.fullname} just shared a post on"
-          " CreativeMovers platform. You can click on the link below"
+      Share.share("Hello ${feed.user?.fullname} just shared a post on"
+          " CreativeMovers click on the link below"
           " to read more.\n\n$link");
     });
   }

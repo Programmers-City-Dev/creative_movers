@@ -16,6 +16,7 @@ class WelcomeDialog extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
+
         ),
         child: Column(
           children: [
@@ -35,7 +36,7 @@ class WelcomeDialog extends StatelessWidget {
                     height: 32,
                   ),
                   const Text(
-                      "We are more than happy that you have joined the CreativeMovers, please take a litle time to complete your profile",
+                      "We are more than happy that you have joined the CreativeMovers, please take a little time to complete your profile",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18, color: AppColors.grey)),
                   const SizedBox(

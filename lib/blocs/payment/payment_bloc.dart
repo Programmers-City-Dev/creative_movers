@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:creative_movers/app_config.dart';
 import 'package:creative_movers/constants/constants.dart';
@@ -142,6 +143,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       emit(PaymentProcessingState());
       var response = await _createPaymentIntent(
           event.amount, event.currency, event.duration, event.paymentFor);
+
       if (response.isLeft) {
         emit(PaymentFailureState(response.left.errorMessage));
       } else {

@@ -59,7 +59,13 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
             );
           }
           if (state is PaymentHistoryLoadedState) {
-            return PaymentHostoryWidget(state.data);
+
+            if(state.data.user?.paymentHistory.isNotEmpty??true){
+              return PaymentHostoryWidget(state.data);
+
+            }else{
+              return const Center(child: Text('No Payment History'),);
+            }
           }
           return const SizedBox.shrink();
         },

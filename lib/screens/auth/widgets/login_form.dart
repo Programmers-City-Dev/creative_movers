@@ -190,6 +190,7 @@ class _LoginFormState extends State<LoginForm> {
       CustomSnackBar.showError(context, message: state.error);
     }
     if (state is LoginSuccessState) {
+
       cacheToken(state.response);
       Navigator.of(context).pop();
       if (state.response.user.regStatus != 'account_type') {

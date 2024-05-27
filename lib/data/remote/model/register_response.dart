@@ -51,6 +51,7 @@ class User {
       {required this.id,
       this.firstname,
       this.lastname,
+      required this.accountType,
       this.isFollowing,
       this.isConnected,
       required this.username,
@@ -83,6 +84,7 @@ class User {
   final String? lastname;
   final String username;
   final String email;
+  final String accountType;
   final String? phone;
   final String? gender;
   final DateTime? dob;
@@ -146,6 +148,7 @@ class User {
         phone: phone ?? this.phone,
         dob: dob ?? this.dob,
         gender: gender ?? this.gender,
+        accountType: accountType ?? this.accountType,
         emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
         role: role ?? this.role,
         payStatus: payStatus ?? this.payStatus,
@@ -174,6 +177,7 @@ class User {
         lastname: json["lastname"],
         username: json["username"],
         email: json["email"],
+        accountType: json["account_type"] ?? 'null',
         phone: json["phone"],
         gender: json["gender"],
         dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
@@ -218,6 +222,7 @@ class User {
         "username": username,
         "email": email,
         "phone": phone,
+        if (accountType != 'null') "account_type": accountType,
         "gender": gender,
         "dob": dob == null ? null : dob!.toIso8601String(),
         "email_verified_at":

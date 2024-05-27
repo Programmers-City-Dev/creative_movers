@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/cubit/in_app_payment_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/helpers/app_utils.dart';
@@ -24,12 +25,14 @@ class SubscriptionScreen extends StatefulWidget {
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   final List<String> _subIds = [
     'com.creativemovers.m7',
+
     // 'test_sub',
   ];
 
   String? _selectedProductId;
   StoreProduct? product;
   final InAppPaymentCubit _appPaymentCubit = InAppPaymentCubit(injector.get());
+  var user = injector.get<CacheCubit>().cachedUser;
 
   @override
   void initState() {
@@ -302,17 +305,21 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     top: false,
                     child: CustomButton(
                         color: Theme.of(context).colorScheme.secondary,
-                        onTap: state is InAppPaymentLoading
-                            ? null
+                        onTap: (user?.accountType?.toLowerCase() != 'premium')
+                            ? state is InAppPaymentLoading
+                                ? null
+                                : () {
+                                    log(_selectedProductId.toString());
+                                    if (_selectedProductId != null) {
+                                      _appPaymentCubit.purchaseStoreProduct(
+                                          _selectedProductId!,
+                                          product: product!);
+                                    } else {
+                                      Navigator.pop(context);
+                                    }
+                                  }
                             : () {
-                                log(_selectedProductId.toString());
-                                if (_selectedProductId != null) {
-                                  _appPaymentCubit.purchaseStoreProduct(
-                                      _selectedProductId!,
-                                      product: product!);
-                                } else {
-                                  Navigator.pop(context);
-                                }
+                                Navigator.pop(context);
                               },
                         radius: 32,
                         isBusy: state is InAppPaymentLoading,
