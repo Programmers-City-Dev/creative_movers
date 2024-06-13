@@ -23,7 +23,6 @@ class CacheCubit extends Cubit<CacheState> {
       if (dataList.isNotEmpty) {
         CachedUser cachedUser = dataList.first;
 
-
         this.cachedUser = cachedUser;
         // AppUtils.showCustomToast(cachedUser.accountType!.toLowerCase());
 

@@ -168,6 +168,7 @@ class AuthRepository {
     String? photo,
     String? maxRange,
     String? minRange,
+    String? activityType,
   }) async {
     var formData = FormData.fromMap({
       "role": role,
@@ -184,6 +185,7 @@ class AuthRepository {
       // "photo": photo,
       "max_range": maxRange,
       "min_range": minRange,
+      "user_activity_type": activityType,
     });
     return SimplifyApiConsuming.makeRequest(
       () async =>

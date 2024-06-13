@@ -29,6 +29,7 @@ class CachedUser extends Equatable {
     this.apiToken,
     this.country,
     this.state,
+    this.userActivityType,
   });
 
   final int id;
@@ -54,6 +55,7 @@ class CachedUser extends Equatable {
   final String? apiToken;
   final String? country;
   final String? state;
+  final String? userActivityType;
   final DateTime? dateOfBirth;
 
   CachedUser copyWith(
@@ -80,6 +82,7 @@ class CachedUser extends Equatable {
           String? gender,
           String? ethnicity,
           String? accountType,
+          String? userActivityType,
           DateTime? dateOfBirth}) =>
       CachedUser(
         id: id ?? this.id,
@@ -105,6 +108,7 @@ class CachedUser extends Equatable {
         apiToken: apiToken ?? this.apiToken,
         country: country ?? this.country,
         state: state ?? this.state,
+        userActivityType: userActivityType ?? this.userActivityType,
         dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       );
 
@@ -128,6 +132,7 @@ class CachedUser extends Equatable {
         profilePhotoPath: json["profile_photo_path"],
         coverPhotoPath: json["cover_photo_path"],
         biodata: json["biodata"],
+        userActivityType: json["user_activity_type"],
         status: json["status"],
         createdAt: json["created_at"] == null
             ? null
@@ -167,6 +172,7 @@ class CachedUser extends Equatable {
         "dob": dateOfBirth == null ? null : dateOfBirth!.toIso8601String(),
         "country": country,
         "state": state,
+        "user_activity_type": userActivityType,
       };
 
   String get fullname => '$firstname $lastname';
@@ -194,5 +200,6 @@ class CachedUser extends Equatable {
         country,
         state,
         accountType,
+        userActivityType,
       ];
 }

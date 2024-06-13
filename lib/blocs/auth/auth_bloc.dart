@@ -118,8 +118,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AccounTypeLoadingState());
     try {
       var state = await authRepository.postAccountType(
+
           role: event.role,
           category: event.category,
+          activityType: event.userActivityType,
           description: event.description,
           estCapital: event.estCapital,
           maxRange: event.max_range,

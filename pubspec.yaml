@@ -27,7 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter: 
+  flutter:
     sdk: flutter
   # in_app_update: ^3.0.0
   flutter_svg: ^2.0.9
@@ -40,7 +40,7 @@ dependencies:
   dropdown_search: ^5.0.3
   image_stack: ^2.1.0
   cupertino_icons: ^1.0.2
-  flutter_localizations: 
+  flutter_localizations:
     sdk: flutter
   google_nav_bar: ^5.0.5
   flutter_bloc: ^8.0.1
@@ -90,7 +90,7 @@ dependencies:
   native_linkify: ^0.0.1
   any_link_preview: ^3.0.0
   camera: ^0.10.0+4
-#  pusher_channels_flutter: ^1.0.5
+  #  pusher_channels_flutter: ^1.0.5
   pusher_client: ^2.0.0
   line_icons: ^2.0.1
   url_launcher: ^6.1.7
@@ -125,7 +125,7 @@ flutter:
         - asset: assets/fonts/poppins/poppins_regular.ttf
         - asset: assets/fonts/poppins/poppins_bold.ttf
         - asset: assets/fonts/poppins/poppins_medium.ttf
-   
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

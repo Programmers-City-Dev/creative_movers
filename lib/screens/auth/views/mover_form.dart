@@ -55,6 +55,10 @@ class _MoverFormState extends State<MoverForm>
   final _maxController = TextEditingController();
   final AuthBloc _authBloc = AuthBloc();
 
+  var items = ["Services", "Invest"];
+
+  String? type;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -74,138 +78,181 @@ class _MoverFormState extends State<MoverForm>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
                   const Text(
-                    'Select Preferred Investment Range',
+                    'Select activity type',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  FormField<Map<String, String>>(
-                    initialValue: initialValue,
-                    autovalidateMode: AutovalidateMode.disabled,
-                    validator: (value) {
-                      // return 'selext';
-                      if (initialValue.isEmpty) {
-                        return 'Please choose a range';
-                      }
-                      return null;
-                      // return 'hh';
+                  ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                          labelText: 'Do you offer services or invest',
+                          contentPadding: EdgeInsets.all(8),
+                          border: OutlineInputBorder(borderSide: BorderSide())),
+                      hint: const Text('Are you an investor'),
+                      value: null,
+                      onChanged: (value) {
+                        setState(() {
+                          type = value!;
+                        });
+                      },
+                      items: items
+                          .map((e) => DropdownMenuItem<String>(
+                              value: e, child: Text(e)))
+                          .toList(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Visibility(
+                    visible: type == "Invest",
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Select Preferred Investment Range',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        FormField<Map<String, String>>(
+                          initialValue: initialValue,
+                          autovalidateMode: AutovalidateMode.disabled,
+                          validator: (value) {
+                            // return 'selext';
+                            if (initialValue.isEmpty) {
+                              return 'Please choose a range';
+                            }
+                            return null;
+                            // return 'hh';
 
-                      // if (value!.isEmpty ) {
-                      //   return 'Please select some categories';
-                      // }
-                      // if (value!.length > 5) {
-                      //   return "Can't select more than 5 categories";
-                      // }
-                      // return null;
-                    },
-                    builder: (state) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RadioGroup<Map<String, String>>.builder(
-                            activeColor: AppColors.chipsColor,
-                            groupValue: initialValue,
-                            onChanged: (value) {
-                              initialValue = value!;
-                              log(value.toString());
-                              setState(() {
-                                if (value['min'] == 'other') {
-                                  min = _minController.text.toString();
-                                  max = _maxController.text.toString();
-                                } else {
-                                  min = value['min'];
-                                  max = value['max'];
-                                  initialValue = value;
-                                }
-                              });
-                            },
-                            items: baseplans,
-                            itemBuilder: (value) => RadioButtonBuilder(
-                                value['min'] != 'other'
-                                    ? '${value['min']} - ${value['max']}'
-                                    : 'other ',
-                                textPosition: RadioButtonTextPosition.right),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 2000),
-                            child: Visibility(
-                                visible: initialValue['min'] == 'other',
-                                child: Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Expanded(
-                                        child: TextFormField(
-                                      onChanged: (val) {
-                                        setState(() {});
-                                      },
-                                      controller: _minController,
-                                      validator: ((value) {
-                                        if (initialValue['min'] == 'other' &&
-                                            _minController.text.isEmpty) {
-                                          return 'Enter your min  range';
-                                        }
-                                        return null;
-                                      }),
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      keyboardType: TextInputType.number,
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          contentPadding: EdgeInsets.all(8),
-                                          hintText: 'From'),
-                                    )),
-                                    const SizedBox(
-                                      width: 16,
-                                    ),
-                                    Expanded(
-                                        child: TextFormField(
-                                      onChanged: (val) {
-                                        setState(() {});
-                                      },
-                                      validator: ((value) {
-                                        if (initialValue['min'] == 'other' &&
-                                            _maxController.text.isEmpty) {
-                                          return 'Enter your max  range';
-                                        }
-                                        return null;
-                                      }),
-                                      controller: _maxController,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      keyboardType: TextInputType.number,
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          contentPadding: EdgeInsets.all(8),
-                                          hintText: 'To'),
-                                    )),
-                                  ],
-                                )),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            state.hasError ? state.errorText! : '',
-                            style: TextStyle(
-                                color: state.hasError
-                                    ? Colors.redAccent
-                                    : Colors.green),
-                          )
-                        ],
-                      );
-                    },
+                            // if (value!.isEmpty ) {
+                            //   return 'Please select some categories';
+                            // }
+                            // if (value!.length > 5) {
+                            //   return "Can't select more than 5 categories";
+                            // }
+                            // return null;
+                          },
+                          builder: (state) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RadioGroup<Map<String, String>>.builder(
+                                  activeColor: AppColors.chipsColor,
+                                  groupValue: initialValue,
+                                  onChanged: (value) {
+                                    initialValue = value!;
+                                    log(value.toString());
+                                    setState(() {
+                                      if (value['min'] == 'other') {
+                                        min = _minController.text.toString();
+                                        max = _maxController.text.toString();
+                                      } else {
+                                        min = value['min'];
+                                        max = value['max'];
+                                        initialValue = value;
+                                      }
+                                    });
+                                  },
+                                  items: baseplans,
+                                  itemBuilder: (value) => RadioButtonBuilder(
+                                      value['min'] != 'other'
+                                          ? '${value['min']} - ${value['max']}'
+                                          : 'other ',
+                                      textPosition:
+                                          RadioButtonTextPosition.right),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 2000),
+                                  child: Visibility(
+                                      visible: initialValue['min'] == 'other',
+                                      child: Row(
+                                        children: [
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          Expanded(
+                                              child: TextFormField(
+                                            onChanged: (val) {
+                                              setState(() {});
+                                            },
+                                            controller: _minController,
+                                            validator: ((value) {
+                                              if (initialValue['min'] ==
+                                                      'other' &&
+                                                  _minController.text.isEmpty) {
+                                                return 'Enter your min  range';
+                                              }
+                                              return null;
+                                            }),
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            keyboardType: TextInputType.number,
+                                            decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(8),
+                                                hintText: 'From'),
+                                          )),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Expanded(
+                                              child: TextFormField(
+                                            onChanged: (val) {
+                                              setState(() {});
+                                            },
+                                            validator: ((value) {
+                                              if (initialValue['min'] ==
+                                                      'other' &&
+                                                  _maxController.text.isEmpty) {
+                                                return 'Enter your max  range';
+                                              }
+                                              return null;
+                                            }),
+                                            controller: _maxController,
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            keyboardType: TextInputType.number,
+                                            decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                contentPadding:
+                                                    EdgeInsets.all(8),
+                                                hintText: 'To'),
+                                          )),
+                                        ],
+                                      )),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                Text(
+                                  state.hasError ? state.errorText! : '',
+                                  style: TextStyle(
+                                      color: state.hasError
+                                          ? Colors.redAccent
+                                          : Colors.green),
+                                )
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   // const SizedBox(
                   //   height: 10,
@@ -369,6 +416,7 @@ class _MoverFormState extends State<MoverForm>
           min_range: other ? _minController.text.toString() : min,
           max_range: other ? _maxController.text.toString() : max,
           category: categories,
+          userActivityType: type ?? "services",
           stage: _preferedStage));
     }
   }
@@ -389,21 +437,18 @@ class _MoverFormState extends State<MoverForm>
       var user = injector.get<CacheCubit>().cachedUser;
 
       // if (user?.accountType?.toLowerCase() != 'premium') {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => state.accountTypeResponse.connect.isNotEmpty
-                  ? ConnectionScreen(
-                      connections: state.accountTypeResponse.connect,
-                      role: state.accountTypeResponse.userRole?.role,
-                    )
-                  : const SubscriptionScreen(
-                      isFromSignup: true,
-                    ),
-            ),
-            (route) => false);
-
-
-
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => state.accountTypeResponse.connect.isNotEmpty
+                ? ConnectionScreen(
+                    connections: state.accountTypeResponse.connect,
+                    role: state.accountTypeResponse.userRole?.role,
+                  )
+                : const SubscriptionScreen(
+                    isFromSignup: true,
+                  ),
+          ),
+          (route) => false);
     }
   }
 

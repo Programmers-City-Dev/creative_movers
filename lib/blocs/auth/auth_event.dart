@@ -57,6 +57,7 @@ class AccountTypeEvent extends AuthEvent {
   final String? photo;
   final String? max_range;
   final String? min_range;
+  final String? userActivityType;
 
   @override
   // TODO: implement props
@@ -70,7 +71,7 @@ class AccountTypeEvent extends AuthEvent {
         description,
         photo,
         max_range,
-        min_range
+        userActivityType
       ];
 
   AccountTypeEvent({
@@ -84,6 +85,7 @@ class AccountTypeEvent extends AuthEvent {
     this.photo,
     this.max_range,
     this.min_range,
+    this.userActivityType,
   });
 }
 

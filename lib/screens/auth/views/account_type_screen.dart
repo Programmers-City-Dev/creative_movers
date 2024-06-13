@@ -45,24 +45,6 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
               const SizedBox(
                 height: 20,
               ),
-              // DropdownButtonFormField<String>(
-              //   decoration: const InputDecoration(
-              //       labelText: 'Select User Account Type',
-              //       contentPadding: EdgeInsets.all(16),
-              //       border: OutlineInputBorder(borderSide: BorderSide())),
-              //   hint: const Text('Select Account Type'),
-              //   value: null,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       account_type = value!;
-              //       isEnabled = true;
-              //     });
-              //   },
-              //   items: items
-              //       .map((e) =>
-              //           DropdownMenuItem<String>(value: e, child: Text(e)))
-              //       .toList(),
-              // ),
 
               ToggleSwitcher(
                 onSelected: (index) {
