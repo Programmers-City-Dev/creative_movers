@@ -32,10 +32,11 @@ class _MoverFormState extends State<MoverForm>
   List<String> categories = [];
 
   List<Map<String, String>> baseplans = [
-    {'min': '1', 'max': '500'},
-    {'min': '501', 'max': '2000'},
-    {'min': '2000', 'max': '5000'},
-    {'min': 'other', 'max': ''}
+
+    {'min': '1', 'max': '500000', "label": "1 - \$500k"},
+    {'min': '500000', 'max': '2000000', "label": "\$500k - \$2M"},
+    {'min': '2000000', 'max': '5000000', "label": "\$2M - \$5M"},
+    {'min': 'other', 'max': '', "label": "other"}
   ];
 
   Map<String, String> initialValue = {'min': '1', 'max': '500'};
@@ -55,7 +56,7 @@ class _MoverFormState extends State<MoverForm>
   final _maxController = TextEditingController();
   final AuthBloc _authBloc = AuthBloc();
 
-  var items = ["Services", "Invest"];
+  var items = ["Services", "Investor"];
 
   String? type;
 
@@ -109,7 +110,7 @@ class _MoverFormState extends State<MoverForm>
                     height: 20,
                   ),
                   Visibility(
-                    visible: type == "Invest",
+                    visible: type == "Investor",
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -163,9 +164,7 @@ class _MoverFormState extends State<MoverForm>
                                   },
                                   items: baseplans,
                                   itemBuilder: (value) => RadioButtonBuilder(
-                                      value['min'] != 'other'
-                                          ? '${value['min']} - ${value['max']}'
-                                          : 'other ',
+                                      value['label']!,
                                       textPosition:
                                           RadioButtonTextPosition.right),
                                 ),
@@ -416,7 +415,7 @@ class _MoverFormState extends State<MoverForm>
           min_range: other ? _minController.text.toString() : min,
           max_range: other ? _maxController.text.toString() : max,
           category: categories,
-          userActivityType: type ?? "services",
+          userActivityType: type?.toLowerCase() ?? "services",
           stage: _preferedStage));
     }
   }

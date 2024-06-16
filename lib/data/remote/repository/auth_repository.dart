@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:creative_movers/constants/enpoints.dart';
 import 'package:creative_movers/data/remote/model/account_type_response.dart';
@@ -195,6 +196,7 @@ class AuthRepository {
             data != null ? AccountTypeResponse.fromJson(data) : null);
       },
       statusCodeSuccess: 200,
+
       errorResponse: (response) {
         debugPrint('ERROR SERVER: ${response.statusMessage}');
         return State<ServerErrorModel>.error(
@@ -205,7 +207,9 @@ class AuthRepository {
         );
       },
       dioErrorResponse: (response) {
-        debugPrint('DIO SERVER: ${response.statusMessage}');
+        debugPrint('DIO SERVER: ${response.data}');
+        log(response.data);
+
         return State<ServerErrorModel>.error(
           ServerErrorModel(
               statusCode: response.statusCode!,
