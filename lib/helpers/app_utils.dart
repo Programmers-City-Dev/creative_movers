@@ -459,6 +459,7 @@ class AppUtils {
       List<String>? allowedExtensions}) async {
     try {
       FilePicker filePicker = FilePicker.platform;
+
       FilePickerResult? result = await filePicker.pickFiles(
         type: fileType,
         allowCompression: true,
@@ -480,7 +481,7 @@ class AppUtils {
   static Future<String?> fetchImageFromCamera() async {
     try {
       var pickedFile = await ImagePicker()
-          .pickImage(source: ImageSource.camera, imageQuality: 70);
+          .pickImage(source: ImageSource.gallery, imageQuality: 70);
       if (pickedFile != null) {
         return pickedFile.path;
       } else {
@@ -517,13 +518,10 @@ class AppUtils {
                       color: AppColors.white,
                       child: const Text('Take a photo',
                           textAlign: TextAlign.center)),
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pop(context);
-                    fetchImageFromCamera().then((value) {
-                      if (null != value) {
-                        return onSelected([value]);
-                      }
-                    });
+
+                    fetchImageFromCamera();
                   },
                 ),
                 const SizedBox(height: 1),
@@ -535,12 +533,26 @@ class AppUtils {
                           textAlign: TextAlign.center)),
                   onTap: () async {
                     Navigator.pop(context);
-                    var list = await fetchFiles(
-                        allowMultiple: allowMultiple,
-                        fileType: fileType ?? FileType.image,
-                        title: title,
-                        allowedExtensions: allowedExtensions);
-                    onSelected(list);
+                    var pickedFile = await ImagePicker()
+                        .pickMultipleMedia(
+                      imageQuality: 70,
+                    )
+                        .then((value) {
+                      return onSelected(value
+                          .map(
+                            (e) => e.path.toString(),
+                          )
+                          .toList());
+                    });
+                    Navigator.pop(context);
+                    //
+                    // // fetchMedia()
+                    // var list = await fetchFiles(
+                    //     allowMultiple: allowMultiple,
+                    //     fileType: fileType ?? FileType.image,
+                    //     title: title,
+                    //     allowedExtensions: allowedExtensions);
+                    // onSelected(list);
                   },
                 ),
                 if (hasViewAction)

@@ -90,9 +90,10 @@ class Investment {
   });
 
   int id;
-  String userId;
-  String maxRange;
-  String minRange;
+  dynamic userId;
+  dynamic maxRange;
+  dynamic minRange;
+
   String stage;
   String category;
   DateTime createdAt;

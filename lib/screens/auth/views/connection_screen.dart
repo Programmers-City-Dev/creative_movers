@@ -180,6 +180,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         'MY CONNECTS: $myConnects',
       );
     } else {
+
       if (myConnects.length >= 5 &&
           !SubscriptionHelper.hasActiveSubscription()) {
         CustomSnackBar.showMessage(context,

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:developer';
 
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
@@ -56,7 +56,8 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
   }
 
   void purchaseStoreProduct(String productId,
-      {PurchaseType type = PurchaseType.subs,required StoreProduct product}) async {
+      {PurchaseType type = PurchaseType.subs,
+      required StoreProduct product}) async {
     try {
       emit(InAppPaymentLoading());
       var activeSubsEntitlements =
@@ -72,7 +73,8 @@ class InAppPaymentCubit extends Cubit<InAppPaymentState> {
         log("Product: $productId");
         var customerInfo = await paymentServices.purchaseProduct(
           productId,
-          type: type, product: product,
+          type: type,
+          product: product,
         );
         emit(InAppPurchaseSuccess(customerInfo: customerInfo));
       }

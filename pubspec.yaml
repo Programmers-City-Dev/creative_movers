@@ -36,7 +36,7 @@ dependencies:
   pin_code_fields: ^8.0.1
   group_radio_button: ^1.1.0
   dotted_border: ^2.0.0+1
-  intl: ^0.18.1
+  intl: ^0.19.0
   dropdown_search: ^5.0.3
   image_stack: ^2.1.0
   cupertino_icons: ^1.0.2
@@ -96,7 +96,7 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_speed_dial: ^7.0.0
   flutter_downloader: ^1.9.1
-  purchases_flutter: ^6.21.1
+  purchases_flutter: ^6.30.2
   package_info_plus: ^3.0.3
   share_plus: ^6.3.1
   wakelock: ^0.6.2

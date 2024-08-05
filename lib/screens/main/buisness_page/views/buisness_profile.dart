@@ -78,7 +78,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                     width: 5,
                   ),
                   Text(
-                    'Buisness Profile',
+                    'Business Profile',
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -138,7 +138,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Buisness Category',
+                              'Business Category',
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
@@ -160,7 +160,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                             Row(
                               children: [
                                 const Text(
-                                  'Buisness Pages',
+                                  'Business Pages',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16),
@@ -287,18 +287,16 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                             ),
                             InkWell(
                               onTap: () {
-
-
-                                SubscriptionHelper().performSubscriptionCheckAndNavigate(
-                                    context: context,
-                                    onActiveSubscription: () {
-
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) =>
-                                        const CreatePageOnboarding(),
-                                      ));
-                                    });
-
+                                SubscriptionHelper()
+                                    .performSubscriptionCheckAndNavigate(
+                                        context: context,
+                                        onActiveSubscription: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreatePageOnboarding(),
+                                          ));
+                                        });
                               },
                               child: Container(
                                 color: Colors.white,
@@ -321,7 +319,7 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                                       width: 10,
                                     ),
                                     const Text(
-                                      'CREATE A BUISNESS PAGE',
+                                      'CREATE A BUSINESS PAGE',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.primaryColor,
@@ -389,9 +387,9 @@ class _BuisnessProfileScreenState extends State<BuisnessProfileScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
+                            const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text(
                                   'Page Suggestions',
                                   style: TextStyle(
@@ -553,6 +551,7 @@ class NoPageWidget extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
+
               // child: CustomButton(
               //   child: const Text('CREATE A BUSINESS PAGE'),
               //   onTap: () {

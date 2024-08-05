@@ -25,7 +25,6 @@ class SubscriptionScreen extends StatefulWidget {
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   final List<String> _subIds = [
     'com.creativemovers.m7',
-
     // 'test_sub',
   ];
 
@@ -207,32 +206,32 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           }
                         },
                         builder: (context, state) {
-                          if (state is ProductsFetched) {
-                            return Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                "Your account will be charged "
-                                "${state.product.currencyCode} "
-                                "${AppUtils.formatMoney(state.product.price)} "
-                                // " after 7 days trial period. "
-                                "You can cancel your subscriptions to "
-                                "avoid being charged 24 hours prior to "
-                                "the end of the current period in "
-                                "${Platform.isIOS ? 'App Store' : 'Playstore'}"
-                                " account settings.",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            );
-                          }
+                          // if (state is ProductsFetched) {
+                          //   return Container(
+                          //     width: double.infinity,
+                          //     padding: const EdgeInsets.all(8),
+                          //     decoration: BoxDecoration(
+                          //       color: Colors.black.withOpacity(0.1),
+                          //       borderRadius: BorderRadius.circular(8),
+                          //     ),
+                          //     child: Text(
+                          //       "Your account will be charged "
+                          //       "${state.product.currencyCode} "
+                          //       "${AppUtils.formatMoney(state.product.price)} "
+                          //       // " after 7 days trial period. "
+                          //       "You can cancel your subscriptions to "
+                          //       "avoid being charged 24 hours prior to "
+                          //       "the end of the current period in "
+                          //       "${Platform.isIOS ? 'App Store' : 'Playstore'}"
+                          //       " account settings.",
+                          //       style: const TextStyle(
+                          //         color: Colors.black,
+                          //         fontSize: 14,
+                          //         fontWeight: FontWeight.w400,
+                          //       ),
+                          //     ),
+                          //   );
+                          // }
                           return const SizedBox.shrink();
                         },
                       ),
@@ -286,6 +285,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ],
                 ),
               ),
+
               BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
                 bloc: _appPaymentCubit,
                 listener: (context, state) {
@@ -305,32 +305,40 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     top: false,
                     child: CustomButton(
                         color: Theme.of(context).colorScheme.secondary,
-                        onTap: (user?.accountType?.toLowerCase() != 'premium')
-                            ? state is InAppPaymentLoading
-                                ? null
-                                : () {
-                                    log(_selectedProductId.toString());
-                                    if (_selectedProductId != null) {
-                                      _appPaymentCubit.purchaseStoreProduct(
-                                          _selectedProductId!,
-                                          product: product!);
-                                    } else {
-                                      Navigator.pop(context);
-                                    }
-                                  }
-                            : () {
-                                Navigator.pop(context);
-                              },
+
+                        // onTap: (user?.accountType?.toLowerCase() != 'premium')
+                        //     ? state is InAppPaymentLoading
+                        //         ? null
+                        //         : () {
+                        //             log(_selectedProductId.toString());
+                        //             if (_selectedProductId != null) {
+                        //               _appPaymentCubit.purchaseStoreProduct(
+                        //                   _selectedProductId!,
+                        //                   product: product!);
+                        //             } else {
+                        //
+                        //               Navigator.pop(context);
+                        //
+                        //             }
+                        //           }
+                        //     : () {
+                        //         Navigator.pop(context);
+                        //       },
+
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                         radius: 32,
                         isBusy: state is InAppPaymentLoading,
-                        child: Text(
-                          state is InAppPaymentLoading
-                              ? "Processing"
-                              : (_selectedProductId == null &&
-                                      widget.isFromSignup!)
-                                  ? "Continue"
-                                  : "Subscribe Now",
-                          style: const TextStyle(
+                        child: const Text(
+                          // state is InAppPaymentLoading
+                          //     ? "Processing"
+                          //     : (_selectedProductId == null &&
+                          //             widget.isFromSignup!)
+                          //         ? "Continue"
+                          //         : "Subscribe Now",
+                          "Continue",
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -579,10 +587,19 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                               : "${state.product.priceString}/month",
                           style: TextStyle(
                               color: widget.isActive!
+                                  ? Colors.black45
+                                  : Colors.black54,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.lineThrough,
+                              fontSize: 16)),
+                      TextSpan(
+                          text: " Free",
+                          style: TextStyle(
+                              color: widget.isActive!
                                   ? Colors.white
                                   : Colors.black54,
                               fontWeight: FontWeight.w500,
-                              fontSize: 16))
+                              fontSize: 16)),
                     ])),
                   );
                 }

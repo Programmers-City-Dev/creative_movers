@@ -155,7 +155,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       FetchConversationsMessagesEvent event, Emitter<ChatState> emit) async {
     emit(ChatMessageLoading());
     try {
-      final state = await chatRepository.fetchChatConversationMessages(event.conversationId);
+      final state = await chatRepository
+          .fetchChatConversationMessages(event.conversationId);
 
       if (state is SuccessState) {
         ConversationMessagesResponse response = state.value;
