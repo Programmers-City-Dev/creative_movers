@@ -17,7 +17,7 @@ import 'package:creative_movers/services/puhser_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pusher_client/pusher_client.dart';
+import 'package:pusher_client_fixed/pusher_client_fixed.dart';
 
 part 'chat_event.dart';
 

@@ -24,7 +24,7 @@ class HttpHelper {
     if (storageToken != null) headers['Authorization'] = 'Bearer $storageToken';
 
     _client!.options.headers = headers;
-    if (Constants.getFlavor == Flavor.dev) {
+    if (true) {
       _client!.interceptors.addAll([
         AuthInterceptor(),
         PrettyDioLogger(

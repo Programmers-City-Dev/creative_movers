@@ -168,7 +168,7 @@ class _FileMessageItemState extends State<_FileMessageItem> {
 
     if (Platform.isAndroid) {
       try {
-        externalStorageDirPath = await AndroidPathProvider.downloadsPath;
+        externalStorageDirPath = (await getDownloadsDirectory())?.path;
       } catch (err, st) {
         print('failed to get downloads path: $err, $st');
 

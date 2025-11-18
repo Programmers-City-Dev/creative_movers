@@ -2,7 +2,7 @@ import 'package:creative_movers/blocs/deep_link/deep_link_cubit.dart';
 import 'package:creative_movers/di/injector.dart';
 import 'package:creative_movers/models/deep_link_data.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:universal_links/universal_links.dart';
 
 class UniLinks {
   UniLinks._();

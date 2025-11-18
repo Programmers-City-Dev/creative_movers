@@ -1,6 +1,6 @@
 import 'package:creative_movers/constants/constants.dart';
 import 'package:flutter/foundation.dart';
-import 'package:pusher_client/pusher_client.dart';
+import 'package:pusher_client_fixed/pusher_client_fixed.dart';
 
 class PusherService {
   PusherService._();

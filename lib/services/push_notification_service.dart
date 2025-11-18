@@ -143,7 +143,12 @@ class PushNotificationService {
   }
 
   static Future<String?> getDeviceToken() async {
-    return await _fcm.getToken();
+    return Platform.isIOS
+        ? await FirebaseMessaging.instance.getAPNSToken()
+        ?? ''
+        : await FirebaseMessaging.instance.getToken() ??
+        '';
+
   }
 
   static DeepLinkData? _decodeNotificationData(RemoteMessage notification) {

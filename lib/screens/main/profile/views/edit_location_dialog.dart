@@ -15,8 +15,7 @@ class EditLocationDialog extends StatefulWidget {
   final Function(User user) onSuccess;
   final String? initialCountry;
 
-  EditLocationDialog(
-      {Key? key, required this.onSuccess, required this.initialCountry})
+  EditLocationDialog({Key? key, required this.onSuccess, required this.initialCountry})
       : super(key: key);
 
   @override
@@ -36,8 +35,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
       bloc: _profileBloc,
       listener: (context, state) {
         if (state is ProfileUpdateLoading) {
-          AppUtils.showAnimatedProgressDialog(context,
-              title: "Updating, please wait...");
+          AppUtils.showAnimatedProgressDialog(context, title: "Updating, please wait...");
         }
         if (state is ProfileUpdateLoadedState) {
           // log("USER:${state.updateProfileResponse.toJson()}");
@@ -57,8 +55,8 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
         padding: const EdgeInsets.all(30),
         decoration: const BoxDecoration(
             color: AppColors.smokeWhite,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+            borderRadius:
+                BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -111,10 +109,8 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                 fontSize: 14,
               ),
 
-              dropdownHeadingStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold),
+              dropdownHeadingStyle:
+                  const TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),
               dropdownItemStyle: const TextStyle(
                 color: Colors.black,
                 fontSize: 14,
@@ -163,11 +159,8 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                 // );
                 // AppUtils.showCustomToast(msg)
 
-                if (countryValue != null &&
-                    stateValue != null &&
-                    stateValue != "*State") {
-                  _profileBloc.add(UpdateProfileEvent(
-                      country: countryValue, state: stateValue));
+                if (countryValue != null && stateValue != null && stateValue != "*State") {
+                  _profileBloc.add(UpdateProfileEvent(country: countryValue, state: stateValue));
                 } else {
                   AppUtils.showErrorDialog(context,
                       message: "Please select the required fields.",

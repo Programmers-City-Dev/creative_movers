@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.creativemovers.app",
+      "sha256_cert_fingerprints":
+      ["70:32:B7:8D:4F:B3:5F:E9:88:ED:F9:73:1C:06:B9:4D:41:1E:37:7E:02:0C:FB:84:F4:3B:25:74:A9:1F:9A:AC"]
+    }
+  }
+]

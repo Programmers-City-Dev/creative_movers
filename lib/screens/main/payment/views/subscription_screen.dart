@@ -42,18 +42,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Theme.of(context).colorScheme.background.withOpacity(0.9),
+      backgroundColor: Theme.of(context).colorScheme.background.withOpacity(0.9),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.black),
-        leading: widget.isFromSignup!
-            ? null
-            : IconButton(
-                onPressed: () => Navigator.pop(context, false),
-                icon: const Icon(Icons.close)),
+        leading: widget.isFromSignup! ? null : IconButton(onPressed: () => Navigator.pop(context, false), icon: const Icon(Icons.close)),
         actions: const [
           // if (!widget.isFromSignup!)
           //   GestureDetector(
@@ -105,10 +100,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                   Text(
                     'Post feeds without limit',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade800),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey.shade800),
                   ),
                 ],
               ),
@@ -126,10 +118,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                   Text(
                     'Post stories without limit',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade800),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey.shade800),
                   ),
                 ],
               ),
@@ -147,10 +136,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                   Text(
                     'Connect with unlimited movers',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade800),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey.shade800),
                   ),
                 ],
               ),
@@ -186,22 +172,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       height: 8,
                     ),
                     BlocProvider(
-                      create: (context) => InAppPaymentCubit(injector.get())
-                        ..fetchProduct(_selectedProductId!),
+                      create: (context) => InAppPaymentCubit(injector.get())..fetchProduct(_selectedProductId!),
                       child: BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
                         listener: (context, state) {
                           if (state is InAppPaymentFetchError) {
                             AppUtils.showErrorDialog(context,
                                 isDismissible: false,
-                                message:
-                                    "Unable to fetch subscription details, "
+                                message: "Unable to fetch subscription details, "
                                     "please try again",
                                 title: "Server Error",
                                 confirmButtonText: "Retry", onConfirmed: () {
                               Navigator.pop(context);
-                              context
-                                  .read<InAppPaymentCubit>()
-                                  .fetchProduct(_selectedProductId!);
+                              context.read<InAppPaymentCubit>().fetchProduct(_selectedProductId!);
                             });
                           }
                         },
@@ -291,10 +273,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 listener: (context, state) {
                   if (state is InAppPaymentError) {
                     AppUtils.showErrorDialog(context,
-                        message: state.error.errorMessage,
-                        title: "Subscription Error",
-                        confirmButtonText: "Close",
-                        onConfirmed: () => Navigator.pop(context));
+                        message: state.error.errorMessage, title: "Subscription Error", confirmButtonText: "Close", onConfirmed: () => Navigator.pop(context));
                   }
                   if (state is InAppPurchaseSuccess) {
                     Navigator.pop(context, true);
@@ -305,29 +284,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     top: false,
                     child: CustomButton(
                         color: Theme.of(context).colorScheme.secondary,
+                        onTap: (user?.accountType?.toLowerCase() != 'premium')
+                            ? state is InAppPaymentLoading
+                                ? null
+                                : () {
+                                    log(_selectedProductId.toString());
+                                    if (_selectedProductId != null) {
+                                      _appPaymentCubit.purchaseStoreProduct(_selectedProductId!, product: product!);
+                                    } else {
+                                      Navigator.pop(context);
+                                    }
+                                  }
+                            : () {
+                                Navigator.pop(context);
+                              },
 
-                        // onTap: (user?.accountType?.toLowerCase() != 'premium')
-                        //     ? state is InAppPaymentLoading
-                        //         ? null
-                        //         : () {
-                        //             log(_selectedProductId.toString());
-                        //             if (_selectedProductId != null) {
-                        //               _appPaymentCubit.purchaseStoreProduct(
-                        //                   _selectedProductId!,
-                        //                   product: product!);
-                        //             } else {
-                        //
-                        //               Navigator.pop(context);
-                        //
-                        //             }
-                        //           }
-                        //     : () {
-                        //         Navigator.pop(context);
-                        //       },
-
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
+                        // onTap: () {
+                        //   Navigator.pop(context);
+                        // },
                         radius: 32,
                         isBusy: state is InAppPaymentLoading,
                         child: const Text(
@@ -541,9 +515,7 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
         padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-          border: Border.all(
-              color: widget.isActive! ? Colors.white : Colors.black12,
-              width: 2),
+          border: Border.all(color: widget.isActive! ? Colors.white : Colors.black12, width: 2),
           borderRadius: BorderRadius.circular(32),
         ),
         child: Row(
@@ -564,10 +536,7 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                   onChanged: (value) {},
                 ),
                 Text(widget.isFree! ? "Continue for free" : "Monthly",
-                    style: TextStyle(
-                        color: widget.isActive! ? Colors.white : Colors.black54,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16))
+                    style: TextStyle(color: widget.isActive! ? Colors.white : Colors.black54, fontWeight: FontWeight.w600, fontSize: 16))
               ],
             ),
             BlocConsumer<InAppPaymentCubit, InAppPaymentState>(
@@ -582,24 +551,14 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
                     child: RichText(
                         text: TextSpan(children: [
                       TextSpan(
-                          text: widget.isFree!
-                              ? "0.00/month"
-                              : "${state.product.priceString}/month",
+                          text: widget.isFree! ? "0.00/month" : "${state.product.priceString}/month",
                           style: TextStyle(
-                              color: widget.isActive!
-                                  ? Colors.black45
-                                  : Colors.black54,
+                              color: widget.isActive! ? Colors.black45 : Colors.black54,
                               fontWeight: FontWeight.w500,
                               decoration: TextDecoration.lineThrough,
                               fontSize: 16)),
                       TextSpan(
-                          text: " Free",
-                          style: TextStyle(
-                              color: widget.isActive!
-                                  ? Colors.white
-                                  : Colors.black54,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16)),
+                          text: " Free", style: TextStyle(color: widget.isActive! ? Colors.white : Colors.black54, fontWeight: FontWeight.w500, fontSize: 16)),
                     ])),
                   );
                 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:creative_movers/app.dart';
 import 'package:creative_movers/constants/constants.dart';
@@ -11,6 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+
+import 'helpers/http_overrides.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 
 List<CameraDescription> cameras = [];
@@ -43,6 +47,7 @@ class AppConfig {
 
   Future<void> _setup() async {
     await Firebase.initializeApp();
+    HttpOverrides.global = MyHttpOverrides();
     cameras = await availableCameras();
     // await PushNotificationService.initialise();
     await FileDownloaderService.init();

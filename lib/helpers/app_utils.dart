@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:creative_movers/blocs/cache/cache_cubit.dart';
 import 'package:creative_movers/constants/storage_keys.dart';
 import 'package:creative_movers/di/injector.dart';
@@ -119,6 +119,8 @@ class AppUtils {
     double months = duration.inDays / 28;
     double years = months / 12;
     log(formatter.format(DateTime.now()));
+
+    return "${timeago.format(dateTime, locale: 'en_short')} ago";
 
     if (duration.inMinutes < 1) {
       return ' ${duration.inSeconds.toString()} secs ago';

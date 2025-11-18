@@ -78,7 +78,7 @@ class _PaymentFormState extends State<PaymentForm> {
                     return Center(child: Text(state.error.errorMessage));
                   }
                   if (state is UpgradProductsFetched) {
-                    log("PACKAGE: ${state.packages.first.toJson()}");
+                    log("PACKAGE: ${state.packages.first}");
                     return ListView.builder(
                         itemCount: state.packages.length,
                         itemBuilder: (context, index) {

@@ -46,13 +46,13 @@ class PaymentServices {
   }
 
   Future<CustomerInfo> purchasePackage(Package package) async {
-    return await Purchases.purchasePackage(package);
+    return (await Purchases.purchasePackage(package)).customerInfo;
   }
 
   Future<CustomerInfo> purchaseProduct(String identifier,
       {required PurchaseType type, required StoreProduct? product}) async {
     // return await Purchases.purchaseProduct(identifier, type: type);
-    return await Purchases.purchaseStoreProduct(product!);
+    return (await Purchases.purchaseStoreProduct(product!)).customerInfo;
   }
 
   static void logout() {

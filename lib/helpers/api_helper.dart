@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:creative_movers/data/remote/model/server_error_model.dart';
@@ -41,6 +42,7 @@ class SimplifyApiConsuming {
             data: null),
       );
     } on DioError catch (e) {
+      log('dio error --------------------- ${e.toString()}');
       print(
           "dio error request is:  ${e.response?.requestOptions.queryParameters}");
       if (dioErrorResponse != null) {
